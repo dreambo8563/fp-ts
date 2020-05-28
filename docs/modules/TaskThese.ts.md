@@ -237,4 +237,4 @@ Added in v2.4.0
 export declare function toTuple<E, A>(e: () => E, a: () => A): (fa: TaskThese<E, A>) => Task<[E, A]>
 ```
 
-Added in v2.4.0
+Added in v3.0.0

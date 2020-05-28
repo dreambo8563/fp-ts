@@ -57,7 +57,7 @@ export interface TheseM<M> {
 }
 ```
 
-Added in v2.4.0
+Added in v3.0.0
 
 # TheseM1 (interface)
 
@@ -94,7 +94,7 @@ export interface TheseM1<M extends URIS> {
 }
 ```
 
-Added in v2.4.0
+Added in v3.0.0
 
 # TheseM2 (interface)
 
@@ -131,7 +131,7 @@ export interface TheseM2<M extends URIS2> {
 }
 ```
 
-Added in v2.4.0
+Added in v3.0.0
 
 # TheseT (interface)
 

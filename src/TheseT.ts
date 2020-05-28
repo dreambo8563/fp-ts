@@ -12,7 +12,7 @@ import { bimap, both, fold, left, map, mapLeft, right, swap, These, toTuple } fr
 export interface TheseT<M, E, A> extends HKT<M, These<E, A>> {}
 
 /**
- * @since 2.4.0
+ * @since 3.0.0
  */
 export interface TheseM<M> {
   readonly map: <E, A, B>(fa: TheseT<M, E, A>, f: (a: A) => B) => TheseT<M, E, B>
@@ -49,7 +49,7 @@ export interface TheseM<M> {
 export type TheseT1<M extends URIS, E, A> = Kind<M, These<E, A>>
 
 /**
- * @since 2.4.0
+ * @since 3.0.0
  */
 export interface TheseM1<M extends URIS> {
   readonly map: <E, A, B>(fa: TheseT1<M, E, A>, f: (a: A) => B) => TheseT1<M, E, B>
@@ -86,7 +86,7 @@ export interface TheseM1<M extends URIS> {
 export type TheseT2<M extends URIS2, R, E, A> = Kind2<M, R, These<E, A>>
 
 /**
- * @since 2.4.0
+ * @since 3.0.0
  */
 export interface TheseM2<M extends URIS2> {
   readonly map: <R, E, A, B>(fa: TheseT2<M, R, E, A>, f: (a: A) => B) => TheseT2<M, R, E, B>

@@ -373,7 +373,7 @@ assert.deepStrictEqual(f(none), left('a'))
 assert.deepStrictEqual(f(some(1)), both('a', 1))
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # map
 
@@ -444,7 +444,7 @@ assert.deepStrictEqual(f(none), right(1))
 assert.deepStrictEqual(f(some('a')), both('a', 1))
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # swap
 
@@ -488,4 +488,4 @@ assert.deepStrictEqual(f(right(2)), ['a', 2])
 assert.deepStrictEqual(f(both('b', 2)), ['b', 2])
 ```
 
-Added in v2.0.0
+Added in v3.0.0

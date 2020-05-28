@@ -119,7 +119,7 @@ export function right<E = never, A = never>(a: A): Either<E, A> {
  * assert.deepStrictEqual(parse(1), right(1))
  * assert.deepStrictEqual(parse(null), left('nully'))
  *
- * @since 2.0.0
+ * @since 3.0.0
  */
 export function fromNullable<E>(e: () => E): <A>(a: A) => Either<E, NonNullable<A>> {
   return <A>(a: A) => (a == null ? left(e()) : right(a as NonNullable<A>))

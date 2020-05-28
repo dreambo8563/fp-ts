@@ -387,7 +387,7 @@ assert.deepStrictEqual(parse(1), right(1))
 assert.deepStrictEqual(parse(null), left('nully'))
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # fromOption
 

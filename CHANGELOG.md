@@ -29,7 +29,7 @@ high state of flux, you're at risk of it changing without notice.
     - make `toTuple` lazy (@gcanti)
     - make `leftOrBoth` lazy (@gcanti)
     - make `rightOrBoth` lazy (@gcanti)
-  - `These`
+  - `TheseT`
     - make `toTuple` lazy (@gcanti)
   - `Tuple`
     - remove `getChainRec` function (@gcanti)

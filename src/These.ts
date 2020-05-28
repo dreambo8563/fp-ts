@@ -202,7 +202,7 @@ export function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E> & MonadThrow2C<URI
  * assert.deepStrictEqual(f(right(2)), ['a', 2])
  * assert.deepStrictEqual(f(both('b', 2)), ['b', 2])
  *
- * @since 2.0.0
+ * @since 3.0.0
  */
 export function toTuple<E, A>(e: () => E, a: () => A): (fa: These<E, A>) => [E, A] {
   return (fa) => (isLeft(fa) ? [fa.left, a()] : isRight(fa) ? [e(), fa.right] : [fa.left, fa.right])
@@ -279,7 +279,7 @@ export function isBoth<E, A>(fa: These<E, A>): fa is Both<E, A> {
  * assert.deepStrictEqual(f(none), left('a'))
  * assert.deepStrictEqual(f(some(1)), both('a', 1))
  *
- * @since 2.0.0
+ * @since 3.0.0
  */
 export function leftOrBoth<E>(e: () => E): <A>(ma: Option<A>) => These<E, A> {
   return (ma) => (isNone(ma) ? left(e()) : both(e(), ma.value))
@@ -294,7 +294,7 @@ export function leftOrBoth<E>(e: () => E): <A>(ma: Option<A>) => These<E, A> {
  * assert.deepStrictEqual(f(none), right(1))
  * assert.deepStrictEqual(f(some('a')), both('a', 1))
  *
- * @since 2.0.0
+ * @since 3.0.0
  */
 export function rightOrBoth<A>(a: () => A): <E>(me: Option<E>) => These<E, A> {
   return (me) => (isNone(me) ? right(a()) : both(me.value, a()))
