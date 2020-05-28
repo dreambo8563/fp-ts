@@ -1,10 +1,11 @@
 import * as assert from 'assert'
-import { array, getMonoid } from '../src/Array'
+import { array } from '../src/Array'
+import { getMonoid } from '../src/ReadonlyArray'
 import * as E from '../src/Either'
 import { io } from '../src/IO'
 import { monoidString } from '../src/Monoid'
 import { none, some } from '../src/Option'
-import { pipe, pipeable } from '../src/pipeable'
+import { pipe, Refinement, Predicate } from '../src/function'
 import { semigroupString, semigroupSum } from '../src/Semigroup'
 import * as _ from '../src/TaskEither'
 import { ioEither } from '../src/IOEither'
@@ -383,7 +384,15 @@ describe('TaskEither', () => {
       ..._.taskEither,
       ..._.getFilterable(getMonoid<string>())
     }
-    const { filter } = pipeable(F_)
+
+    const filter: {
+      <A, B extends A>(refinement: Refinement<A, B>): (
+        fa: _.TaskEither<ReadonlyArray<string>, A>
+      ) => _.TaskEither<ReadonlyArray<string>, B>
+      <A>(predicate: Predicate<A>): (
+        fa: _.TaskEither<ReadonlyArray<string>, A>
+      ) => _.TaskEither<ReadonlyArray<string>, A>
+    } = <A>(predicate: Predicate<A>) => (fa: _.TaskEither<ReadonlyArray<string>, A>) => F_.filter(fa, predicate)
 
     it('filter', async () => {
       const r1 = pipe(

@@ -30,7 +30,7 @@ operations like `map`, `chain`, ... return the `Left` value unchanged:
 
 ```ts
 import { map, left, right } from 'fp-ts/lib/Either'
-import { pipe } from 'fp-ts/lib/pipeable'
+import { pipe } from 'fp-ts/lib/function'
 
 pipe(right(12), map(double)) // right(24)
 pipe(left(23), map(double)) // left(23)
@@ -340,7 +340,7 @@ export declare function fold<E, A, B>(onLeft: (e: E) => B, onRight: (a: A) => B)
 
 ```ts
 import { fold, left, right } from 'fp-ts/lib/Either'
-import { pipe } from 'fp-ts/lib/pipeable'
+import { pipe } from 'fp-ts/lib/function'
 
 function onLeft(errors: Array<string>): string {
   return `Errors: ${errors.join(', ')}`
@@ -701,7 +701,7 @@ export declare function stringifyJSON<E>(u: unknown, onError: (reason: unknown) 
 
 ```ts
 import * as E from 'fp-ts/lib/Either'
-import { pipe } from 'fp-ts/lib/pipeable'
+import { pipe } from 'fp-ts/lib/function'
 
 assert.deepStrictEqual(E.stringifyJSON({ a: 1 }, E.toError), E.right('{"a":1}'))
 const circular: any = { ref: null }

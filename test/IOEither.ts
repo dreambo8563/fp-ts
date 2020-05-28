@@ -5,8 +5,8 @@ import * as _ from '../src/IOEither'
 import { monoidString } from '../src/Monoid'
 import { semigroupSum, semigroupString } from '../src/Semigroup'
 import { none, some } from '../src/Option'
-import { pipe, pipeable } from '../src/pipeable'
-import { getMonoid } from '../src/Array'
+import { pipe, Predicate, Refinement } from '../src/function'
+import { getMonoid } from '../src/ReadonlyArray'
 
 describe('IOEither', () => {
   describe('pipeables', () => {
@@ -327,7 +327,13 @@ describe('IOEither', () => {
       ..._.ioEither,
       ..._.getFilterable(getMonoid<string>())
     }
-    const { filter } = pipeable(F_)
+
+    const filter: {
+      <A, B extends A>(refinement: Refinement<A, B>): (
+        fa: _.IOEither<ReadonlyArray<string>, A>
+      ) => _.IOEither<ReadonlyArray<string>, B>
+      <A>(predicate: Predicate<A>): (fa: _.IOEither<ReadonlyArray<string>, A>) => _.IOEither<ReadonlyArray<string>, A>
+    } = <A>(predicate: Predicate<A>) => (fa: _.IOEither<ReadonlyArray<string>, A>) => F_.filter(fa, predicate)
 
     it('filter', async () => {
       const r1 = pipe(

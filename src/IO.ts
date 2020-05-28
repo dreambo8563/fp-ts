@@ -38,7 +38,7 @@
  * ```ts
  * import { fromNullable, fold } from 'fp-ts/lib/Option'
  * import { log } from 'fp-ts/lib/Console'
- * import { pipe } from 'fp-ts/lib/pipeable'
+ * import { pipe } from 'fp-ts/lib/function'
  *
  * const logger = (input: number | null) =>
  *  pipe(

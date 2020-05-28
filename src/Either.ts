@@ -23,7 +23,7 @@
  *
  * ```ts
  * import { map, left, right } from 'fp-ts/lib/Either'
- * import { pipe } from 'fp-ts/lib/pipeable'
+ * import { pipe } from 'fp-ts/lib/function'
  *
  * pipe(right(12), map(double)) // right(24)
  * pipe(left(23), map(double))  // left(23)
@@ -172,7 +172,7 @@ export function tryCatch<E, A>(f: Lazy<A>, onError: (e: unknown) => E): Either<E
  *
  * @example
  * import { fold, left, right } from 'fp-ts/lib/Either'
- * import { pipe } from 'fp-ts/lib/pipeable'
+ * import { pipe } from 'fp-ts/lib/function'
  *
  * function onLeft(errors: Array<string>): string {
  *   return `Errors: ${errors.join(', ')}`
@@ -372,7 +372,7 @@ export function parseJSON<E>(s: string, onError: (reason: unknown) => E): Either
  *
  * @example
  * import * as E from 'fp-ts/lib/Either'
- * import { pipe } from 'fp-ts/lib/pipeable'
+ * import { pipe } from 'fp-ts/lib/function'
  *
  * assert.deepStrictEqual(E.stringifyJSON({ a: 1 }, E.toError), E.right('{"a":1}'))
  * const circular: any = { ref: null }

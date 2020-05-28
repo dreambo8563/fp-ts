@@ -1,5 +1,5 @@
 import * as _ from '../../src/Array'
-import { pipe } from '../../src/pipeable'
+import { pipe } from '../../src/function'
 
 declare const ns: Array<number>
 declare const ss: Array<string>

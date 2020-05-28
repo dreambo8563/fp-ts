@@ -4,14 +4,13 @@ import { isDeepStrictEqual } from 'util'
 import * as C from '../src/Const'
 import * as E from '../src/Either'
 import * as Eq from '../src/Eq'
-import * as F from '../src/function'
+import { identity, pipe, Predicate, tuple } from '../src/function'
 import * as I from '../src/Identity'
 import * as M from '../src/Monoid'
 import * as O from '../src/Option'
 import * as Ord from '../src/Ord'
 import * as _ from '../src/ReadonlyArray'
 import { showString } from '../src/Show'
-import { pipe } from '../src/pipeable'
 
 describe('ReadonlyArray', () => {
   describe('instances', () => {
@@ -116,12 +115,12 @@ describe('ReadonlyArray', () => {
     it('extend', () => {
       const sum = (as: ReadonlyArray<number>) => M.fold(M.monoidSum)(as)
       assert.deepStrictEqual(pipe([1, 2, 3, 4], _.extend(sum)), [10, 9, 7, 4])
-      assert.deepStrictEqual(pipe([1, 2, 3, 4], _.extend(F.identity)), [[1, 2, 3, 4], [2, 3, 4], [3, 4], [4]])
+      assert.deepStrictEqual(pipe([1, 2, 3, 4], _.extend(identity)), [[1, 2, 3, 4], [2, 3, 4], [3, 4], [4]])
     })
 
     it('foldMap', () => {
-      assert.deepStrictEqual(pipe(['a', 'b', 'c'], _.foldMap(M.monoidString)(F.identity)), 'abc')
-      assert.deepStrictEqual(pipe([], _.foldMap(M.monoidString)(F.identity)), '')
+      assert.deepStrictEqual(pipe(['a', 'b', 'c'], _.foldMap(M.monoidString)(identity)), 'abc')
+      assert.deepStrictEqual(pipe([], _.foldMap(M.monoidString)(identity)), '')
     })
 
     it('compact', () => {
@@ -173,8 +172,8 @@ describe('ReadonlyArray', () => {
     })
 
     it('partitionMap', () => {
-      assert.deepStrictEqual(pipe([], _.partitionMap(F.identity)), { left: [], right: [] })
-      assert.deepStrictEqual(pipe([E.right(1), E.left('foo'), E.right(2)], _.partitionMap(F.identity)), {
+      assert.deepStrictEqual(pipe([], _.partitionMap(identity)), { left: [], right: [] })
+      assert.deepStrictEqual(pipe([E.right(1), E.left('foo'), E.right(2)], _.partitionMap(identity)), {
         left: ['foo'],
         right: [1, 2]
       })
@@ -476,7 +475,7 @@ describe('ReadonlyArray', () => {
   })
 
   const optionStringEq = O.getEq(Eq.eqString)
-  const multipleOf3: F.Predicate<number> = (x: number) => x % 3 === 0
+  const multipleOf3: Predicate<number> = (x: number) => x % 3 === 0
   const multipleOf3AsString = (x: number) => O.option.map(O.fromPredicate(multipleOf3)(x), (x) => `${x}`)
 
   it('`findFirstMap(arr, fun)` is equivalent to map and `head(mapOption(arr, fun)`', () => {
@@ -817,7 +816,7 @@ describe('ReadonlyArray', () => {
           [1, 2, 3],
           ['a', 'b']
         ],
-        F.tuple
+        tuple
       ),
       [
         [1, 'a'],
@@ -834,7 +833,7 @@ describe('ReadonlyArray', () => {
           [1, 2, 3],
           ['a', 'b']
         ],
-        F.tuple,
+        tuple,
         (a, b) => (a + b.length) % 2 === 0
       ),
       [

@@ -1,5 +1,5 @@
 import * as _ from '../../src/ReadonlyArray'
-import { pipe } from '../../src/pipeable'
+import { pipe } from '../../src/function'
 
 declare const rns: ReadonlyArray<number>
 declare const rss: ReadonlyArray<string>

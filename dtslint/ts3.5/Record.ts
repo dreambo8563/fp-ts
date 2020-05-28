@@ -1,14 +1,13 @@
-import { pipe } from '../../src/pipeable'
-import * as R from '../../src/Record'
-import { identity } from '../../src/function'
-import * as O from '../../src/Option'
 import * as A from '../../src/Array'
 import * as E from '../../src/Either'
-import { monoidString } from '../../src/Monoid'
 import { eqNumber } from '../../src/Eq'
-import { semigroupSum, getFirstSemigroup } from '../../src/Semigroup'
 import { Foldable } from '../../src/Foldable'
+import { identity, pipe } from '../../src/function'
 import { HKT } from '../../src/HKT'
+import { monoidString } from '../../src/Monoid'
+import * as O from '../../src/Option'
+import * as R from '../../src/Record'
+import { getFirstSemigroup, semigroupSum } from '../../src/Semigroup'
 
 declare const do1: { [key: string]: O.Option<number> }
 declare const ro1: Record<'a' | 'b', O.Option<number>>

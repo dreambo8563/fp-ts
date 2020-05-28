@@ -131,7 +131,7 @@ export function isNone<A>(fa: Option<A>): fa is None {
  *
  * @example
  * import { some, none, fold } from 'fp-ts/lib/Option'
- * import { pipe } from 'fp-ts/lib/pipeable'
+ * import { pipe } from 'fp-ts/lib/function'
  *
  * assert.strictEqual(
  *   pipe(
@@ -177,7 +177,7 @@ export function fromNullable<A>(a: A): Option<NonNullable<A>> {
  *
  * @example
  * import { some, none, toNullable } from 'fp-ts/lib/Option'
- * import { pipe } from 'fp-ts/lib/pipeable'
+ * import { pipe } from 'fp-ts/lib/function'
  *
  * assert.strictEqual(
  *   pipe(
@@ -205,7 +205,7 @@ export function toNullable<A>(ma: Option<A>): A | null {
  *
  * @example
  * import { some, none, toUndefined } from 'fp-ts/lib/Option'
- * import { pipe } from 'fp-ts/lib/pipeable'
+ * import { pipe } from 'fp-ts/lib/function'
  *
  * assert.strictEqual(
  *   pipe(
@@ -233,7 +233,7 @@ export function toUndefined<A>(ma: Option<A>): A | undefined {
  *
  * @example
  * import { some, none, getOrElse } from 'fp-ts/lib/Option'
- * import { pipe } from 'fp-ts/lib/pipeable'
+ * import { pipe } from 'fp-ts/lib/function'
  *
  * assert.strictEqual(
  *   pipe(
@@ -283,7 +283,7 @@ export function elem<A>(E: Eq<A>): (a: A, ma: Option<A>) => boolean {
  *
  * @example
  * import { some, none, exists } from 'fp-ts/lib/Option'
- * import { pipe } from 'fp-ts/lib/pipeable'
+ * import { pipe } from 'fp-ts/lib/function'
  *
  * assert.strictEqual(
  *   pipe(
@@ -401,7 +401,7 @@ export function getRefinement<A, B extends A>(getOption: (a: A) => Option<B>): R
  *
  * @example
  * import { some, none, fromNullable, mapNullable } from 'fp-ts/lib/Option'
- * import { pipe } from 'fp-ts/lib/pipeable'
+ * import { pipe } from 'fp-ts/lib/function'
  *
  * interface Employee {
  *   company?: {

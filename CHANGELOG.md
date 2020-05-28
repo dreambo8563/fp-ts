@@ -14,6 +14,11 @@
 **Note**: Gaps between patch versions are faulty/broken releases. **Note**: A feature tagged as Experimental is in a
 high state of flux, you're at risk of it changing without notice.
 
+# 3.0.0
+
+- **Breaking Change**
+  - remove `pipeable` module (@gcanti)
+
 # 2.6.2
 
 The goal of this release is to make `fp-ts` more "tree shaking" friendly.

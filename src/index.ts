@@ -61,7 +61,6 @@ import * as option from './Option'
 import * as optionT from './OptionT'
 import * as ord from './Ord'
 import * as ordering from './Ordering'
-import * as pipeable from './pipeable'
 import * as profunctor from './Profunctor'
 import * as random from './Random'
 import * as reader from './Reader'
@@ -335,10 +334,6 @@ export {
    * @since 2.0.0
    */
   ordering,
-  /**
-   * @since 2.0.0
-   */
-  pipeable,
   /**
    * @since 2.0.0
    */
