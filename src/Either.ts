@@ -540,9 +540,6 @@ export function getValidationMonoid<E, A>(SE: Semigroup<E>, SA: Monoid<A>): Mono
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const chain_: <E, A, B>(fa: Either<E, A>, f: (a: A) => Either<E, B>) => Either<E, B> = (ma, f) =>
-  isLeft(ma) ? ma : f(ma.right)
-
 const reduce_: <E, A, B>(fa: Either<E, A>, b: B, f: (b: B, a: A) => B) => B = (fa, b, f) =>
   isLeft(fa) ? b : f(b, fa.right)
 
@@ -610,16 +607,19 @@ export const apSecond = <E, B>(fb: Either<E, B>) => <A>(fa: Either<E, A>): Eithe
  * @since 2.0.0
  */
 export const chain: <E, A, B>(f: (a: A) => Either<E, B>) => (ma: Either<E, A>) => Either<E, B> = (f) => (ma) =>
-  chain_(ma, f)
+  isLeft(ma) ? ma : f(ma.right)
 
 /**
  * @since 2.0.0
  */
 export const chainFirst: <E, A, B>(f: (a: A) => Either<E, B>) => (ma: Either<E, A>) => Either<E, A> = (f) => (ma) =>
-  chain_(ma, (a) =>
-    pipe(
-      f(a),
-      map(() => a)
+  pipe(
+    ma,
+    chain((a) =>
+      pipe(
+        f(a),
+        map(() => a)
+      )
     )
   )
 
@@ -642,7 +642,7 @@ export const extend: <E, A, B>(f: (wa: Either<E, A>) => B) => (wa: Either<E, A>)
 /**
  * @since 2.0.0
  */
-export const flatten: <E, A>(mma: Either<E, Either<E, A>>) => Either<E, A> = (mma) => chain_(mma, identity)
+export const flatten: <E, A>(mma: Either<E, Either<E, A>>) => Either<E, A> = chain(identity)
 
 /**
  * @since 2.0.0
@@ -703,7 +703,10 @@ export const filterOrElse: {
   <E, A, B extends A>(refinement: Refinement<A, B>, onFalse: (a: A) => E): (ma: Either<E, A>) => Either<E, B>
   <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E): (ma: Either<E, A>) => Either<E, A>
 } = <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E) => (ma: Either<E, A>) =>
-  chain_(ma, (a) => (predicate(a) ? right(a) : left(onFalse(a))))
+  pipe(
+    ma,
+    chain((a) => (predicate(a) ? right(a) : left(onFalse(a))))
+  )
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -742,7 +745,7 @@ export const either: Monad2<URI> &
   map,
   of: right,
   ap,
-  chain: chain_,
+  chain,
   reduce: reduce_,
   foldMap: foldMap_,
   reduceRight: reduceRight_,

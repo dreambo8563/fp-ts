@@ -115,8 +115,6 @@ export function chainIOK<A, B>(f: (a: A) => IO<B>): (ma: Task<A>) => Task<B> {
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const chain_: <A, B>(fa: Task<A>, f: (a: A) => Task<B>) => Task<B> = (ma, f) => () => ma().then((a) => f(a)())
-
 /**
  * @since 2.0.0
  */
@@ -146,23 +144,27 @@ export const apSecond = <B>(fb: Task<B>) => <A>(fa: Task<A>): Task<B> =>
 /**
  * @since 2.0.0
  */
-export const chain: <A, B>(f: (a: A) => Task<B>) => (ma: Task<A>) => Task<B> = (f) => (ma) => chain_(ma, f)
+export const chain: <A, B>(f: (a: A) => Task<B>) => (ma: Task<A>) => Task<B> = (f) => (ma) => () =>
+  ma().then((a) => f(a)())
 
 /**
  * @since 2.0.0
  */
 export const chainFirst: <A, B>(f: (a: A) => Task<B>) => (ma: Task<A>) => Task<A> = (f) => (ma) =>
-  chain_(ma, (a) =>
-    pipe(
-      f(a),
-      map(() => a)
+  pipe(
+    ma,
+    chain((a) =>
+      pipe(
+        f(a),
+        map(() => a)
+      )
     )
   )
 
 /**
  * @since 2.0.0
  */
-export const flatten: <A>(mma: Task<Task<A>>) => Task<A> = (mma) => chain_(mma, identity)
+export const flatten: <A>(mma: Task<Task<A>>) => Task<A> = chain(identity)
 
 /**
  * @since 2.0.0
@@ -181,7 +183,7 @@ export const monadTask: Monad1<URI> = {
   map,
   of,
   ap,
-  chain: chain_
+  chain
 }
 
 /**
@@ -192,7 +194,7 @@ export const task: Monad1<URI> & MonadTask1<URI> = {
   map,
   of,
   ap,
-  chain: chain_,
+  chain,
   fromIO,
   fromTask: identity
 }

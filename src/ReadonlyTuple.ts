@@ -84,9 +84,9 @@ export function getApplicative<S>(M: Monoid<S>): Applicative2C<URI, S> {
 export function getChain<S>(S: Semigroup<S>): Chain2C<URI, S> {
   return {
     ...getApply(S),
-    chain: (fa, f) => {
-      const [b, s] = f(fst(fa))
-      return [b, S.concat(snd(fa), s)]
+    chain: (f) => (ma) => {
+      const [b, s] = f(fst(ma))
+      return [b, S.concat(snd(ma), s)]
     }
   }
 }

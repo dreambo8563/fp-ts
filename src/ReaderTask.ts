@@ -199,10 +199,10 @@ export const map: <A, B>(f: (a: A) => B) => <R>(fa: ReaderTask<R, A>) => ReaderT
  */
 export const monadReaderTask: Monad2<URI> = {
   URI,
-  map: T.map,
+  map,
   of,
-  ap: T.ap,
-  chain: T.chain
+  ap,
+  chain
 }
 
 /**
@@ -210,10 +210,10 @@ export const monadReaderTask: Monad2<URI> = {
  */
 export const readerTask: Monad2<URI> & MonadTask2<URI> = {
   URI,
-  map: T.map,
+  map,
   of,
-  ap: T.ap,
-  chain: T.chain,
+  ap,
+  chain,
   fromIO,
   fromTask
 }

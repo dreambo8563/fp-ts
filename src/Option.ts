@@ -632,8 +632,6 @@ const defaultSeparate = { left: none, right: none }
 const ap_: <A, B>(fab: Option<(a: A) => B>, fa: Option<A>) => Option<B> = (mab, ma) =>
   isNone(mab) ? none : isNone(ma) ? none : some(mab.value(ma.value))
 
-const chain_: <A, B>(fa: Option<A>, f: (a: A) => Option<B>) => Option<B> = (ma, f) => (isNone(ma) ? none : f(ma.value))
-
 const reduce_: <A, B>(fa: Option<A>, b: B, f: (b: B, a: A) => B) => B = (fa, b, f) => (isNone(fa) ? b : f(b, fa.value))
 
 const foldMap_: <M>(M: Monoid<M>) => <A>(fa: Option<A>, f: (a: A) => M) => M = (M) => (fa, f) =>
@@ -730,16 +728,20 @@ export const apSecond = <B>(fb: Option<B>) => <A>(fa: Option<A>): Option<B> =>
 /**
  * @since 2.0.0
  */
-export const chain: <A, B>(f: (a: A) => Option<B>) => (ma: Option<A>) => Option<B> = (f) => (ma) => chain_(ma, f)
+export const chain: <A, B>(f: (a: A) => Option<B>) => (ma: Option<A>) => Option<B> = (f) => (ma) =>
+  isNone(ma) ? none : f(ma.value)
 
 /**
  * @since 2.0.0
  */
 export const chainFirst: <A, B>(f: (a: A) => Option<B>) => (ma: Option<A>) => Option<A> = (f) => (ma) =>
-  chain_(ma, (a) =>
-    pipe(
-      f(a),
-      map(() => a)
+  pipe(
+    ma,
+    chain((a) =>
+      pipe(
+        f(a),
+        map(() => a)
+      )
     )
   )
 
@@ -756,7 +758,7 @@ export const extend: <A, B>(f: (wa: Option<A>) => B) => (wa: Option<A>) => Optio
 /**
  * @since 2.0.0
  */
-export const flatten: <A>(mma: Option<Option<A>>) => Option<A> = (mma) => chain_(mma, identity)
+export const flatten: <A>(mma: Option<Option<A>>) => Option<A> = chain(identity)
 
 /**
  * @since 2.0.0
@@ -786,7 +788,7 @@ export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: Option<A>) 
 /**
  * @since 2.0.0
  */
-export const compact: <A>(fa: Option<Option<A>>) => Option<A> = (ma) => chain_(ma, identity)
+export const compact: <A>(fa: Option<Option<A>>) => Option<A> = chain(identity)
 
 /**
  * @since 2.0.0
@@ -866,7 +868,7 @@ export const option: Monad1<URI> &
   map,
   of: some,
   ap,
-  chain: chain_,
+  chain,
   reduce: reduce_,
   foldMap: foldMap_,
   reduceRight: reduceRight_,

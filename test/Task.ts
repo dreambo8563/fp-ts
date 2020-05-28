@@ -104,8 +104,14 @@ describe('Task', () => {
     // tslint:disable-next-line: readonly-array
     const log: Array<string> = []
     const append = (message: string): _.Task<number> => () => Promise.resolve(log.push(message))
-    const t1 = _.task.chain(append('start 1'), () => append('end 1'))
-    const t2 = _.task.chain(append('start 2'), () => append('end 2'))
+    const t1 = pipe(
+      append('start 1'),
+      _.chain(() => append('end 1'))
+    )
+    const t2 = pipe(
+      append('start 2'),
+      _.chain(() => append('end 2'))
+    )
     const sequenceSeries = array.sequence(_.taskSeq)
     const x = await sequenceSeries([t1, t2])()
     assert.deepStrictEqual(x, [2, 4])
@@ -114,7 +120,7 @@ describe('Task', () => {
 
   it('fromIO', async () => {
     const io = () => 1
-    const task = _.task.fromIO(io)
+    const task = _.fromIO(io)
     const x = await task()
     assert.deepStrictEqual(x, 1)
   })

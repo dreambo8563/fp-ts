@@ -283,8 +283,14 @@ describe('ReaderTaskEither', () => {
     const log: Array<string> = []
     const append = (message: string): _.ReaderTaskEither<{}, void, number> =>
       _.rightTask(() => Promise.resolve(log.push(message)))
-    const t1 = _.readerTaskEither.chain(append('start 1'), () => append('end 1'))
-    const t2 = _.readerTaskEither.chain(append('start 2'), () => append('end 2'))
+    const t1 = pipe(
+      append('start 1'),
+      _.chain(() => append('end 1'))
+    )
+    const t2 = pipe(
+      append('start 2'),
+      _.chain(() => append('end 2'))
+    )
     const sequenceParallel = array.sequence(_.readerTaskEither)
     const ns = await _.run(sequenceParallel([t1, t2]), {})
     assert.deepStrictEqual(ns, E.right([3, 4]))
@@ -296,8 +302,14 @@ describe('ReaderTaskEither', () => {
     const log: Array<string> = []
     const append = (message: string): _.ReaderTaskEither<{}, void, number> =>
       _.rightTask(() => Promise.resolve(log.push(message)))
-    const t1 = _.readerTaskEither.chain(append('start 1'), () => append('end 1'))
-    const t2 = _.readerTaskEither.chain(append('start 2'), () => append('end 2'))
+    const t1 = pipe(
+      append('start 1'),
+      _.chain(() => append('end 1'))
+    )
+    const t2 = pipe(
+      append('start 2'),
+      _.chain(() => append('end 2'))
+    )
     const sequenceSeries = array.sequence(_.readerTaskEitherSeq)
     const ns = await _.run(sequenceSeries([t1, t2]), {})
     assert.deepStrictEqual(ns, E.right([2, 4]))

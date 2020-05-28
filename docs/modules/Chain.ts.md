@@ -15,7 +15,7 @@ Instances must satisfy the following law in addition to the `Apply` laws:
 
 Note. `Apply`'s `ap` can be derived: `(fab, fa) => F.chain(fab, f => F.map(f, fa))`
 
-Added in v2.0.0
+Added in v3.0.0
 
 ---
 
@@ -37,11 +37,11 @@ Added in v2.0.0
 
 ```ts
 export interface Chain<F> extends Apply<F> {
-  readonly chain: <A, B>(fa: HKT<F, A>, f: (a: A) => HKT<F, B>) => HKT<F, B>
+  readonly chain: <A, B>(f: (a: A) => HKT<F, B>) => (fa: HKT<F, A>) => HKT<F, B>
 }
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # Chain1 (interface)
 
@@ -49,11 +49,11 @@ Added in v2.0.0
 
 ```ts
 export interface Chain1<F extends URIS> extends Apply1<F> {
-  readonly chain: <A, B>(fa: Kind<F, A>, f: (a: A) => Kind<F, B>) => Kind<F, B>
+  readonly chain: <A, B>(f: (a: A) => Kind<F, B>) => (fa: Kind<F, A>) => Kind<F, B>
 }
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # Chain2 (interface)
 
@@ -61,11 +61,11 @@ Added in v2.0.0
 
 ```ts
 export interface Chain2<F extends URIS2> extends Apply2<F> {
-  readonly chain: <E, A, B>(fa: Kind2<F, E, A>, f: (a: A) => Kind2<F, E, B>) => Kind2<F, E, B>
+  readonly chain: <E, A, B>(f: (a: A) => Kind2<F, E, B>) => (fa: Kind2<F, E, A>) => Kind2<F, E, B>
 }
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # Chain2C (interface)
 
@@ -73,11 +73,11 @@ Added in v2.0.0
 
 ```ts
 export interface Chain2C<F extends URIS2, E> extends Apply2C<F, E> {
-  readonly chain: <A, B>(fa: Kind2<F, E, A>, f: (a: A) => Kind2<F, E, B>) => Kind2<F, E, B>
+  readonly chain: <A, B>(f: (a: A) => Kind2<F, E, B>) => (fa: Kind2<F, E, A>) => Kind2<F, E, B>
 }
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # Chain3 (interface)
 
@@ -85,11 +85,11 @@ Added in v2.0.0
 
 ```ts
 export interface Chain3<F extends URIS3> extends Apply3<F> {
-  readonly chain: <R, E, A, B>(fa: Kind3<F, R, E, A>, f: (a: A) => Kind3<F, R, E, B>) => Kind3<F, R, E, B>
+  readonly chain: <R, E, A, B>(f: (a: A) => Kind3<F, R, E, B>) => (fa: Kind3<F, R, E, A>) => Kind3<F, R, E, B>
 }
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # Chain3C (interface)
 
@@ -97,7 +97,7 @@ Added in v2.0.0
 
 ```ts
 export interface Chain3C<F extends URIS3, E> extends Apply3C<F, E> {
-  readonly chain: <R, A, B>(fa: Kind3<F, R, E, A>, f: (a: A) => Kind3<F, R, E, B>) => Kind3<F, R, E, B>
+  readonly chain: <R, A, B>(f: (a: A) => Kind3<F, R, E, B>) => (fa: Kind3<F, R, E, A>) => Kind3<F, R, E, B>
 }
 ```
 
@@ -109,8 +109,10 @@ Added in v2.2.0
 
 ```ts
 export interface Chain4<F extends URIS4> extends Apply4<F> {
-  readonly chain: <S, R, E, A, B>(fa: Kind4<F, S, R, E, A>, f: (a: A) => Kind4<F, S, R, E, B>) => Kind4<F, S, R, E, B>
+  readonly chain: <S, R, E, A, B>(
+    f: (a: A) => Kind4<F, S, R, E, B>
+  ) => (fa: Kind4<F, S, R, E, A>) => Kind4<F, S, R, E, B>
 }
 ```
 
-Added in v2.0.0
+Added in v3.0.0

@@ -1281,7 +1281,10 @@ export function comprehension<R>(
     if (input.length === 0) {
       return g(...scope) ? [f(...scope)] : empty
     } else {
-      return chain_(input[0], (x) => go(snoc(scope, x), input.slice(1)))
+      return pipe(
+        input[0],
+        chain((x) => go(snoc(scope, x), input.slice(1)))
+      )
     }
   }
   return go(empty, input)
@@ -1417,29 +1420,6 @@ const partitionMapWithIndex_ = <A, B, C>(
 const alt_: <A>(fx: ReadonlyArray<A>, fy: () => ReadonlyArray<A>) => ReadonlyArray<A> = (fx, f) => concat(fx, f())
 
 const zero_: <A>() => ReadonlyArray<A> = () => empty
-
-const chain_: <A, B>(fa: ReadonlyArray<A>, f: (a: A) => ReadonlyArray<B>) => ReadonlyArray<B> = (fa, f) => {
-  let outLen = 0
-  const l = fa.length
-  const temp = new Array(l)
-  for (let i = 0; i < l; i++) {
-    const e = fa[i]
-    const arr = f(e)
-    outLen += arr.length
-    temp[i] = arr
-  }
-  const out = Array(outLen)
-  let start = 0
-  for (let i = 0; i < l; i++) {
-    const arr = temp[i]
-    const l = arr.length
-    for (let j = 0; j < l; j++) {
-      out[j + start] = arr[j]
-    }
-    start += l
-  }
-  return out
-}
 
 const reduce_: <A, B>(fa: ReadonlyArray<A>, b: B, f: (b: B, a: A) => B) => B = (fa, b, f) =>
   reduceWithIndex_(fa, b, (_, b, a) => f(b, a))
@@ -1597,8 +1577,30 @@ export const apSecond = <B>(fb: ReadonlyArray<B>) => <A>(fa: ReadonlyArray<A>): 
 /**
  * @since 2.5.0
  */
-export const chain: <A, B>(f: (a: A) => ReadonlyArray<B>) => (ma: ReadonlyArray<A>) => ReadonlyArray<B> = (f) => (ma) =>
-  chain_(ma, f)
+export const chain: <A, B>(f: (a: A) => ReadonlyArray<B>) => (ma: ReadonlyArray<A>) => ReadonlyArray<B> = (f) => (
+  ma
+) => {
+  let outLen = 0
+  const l = ma.length
+  const temp = new Array(l)
+  for (let i = 0; i < l; i++) {
+    const e = ma[i]
+    const arr = f(e)
+    outLen += arr.length
+    temp[i] = arr
+  }
+  const out = Array(outLen)
+  let start = 0
+  for (let i = 0; i < l; i++) {
+    const arr = temp[i]
+    const l = arr.length
+    for (let j = 0; j < l; j++) {
+      out[j + start] = arr[j]
+    }
+    start += l
+  }
+  return out
+}
 
 /**
  * @since 2.5.0
@@ -1606,10 +1608,13 @@ export const chain: <A, B>(f: (a: A) => ReadonlyArray<B>) => (ma: ReadonlyArray<
 export const chainFirst: <A, B>(f: (a: A) => ReadonlyArray<B>) => (ma: ReadonlyArray<A>) => ReadonlyArray<A> = (f) => (
   ma
 ) =>
-  chain_(ma, (a) =>
-    pipe(
-      f(a),
-      map(() => a)
+  pipe(
+    ma,
+    chain((a) =>
+      pipe(
+        f(a),
+        map(() => a)
+      )
     )
   )
 
@@ -1800,7 +1805,7 @@ export const readonlyArray: Monad1<URI> &
   map,
   ap,
   of,
-  chain: chain_,
+  chain,
   filter: filter_,
   filterMap: filterMap_,
   partition: partition_,

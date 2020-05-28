@@ -347,7 +347,7 @@ export const bimap: <E, G, A, B>(
  */
 export const chain: <S, R, E, A, B>(
   f: (a: A) => StateReaderTaskEither<S, R, E, B>
-) => (ma: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> = (f) => (ma) => T.chain(ma, f)
+) => (ma: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> = T.chain
 
 /**
  * @since 2.0.0
@@ -355,10 +355,13 @@ export const chain: <S, R, E, A, B>(
 export const chainFirst: <S, R, E, A, B>(
   f: (a: A) => StateReaderTaskEither<S, R, E, B>
 ) => (ma: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, A> = (f) => (ma) =>
-  T.chain(ma, (a) =>
-    pipe(
-      f(a),
-      map(() => a)
+  pipe(
+    ma,
+    chain((a) =>
+      pipe(
+        f(a),
+        map(() => a)
+      )
     )
   )
 
@@ -404,7 +407,7 @@ export const chainIOEitherKW: <R, D, A, B>(
  */
 export const flatten: <S, R, E, A>(
   mma: StateReaderTaskEither<S, R, E, StateReaderTaskEither<S, R, E, A>>
-) => StateReaderTaskEither<S, R, E, A> = (mma) => T.chain(mma, identity)
+) => StateReaderTaskEither<S, R, E, A> = T.chain(identity)
 
 /**
  * @since 2.0.0
@@ -457,7 +460,11 @@ export const filterOrElse: {
   ) => StateReaderTaskEither<S, R, E, A>
 } = <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E) => <S, R>(
   ma: StateReaderTaskEither<S, R, E, A>
-): StateReaderTaskEither<S, R, E, A> => T.chain(ma, (a) => (predicate(a) ? right(a) : left(onFalse(a))))
+): StateReaderTaskEither<S, R, E, A> =>
+  pipe(
+    ma,
+    chain((a) => (predicate(a) ? right(a) : left(onFalse(a))))
+  )
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -489,6 +496,10 @@ export const stateReaderTaskEitherSeq: typeof stateReaderTaskEither =
   ((): typeof stateReaderTaskEither => {
     return {
       ...stateReaderTaskEither,
-      ap: (fa) => (fab) => T.chain(fab, (f) => pipe(fa, map(f)))
+      ap: (fa) => (fab) =>
+        pipe(
+          fab,
+          chain((f) => pipe(fa, map(f)))
+        )
     }
   })()

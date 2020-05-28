@@ -174,7 +174,16 @@ export function unfoldTreeM<M extends URIS>(
 export function unfoldTreeM<M>(M: Monad<M>): <A, B>(b: B, f: (b: B) => HKT<M, [A, Array<B>]>) => HKT<M, Tree<A>>
 export function unfoldTreeM<M>(M: Monad<M>): <A, B>(b: B, f: (b: B) => HKT<M, [A, Array<B>]>) => HKT<M, Tree<A>> {
   const unfoldForestMM = unfoldForestM(M)
-  return (b, f) => M.chain(f(b), ([a, bs]) => M.chain(unfoldForestMM(bs, f), (ts) => M.of({ value: a, forest: ts })))
+  return (b, f) =>
+    pipe(
+      f(b),
+      M.chain(([a, bs]) =>
+        pipe(
+          unfoldForestMM(bs, f),
+          M.chain((ts) => M.of({ value: a, forest: ts }))
+        )
+      )
+    )
 }
 
 /**
@@ -254,18 +263,6 @@ export function fold<A, B>(f: (a: A, bs: Array<B>) => B): (tree: Tree<A>) => B {
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const chain_ = <A, B>(fa: Tree<A>, f: (a: A) => Tree<B>): Tree<B> => {
-  const { value, forest } = f(fa.value)
-  const concat = getMonoid<Tree<B>>().concat
-  return {
-    value,
-    forest: concat(
-      forest,
-      fa.forest.map((t) => chain_(t, f))
-    )
-  }
-}
-
 const reduce_ = <A, B>(fa: Tree<A>, b: B, f: (b: B, a: A) => B): B => {
   let r: B = f(b, fa.value)
   const len = fa.forest.length
@@ -296,7 +293,10 @@ const extend_: <A, B>(wa: Tree<A>, f: (wa: Tree<A>) => B) => Tree<B> = (wa, f) =
  * @since 2.0.0
  */
 export const ap: <A>(fa: Tree<A>) => <B>(fab: Tree<(a: A) => B>) => Tree<B> = (fa) => (fab) =>
-  chain_(fab, (f) => pipe(fa, map(f)))
+  pipe(
+    fab,
+    chain((f) => pipe(fa, map(f)))
+  )
 
 /**
  * @since 2.0.0
@@ -321,16 +321,29 @@ export const apSecond = <B>(fb: Tree<B>) => <A>(fa: Tree<A>): Tree<B> =>
 /**
  * @since 2.0.0
  */
-export const chain: <A, B>(f: (a: A) => Tree<B>) => (ma: Tree<A>) => Tree<B> = (f) => (ma) => chain_(ma, f)
+export const chain = <A, B>(f: (a: A) => Tree<B>) => (ma: Tree<A>): Tree<B> => {
+  const { value, forest } = f(ma.value)
+  const concat = getMonoid<Tree<B>>().concat
+  return {
+    value,
+    forest: concat(
+      forest,
+      ma.forest.map((t) => pipe(t, chain(f)))
+    )
+  }
+}
 
 /**
  * @since 2.0.0
  */
 export const chainFirst: <A, B>(f: (a: A) => Tree<B>) => (ma: Tree<A>) => Tree<A> = (f) => (ma) =>
-  chain_(ma, (a) =>
-    pipe(
-      f(a),
-      map(() => a)
+  pipe(
+    ma,
+    chain((a) =>
+      pipe(
+        f(a),
+        map(() => a)
+      )
     )
   )
 
@@ -347,7 +360,7 @@ export const extend: <A, B>(f: (wa: Tree<A>) => B) => (wa: Tree<A>) => Tree<B> =
 /**
  * @since 2.0.0
  */
-export const flatten: <A>(mma: Tree<Tree<A>>) => Tree<A> = (mma) => chain_(mma, identity)
+export const flatten: <A>(mma: Tree<Tree<A>>) => Tree<A> = chain(identity)
 
 /**
  * @since 2.0.0
@@ -396,7 +409,7 @@ export const tree: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Comonad1<U
     forest: empty
   }),
   ap,
-  chain: chain_,
+  chain,
   reduce: reduce_,
   foldMap: foldMap_,
   reduceRight: reduceRight_,

@@ -301,8 +301,14 @@ describe('TaskEither', () => {
     const log: Array<string> = []
     const append = (message: string): _.TaskEither<void, number> =>
       _.rightTask(() => Promise.resolve(log.push(message)))
-    const t1 = _.taskEither.chain(append('start 1'), () => append('end 1'))
-    const t2 = _.taskEither.chain(append('start 2'), () => append('end 2'))
+    const t1 = pipe(
+      append('start 1'),
+      _.chain(() => append('end 1'))
+    )
+    const t2 = pipe(
+      append('start 2'),
+      _.chain(() => append('end 2'))
+    )
     const sequenceParallel = array.sequence(_.taskEither)
     const x = await sequenceParallel([t1, t2])()
     assert.deepStrictEqual(x, E.right([3, 4]))
@@ -314,8 +320,14 @@ describe('TaskEither', () => {
     const log: Array<string> = []
     const append = (message: string): _.TaskEither<void, number> =>
       _.rightTask(() => Promise.resolve(log.push(message)))
-    const t1 = _.taskEither.chain(append('start 1'), () => append('end 1'))
-    const t2 = _.taskEither.chain(append('start 2'), () => append('end 2'))
+    const t1 = pipe(
+      append('start 1'),
+      _.chain(() => append('end 1'))
+    )
+    const t2 = pipe(
+      append('start 2'),
+      _.chain(() => append('end 2'))
+    )
     const sequenceSeries = array.sequence(_.taskEitherSeq)
     const x = await sequenceSeries([t1, t2])()
     assert.deepStrictEqual(x, E.right([2, 4]))
@@ -359,11 +371,20 @@ describe('TaskEither', () => {
     })
 
     it('chain', async () => {
-      const e1 = await TV.chain(_.right(3), (a) => (a > 2 ? _.right(a) : _.left('b')))()
+      const e1 = await pipe(
+        _.right(3),
+        TV.chain((a) => (a > 2 ? _.right(a) : _.left('b')))
+      )()
       assert.deepStrictEqual(e1, E.right(3))
-      const e2 = await TV.chain(_.right(1), (a) => (a > 2 ? _.right(a) : _.left('b')))()
+      const e2 = await pipe(
+        _.right(1),
+        TV.chain((a) => (a > 2 ? _.right(a) : _.left('b')))
+      )()
       assert.deepStrictEqual(e2, E.left('b'))
-      const e3 = await TV.chain(_.left('a'), (a) => (a > 2 ? _.right(a) : _.left('b')))()
+      const e3 = await pipe(
+        _.left('a'),
+        TV.chain((a) => (a > 2 ? _.right(a) : _.left('b')))
+      )()
       assert.deepStrictEqual(e3, E.left('a'))
     })
 

@@ -53,7 +53,7 @@ describe('ReaderTask', () => {
   describe('readerTaskSeq', () => {
     it('chain ', async () => {
       const f = (a: string) => _.of(a.length)
-      const e1 = await _.readerTaskSeq.chain(_.of('foo'), f)({})()
+      const e1 = await pipe(_.of('foo'), _.readerTaskSeq.chain(f))({})()
       assert.deepStrictEqual(e1, 3)
     })
   })
@@ -112,8 +112,14 @@ describe('ReaderTask', () => {
     // tslint:disable-next-line: readonly-array
     const log: Array<string> = []
     const append = (message: string): _.ReaderTask<{}, number> => _.fromTask(() => Promise.resolve(log.push(message)))
-    const t1 = _.readerTask.chain(append('start 1'), () => append('end 1'))
-    const t2 = _.readerTask.chain(append('start 2'), () => append('end 2'))
+    const t1 = pipe(
+      append('start 1'),
+      _.chain(() => append('end 1'))
+    )
+    const t2 = pipe(
+      append('start 2'),
+      _.chain(() => append('end 2'))
+    )
     const sequenceParallel = array.sequence(_.readerTask)
     const ns = await sequenceParallel([t1, t2])({})()
     assert.deepStrictEqual(ns, [3, 4])
@@ -124,8 +130,14 @@ describe('ReaderTask', () => {
     // tslint:disable-next-line: readonly-array
     const log: Array<string> = []
     const append = (message: string): _.ReaderTask<{}, number> => _.fromTask(() => Promise.resolve(log.push(message)))
-    const t1 = _.readerTask.chain(append('start 1'), () => append('end 1'))
-    const t2 = _.readerTask.chain(append('start 2'), () => append('end 2'))
+    const t1 = pipe(
+      append('start 1'),
+      _.chain(() => append('end 1'))
+    )
+    const t2 = pipe(
+      append('start 2'),
+      _.chain(() => append('end 2'))
+    )
     const sequenceSeries = array.sequence(_.readerTaskSeq)
     const ns = await sequenceSeries([t1, t2])({})()
     assert.deepStrictEqual(ns, [2, 4])
@@ -134,7 +146,7 @@ describe('ReaderTask', () => {
 
   describe('MonadIO', () => {
     it('fromIO', async () => {
-      const e = await _.readerTask.fromIO(() => 1)({})()
+      const e = await _.fromIO(() => 1)({})()
       assert.deepStrictEqual(e, 1)
     })
   })

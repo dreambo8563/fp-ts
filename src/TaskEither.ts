@@ -186,9 +186,18 @@ export function bracket<E, A, B>(
   use: (a: A) => TaskEither<E, B>,
   release: (a: A, e: Either<E, B>) => TaskEither<E, void>
 ): TaskEither<E, B> {
-  return T.chain(acquire, (a) =>
-    T.chain(pipe(use(a), monadTask.map(E.right)), (e) =>
-      T.chain(release(a, e), () => (E.isLeft(e) ? T.left(e.left) : T.of(e.right)))
+  return pipe(
+    acquire,
+    chain((a) =>
+      pipe(
+        pipe(use(a), monadTask.map(E.right)),
+        chain((e) =>
+          pipe(
+            release(a, e),
+            chain(() => (E.isLeft(e) ? T.left(e.left) : T.of(e.right)))
+          )
+        )
+      )
     )
   )
 }
@@ -364,9 +373,7 @@ export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: TaskEit
 /**
  * @since 2.0.0
  */
-export const chain: <E, A, B>(f: (a: A) => TaskEither<E, B>) => (ma: TaskEither<E, A>) => TaskEither<E, B> = (f) => (
-  ma
-) => T.chain(ma, f)
+export const chain: <E, A, B>(f: (a: A) => TaskEither<E, B>) => (ma: TaskEither<E, A>) => TaskEither<E, B> = T.chain
 
 /**
  * @since 2.6.0
@@ -395,17 +402,20 @@ export const chainIOEitherKW: <D, A, B>(
 export const chainFirst: <E, A, B>(f: (a: A) => TaskEither<E, B>) => (ma: TaskEither<E, A>) => TaskEither<E, A> = (
   f
 ) => (ma) =>
-  T.chain(ma, (a) =>
-    pipe(
-      f(a),
-      map(() => a)
+  pipe(
+    ma,
+    chain((a) =>
+      pipe(
+        f(a),
+        map(() => a)
+      )
     )
   )
 
 /**
  * @since 2.0.0
  */
-export const flatten: <E, A>(mma: TaskEither<E, TaskEither<E, A>>) => TaskEither<E, A> = (mma) => T.chain(mma, identity)
+export const flatten: <E, A>(mma: TaskEither<E, TaskEither<E, A>>) => TaskEither<E, A> = chain(identity)
 
 /**
  * @since 2.0.0
@@ -445,7 +455,10 @@ export const filterOrElse: {
   <E, A, B extends A>(refinement: Refinement<A, B>, onFalse: (a: A) => E): (ma: TaskEither<E, A>) => TaskEither<E, B>
   <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E): (ma: TaskEither<E, A>) => TaskEither<E, A>
 } = <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E) => (ma: TaskEither<E, A>) =>
-  T.chain(ma, (a) => (predicate(a) ? right(a) : left(onFalse(a))))
+  pipe(
+    ma,
+    chain((a) => (predicate(a) ? right(a) : left(onFalse(a))))
+  )
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -456,10 +469,10 @@ export const filterOrElse: {
  */
 export const monadTaskEither: Monad2<URI> = {
   URI,
-  map: T.map,
+  map,
   of: T.of,
-  ap: T.ap,
-  chain: T.chain
+  ap,
+  chain
 }
 
 /**
@@ -469,10 +482,10 @@ export const taskEither: Monad2<URI> & Bifunctor2<URI> & Alt2<URI> & MonadTask2<
   URI,
   bimap: T.bimap,
   mapLeft: T.mapLeft,
-  map: T.map,
+  map,
   of: T.of,
-  ap: T.ap,
-  chain: T.chain,
+  ap,
+  chain,
   alt: T.alt,
   fromIO: rightIO,
   fromTask: rightTask,
@@ -489,6 +502,10 @@ export const taskEitherSeq: typeof taskEither =
   ((): typeof taskEither => {
     return {
       ...taskEither,
-      ap: (fa) => (fab) => T.chain(fab, (f) => pipe(fa, map(f)))
+      ap: (fa) => (fab) =>
+        pipe(
+          fab,
+          chain((f) => pipe(fa, map(f)))
+        )
     }
   })()

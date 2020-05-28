@@ -66,6 +66,6 @@ describe('Writer', () => {
     const double = (n: number): number => n * 2
     assert.deepStrictEqual(pipe(M.of(double), M.ap(M.of(1)))(), [2, ''])
     const f = (n: number) => M.of(n * 2)
-    assert.deepStrictEqual(M.chain(M.of(1), f)(), [2, ''])
+    assert.deepStrictEqual(pipe(M.of(1), M.chain(f))(), [2, ''])
   })
 })

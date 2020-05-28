@@ -41,7 +41,7 @@ describe('NonEmptyArray', () => {
 
   it('chain', () => {
     const f = (a: number): _.NonEmptyArray<number> => [a, 4]
-    assert.deepStrictEqual(_.nonEmptyArray.chain([1, 2], f), [1, 4, 2, 4])
+    assert.deepStrictEqual(pipe([1, 2], _.chain(f)), [1, 4, 2, 4])
   })
 
   it('extend', () => {

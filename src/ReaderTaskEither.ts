@@ -475,10 +475,10 @@ export const filterOrElse: {
  */
 export const monadReaderTaskEither: Monad3<URI> = {
   URI,
-  map: T.map,
+  map,
   of: right,
-  ap: T.ap,
-  chain: T.chain
+  ap,
+  chain
 }
 
 /**
@@ -486,10 +486,10 @@ export const monadReaderTaskEither: Monad3<URI> = {
  */
 export const readerTaskEither: Monad3<URI> & Bifunctor3<URI> & Alt3<URI> & MonadTask3<URI> & MonadThrow3<URI> = {
   URI,
-  map: T.map,
+  map,
   of: right,
-  ap: T.ap,
-  chain: T.chain,
+  ap,
+  chain,
   alt: alt_,
   bimap: bimap_,
   mapLeft: mapLeft_,

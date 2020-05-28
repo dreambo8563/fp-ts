@@ -58,7 +58,8 @@ import {
   reverse,
   getEq,
   isNonEmpty,
-  map
+  map,
+  chain
 } from '../src/Array'
 import { left, right } from '../src/Either'
 import { fold as foldMonoid, monoidSum, monoidString } from '../src/Monoid'
@@ -465,7 +466,10 @@ describe('Array', () => {
 
   it('chain', () => {
     assert.deepStrictEqual(
-      array.chain([1, 2, 3], (n) => [n, n + 1]),
+      pipe(
+        [1, 2, 3],
+        chain((n) => [n, n + 1])
+      ),
       [1, 2, 2, 3, 3, 4]
     )
   })

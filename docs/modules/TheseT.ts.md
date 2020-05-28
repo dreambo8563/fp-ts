@@ -52,7 +52,7 @@ export interface TheseM<M> {
     readonly map: <A, B>(f: (a: A) => B) => (ma: TheseT<M, E, A>) => TheseT<M, E, B>
     readonly of: <A>(a: A) => TheseT<M, E, A>
     readonly ap: <A>(ma: TheseT<M, E, A>) => <B>(mab: TheseT<M, E, (a: A) => B>) => TheseT<M, E, B>
-    readonly chain: <A, B>(ma: TheseT<M, E, A>, f: (a: A) => TheseT<M, E, B>) => TheseT<M, E, B>
+    readonly chain: <A, B>(f: (a: A) => TheseT<M, E, B>) => (ma: TheseT<M, E, A>) => TheseT<M, E, B>
   }
 }
 ```
@@ -89,7 +89,7 @@ export interface TheseM1<M extends URIS> {
     readonly map: <A, B>(f: (a: A) => B) => (ma: TheseT1<M, E, A>) => TheseT1<M, E, B>
     readonly of: <A>(a: A) => TheseT1<M, E, A>
     readonly ap: <A>(ma: TheseT1<M, E, A>) => <B>(mab: TheseT1<M, E, (a: A) => B>) => TheseT1<M, E, B>
-    readonly chain: <A, B>(ma: TheseT1<M, E, A>, f: (a: A) => TheseT1<M, E, B>) => TheseT1<M, E, B>
+    readonly chain: <A, B>(f: (a: A) => TheseT1<M, E, B>) => (ma: TheseT1<M, E, A>) => TheseT1<M, E, B>
   }
 }
 ```
@@ -126,7 +126,7 @@ export interface TheseM2<M extends URIS2> {
     readonly map: <A, B>(f: (a: A) => B) => <R>(ma: TheseT2<M, R, E, A>) => TheseT2<M, R, E, B>
     readonly of: <R, A>(a: A) => TheseT2<M, R, E, A>
     readonly ap: <R, A>(ma: TheseT2<M, R, E, A>) => <B>(mab: TheseT2<M, R, E, (a: A) => B>) => TheseT2<M, R, E, B>
-    readonly chain: <R, A, B>(ma: TheseT2<M, R, E, A>, f: (a: A) => TheseT2<M, R, E, B>) => TheseT2<M, R, E, B>
+    readonly chain: <R, A, B>(f: (a: A) => TheseT2<M, R, E, B>) => (ma: TheseT2<M, R, E, A>) => TheseT2<M, R, E, B>
   }
 }
 ```
@@ -138,7 +138,7 @@ Added in v3.0.0
 **Signature**
 
 ```ts
-export interface TheseT<M, E, A> extends HKT<M, These<E, A>> {}
+export interface TheseT<M, E, A> extends HKT<M, TH.These<E, A>> {}
 ```
 
 Added in v2.4.0
@@ -148,7 +148,7 @@ Added in v2.4.0
 **Signature**
 
 ```ts
-export type TheseT1<M extends URIS, E, A> = Kind<M, These<E, A>>
+export type TheseT1<M extends URIS, E, A> = Kind<M, TH.These<E, A>>
 ```
 
 Added in v2.4.0
@@ -158,7 +158,7 @@ Added in v2.4.0
 **Signature**
 
 ```ts
-export type TheseT2<M extends URIS2, R, E, A> = Kind2<M, R, These<E, A>>
+export type TheseT2<M extends URIS2, R, E, A> = Kind2<M, R, TH.These<E, A>>
 ```
 
 Added in v2.4.0

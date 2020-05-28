@@ -517,10 +517,13 @@ describe('Either', () => {
     it('getValidation', () => {
       const M = _.getValidation(monoidString)
       const f = (s: string) => _.right(s.length)
-      assert.deepStrictEqual(M.chain(_.right('abc'), f), _.right(3))
-      assert.deepStrictEqual(M.chain(_.left('a'), f), _.left('a'))
+      assert.deepStrictEqual(pipe(_.right('abc'), M.chain(f)), _.right(3))
+      assert.deepStrictEqual(pipe(_.left('a'), M.chain(f)), _.left('a'))
       assert.deepStrictEqual(
-        M.chain(_.left('a'), () => _.left('b')),
+        pipe(
+          _.left('a'),
+          M.chain(() => _.left('b'))
+        ),
         _.left('a')
       )
       assert.deepStrictEqual(M.of(1), _.right(1))

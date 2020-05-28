@@ -117,5 +117,5 @@ export const map: <A, B>(f: (a: A) => B) => <E>(fa: Writer<E, A>) => Writer<E, B
  */
 export const writer: Functor2<URI> = {
   URI,
-  map: T.map
+  map
 }

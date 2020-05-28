@@ -127,7 +127,11 @@ export function getReaderM<M>(M: Monad<M>): ReaderM<M> {
     map: (f) => (ma) => (r) => pipe(ma(r), M.map(f)),
     of: (a) => () => M.of(a),
     ap: (ma) => (mab) => (r) => pipe(mab(r), M.ap(ma(r))),
-    chain: (ma, f) => (r) => M.chain(ma(r), (a) => f(a)(r)),
+    chain: (ma, f) => (r) =>
+      pipe(
+        ma(r),
+        M.chain((a) => f(a)(r))
+      ),
     ask: () => M.of,
     asks: (f) => (r) => pipe(M.of(r), M.map(f)),
     local: (ma, f) => (q) => ma(f(q)),

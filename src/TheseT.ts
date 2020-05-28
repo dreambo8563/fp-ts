@@ -4,13 +4,13 @@
 import { HKT, Kind, Kind2, URIS, URIS2 } from './HKT'
 import { Monad, Monad1, Monad2 } from './Monad'
 import { Semigroup } from './Semigroup'
-import { bimap, both, fold, left, map, mapLeft, right, swap, These, toTuple } from './These'
+import * as TH from './These'
 import { pipe } from './function'
 
 /**
  * @since 2.4.0
  */
-export interface TheseT<M, E, A> extends HKT<M, These<E, A>> {}
+export interface TheseT<M, E, A> extends HKT<M, TH.These<E, A>> {}
 
 /**
  * @since 3.0.0
@@ -40,14 +40,14 @@ export interface TheseM<M> {
     readonly map: <A, B>(f: (a: A) => B) => (ma: TheseT<M, E, A>) => TheseT<M, E, B>
     readonly of: <A>(a: A) => TheseT<M, E, A>
     readonly ap: <A>(ma: TheseT<M, E, A>) => <B>(mab: TheseT<M, E, (a: A) => B>) => TheseT<M, E, B>
-    readonly chain: <A, B>(ma: TheseT<M, E, A>, f: (a: A) => TheseT<M, E, B>) => TheseT<M, E, B>
+    readonly chain: <A, B>(f: (a: A) => TheseT<M, E, B>) => (ma: TheseT<M, E, A>) => TheseT<M, E, B>
   }
 }
 
 /**
  * @since 2.4.0
  */
-export type TheseT1<M extends URIS, E, A> = Kind<M, These<E, A>>
+export type TheseT1<M extends URIS, E, A> = Kind<M, TH.These<E, A>>
 
 /**
  * @since 3.0.0
@@ -77,14 +77,14 @@ export interface TheseM1<M extends URIS> {
     readonly map: <A, B>(f: (a: A) => B) => (ma: TheseT1<M, E, A>) => TheseT1<M, E, B>
     readonly of: <A>(a: A) => TheseT1<M, E, A>
     readonly ap: <A>(ma: TheseT1<M, E, A>) => <B>(mab: TheseT1<M, E, (a: A) => B>) => TheseT1<M, E, B>
-    readonly chain: <A, B>(ma: TheseT1<M, E, A>, f: (a: A) => TheseT1<M, E, B>) => TheseT1<M, E, B>
+    readonly chain: <A, B>(f: (a: A) => TheseT1<M, E, B>) => (ma: TheseT1<M, E, A>) => TheseT1<M, E, B>
   }
 }
 
 /**
  * @since 2.4.0
  */
-export type TheseT2<M extends URIS2, R, E, A> = Kind2<M, R, These<E, A>>
+export type TheseT2<M extends URIS2, R, E, A> = Kind2<M, R, TH.These<E, A>>
 
 /**
  * @since 3.0.0
@@ -114,7 +114,7 @@ export interface TheseM2<M extends URIS2> {
     readonly map: <A, B>(f: (a: A) => B) => <R>(ma: TheseT2<M, R, E, A>) => TheseT2<M, R, E, B>
     readonly of: <R, A>(a: A) => TheseT2<M, R, E, A>
     readonly ap: <R, A>(ma: TheseT2<M, R, E, A>) => <B>(mab: TheseT2<M, R, E, (a: A) => B>) => TheseT2<M, R, E, B>
-    readonly chain: <R, A, B>(ma: TheseT2<M, R, E, A>, f: (a: A) => TheseT2<M, R, E, B>) => TheseT2<M, R, E, B>
+    readonly chain: <R, A, B>(f: (a: A) => TheseT2<M, R, E, B>) => (ma: TheseT2<M, R, E, A>) => TheseT2<M, R, E, B>
   }
 }
 
@@ -125,40 +125,42 @@ export function getTheseM<M extends URIS2>(M: Monad2<M>): TheseM2<M>
 export function getTheseM<M extends URIS>(M: Monad1<M>): TheseM1<M>
 export function getTheseM<M>(M: Monad<M>): TheseM<M>
 export function getTheseM<M>(M: Monad<M>): TheseM<M> {
-  const mapT = <A, B>(f: (a: A) => B) => <E>(fa: TheseT<M, E, A>): TheseT<M, E, B> => pipe(fa, M.map(map(f)))
+  const map = <A, B>(f: (a: A) => B) => <E>(fa: TheseT<M, E, A>): TheseT<M, E, B> => pipe(fa, M.map(TH.map(f)))
 
   function of<E, A>(a: A): TheseT<M, E, A> {
-    return M.of(right(a))
+    return M.of(TH.right(a))
   }
 
   function leftT<E = never, A = never>(e: E): TheseT<M, E, A> {
-    return M.of(left(e))
+    return M.of(TH.left(e))
   }
 
   return {
-    map: mapT,
-    bimap: (fa, f, g) => pipe(fa, M.map(bimap(f, g))),
-    mapLeft: (fa, f) => pipe(fa, M.map(mapLeft(f))),
-    fold: (fa, onLeft, onRight, onBoth) => M.chain(fa, fold(onLeft, onRight, onBoth)),
-    swap: (fa) => pipe(fa, M.map(swap)),
-    rightM: (ma) => pipe(ma, M.map(right)),
-    leftM: (me) => pipe(me, M.map(left)),
+    map,
+    bimap: (fa, f, g) => pipe(fa, M.map(TH.bimap(f, g))),
+    mapLeft: (fa, f) => pipe(fa, M.map(TH.mapLeft(f))),
+    fold: (fa, onLeft, onRight, onBoth) => pipe(fa, M.chain(TH.fold(onLeft, onRight, onBoth))),
+    swap: (fa) => pipe(fa, M.map(TH.swap)),
+    rightM: (ma) => pipe(ma, M.map(TH.right)),
+    leftM: (me) => pipe(me, M.map(TH.left)),
     left: leftT,
     right: of,
-    both: (e, a) => M.of(both(e, a)),
-    toTuple: (fa, e, a) => pipe(fa, M.map(toTuple(e, a))),
+    both: (e, a) => M.of(TH.both(e, a)),
+    toTuple: (fa, e, a) => pipe(fa, M.map(TH.toTuple(e, a))),
     getMonad: <E>(E: Semigroup<E>) => {
-      function chain<A, B>(fa: TheseT<M, E, A>, f: (a: A) => TheseT<M, E, B>): TheseT<M, E, B> {
-        return M.chain(
+      const chain = <A, B>(f: (a: A) => TheseT<M, E, B>) => (fa: TheseT<M, E, A>): TheseT<M, E, B> => {
+        return pipe(
           fa,
-          fold(leftT, f, (e1, a) =>
-            pipe(
-              f(a),
-              M.map(
-                fold(
-                  (e2) => left(E.concat(e1, e2)),
-                  right,
-                  (e2, b) => both(E.concat(e1, e2), b)
+          M.chain(
+            TH.fold(leftT, f, (e1, a) =>
+              pipe(
+                f(a),
+                M.map(
+                  TH.fold(
+                    (e2) => TH.left(E.concat(e1, e2)),
+                    TH.right,
+                    (e2, b) => TH.both(E.concat(e1, e2), b)
+                  )
                 )
               )
             )
@@ -168,10 +170,13 @@ export function getTheseM<M>(M: Monad<M>): TheseM<M> {
 
       return {
         _E: undefined as any,
-        map: mapT,
+        map: map,
         of,
         ap: <A>(fa: TheseT<M, E, A>) => <B>(fab: TheseT<M, E, (a: A) => B>): TheseT<M, E, B> =>
-          chain(fab, (f) => pipe(fa, mapT(f))),
+          pipe(
+            fab,
+            chain((f) => pipe(fa, map(f)))
+          ),
         chain
       }
     }

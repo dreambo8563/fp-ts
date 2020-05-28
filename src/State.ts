@@ -114,24 +114,26 @@ export const apSecond = <E, B>(fb: State<E, B>) => <A>(fa: State<E, A>): State<E
 /**
  * @since 2.0.0
  */
-export const chain: <E, A, B>(f: (a: A) => State<E, B>) => (ma: State<E, A>) => State<E, B> = (f) => (ma) =>
-  T.chain(ma, f)
+export const chain: <E, A, B>(f: (a: A) => State<E, B>) => (ma: State<E, A>) => State<E, B> = T.chain
 
 /**
  * @since 2.0.0
  */
 export const chainFirst: <E, A, B>(f: (a: A) => State<E, B>) => (ma: State<E, A>) => State<E, A> = (f) => (ma) =>
-  T.chain(ma, (a) =>
-    pipe(
-      f(a),
-      map(() => a)
+  pipe(
+    ma,
+    chain((a) =>
+      pipe(
+        f(a),
+        map(() => a)
+      )
     )
   )
 
 /**
  * @since 2.0.0
  */
-export const flatten: <E, A>(mma: State<E, State<E, A>>) => State<E, A> = (mma) => T.chain(mma, identity)
+export const flatten: <E, A>(mma: State<E, State<E, A>>) => State<E, A> = chain(identity)
 
 /**
  * @since 2.0.0
@@ -147,8 +149,8 @@ export const map: <A, B>(f: (a: A) => B) => <E>(fa: State<E, A>) => State<E, B> 
  */
 export const state: Monad2<URI> = {
   URI,
-  map: T.map,
+  map,
   of,
-  ap: T.ap,
-  chain: T.chain
+  ap,
+  chain
 }

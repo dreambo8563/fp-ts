@@ -147,9 +147,18 @@ export function bracket<E, A, B>(
   use: (a: A) => IOEither<E, B>,
   release: (a: A, e: Either<E, B>) => IOEither<E, void>
 ): IOEither<E, B> {
-  return T.chain(acquire, (a) =>
-    T.chain(pipe(use(a), monadIO.map(E.right)), (e) =>
-      T.chain(release(a, e), () => (E.isLeft(e) ? T.left(e.left) : T.of(e.right)))
+  return pipe(
+    acquire,
+    chain((a) =>
+      pipe(
+        pipe(use(a), monadIO.map(E.right)),
+        chain((e) =>
+          pipe(
+            release(a, e),
+            chain(() => (E.isLeft(e) ? T.left(e.left) : T.of(e.right)))
+          )
+        )
+      )
     )
   )
 }
@@ -235,8 +244,7 @@ export const apSecond = <E, B>(fb: IOEither<E, B>) => <A>(fa: IOEither<E, A>): I
 /**
  * @since 2.0.0
  */
-export const chain: <E, A, B>(f: (a: A) => IOEither<E, B>) => (ma: IOEither<E, A>) => IOEither<E, B> = (f) => (ma) =>
-  T.chain(ma, f)
+export const chain: <E, A, B>(f: (a: A) => IOEither<E, B>) => (ma: IOEither<E, A>) => IOEither<E, B> = T.chain
 
 /**
  * @since 2.0.0
@@ -244,10 +252,13 @@ export const chain: <E, A, B>(f: (a: A) => IOEither<E, B>) => (ma: IOEither<E, A
 export const chainFirst: <E, A, B>(f: (a: A) => IOEither<E, B>) => (ma: IOEither<E, A>) => IOEither<E, A> = (f) => (
   ma
 ) =>
-  T.chain(ma, (a) =>
-    pipe(
-      f(a),
-      map(() => a)
+  pipe(
+    ma,
+    chain((a) =>
+      pipe(
+        f(a),
+        map(() => a)
+      )
     )
   )
 
@@ -268,7 +279,7 @@ export const chainEitherKW: <D, A, B>(
 /**
  * @since 2.0.0
  */
-export const flatten: <E, A>(mma: IOEither<E, IOEither<E, A>>) => IOEither<E, A> = (mma) => T.chain(mma, identity)
+export const flatten: <E, A>(mma: IOEither<E, IOEither<E, A>>) => IOEither<E, A> = chain(identity)
 
 /**
  * @since 2.0.0
@@ -309,7 +320,10 @@ export const filterOrElse: {
   <E, A, B extends A>(refinement: Refinement<A, B>, onFalse: (a: A) => E): (ma: IOEither<E, A>) => IOEither<E, B>
   <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E): (ma: IOEither<E, A>) => IOEither<E, A>
 } = <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E) => (ma: IOEither<E, A>) =>
-  T.chain(ma, (a) => (predicate(a) ? right(a) : left(onFalse(a))))
+  pipe(
+    ma,
+    chain((a) => (predicate(a) ? right(a) : left(onFalse(a))))
+  )
 
 /**
  * @since 2.0.0

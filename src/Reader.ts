@@ -171,10 +171,10 @@ export const promap: <E, A, D, B>(f: (d: D) => E, g: (a: A) => B) => (fbc: Reade
  */
 export const monadReader: Monad2<URI> = {
   URI,
-  map: T.map,
+  map,
   of,
-  ap: T.ap,
-  chain: T.chain
+  ap,
+  chain
 }
 
 /**
@@ -182,10 +182,10 @@ export const monadReader: Monad2<URI> = {
  */
 export const reader: Monad2<URI> & Profunctor2<URI> & Category2<URI> = {
   URI,
-  map: T.map,
+  map,
   of,
-  ap: T.ap,
-  chain: T.chain,
+  ap,
+  chain,
   promap: promap_,
   compose: compose_,
   id: () => identity

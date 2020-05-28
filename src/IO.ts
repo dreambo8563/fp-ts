@@ -148,8 +148,6 @@ export const of = <A>(a: A): IO<A> => () => a
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const chain_: <A, B>(fa: IO<A>, f: (a: A) => IO<B>) => IO<B> = (ma, f) => () => f(ma())()
-
 /**
  * @since 2.0.0
  */
@@ -178,23 +176,26 @@ export const apSecond = <B>(fb: IO<B>) => <A>(fa: IO<A>): IO<B> =>
 /**
  * @since 2.0.0
  */
-export const chain: <A, B>(f: (a: A) => IO<B>) => (ma: IO<A>) => IO<B> = (f) => (ma) => chain_(ma, f)
+export const chain: <A, B>(f: (a: A) => IO<B>) => (ma: IO<A>) => IO<B> = (f) => (ma) => () => f(ma())()
 
 /**
  * @since 2.0.0
  */
 export const chainFirst: <A, B>(f: (a: A) => IO<B>) => (ma: IO<A>) => IO<A> = (f) => (ma) =>
-  chain_(ma, (a) =>
-    pipe(
-      f(a),
-      map(() => a)
+  pipe(
+    ma,
+    chain((a) =>
+      pipe(
+        f(a),
+        map(() => a)
+      )
     )
   )
 
 /**
  * @since 2.0.0
  */
-export const flatten: <A>(mma: IO<IO<A>>) => IO<A> = (mma) => chain_(mma, identity)
+export const flatten: <A>(mma: IO<IO<A>>) => IO<A> = chain(identity)
 
 /**
  * @since 2.0.0
@@ -213,7 +214,7 @@ export const monadIO: Monad1<URI> = {
   map,
   of,
   ap,
-  chain: chain_
+  chain
 }
 
 /**
@@ -224,6 +225,6 @@ export const io: Monad1<URI> & MonadIO1<URI> = {
   map,
   of,
   ap,
-  chain: chain_,
+  chain,
   fromIO: identity
 }

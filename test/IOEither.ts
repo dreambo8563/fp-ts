@@ -302,11 +302,20 @@ describe('IOEither', () => {
     })
 
     it('chain', () => {
-      const e1 = IV.chain(_.right(3), (a) => (a > 2 ? _.right(a) : _.left('b')))()
+      const e1 = pipe(
+        _.right(3),
+        IV.chain((a) => (a > 2 ? _.right(a) : _.left('b')))
+      )()
       assert.deepStrictEqual(e1, E.right(3))
-      const e2 = IV.chain(_.right(1), (a) => (a > 2 ? _.right(a) : _.left('b')))()
+      const e2 = pipe(
+        _.right(1),
+        IV.chain((a) => (a > 2 ? _.right(a) : _.left('b')))
+      )()
       assert.deepStrictEqual(e2, E.left('b'))
-      const e3 = IV.chain(_.left('a'), (a) => (a > 2 ? _.right(a) : _.left('b')))()
+      const e3 = pipe(
+        _.left('a'),
+        IV.chain((a) => (a > 2 ? _.right(a) : _.left('b')))
+      )()
       assert.deepStrictEqual(e3, E.left('a'))
     })
 

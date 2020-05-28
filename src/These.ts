@@ -167,7 +167,7 @@ export function getSemigroup<E, A>(SE: Semigroup<E>, SA: Semigroup<A>): Semigrou
  * @since 2.0.0
  */
 export function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E> & MonadThrow2C<URI, E> {
-  const chain = <A, B>(ma: These<E, A>, f: (a: A) => These<E, B>): These<E, B> => {
+  const chain = <A, B>(f: (a: A) => These<E, B>) => (ma: These<E, A>): These<E, B> => {
     if (isLeft(ma)) {
       return ma
     }
@@ -187,7 +187,11 @@ export function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E> & MonadThrow2C<URI
     _E: undefined as any,
     map,
     of: right,
-    ap: (fa) => (fab) => chain(fab, (f) => pipe(fa, map(f))),
+    ap: (fa) => (fab) =>
+      pipe(
+        fab,
+        chain((f) => pipe(fa, map(f)))
+      ),
     chain,
     throwError: left
   }

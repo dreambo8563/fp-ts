@@ -233,7 +233,7 @@ export const bimap: <E, G, A, B>(
  */
 export const chain: <R, E, A, B>(
   f: (a: A) => ReaderEither<R, E, B>
-) => (ma: ReaderEither<R, E, A>) => ReaderEither<R, E, B> = (f) => (ma) => T.chain(ma, f)
+) => (ma: ReaderEither<R, E, A>) => ReaderEither<R, E, B> = T.chain
 
 /**
  * @since 2.6.0
@@ -255,18 +255,22 @@ export const chainEitherKW: <D, A, B>(
 export const chainFirst: <R, E, A, B>(
   f: (a: A) => ReaderEither<R, E, B>
 ) => (ma: ReaderEither<R, E, A>) => ReaderEither<R, E, A> = (f) => (ma) =>
-  T.chain(ma, (a) =>
-    pipe(
-      f(a),
-      map(() => a)
+  pipe(
+    ma,
+    chain((a) =>
+      pipe(
+        f(a),
+        map(() => a)
+      )
     )
   )
 
 /**
  * @since 2.0.0
  */
-export const flatten: <R, E, A>(mma: ReaderEither<R, E, ReaderEither<R, E, A>>) => ReaderEither<R, E, A> = (mma) =>
-  T.chain(mma, identity)
+export const flatten: <R, E, A>(mma: ReaderEither<R, E, ReaderEither<R, E, A>>) => ReaderEither<R, E, A> = chain(
+  identity
+)
 
 /**
  * @since 2.0.0
@@ -309,7 +313,10 @@ export const filterOrElse: {
   ) => ReaderEither<R, E, B>
   <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E): <R>(ma: ReaderEither<R, E, A>) => ReaderEither<R, E, A>
 } = <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E) => <R>(ma: ReaderEither<R, E, A>) =>
-  T.chain(ma, (a) => (predicate(a) ? right(a) : left(onFalse(a))))
+  pipe(
+    ma,
+    chain((a) => (predicate(a) ? right(a) : left(onFalse(a))))
+  )
 
 // -------------------------------------------------------------------------------------
 // instances

@@ -97,18 +97,10 @@ export function getOptionM<M>(M: Monad<M>): OptionM<M> {
 
   return {
     ...A,
-    chain: (ma, f) =>
-      M.chain(
-        ma,
-        fold(() => fnone, f)
-      ),
-    alt: (fx, fy) =>
-      M.chain(
-        fx,
-        fold(fy, (a) => M.of(some(a)))
-      ),
-    fold: (ma, onNone, onSome) => M.chain(ma, fold(onNone, onSome)),
-    getOrElse: (ma, onNone) => M.chain(ma, fold(onNone, M.of)),
+    chain: (ma, f) => pipe(ma, M.chain(fold(() => fnone, f))),
+    alt: (fx, fy) => pipe(fx, M.chain(fold(fy, (a) => M.of(some(a))))),
+    fold: (ma, onNone, onSome) => pipe(ma, M.chain(fold(onNone, onSome))),
+    getOrElse: (ma, onNone) => pipe(ma, M.chain(fold(onNone, M.of))),
     fromM: (ma) => pipe(ma, M.map(some)),
     none: () => fnone
   }
