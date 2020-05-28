@@ -297,7 +297,7 @@ describe('IOEither', () => {
     it('ap', () => {
       const fab = _.left('a')
       const fa = _.left('b')
-      const e1 = IV.ap(fab, fa)()
+      const e1 = pipe(fab, IV.ap(fa))()
       assert.deepStrictEqual(e1, E.left('ab'))
     })
 

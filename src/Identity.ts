@@ -52,8 +52,6 @@ const alt_: <A>(fx: A, fy: () => A) => A = id
 
 const extend_: <A, B>(wa: A, f: (wa: A) => B) => B = (wa, f) => f(wa)
 
-const ap_: <A, B>(fab: Identity<(a: A) => B>, fa: Identity<A>) => Identity<B> = (mab, ma) => mab(ma)
-
 const chain_: <A, B>(fa: Identity<A>, f: (a: A) => Identity<B>) => Identity<B> = (ma, f) => f(ma)
 
 const reduce_: <A, B>(fa: Identity<A>, b: B, f: (b: B, a: A) => B) => B = (fa, b, f) => f(b, fa)
@@ -78,30 +76,26 @@ export const alt: <A>(that: () => Identity<A>) => (fa: Identity<A>) => Identity<
 /**
  * @since 2.0.0
  */
-export const ap: <A>(fa: Identity<A>) => <B>(fab: Identity<(a: A) => B>) => Identity<B> = (fa) => (fab) => ap_(fab, fa)
+export const ap: <A>(fa: Identity<A>) => <B>(fab: Identity<(a: A) => B>) => Identity<B> = (fa) => (fab) => fab(fa)
 
 /**
  * @since 2.0.0
  */
 export const apFirst: <B>(fb: Identity<B>) => <A>(fa: Identity<A>) => Identity<A> = (fb) => (fa) =>
-  ap_(
-    pipe(
-      fa,
-      map((a) => () => a)
-    ),
-    fb
+  pipe(
+    fa,
+    map((a) => () => a),
+    ap(fb)
   )
 
 /**
  * @since 2.0.0
  */
 export const apSecond = <B>(fb: Identity<B>) => <A>(fa: Identity<A>): Identity<B> =>
-  ap_(
-    pipe(
-      fa,
-      map(() => (b: B) => b)
-    ),
-    fb
+  pipe(
+    fa,
+    map(() => (b: B) => b),
+    ap(fb)
   )
 
 /**
@@ -176,7 +170,7 @@ export const monadIdentity: Monad1<URI> = {
   URI,
   map,
   of: id,
-  ap: ap_,
+  ap,
   chain: chain_
 }
 
@@ -187,7 +181,7 @@ export const identity: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Alt1<U
   URI,
   map,
   of: id,
-  ap: ap_,
+  ap,
   chain: chain_,
   reduce: reduce_,
   foldMap: foldMap_,

@@ -354,7 +354,7 @@ describe('TaskEither', () => {
     it('ap', async () => {
       const fab = _.left('a')
       const fa = _.left('b')
-      const e1 = await TV.ap(fab, fa)()
+      const e1 = await pipe(fab, TV.ap(fa))()
       assert.deepStrictEqual(e1, E.left('ab'))
     })
 

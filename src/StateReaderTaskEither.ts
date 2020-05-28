@@ -307,8 +307,7 @@ export const alt: <S, R, E, A>(
  */
 export const ap: <S, R, E, A>(
   fa: StateReaderTaskEither<S, R, E, A>
-) => <B>(fab: StateReaderTaskEither<S, R, E, (a: A) => B>) => StateReaderTaskEither<S, R, E, B> = (fa) => (fab) =>
-  T.ap(fab, fa)
+) => <B>(fab: StateReaderTaskEither<S, R, E, (a: A) => B>) => StateReaderTaskEither<S, R, E, B> = T.ap
 
 /**
  * @since 2.0.0
@@ -316,12 +315,10 @@ export const ap: <S, R, E, A>(
 export const apFirst = <S, R, E, B>(fb: StateReaderTaskEither<S, R, E, B>) => <A>(
   fa: StateReaderTaskEither<S, R, E, A>
 ): StateReaderTaskEither<S, R, E, A> =>
-  T.ap(
-    pipe(
-      fa,
-      T.map((a) => (_: B) => a)
-    ),
-    fb
+  pipe(
+    fa,
+    map((a) => (_: B) => a),
+    ap(fb)
   )
 
 /**
@@ -330,12 +327,10 @@ export const apFirst = <S, R, E, B>(fb: StateReaderTaskEither<S, R, E, B>) => <A
 export const apSecond = <S, R, E, B>(fb: StateReaderTaskEither<S, R, E, B>) => <A>(
   fa: StateReaderTaskEither<S, R, E, A>
 ): StateReaderTaskEither<S, R, E, B> =>
-  T.ap(
-    pipe(
-      fa,
-      T.map(() => (b: B) => b)
-    ),
-    fb
+  pipe(
+    fa,
+    map(() => (b: B) => b),
+    ap(fb)
   )
 
 /**
@@ -363,7 +358,7 @@ export const chainFirst: <S, R, E, A, B>(
   T.chain(ma, (a) =>
     pipe(
       f(a),
-      T.map(() => a)
+      map(() => a)
     )
   )
 
@@ -494,6 +489,6 @@ export const stateReaderTaskEitherSeq: typeof stateReaderTaskEither =
   ((): typeof stateReaderTaskEither => {
     return {
       ...stateReaderTaskEither,
-      ap: (mab, ma) => T.chain(mab, (f) => pipe(ma, T.map(f)))
+      ap: (fa) => (fab) => T.chain(fab, (f) => pipe(fa, map(f)))
     }
   })()

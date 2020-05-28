@@ -64,7 +64,7 @@ describe('Writer', () => {
     const M = _.getMonad(monoidString)
     assert.deepStrictEqual(M.of(1)(), [1, ''])
     const double = (n: number): number => n * 2
-    assert.deepStrictEqual(M.ap(M.of(double), M.of(1))(), [2, ''])
+    assert.deepStrictEqual(pipe(M.of(double), M.ap(M.of(1)))(), [2, ''])
     const f = (n: number) => M.of(n * 2)
     assert.deepStrictEqual(M.chain(M.of(1), f)(), [2, ''])
   })

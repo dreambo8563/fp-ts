@@ -17,52 +17,54 @@ import { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from './HKT
 import { tuple, pipe } from './function'
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
 export interface Apply<F> extends Functor<F> {
-  readonly ap: <A, B>(fab: HKT<F, (a: A) => B>, fa: HKT<F, A>) => HKT<F, B>
+  readonly ap: <A>(fa: HKT<F, A>) => <B>(fab: HKT<F, (a: A) => B>) => HKT<F, B>
 }
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
 export interface Apply1<F extends URIS> extends Functor1<F> {
-  readonly ap: <A, B>(fab: Kind<F, (a: A) => B>, fa: Kind<F, A>) => Kind<F, B>
+  readonly ap: <A>(fa: Kind<F, A>) => <B>(fab: Kind<F, (a: A) => B>) => Kind<F, B>
 }
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
 export interface Apply2<F extends URIS2> extends Functor2<F> {
-  readonly ap: <E, A, B>(fab: Kind2<F, E, (a: A) => B>, fa: Kind2<F, E, A>) => Kind2<F, E, B>
+  readonly ap: <E, A>(fa: Kind2<F, E, A>) => <B>(fab: Kind2<F, E, (a: A) => B>) => Kind2<F, E, B>
 }
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
 export interface Apply2C<F extends URIS2, E> extends Functor2C<F, E> {
-  readonly ap: <A, B>(fab: Kind2<F, E, (a: A) => B>, fa: Kind2<F, E, A>) => Kind2<F, E, B>
+  readonly ap: <A>(fa: Kind2<F, E, A>) => <B>(fab: Kind2<F, E, (a: A) => B>) => Kind2<F, E, B>
 }
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
 export interface Apply3<F extends URIS3> extends Functor3<F> {
-  readonly ap: <R, E, A, B>(fab: Kind3<F, R, E, (a: A) => B>, fa: Kind3<F, R, E, A>) => Kind3<F, R, E, B>
+  readonly ap: <R, E, A>(fa: Kind3<F, R, E, A>) => <B>(fab: Kind3<F, R, E, (a: A) => B>) => Kind3<F, R, E, B>
 }
 
 /**
  * @since 2.2.0
  */
 export interface Apply3C<F extends URIS3, E> extends Functor3C<F, E> {
-  readonly ap: <R, A, B>(fab: Kind3<F, R, E, (a: A) => B>, fa: Kind3<F, R, E, A>) => Kind3<F, R, E, B>
+  readonly ap: <R, A>(fa: Kind3<F, R, E, A>) => <B>(fab: Kind3<F, R, E, (a: A) => B>) => Kind3<F, R, E, B>
 }
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
 export interface Apply4<F extends URIS4> extends Functor4<F> {
-  readonly ap: <S, R, E, A, B>(fab: Kind4<F, S, R, E, (a: A) => B>, fa: Kind4<F, S, R, E, A>) => Kind4<F, S, R, E, B>
+  readonly ap: <S, R, E, A>(
+    fa: Kind4<F, S, R, E, A>
+  ) => <B>(fab: Kind4<F, S, R, E, (a: A) => B>) => Kind4<F, S, R, E, B>
 }
 
 function curried(f: Function, n: number, acc: ReadonlyArray<unknown>) {
@@ -94,7 +96,7 @@ function getTupleConstructor(len: number): (a: unknown) => any {
  * assert.deepStrictEqual(sequenceTOption(some(1), some('2')), some([1, '2']))
  * assert.deepStrictEqual(sequenceTOption(some(1), some('2'), none), none)
  *
- * @since 2.0.0
+ * @since 3.0.0
  */
 export function sequenceT<F extends URIS4>(
   F: Apply4<F>
@@ -137,7 +139,7 @@ export function sequenceT<F>(F: Apply<F>): any {
     const f = getTupleConstructor(len)
     let fas = pipe(args[0], F.map(f))
     for (let i = 1; i < len; i++) {
-      fas = F.ap(fas, args[i])
+      fas = pipe(fas, F.ap(args[i]))
     }
     return fas
   }
@@ -186,7 +188,7 @@ function getRecordConstructor(keys: ReadonlyArray<string>) {
  *   left('error')
  * )
  *
- * @since 2.0.0
+ * @since 3.0.0
  */
 export function sequenceS<F extends URIS4>(
   F: Apply4<F>
@@ -230,7 +232,7 @@ export function sequenceS<F>(F: Apply<F>): (r: Record<string, HKT<F, any>>) => H
     const f = getRecordConstructor(keys)
     let fr = pipe(r[keys[0]], F.map(f))
     for (let i = 1; i < len; i++) {
-      fr = F.ap(fr, r[keys[i]])
+      fr = pipe(fr, F.ap(r[keys[i]]))
     }
     return fr
   }

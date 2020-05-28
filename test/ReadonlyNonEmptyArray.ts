@@ -35,7 +35,7 @@ describe('ReadonlyNonEmptyArray', () => {
 
   it('ap', () => {
     const double = (n: number) => n * 2
-    assert.deepStrictEqual(_.readonlyNonEmptyArray.ap([double, double], [1, 2]), [2, 4, 2, 4])
+    assert.deepStrictEqual(pipe([double, double] as const, _.ap([1, 2])), [2, 4, 2, 4])
   })
 
   it('chain', () => {

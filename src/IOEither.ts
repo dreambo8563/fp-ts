@@ -210,31 +210,26 @@ export const alt: <E, A>(that: () => IOEither<E, A>) => (fa: IOEither<E, A>) => 
 /**
  * @since 2.0.0
  */
-export const ap: <E, A>(fa: IOEither<E, A>) => <B>(fab: IOEither<E, (a: A) => B>) => IOEither<E, B> = (fa) => (fab) =>
-  T.ap(fab, fa)
+export const ap: <E, A>(fa: IOEither<E, A>) => <B>(fab: IOEither<E, (a: A) => B>) => IOEither<E, B> = T.ap
 
 /**
  * @since 2.0.0
  */
 export const apFirst: <E, B>(fb: IOEither<E, B>) => <A>(fa: IOEither<E, A>) => IOEither<E, A> = (fb) => (fa) =>
-  T.ap(
-    pipe(
-      fa,
-      T.map((a) => () => a)
-    ),
-    fb
+  pipe(
+    fa,
+    map((a) => () => a),
+    ap(fb)
   )
 
 /**
  * @since 2.0.0
  */
 export const apSecond = <E, B>(fb: IOEither<E, B>) => <A>(fa: IOEither<E, A>): IOEither<E, B> =>
-  T.ap(
-    pipe(
-      fa,
-      T.map(() => (b: B) => b)
-    ),
-    fb
+  pipe(
+    fa,
+    map(() => (b: B) => b),
+    ap(fb)
   )
 
 /**
@@ -252,7 +247,7 @@ export const chainFirst: <E, A, B>(f: (a: A) => IOEither<E, B>) => (ma: IOEither
   T.chain(ma, (a) =>
     pipe(
       f(a),
-      T.map(() => a)
+      map(() => a)
     )
   )
 
@@ -333,9 +328,9 @@ export const ioEither: Monad2<URI> & Bifunctor2<URI> & Alt2<URI> & MonadIO2<URI>
   URI,
   bimap: T.bimap,
   mapLeft: T.mapLeft,
-  map: T.map,
+  map,
   of: right,
-  ap: T.ap,
+  ap,
   chain: T.chain,
   alt: T.alt,
   fromIO: rightIO,

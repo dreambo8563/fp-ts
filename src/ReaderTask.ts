@@ -138,32 +138,26 @@ export function chainTaskK<A, B>(f: (a: A) => Task<B>): <R>(ma: ReaderTask<R, A>
 /**
  * @since 2.3.0
  */
-export const ap: <R, A>(fa: ReaderTask<R, A>) => <B>(fab: ReaderTask<R, (a: A) => B>) => ReaderTask<R, B> = (fa) => (
-  fab
-) => T.ap(fab, fa)
+export const ap: <R, A>(fa: ReaderTask<R, A>) => <B>(fab: ReaderTask<R, (a: A) => B>) => ReaderTask<R, B> = T.ap
 
 /**
  * @since 2.3.0
  */
 export const apFirst = <R, B>(fb: ReaderTask<R, B>) => <A>(fa: ReaderTask<R, A>): ReaderTask<R, A> =>
-  T.ap(
-    pipe(
-      fa,
-      T.map((a) => (_: B) => a)
-    ),
-    fb
+  pipe(
+    fa,
+    map((a) => (_: B) => a),
+    ap(fb)
   )
 
 /**
  * @since 2.3.0
  */
 export const apSecond = <R, B>(fb: ReaderTask<R, B>) => <A>(fa: ReaderTask<R, A>): ReaderTask<R, B> =>
-  T.ap(
-    pipe(
-      fa,
-      T.map(() => (b: B) => b)
-    ),
-    fb
+  pipe(
+    fa,
+    map(() => (b: B) => b),
+    ap(fb)
   )
 
 /**
@@ -182,7 +176,7 @@ export const chainFirst: <R, A, B>(f: (a: A) => ReaderTask<R, B>) => (ma: Reader
   T.chain(ma, (a) =>
     pipe(
       f(a),
-      T.map(() => a)
+      map(() => a)
     )
   )
 
@@ -233,6 +227,6 @@ export const readerTaskSeq: typeof readerTask =
   ((): typeof readerTask => {
     return {
       ...readerTask,
-      ap: (mab, ma) => T.chain(mab, (f) => pipe(ma, T.map(f)))
+      ap: (fa) => (fab) => T.chain(fab, (f) => pipe(fa, map(f)))
     }
   })()

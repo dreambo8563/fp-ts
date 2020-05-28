@@ -492,7 +492,7 @@ export function getValidation<E>(
   return {
     ...either,
     _E: undefined as any,
-    ap: (mab, ma) =>
+    ap: (ma) => (mab) =>
       isLeft(mab)
         ? isLeft(ma)
           ? left(S.concat(mab.left, ma.left))
@@ -540,9 +540,6 @@ export function getValidationMonoid<E, A>(SE: Semigroup<E>, SA: Monoid<A>): Mono
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const ap_: <E, A, B>(fab: Either<E, (a: A) => B>, fa: Either<E, A>) => Either<E, B> = (mab, ma) =>
-  isLeft(mab) ? mab : isLeft(ma) ? ma : right(mab.right(ma.right))
-
 const chain_: <E, A, B>(fa: Either<E, A>, f: (a: A) => Either<E, B>) => Either<E, B> = (ma, f) =>
   isLeft(ma) ? ma : f(ma.right)
 
@@ -587,30 +584,26 @@ export const alt: <E, A>(that: () => Either<E, A>) => (fa: Either<E, A>) => Eith
  * @since 2.0.0
  */
 export const ap: <E, A>(fa: Either<E, A>) => <B>(fab: Either<E, (a: A) => B>) => Either<E, B> = (fa) => (fab) =>
-  ap_(fab, fa)
+  isLeft(fab) ? fab : isLeft(fa) ? fa : right(fab.right(fa.right))
 
 /**
  * @since 2.0.0
  */
 export const apFirst: <E, B>(fb: Either<E, B>) => <A>(fa: Either<E, A>) => Either<E, A> = (fb) => (fa) =>
-  ap_(
-    pipe(
-      fa,
-      map((a) => () => a)
-    ),
-    fb
+  pipe(
+    fa,
+    map((a) => () => a),
+    ap(fb)
   )
 
 /**
  * @since 2.0.0
  */
 export const apSecond = <E, B>(fb: Either<E, B>) => <A>(fa: Either<E, A>): Either<E, B> =>
-  ap_(
-    pipe(
-      fa,
-      map(() => (b: B) => b)
-    ),
-    fb
+  pipe(
+    fa,
+    map(() => (b: B) => b),
+    ap(fb)
   )
 
 /**
@@ -723,7 +716,7 @@ export const applicativeEither: Applicative2<URI> = {
   URI,
   map,
   of: right,
-  ap: ap_
+  ap
 }
 
 /**
@@ -748,7 +741,7 @@ export const either: Monad2<URI> &
   URI,
   map,
   of: right,
-  ap: ap_,
+  ap,
   chain: chain_,
   reduce: reduce_,
   foldMap: foldMap_,

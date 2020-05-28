@@ -110,9 +110,9 @@ describe('TaskThese', () => {
       assert.deepStrictEqual(await pipe(_.both('a', 1), M.map(f))(), TH.both('a', 2))
     })
 
-    it('map', async () => {
+    it('ap', async () => {
       const f = (n: number): number => n * 2
-      assert.deepStrictEqual(await M.ap(_.right(f), _.right(1))(), TH.right(2))
+      assert.deepStrictEqual(await pipe(_.right(f), M.ap(_.right(1)))(), TH.right(2))
     })
 
     it('chain', async () => {

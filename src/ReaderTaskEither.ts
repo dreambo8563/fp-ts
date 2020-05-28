@@ -360,7 +360,7 @@ export const alt: <R, E, A>(
  */
 export const ap: <R, E, A>(
   fa: ReaderTaskEither<R, E, A>
-) => <B>(fab: ReaderTaskEither<R, E, (a: A) => B>) => ReaderTaskEither<R, E, B> = (fa) => (fab) => T.ap(fab, fa)
+) => <B>(fab: ReaderTaskEither<R, E, (a: A) => B>) => ReaderTaskEither<R, E, B> = T.ap
 
 /**
  * @since 2.0.0
@@ -369,12 +369,10 @@ export const ap: <R, E, A>(
 export const apFirst: <R, E, B>(
   fb: ReaderTaskEither<R, E, B>
 ) => <A>(fa: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, A> = (fb) => (fa) =>
-  T.ap(
-    pipe(
-      fa,
-      T.map((a) => () => a)
-    ),
-    fb
+  pipe(
+    fa,
+    map((a) => () => a),
+    ap(fb)
   )
 
 /**
@@ -383,12 +381,10 @@ export const apFirst: <R, E, B>(
 export const apSecond = <R, E, B>(fb: ReaderTaskEither<R, E, B>) => <A>(
   fa: ReaderTaskEither<R, E, A>
 ): ReaderTaskEither<R, E, B> =>
-  T.ap(
-    pipe(
-      fa,
-      T.map(() => (b: B) => b)
-    ),
-    fb
+  pipe(
+    fa,
+    map(() => (b: B) => b),
+    ap(fb)
   )
 
 /**
@@ -415,7 +411,7 @@ export const chainFirst: <R, E, A, B>(
   T.chain(ma, (a) =>
     pipe(
       f(a),
-      T.map(() => a)
+      map(() => a)
     )
   )
 
@@ -511,7 +507,7 @@ export const readerTaskEitherSeq: typeof readerTaskEither =
   ((): typeof readerTaskEither => {
     return {
       ...readerTaskEither,
-      ap: (mab, ma) => T.chain(mab, (f) => pipe(ma, T.map(f)))
+      ap: (fa) => (fab) => T.chain(fab, (f) => pipe(fa, map(f)))
     }
   })()
 

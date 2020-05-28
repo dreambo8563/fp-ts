@@ -114,7 +114,7 @@ describe('These', () => {
     const F = _.getMonad(semigroupString)
     const fab = F.of(double)
     const fa = F.of(1)
-    assert.deepStrictEqual(F.ap(fab, fa), F.of(2))
+    assert.deepStrictEqual(pipe(fab, F.ap(fa)), F.of(2))
   })
 
   it('fold', () => {

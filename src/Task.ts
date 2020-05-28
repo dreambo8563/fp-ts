@@ -115,38 +115,32 @@ export function chainIOK<A, B>(f: (a: A) => IO<B>): (ma: Task<A>) => Task<B> {
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const ap_: <A, B>(fab: Task<(a: A) => B>, fa: Task<A>) => Task<B> = (mab, ma) => () =>
-  Promise.all([mab(), ma()]).then(([f, a]) => f(a))
-
 const chain_: <A, B>(fa: Task<A>, f: (a: A) => Task<B>) => Task<B> = (ma, f) => () => ma().then((a) => f(a)())
 
 /**
  * @since 2.0.0
  */
-export const ap: <A>(fa: Task<A>) => <B>(fab: Task<(a: A) => B>) => Task<B> = (fa) => (fab) => ap_(fab, fa)
+export const ap: <A>(fa: Task<A>) => <B>(fab: Task<(a: A) => B>) => Task<B> = (fa) => (fab) => () =>
+  Promise.all([fab(), fa()]).then(([f, a]) => f(a))
 
 /**
  * @since 2.0.0
  */
 export const apFirst: <B>(fb: Task<B>) => <A>(fa: Task<A>) => Task<A> = (fb) => (fa) =>
-  ap_(
-    pipe(
-      fa,
-      map((a) => () => a)
-    ),
-    fb
+  pipe(
+    fa,
+    map((a) => () => a),
+    ap(fb)
   )
 
 /**
  * @since 2.0.0
  */
 export const apSecond = <B>(fb: Task<B>) => <A>(fa: Task<A>): Task<B> =>
-  ap_(
-    pipe(
-      fa,
-      map(() => (b: B) => b)
-    ),
-    fb
+  pipe(
+    fa,
+    map(() => (b: B) => b),
+    ap(fb)
   )
 
 /**
@@ -186,7 +180,7 @@ export const monadTask: Monad1<URI> = {
   URI,
   map,
   of,
-  ap: ap_,
+  ap,
   chain: chain_
 }
 
@@ -197,7 +191,7 @@ export const task: Monad1<URI> & MonadTask1<URI> = {
   URI,
   map,
   of,
-  ap: ap_,
+  ap,
   chain: chain_,
   fromIO,
   fromTask: identity
@@ -213,6 +207,6 @@ export const taskSeq: typeof task =
   ((): typeof task => {
     return {
       ...task,
-      ap: (mab, ma) => () => mab().then((f) => ma().then((a) => f(a)))
+      ap: (fa) => (fab) => () => fab().then((f) => fa().then((a) => f(a)))
     }
   })()

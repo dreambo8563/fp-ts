@@ -16,7 +16,7 @@ Instances must satisfy the following laws:
 1. Identity: `F.map(fa, a => a) = fa`
 2. Composition: `F.map(fa, a => bc(ab(a))) = F.map(F.map(fa, ab), bc)`
 
-Added in v3.0.0
+Added in v2.0.0
 
 ---
 

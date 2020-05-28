@@ -95,31 +95,26 @@ const promap_: <E, A, D, B>(fbc: Reader<E, A>, f: (d: D) => E, g: (a: A) => B) =
 /**
  * @since 2.0.0
  */
-export const ap: <R, A>(fa: Reader<R, A>) => <B>(fab: Reader<R, (a: A) => B>) => Reader<R, B> = (fa) => (fab) =>
-  T.ap(fab, fa)
+export const ap: <R, A>(fa: Reader<R, A>) => <B>(fab: Reader<R, (a: A) => B>) => Reader<R, B> = T.ap
 
 /**
  * @since 2.0.0
  */
 export const apFirst = <R, B>(fb: Reader<R, B>) => <A>(fa: Reader<R, A>): Reader<R, A> =>
-  T.ap(
-    pipe(
-      fa,
-      T.map((a) => (_: B) => a)
-    ),
-    fb
+  pipe(
+    fa,
+    map((a) => (_: B) => a),
+    ap(fb)
   )
 
 /**
  * @since 2.0.0
  */
 export const apSecond = <R, B>(fb: Reader<R, B>) => <A>(fa: Reader<R, A>): Reader<R, B> =>
-  T.ap(
-    pipe(
-      fa,
-      T.map(() => (b: B) => b)
-    ),
-    fb
+  pipe(
+    fa,
+    map(() => (b: B) => b),
+    ap(fb)
   )
 
 /**
@@ -135,7 +130,7 @@ export const chainFirst: <R, A, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, 
   T.chain(ma, (a) =>
     pipe(
       f(a),
-      T.map(() => a)
+      map(() => a)
     )
   )
 

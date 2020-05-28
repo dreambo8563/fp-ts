@@ -33,7 +33,7 @@ export interface WriterM<M> {
     readonly _E: W
     readonly map: <A, B>(f: (a: A) => B) => (ma: WriterT<M, W, A>) => WriterT<M, W, B>
     readonly of: <A>(a: A) => WriterT<M, W, A>
-    readonly ap: <A, B>(mab: WriterT<M, W, (a: A) => B>, ma: WriterT<M, W, A>) => WriterT<M, W, B>
+    readonly ap: <A>(ma: WriterT<M, W, A>) => <B>(mab: WriterT<M, W, (a: A) => B>) => WriterT<M, W, B>
     readonly chain: <A, B>(ma: WriterT<M, W, A>, f: (a: A) => WriterT<M, W, B>) => WriterT<M, W, B>
   }
 }
@@ -63,7 +63,7 @@ export interface WriterM1<M extends URIS> {
     readonly _E: W
     readonly map: <A, B>(f: (a: A) => B) => (ma: WriterT1<M, W, A>) => WriterT1<M, W, B>
     readonly of: <A>(a: A) => WriterT1<M, W, A>
-    readonly ap: <A, B>(mab: WriterT1<M, W, (a: A) => B>, ma: WriterT1<M, W, A>) => WriterT1<M, W, B>
+    readonly ap: <A>(ma: WriterT1<M, W, A>) => <B>(mab: WriterT1<M, W, (a: A) => B>) => WriterT1<M, W, B>
     readonly chain: <A, B>(ma: WriterT1<M, W, A>, f: (a: A) => WriterT1<M, W, B>) => WriterT1<M, W, B>
   }
 }
@@ -93,7 +93,7 @@ export interface WriterM2<M extends URIS2> {
     readonly _E: W
     readonly map: <A, B>(f: (a: A) => B) => <E>(ma: WriterT2<M, E, W, A>) => WriterT2<M, E, W, B>
     readonly of: <E, A>(a: A) => WriterT2<M, E, W, A>
-    readonly ap: <E, A, B>(mab: WriterT2<M, E, W, (a: A) => B>, ma: WriterT2<M, E, W, A>) => WriterT2<M, E, W, B>
+    readonly ap: <E, A>(ma: WriterT2<M, E, W, A>) => <B>(mab: WriterT2<M, E, W, (a: A) => B>) => WriterT2<M, E, W, B>
     readonly chain: <E, A, B>(ma: WriterT2<M, E, W, A>, f: (a: A) => WriterT2<M, E, W, B>) => WriterT2<M, E, W, B>
   }
 }
@@ -116,7 +116,7 @@ export interface WriterM2C<M extends URIS2, E> {
     readonly _E: W
     readonly map: <A, B>(f: (a: A) => B) => (ma: WriterT2<M, E, W, A>) => WriterT2<M, E, W, B>
     readonly of: <A>(a: A) => WriterT2<M, E, W, A>
-    readonly ap: <A, B>(mab: WriterT2<M, E, W, (a: A) => B>, ma: WriterT2<M, E, W, A>) => WriterT2<M, E, W, B>
+    readonly ap: <A>(ma: WriterT2<M, E, W, A>) => <B>(mab: WriterT2<M, E, W, (a: A) => B>) => WriterT2<M, E, W, B>
     readonly chain: <A, B>(ma: WriterT2<M, E, W, A>, f: (a: A) => WriterT2<M, E, W, B>) => WriterT2<M, E, W, B>
   }
 }
@@ -146,10 +146,9 @@ export interface WriterM3<M extends URIS3> {
     readonly _E: W
     readonly map: <A, B>(f: (a: A) => B) => <R, E>(ma: WriterT3<M, R, E, W, A>) => WriterT3<M, R, E, W, B>
     readonly of: <R, E, A>(a: A) => WriterT3<M, R, E, W, A>
-    readonly ap: <R, E, A, B>(
-      mab: WriterT3<M, R, E, W, (a: A) => B>,
+    readonly ap: <R, E, A>(
       ma: WriterT3<M, R, E, W, A>
-    ) => WriterT3<M, R, E, W, B>
+    ) => <B>(mab: WriterT3<M, R, E, W, (a: A) => B>) => WriterT3<M, R, E, W, B>
     readonly chain: <R, E, A, B>(
       ma: WriterT3<M, R, E, W, A>,
       f: (a: A) => WriterT3<M, R, E, W, B>
@@ -209,10 +208,10 @@ export function getWriterM<M>(M: Monad<M>): WriterM<M> {
         _E: undefined as any,
         map,
         of: (a) => () => M.of([a, W.empty]),
-        ap: (mab, ma) => () =>
-          M.chain(mab(), ([f, w1]) =>
+        ap: (fa) => (fab) => () =>
+          M.chain(fab(), ([f, w1]) =>
             pipe(
-              ma(),
+              fa(),
               M.map(([a, w2]) => [f(a), W.concat(w1, w2)])
             )
           ),

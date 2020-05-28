@@ -39,7 +39,7 @@ export interface TheseM<M> {
     readonly _E: E
     readonly map: <A, B>(f: (a: A) => B) => (ma: TheseT<M, E, A>) => TheseT<M, E, B>
     readonly of: <A>(a: A) => TheseT<M, E, A>
-    readonly ap: <A, B>(mab: TheseT<M, E, (a: A) => B>, ma: TheseT<M, E, A>) => TheseT<M, E, B>
+    readonly ap: <A>(ma: TheseT<M, E, A>) => <B>(mab: TheseT<M, E, (a: A) => B>) => TheseT<M, E, B>
     readonly chain: <A, B>(ma: TheseT<M, E, A>, f: (a: A) => TheseT<M, E, B>) => TheseT<M, E, B>
   }
 }
@@ -76,7 +76,7 @@ export interface TheseM1<M extends URIS> {
     readonly _E: E
     readonly map: <A, B>(f: (a: A) => B) => (ma: TheseT1<M, E, A>) => TheseT1<M, E, B>
     readonly of: <A>(a: A) => TheseT1<M, E, A>
-    readonly ap: <A, B>(mab: TheseT1<M, E, (a: A) => B>, ma: TheseT1<M, E, A>) => TheseT1<M, E, B>
+    readonly ap: <A>(ma: TheseT1<M, E, A>) => <B>(mab: TheseT1<M, E, (a: A) => B>) => TheseT1<M, E, B>
     readonly chain: <A, B>(ma: TheseT1<M, E, A>, f: (a: A) => TheseT1<M, E, B>) => TheseT1<M, E, B>
   }
 }
@@ -113,7 +113,7 @@ export interface TheseM2<M extends URIS2> {
     readonly _E: E
     readonly map: <A, B>(f: (a: A) => B) => <R>(ma: TheseT2<M, R, E, A>) => TheseT2<M, R, E, B>
     readonly of: <R, A>(a: A) => TheseT2<M, R, E, A>
-    readonly ap: <R, A, B>(mab: TheseT2<M, R, E, (a: A) => B>, ma: TheseT2<M, R, E, A>) => TheseT2<M, R, E, B>
+    readonly ap: <R, A>(ma: TheseT2<M, R, E, A>) => <B>(mab: TheseT2<M, R, E, (a: A) => B>) => TheseT2<M, R, E, B>
     readonly chain: <R, A, B>(ma: TheseT2<M, R, E, A>, f: (a: A) => TheseT2<M, R, E, B>) => TheseT2<M, R, E, B>
   }
 }
@@ -170,8 +170,8 @@ export function getTheseM<M>(M: Monad<M>): TheseM<M> {
         _E: undefined as any,
         map: mapT,
         of,
-        ap: <A, B>(mab: TheseT<M, E, (a: A) => B>, ma: TheseT<M, E, A>): TheseT<M, E, B> =>
-          chain(mab, (f) => pipe(ma, mapT(f))),
+        ap: <A>(fa: TheseT<M, E, A>) => <B>(fab: TheseT<M, E, (a: A) => B>): TheseT<M, E, B> =>
+          chain(fab, (f) => pipe(fa, mapT(f))),
         chain
       }
     }

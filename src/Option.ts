@@ -629,8 +629,6 @@ const defaultSeparate = { left: none, right: none }
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const map_: <A, B>(fa: Option<A>, f: (a: A) => B) => Option<B> = (ma, f) => (isNone(ma) ? none : some(f(ma.value)))
-
 const ap_: <A, B>(fab: Option<(a: A) => B>, fa: Option<A>) => Option<B> = (mab, ma) =>
   isNone(mab) ? none : isNone(ma) ? none : some(mab.value(ma.value))
 
@@ -670,7 +668,7 @@ const partition_ = <A>(fa: Option<A>, predicate: Predicate<A>): Separated<Option
 }
 
 const partitionMap_: <A, B, C>(fa: Option<A>, f: (a: A) => Either<B, C>) => Separated<Option<B>, Option<C>> = (fa, f) =>
-  separate(map_(fa, f))
+  separate(pipe(fa, map(f)))
 
 const wither_ = <F>(F: Applicative<F>) => <A, B>(fa: Option<A>, f: (a: A) => HKT<F, Option<B>>): HKT<F, Option<B>> =>
   isNone(fa) ? F.of(none) : f(fa.value)
@@ -679,13 +677,16 @@ const wilt_ = <F>(F: Applicative<F>) => <A, B, C>(
   fa: Option<A>,
   f: (a: A) => HKT<F, Either<B, C>>
 ): HKT<F, Separated<Option<B>, Option<C>>> => {
-  const o = map_(fa, (a) =>
-    pipe(
-      f(a),
-      F.map((e) => ({
-        left: getLeft(e),
-        right: getRight(e)
-      }))
+  const o = pipe(
+    fa,
+    map((a) =>
+      pipe(
+        f(a),
+        F.map((e) => ({
+          left: getLeft(e),
+          right: getRight(e)
+        }))
+      )
     )
   )
   return isNone(o)
@@ -710,18 +711,20 @@ export const ap: <A>(fa: Option<A>) => <B>(fab: Option<(a: A) => B>) => Option<B
  * @since 2.0.0
  */
 export const apFirst: <B>(fb: Option<B>) => <A>(fa: Option<A>) => Option<A> = (fb) => (fa) =>
-  ap_(
-    map_(fa, (a) => () => a),
-    fb
+  pipe(
+    fa,
+    map((a) => () => a),
+    ap(fb)
   )
 
 /**
  * @since 2.0.0
  */
 export const apSecond = <B>(fb: Option<B>) => <A>(fa: Option<A>): Option<B> =>
-  ap_(
-    map_(fa, () => (b: B) => b),
-    fb
+  pipe(
+    fa,
+    map(() => (b: B) => b),
+    ap(fb)
   )
 
 /**
@@ -733,7 +736,12 @@ export const chain: <A, B>(f: (a: A) => Option<B>) => (ma: Option<A>) => Option<
  * @since 2.0.0
  */
 export const chainFirst: <A, B>(f: (a: A) => Option<B>) => (ma: Option<A>) => Option<A> = (f) => (ma) =>
-  chain_(ma, (a) => map_(f(a), () => a))
+  chain_(ma, (a) =>
+    pipe(
+      f(a),
+      map(() => a)
+    )
+  )
 
 /**
  * @since 2.0.0
@@ -761,7 +769,8 @@ export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: Option<A>
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => (fa: Option<A>) => Option<B> = (f) => (fa) => map_(fa, f)
+export const map: <A, B>(f: (a: A) => B) => (fa: Option<A>) => Option<B> = (f) => (fa) =>
+  isNone(fa) ? none : some(f(fa.value))
 
 /**
  * @since 2.0.0
@@ -783,10 +792,13 @@ export const compact: <A>(fa: Option<Option<A>>) => Option<A> = (ma) => chain_(m
  * @since 2.0.0
  */
 export const separate: <A, B>(ma: Option<Either<A, B>>) => Separated<Option<A>, Option<B>> = (ma) => {
-  const o = map_(ma, (e) => ({
-    left: getLeft(e),
-    right: getRight(e)
-  }))
+  const o = pipe(
+    ma,
+    map((e) => ({
+      left: getLeft(e),
+      right: getRight(e)
+    }))
+  )
   return isNone(o) ? defaultSeparate : o.value
 }
 
@@ -835,7 +847,7 @@ export const applicativeOption: Applicative1<URI> = {
   URI,
   map,
   of: some,
-  ap: ap_
+  ap
 }
 
 /**
@@ -853,7 +865,7 @@ export const option: Monad1<URI> &
   URI,
   map,
   of: some,
-  ap: ap_,
+  ap,
   chain: chain_,
   reduce: reduce_,
   foldMap: foldMap_,

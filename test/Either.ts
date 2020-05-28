@@ -525,10 +525,10 @@ describe('Either', () => {
       )
       assert.deepStrictEqual(M.of(1), _.right(1))
       const double = (n: number) => n * 2
-      assert.deepStrictEqual(M.ap(_.right(double), _.right(1)), _.right(2))
-      assert.deepStrictEqual(M.ap(_.right(double), _.left('foo')), _.left('foo'))
-      assert.deepStrictEqual(M.ap(_.left<string, (n: number) => number>('foo'), _.right(1)), _.left('foo'))
-      assert.deepStrictEqual(M.ap(_.left('foo'), _.left('bar')), _.left('foobar'))
+      assert.deepStrictEqual(pipe(_.right(double), M.ap(_.right(1))), _.right(2))
+      assert.deepStrictEqual(pipe(_.right(double), M.ap(_.left('foo'))), _.left('foo'))
+      assert.deepStrictEqual(pipe(_.left<string, (n: number) => number>('foo'), M.ap(_.right(1))), _.left('foo'))
+      assert.deepStrictEqual(pipe(_.left('foo'), M.ap(_.left('bar'))), _.left('foobar'))
       assert.deepStrictEqual(
         M.alt(_.left('a'), () => _.right(1)),
         _.right(1)

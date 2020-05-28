@@ -1350,14 +1350,6 @@ export const of = <A>(a: A): ReadonlyArray<A> => [a]
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const ap_: <A, B>(fab: ReadonlyArray<(a: A) => B>, fa: ReadonlyArray<A>) => ReadonlyArray<B> = (fab, fa) =>
-  flatten(
-    pipe(
-      fab,
-      map((f) => pipe(fa, map(f)))
-    )
-  )
-
 const mapWithIndex_: <A, B>(fa: ReadonlyArray<A>, f: (i: number, a: A) => B) => ReadonlyArray<B> = (fa, f) =>
   fa.map((a, i) => f(i, a))
 
@@ -1525,12 +1517,10 @@ const traverse_ = <F>(
 
 const sequence_ = <F>(F: Applicative<F>) => <A>(ta: ReadonlyArray<HKT<F, A>>): HKT<F, ReadonlyArray<A>> => {
   return reduce_(ta, F.of(zero_()), (fas, fa) =>
-    F.ap(
-      pipe(
-        fas,
-        F.map((as) => (a: A) => snoc(as, a))
-      ),
-      fa
+    pipe(
+      fas,
+      F.map((as) => (a: A) => snoc(as, a)),
+      F.ap(fa)
     )
   )
 }
@@ -1540,12 +1530,10 @@ const traverseWithIndex_ = <F>(F: Applicative<F>) => <A, B>(
   f: (i: number, a: A) => HKT<F, B>
 ): HKT<F, ReadonlyArray<B>> => {
   return reduceWithIndex_(ta, F.of<ReadonlyArray<B>>(zero_()), (i, fbs, a) =>
-    F.ap(
-      pipe(
-        fbs,
-        F.map((bs) => (b: B) => snoc(bs, b))
-      ),
-      f(i, a)
+    pipe(
+      fbs,
+      F.map((bs) => (b: B) => snoc(bs, b)),
+      F.ap(f(i, a))
     )
   )
 }
@@ -1578,30 +1566,32 @@ export const alt: <A>(that: () => ReadonlyArray<A>) => (fa: ReadonlyArray<A>) =>
  */
 export const ap: <A>(fa: ReadonlyArray<A>) => <B>(fab: ReadonlyArray<(a: A) => B>) => ReadonlyArray<B> = (fa) => (
   fab
-) => ap_(fab, fa)
+) =>
+  flatten(
+    pipe(
+      fab,
+      map((f) => pipe(fa, map(f)))
+    )
+  )
 
 /**
  * @since 2.5.0
  */
 export const apFirst: <B>(fb: ReadonlyArray<B>) => <A>(fa: ReadonlyArray<A>) => ReadonlyArray<A> = (fb) => (fa) =>
-  ap_(
-    pipe(
-      fa,
-      map((a) => () => a)
-    ),
-    fb
+  pipe(
+    fa,
+    map((a) => () => a),
+    ap(fb)
   )
 
 /**
  * @since 2.5.0
  */
 export const apSecond = <B>(fb: ReadonlyArray<B>) => <A>(fa: ReadonlyArray<A>): ReadonlyArray<B> =>
-  ap_(
-    pipe(
-      fa,
-      map(() => (b: B) => b)
-    ),
-    fb
+  pipe(
+    fa,
+    map(() => (b: B) => b),
+    ap(fb)
   )
 
 /**
@@ -1808,7 +1798,7 @@ export const readonlyArray: Monad1<URI> &
   compact,
   separate,
   map,
-  ap: ap_,
+  ap,
   of,
   chain: chain_,
   filter: filter_,

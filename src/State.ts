@@ -89,31 +89,26 @@ export const of: <S, A>(a: A) => State<S, A> = T.of
 /**
  * @since 2.0.0
  */
-export const ap: <E, A>(fa: State<E, A>) => <B>(fab: State<E, (a: A) => B>) => State<E, B> = (fa) => (fab) =>
-  T.ap(fab, fa)
+export const ap: <E, A>(fa: State<E, A>) => <B>(fab: State<E, (a: A) => B>) => State<E, B> = T.ap
 
 /**
  * @since 2.0.0
  */
 export const apFirst = <E, B>(fb: State<E, B>) => <A>(fa: State<E, A>): State<E, A> =>
-  T.ap(
-    pipe(
-      fa,
-      T.map((a) => (_: B) => a)
-    ),
-    fb
+  pipe(
+    fa,
+    map((a) => (_: B) => a),
+    ap(fb)
   )
 
 /**
  * @since 2.0.0
  */
 export const apSecond = <E, B>(fb: State<E, B>) => <A>(fa: State<E, A>): State<E, B> =>
-  T.ap(
-    pipe(
-      fa,
-      T.map(() => (b: B) => b)
-    ),
-    fb
+  pipe(
+    fa,
+    map(() => (b: B) => b),
+    ap(fb)
   )
 
 /**
@@ -129,7 +124,7 @@ export const chainFirst: <E, A, B>(f: (a: A) => State<E, B>) => (ma: State<E, A>
   T.chain(ma, (a) =>
     pipe(
       f(a),
-      T.map(() => a)
+      map(() => a)
     )
   )
 

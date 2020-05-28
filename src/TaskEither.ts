@@ -331,32 +331,26 @@ export const alt: <E, A>(that: () => TaskEither<E, A>) => (fa: TaskEither<E, A>)
 /**
  * @since 2.0.0
  */
-export const ap: <E, A>(fa: TaskEither<E, A>) => <B>(fab: TaskEither<E, (a: A) => B>) => TaskEither<E, B> = (fa) => (
-  fab
-) => T.ap(fab, fa)
+export const ap: <E, A>(fa: TaskEither<E, A>) => <B>(fab: TaskEither<E, (a: A) => B>) => TaskEither<E, B> = T.ap
 
 /**
  * @since 2.0.0
  */
 export const apFirst: <E, B>(fb: TaskEither<E, B>) => <A>(fa: TaskEither<E, A>) => TaskEither<E, A> = (fb) => (fa) =>
-  T.ap(
-    pipe(
-      fa,
-      T.map((a) => () => a)
-    ),
-    fb
+  pipe(
+    fa,
+    map((a) => () => a),
+    ap(fb)
   )
 
 /**
  * @since 2.0.0
  */
 export const apSecond = <E, B>(fb: TaskEither<E, B>) => <A>(fa: TaskEither<E, A>): TaskEither<E, B> =>
-  T.ap(
-    pipe(
-      fa,
-      T.map(() => (b: B) => b)
-    ),
-    fb
+  pipe(
+    fa,
+    map(() => (b: B) => b),
+    ap(fb)
   )
 
 /**
@@ -404,7 +398,7 @@ export const chainFirst: <E, A, B>(f: (a: A) => TaskEither<E, B>) => (ma: TaskEi
   T.chain(ma, (a) =>
     pipe(
       f(a),
-      T.map(() => a)
+      map(() => a)
     )
   )
 
@@ -495,6 +489,6 @@ export const taskEitherSeq: typeof taskEither =
   ((): typeof taskEither => {
     return {
       ...taskEither,
-      ap: (mab, ma) => T.chain(mab, (f) => pipe(ma, T.map(f)))
+      ap: (fa) => (fab) => T.chain(fab, (f) => pipe(fa, map(f)))
     }
   })()

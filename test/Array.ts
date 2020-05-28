@@ -131,7 +131,7 @@ describe('Array', () => {
   })
 
   it('ap', () => {
-    const as = array.ap([(x) => x * 2, (x) => x * 3], [1, 2, 3])
+    const as = pipe([(x: number) => x * 2, (x: number) => x * 3], array.ap([1, 2, 3]))
     assert.deepStrictEqual(as, [2, 4, 6, 3, 6, 9])
   })
 
@@ -454,10 +454,6 @@ describe('Array', () => {
       array.mapWithIndex([1, 2, 3], (i, n) => n + i),
       [1, 3, 5]
     )
-  })
-
-  it('ap', () => {
-    assert.deepStrictEqual(array.ap([(n: number) => n * 2, (n: number) => n + 1], [1, 2, 3]), [2, 4, 6, 2, 3, 4])
   })
 
   it('copy', () => {

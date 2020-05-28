@@ -71,7 +71,7 @@ describe('ReadonlyTuple', () => {
   it('getApply', () => {
     const apply = _.getApply(monoidString)
     const double = (n: number): number => n * 2
-    assert.deepStrictEqual(apply.ap([double, 'a'], [1, 'b']), [2, 'ab'])
+    assert.deepStrictEqual(pipe([double, 'a'] as const, apply.ap([1, 'b'])), [2, 'ab'])
   })
 
   it('getApplicative', () => {

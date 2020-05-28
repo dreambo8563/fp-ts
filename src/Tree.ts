@@ -254,8 +254,6 @@ export function fold<A, B>(f: (a: A, bs: Array<B>) => B): (tree: Tree<A>) => B {
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const ap_: <A, B>(fab: Tree<(a: A) => B>, fa: Tree<A>) => Tree<B> = (fab, fa) => chain_(fab, (f) => pipe(fa, map(f)))
-
 const chain_ = <A, B>(fa: Tree<A>, f: (a: A) => Tree<B>): Tree<B> => {
   const { value, forest } = f(fa.value)
   const concat = getMonoid<Tree<B>>().concat
@@ -297,30 +295,27 @@ const extend_: <A, B>(wa: Tree<A>, f: (wa: Tree<A>) => B) => Tree<B> = (wa, f) =
 /**
  * @since 2.0.0
  */
-export const ap: <A>(fa: Tree<A>) => <B>(fab: Tree<(a: A) => B>) => Tree<B> = (fa) => (fab) => ap_(fab, fa)
+export const ap: <A>(fa: Tree<A>) => <B>(fab: Tree<(a: A) => B>) => Tree<B> = (fa) => (fab) =>
+  chain_(fab, (f) => pipe(fa, map(f)))
 
 /**
  * @since 2.0.0
  */
 export const apFirst: <B>(fb: Tree<B>) => <A>(fa: Tree<A>) => Tree<A> = (fb) => (fa) =>
-  ap_(
-    pipe(
-      fa,
-      map((a) => () => a)
-    ),
-    fb
+  pipe(
+    fa,
+    map((a) => () => a),
+    ap(fb)
   )
 
 /**
  * @since 2.0.0
  */
 export const apSecond = <B>(fb: Tree<B>) => <A>(fa: Tree<A>): Tree<B> =>
-  ap_(
-    pipe(
-      fa,
-      map(() => (b: B) => b)
-    ),
-    fb
+  pipe(
+    fa,
+    map(() => (b: B) => b),
+    ap(fb)
   )
 
 /**
@@ -400,7 +395,7 @@ export const tree: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Comonad1<U
     value: a,
     forest: empty
   }),
-  ap: ap_,
+  ap,
   chain: chain_,
   reduce: reduce_,
   foldMap: foldMap_,
@@ -408,15 +403,13 @@ export const tree: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Comonad1<U
   traverse: <F>(F: Applicative<F>): (<A, B>(ta: Tree<A>, f: (a: A) => HKT<F, B>) => HKT<F, Tree<B>>) => {
     const traverseF = array.traverse(F)
     const r = <A, B>(ta: Tree<A>, f: (a: A) => HKT<F, B>): HKT<F, Tree<B>> =>
-      F.ap(
-        pipe(
-          f(ta.value),
-          F.map((value: B) => (forest: Forest<B>) => ({
-            value,
-            forest
-          }))
-        ),
-        traverseF(ta.forest, (t) => r(t, f))
+      pipe(
+        f(ta.value),
+        F.map((value: B) => (forest: Forest<B>) => ({
+          value,
+          forest
+        })),
+        F.ap(traverseF(ta.forest, (t) => r(t, f)))
       )
     return r
   },

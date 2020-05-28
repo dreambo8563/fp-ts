@@ -16,12 +16,12 @@ export interface StateT<M, S, A> {
 /* tslint:enable:readonly-array */
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
 export interface StateM<M> {
   readonly map: <A, B>(f: (a: A) => B) => <S>(fa: StateT<M, S, A>) => StateT<M, S, B>
   readonly of: <S, A>(a: A) => StateT<M, S, A>
-  readonly ap: <S, A, B>(fab: StateT<M, S, (a: A) => B>, fa: StateT<M, S, A>) => StateT<M, S, B>
+  readonly ap: <S, A>(fa: StateT<M, S, A>) => <B>(fab: StateT<M, S, (a: A) => B>) => StateT<M, S, B>
   readonly chain: <S, A, B>(fa: StateT<M, S, A>, f: (a: A) => StateT<M, S, B>) => StateT<M, S, B>
   readonly get: <S>() => StateT<M, S, S>
   readonly put: <S>(s: S) => StateT<M, S, void>
@@ -48,7 +48,7 @@ export interface StateT1<M extends URIS, S, A> {
 export interface StateM1<M extends URIS> {
   readonly map: <A, B>(f: (a: A) => B) => <S>(fa: StateT1<M, S, A>) => StateT1<M, S, B>
   readonly of: <S, A>(a: A) => StateT1<M, S, A>
-  readonly ap: <S, A, B>(fab: StateT1<M, S, (a: A) => B>, fa: StateT1<M, S, A>) => StateT1<M, S, B>
+  readonly ap: <S, A>(fa: StateT1<M, S, A>) => <B>(fab: StateT1<M, S, (a: A) => B>) => StateT1<M, S, B>
   readonly chain: <S, A, B>(fa: StateT1<M, S, A>, f: (a: A) => StateT1<M, S, B>) => StateT1<M, S, B>
   readonly get: <S>() => StateT1<M, S, S>
   readonly put: <S>(s: S) => StateT1<M, S, void>
@@ -75,7 +75,7 @@ export interface StateT2<M extends URIS2, S, E, A> {
 export interface StateM2<M extends URIS2> {
   readonly map: <A, B>(f: (a: A) => B) => <S, E>(fa: StateT2<M, S, E, A>) => StateT2<M, S, E, B>
   readonly of: <S, E, A>(a: A) => StateT2<M, S, E, A>
-  readonly ap: <S, E, A, B>(fab: StateT2<M, S, E, (a: A) => B>, fa: StateT2<M, S, E, A>) => StateT2<M, S, E, B>
+  readonly ap: <S, E, A>(fa: StateT2<M, S, E, A>) => <B>(fab: StateT2<M, S, E, (a: A) => B>) => StateT2<M, S, E, B>
   readonly chain: <S, E, A, B>(fa: StateT2<M, S, E, A>, f: (a: A) => StateT2<M, S, E, B>) => StateT2<M, S, E, B>
   readonly get: <E, S>() => StateT2<M, S, E, S>
   readonly put: <E, S>(s: S) => StateT2<M, S, E, void>
@@ -93,7 +93,7 @@ export interface StateM2<M extends URIS2> {
 export interface StateM2C<M extends URIS2, E> {
   readonly map: <A, B>(f: (a: A) => B) => <S>(fa: StateT2<M, S, E, A>) => StateT2<M, S, E, B>
   readonly of: <S, A>(a: A) => StateT2<M, S, E, A>
-  readonly ap: <S, A, B>(fab: StateT2<M, S, E, (a: A) => B>, fa: StateT2<M, S, E, A>) => StateT2<M, S, E, B>
+  readonly ap: <S, A>(fa: StateT2<M, S, E, A>) => <B>(fab: StateT2<M, S, E, (a: A) => B>) => StateT2<M, S, E, B>
   readonly chain: <S, A, B>(fa: StateT2<M, S, E, A>, f: (a: A) => StateT2<M, S, E, B>) => StateT2<M, S, E, B>
   readonly get: <S>() => StateT2<M, S, E, S>
   readonly put: <S>(s: S) => StateT2<M, S, E, void>
@@ -120,10 +120,9 @@ export interface StateT3<M extends URIS3, S, R, E, A> {
 export interface StateM3<M extends URIS3> {
   readonly map: <A, B>(f: (a: A) => B) => <S, R, E>(fa: StateT3<M, S, R, E, A>) => StateT3<M, S, R, E, B>
   readonly of: <S, R, E, A>(a: A) => StateT3<M, S, R, E, A>
-  readonly ap: <S, R, E, A, B>(
-    fab: StateT3<M, S, R, E, (a: A) => B>,
+  readonly ap: <S, R, E, A>(
     fa: StateT3<M, S, R, E, A>
-  ) => StateT3<M, S, R, E, B>
+  ) => <B>(fab: StateT3<M, S, R, E, (a: A) => B>) => StateT3<M, S, R, E, B>
   readonly chain: <S, R, E, A, B>(
     fa: StateT3<M, S, R, E, A>,
     f: (a: A) => StateT3<M, S, R, E, B>
@@ -144,7 +143,9 @@ export interface StateM3<M extends URIS3> {
 export interface StateM3C<M extends URIS3, E> {
   readonly map: <A, B>(f: (a: A) => B) => <S, R, E>(fa: StateT3<M, S, R, E, A>) => StateT3<M, S, R, E, B>
   readonly of: <S, R, A>(a: A) => StateT3<M, S, R, E, A>
-  readonly ap: <S, R, A, B>(fab: StateT3<M, S, R, E, (a: A) => B>, fa: StateT3<M, S, R, E, A>) => StateT3<M, S, R, E, B>
+  readonly ap: <S, R, A>(
+    fa: StateT3<M, S, R, E, A>
+  ) => <B>(fab: StateT3<M, S, R, E, (a: A) => B>) => StateT3<M, S, R, E, B>
   readonly chain: <S, R, A, B>(
     fa: StateT3<M, S, R, E, A>,
     f: (a: A) => StateT3<M, S, R, E, B>
@@ -176,7 +177,7 @@ export function getStateM<M>(M: Monad<M>): StateM<M> {
         M.map(([a, s1]) => [f(a), s1])
       ),
     of: (a) => (s) => M.of([a, s]),
-    ap: (fab, fa) => (s) =>
+    ap: (fa) => (fab) => (s) =>
       M.chain(fab(s), ([f, s]) =>
         pipe(
           fa(s),
