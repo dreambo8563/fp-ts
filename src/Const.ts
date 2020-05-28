@@ -130,8 +130,6 @@ export function getApplicative<E>(M: Monoid<E>): Applicative2C<URI, E> {
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const contramap_: <E, A, B>(fa: Const<E, A>, f: (b: B) => A) => Const<E, B> = unsafeCoerce
-
 const bimap_: <E, A, G, B>(fea: Const<E, A>, f: (e: E) => G, g: (a: A) => B) => Const<G, B> = (fea, f) => make(f(fea))
 
 const mapLeft_: <E, A, G>(fea: Const<E, A>, f: (e: E) => G) => Const<G, A> = (fea, f) => make(f(fea))
@@ -139,7 +137,7 @@ const mapLeft_: <E, A, G>(fea: Const<E, A>, f: (e: E) => G) => Const<G, A> = (fe
 /**
  * @since 2.0.0
  */
-export const contramap: <A, B>(f: (b: B) => A) => <E>(fa: Const<E, A>) => Const<E, B> = (f) => (fa) => contramap_(fa, f)
+export const contramap: <A, B>(f: (b: B) => A) => <E>(fa: Const<E, A>) => Const<E, B> = () => unsafeCoerce
 
 /**
  * @since 2.0.0
@@ -167,7 +165,7 @@ export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: Const<E, A>) => Const<G,
 export const const_: Functor2<URI> & Contravariant2<URI> & Bifunctor2<URI> = {
   URI,
   map,
-  contramap: contramap_,
+  contramap,
   bimap: bimap_,
   mapLeft: mapLeft_
 }

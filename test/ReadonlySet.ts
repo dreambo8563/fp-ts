@@ -6,6 +6,7 @@ import { Eq, eqNumber, eqString, eq, getStructEq } from '../src/Eq'
 import { none, some as optionSome } from '../src/Option'
 import { showString } from '../src/Show'
 import { getMonoid } from '../src/Array'
+import { pipe } from '../src/function'
 
 const gte2 = (n: number) => n >= 2
 
@@ -181,7 +182,10 @@ describe('ReadonlySet', () => {
   it('compact', () => {
     assert.deepStrictEqual(_.compact(eqNumber)(new Set([optionSome(1), none, optionSome(2)])), new Set([1, 2]))
     type R = { readonly id: string }
-    const S: Eq<R> = eq.contramap(eqString, (x) => x.id)
+    const S: Eq<R> = pipe(
+      eqString,
+      eq.contramap((x) => x.id)
+    )
     assert.deepStrictEqual(
       _.compact(S)(new Set([optionSome({ id: 'a' }), none, optionSome({ id: 'a' })])),
       new Set([{ id: 'a' }])
@@ -195,8 +199,14 @@ describe('ReadonlySet', () => {
     })
     type L = { readonly error: string }
     type R = { readonly id: string }
-    const SL: Eq<L> = eq.contramap(eqString, (x) => x.error)
-    const SR: Eq<R> = eq.contramap(eqString, (x) => x.id)
+    const SL: Eq<L> = pipe(
+      eqString,
+      eq.contramap((x) => x.error)
+    )
+    const SR: Eq<R> = pipe(
+      eqString,
+      eq.contramap((x) => x.id)
+    )
     assert.deepStrictEqual(
       _.separate(
         SL,
@@ -215,7 +225,10 @@ describe('ReadonlySet', () => {
       new Set([2, 3])
     )
     type R = { readonly id: string }
-    const S: Eq<R> = eq.contramap(eqString, (x) => x.id)
+    const S: Eq<R> = pipe(
+      eqString,
+      eq.contramap((x) => x.id)
+    )
     assert.deepStrictEqual(
       _.filterMap(S)((x: { readonly id: string }) => optionSome(x))(new Set([{ id: 'a' }, { id: 'a' }])),
       new Set([{ id: 'a' }])

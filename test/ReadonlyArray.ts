@@ -669,7 +669,10 @@ describe('ReadonlyArray', () => {
       readonly b: number
     }
 
-    const eqA = Eq.eq.contramap(Ord.ordNumber, (f: A) => f.b)
+    const eqA = pipe(
+      Ord.ordNumber,
+      Eq.eq.contramap((f: A) => f.b)
+    )
     const arrA: A = { a: 'a', b: 1 }
     const arrB: A = { a: 'b', b: 1 }
     const arrC: A = { a: 'c', b: 2 }
@@ -701,8 +704,14 @@ describe('ReadonlyArray', () => {
       readonly name: string
       readonly age: number
     }
-    const byName = Ord.ord.contramap(Ord.ordString, (p: Person) => p.name)
-    const byAge = Ord.ord.contramap(Ord.ordNumber, (p: Person) => p.age)
+    const byName = pipe(
+      Ord.ordString,
+      Ord.ord.contramap((p: Person) => p.name)
+    )
+    const byAge = pipe(
+      Ord.ordNumber,
+      Ord.ord.contramap((p: Person) => p.age)
+    )
     const sortByNameByAge = _.sortBy([byName, byAge])
     const persons: ReadonlyArray<Person> = [
       { name: 'a', age: 1 },

@@ -15,7 +15,10 @@ interface User {
   readonly id: string
 }
 
-const ordUser = ord.contramap(ordString, (u: User) => u.id)
+const ordUser = pipe(
+  ordString,
+  ord.contramap((u: User) => u.id)
+)
 
 const eqUser: Eq<User> = { equals: ordUser.equals }
 

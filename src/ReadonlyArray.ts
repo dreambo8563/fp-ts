@@ -1128,14 +1128,15 @@ export function uniq<A>(E: Eq<A>): (as: ReadonlyArray<A>) => ReadonlyArray<A> {
  *
  * @example
  * import { sortBy } from 'fp-ts/lib/ReadonlyArray'
- * import { ord, ordString, ordNumber } from 'fp-ts/lib/Ord'
+ * import { contramap, ordString, ordNumber } from 'fp-ts/lib/Ord'
+ * import { pipe } from 'fp-ts/lib/function'
  *
  * interface Person {
  *   name: string
  *   age: number
  * }
- * const byName = ord.contramap(ordString, (p: Person) => p.name)
- * const byAge = ord.contramap(ordNumber, (p: Person) => p.age)
+ * const byName = pipe(ordString, contramap((p: Person) => p.name))
+ * const byAge = pipe(ordNumber, contramap((p: Person) => p.age))
  *
  * const sortByNameByAge = sortBy([byName, byAge])
  *

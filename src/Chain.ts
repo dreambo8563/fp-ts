@@ -8,7 +8,7 @@
  *
  * Note. `Apply`'s `ap` can be derived: `(fab, fa) => F.chain(fab, f => F.map(f, fa))`
  *
- * @since 3.0.0
+ * @since 2.0.0
  */
 import { Apply, Apply1, Apply2, Apply2C, Apply3, Apply4, Apply3C } from './Apply'
 import { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from './HKT'

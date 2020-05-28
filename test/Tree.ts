@@ -172,7 +172,10 @@ describe('Tree', () => {
     interface User {
       readonly id: number
     }
-    const S: Eq<User> = eq.contramap(eqNumber, (user: User) => user.id)
+    const S: Eq<User> = pipe(
+      eqNumber,
+      eq.contramap((user: User) => user.id)
+    )
     const users = _.make({ id: 1 }, [_.make({ id: 1 }, [_.make({ id: 3 }), _.make({ id: 4 })]), _.make({ id: 2 })])
     assert.deepStrictEqual(_.elem(S)({ id: 1 }, users), true)
     assert.deepStrictEqual(_.elem(S)({ id: 4 }, users), true)

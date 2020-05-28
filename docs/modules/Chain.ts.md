@@ -15,7 +15,7 @@ Instances must satisfy the following law in addition to the `Apply` laws:
 
 Note. `Apply`'s `ap` can be derived: `(fab, fa) => F.chain(fab, f => F.map(f, fa))`
 
-Added in v3.0.0
+Added in v2.0.0
 
 ---
 
