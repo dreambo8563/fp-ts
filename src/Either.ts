@@ -115,15 +115,15 @@ export function right<E = never, A = never>(a: A): Either<E, A> {
  * @example
  * import { fromNullable, left, right } from 'fp-ts/lib/Either'
  *
- * const parse = fromNullable('nully')
+ * const parse = fromNullable(() => 'nully')
  *
  * assert.deepStrictEqual(parse(1), right(1))
  * assert.deepStrictEqual(parse(null), left('nully'))
  *
  * @since 2.0.0
  */
-export function fromNullable<E>(e: E): <A>(a: A) => Either<E, NonNullable<A>> {
-  return <A>(a: A) => (a == null ? left(e) : right(a as NonNullable<A>))
+export function fromNullable<E>(f: () => E): <A>(a: A) => Either<E, NonNullable<A>> {
+  return <A>(a: A) => (a == null ? left(f()) : right(a as NonNullable<A>))
 }
 
 /**

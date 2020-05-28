@@ -18,6 +18,8 @@ high state of flux, you're at risk of it changing without notice.
 
 - **Breaking Change**
   - remove `pipeable` module (@gcanti)
+  - `Either`
+    - make `fromNullable` lazy, closes #918 (@gcanti)
 
 # 2.6.2
 

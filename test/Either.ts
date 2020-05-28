@@ -315,9 +315,9 @@ describe('Either', () => {
     })
 
     it('fromNullable', () => {
-      assert.deepStrictEqual(_.fromNullable('default')(null), _.left('default'))
-      assert.deepStrictEqual(_.fromNullable('default')(undefined), _.left('default'))
-      assert.deepStrictEqual(_.fromNullable('default')(1), _.right(1))
+      assert.deepStrictEqual(_.fromNullable(() => 'default')(null), _.left('default'))
+      assert.deepStrictEqual(_.fromNullable(() => 'default')(undefined), _.left('default'))
+      assert.deepStrictEqual(_.fromNullable(() => 'default')(1), _.right(1))
     })
 
     it('tryCatch', () => {
