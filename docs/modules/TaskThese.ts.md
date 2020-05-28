@@ -234,7 +234,7 @@ Added in v2.4.0
 **Signature**
 
 ```ts
-export declare function toTuple<E, A>(e: E, a: A): (fa: TaskThese<E, A>) => Task<[E, A]>
+export declare function toTuple<E, A>(e: () => E, a: () => A): (fa: TaskThese<E, A>) => Task<[E, A]>
 ```
 
 Added in v2.4.0

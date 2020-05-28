@@ -23,6 +23,14 @@ high state of flux, you're at risk of it changing without notice.
     - make `fromNullable` lazy, closes #918 (@gcanti)
   - `ReadonlyTuple`
     - remove `getChainRec` function (@gcanti)
+  - `TaskThese`
+    - make `toTuple` lazy (@gcanti)
+  - `These`
+    - make `toTuple` lazy (@gcanti)
+    - make `leftOrBoth` lazy (@gcanti)
+    - make `rightOrBoth` lazy (@gcanti)
+  - `These`
+    - make `toTuple` lazy (@gcanti)
   - `Tuple`
     - remove `getChainRec` function (@gcanti)
 

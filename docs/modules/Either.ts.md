@@ -373,7 +373,7 @@ the provided default as a `Left`
 **Signature**
 
 ```ts
-export declare function fromNullable<E>(f: () => E): <A>(a: A) => Either<E, NonNullable<A>>
+export declare function fromNullable<E>(e: () => E): <A>(a: A) => Either<E, NonNullable<A>>
 ```
 
 **Example**

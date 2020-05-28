@@ -128,9 +128,13 @@ describe('These', () => {
   })
 
   it('toTuple', () => {
-    assert.deepStrictEqual(pipe(_.left('b'), _.toTuple('a', 1)), ['b', 1])
-    assert.deepStrictEqual(pipe(_.right(2), _.toTuple('a', 1)), ['a', 2])
-    assert.deepStrictEqual(pipe(_.both('b', 2), _.toTuple('a', 1)), ['b', 2])
+    const f = _.toTuple(
+      () => 'a',
+      () => 1
+    )
+    assert.deepStrictEqual(f(_.left('b')), ['b', 1])
+    assert.deepStrictEqual(f(_.right(2)), ['a', 2])
+    assert.deepStrictEqual(f(_.both('b', 2)), ['b', 2])
   })
 
   it('traverse', () => {
@@ -183,13 +187,15 @@ describe('These', () => {
   })
 
   it('leftOrBoth', () => {
-    assert.deepStrictEqual(_.leftOrBoth('a')(none), _.left('a'))
-    assert.deepStrictEqual(_.leftOrBoth('a')(some(1)), _.both('a', 1))
+    const f = _.leftOrBoth(() => 'a')
+    assert.deepStrictEqual(f(none), _.left('a'))
+    assert.deepStrictEqual(f(some(1)), _.both('a', 1))
   })
 
   it('rightOrBoth', () => {
-    assert.deepStrictEqual(_.rightOrBoth(1)(none), _.right(1))
-    assert.deepStrictEqual(_.rightOrBoth(1)(some('a')), _.both('a', 1))
+    const f = _.rightOrBoth(() => 1)
+    assert.deepStrictEqual(f(none), _.right(1))
+    assert.deepStrictEqual(f(some('a')), _.both('a', 1))
   })
 
   it('getLeftOnly', () => {

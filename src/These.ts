@@ -197,17 +197,18 @@ export function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E> & MonadThrow2C<URI
  * @example
  * import { toTuple, left, right, both } from 'fp-ts/lib/These'
  *
- * assert.deepStrictEqual(toTuple('a', 1)(left('b')), ['b', 1])
- * assert.deepStrictEqual(toTuple('a', 1)(right(2)), ['a', 2])
- * assert.deepStrictEqual(toTuple('a', 1)(both('b', 2)), ['b', 2])
+ * const f = toTuple(() => 'a', () => 1)
+ * assert.deepStrictEqual(f(left('b')), ['b', 1])
+ * assert.deepStrictEqual(f(right(2)), ['a', 2])
+ * assert.deepStrictEqual(f(both('b', 2)), ['b', 2])
  *
  * @since 2.0.0
  */
-export function toTuple<E, A>(e: E, a: A): (fa: These<E, A>) => [E, A] {
-  return (fa) => (isLeft(fa) ? [fa.left, a] : isRight(fa) ? [e, fa.right] : [fa.left, fa.right])
+export function toTuple<E, A>(e: () => E, a: () => A): (fa: These<E, A>) => [E, A] {
+  return (fa) => (isLeft(fa) ? [fa.left, a()] : isRight(fa) ? [e(), fa.right] : [fa.left, fa.right])
 }
-/* tslint:enable:readonly-array */
 
+/* tslint:enable:readonly-array */
 /**
  * Returns an `E` value if possible
  *
@@ -274,13 +275,14 @@ export function isBoth<E, A>(fa: These<E, A>): fa is Both<E, A> {
  * import { leftOrBoth, left, both } from 'fp-ts/lib/These'
  * import { none, some } from 'fp-ts/lib/Option'
  *
- * assert.deepStrictEqual(leftOrBoth('a')(none), left('a'))
- * assert.deepStrictEqual(leftOrBoth('a')(some(1)), both('a', 1))
+ * const f = leftOrBoth(() => 'a')
+ * assert.deepStrictEqual(f(none), left('a'))
+ * assert.deepStrictEqual(f(some(1)), both('a', 1))
  *
  * @since 2.0.0
  */
-export function leftOrBoth<E>(e: E): <A>(ma: Option<A>) => These<E, A> {
-  return (ma) => (isNone(ma) ? left(e) : both(e, ma.value))
+export function leftOrBoth<E>(e: () => E): <A>(ma: Option<A>) => These<E, A> {
+  return (ma) => (isNone(ma) ? left(e()) : both(e(), ma.value))
 }
 
 /**
@@ -288,13 +290,14 @@ export function leftOrBoth<E>(e: E): <A>(ma: Option<A>) => These<E, A> {
  * import { rightOrBoth, right, both } from 'fp-ts/lib/These'
  * import { none, some } from 'fp-ts/lib/Option'
  *
- * assert.deepStrictEqual(rightOrBoth(1)(none), right(1))
- * assert.deepStrictEqual(rightOrBoth(1)(some('a')), both('a', 1))
+ * const f = rightOrBoth(() => 1)
+ * assert.deepStrictEqual(f(none), right(1))
+ * assert.deepStrictEqual(f(some('a')), both('a', 1))
  *
  * @since 2.0.0
  */
-export function rightOrBoth<A>(a: A): <E>(me: Option<E>) => These<E, A> {
-  return (me) => (isNone(me) ? right(a) : both(me.value, a))
+export function rightOrBoth<A>(a: () => A): <E>(me: Option<E>) => These<E, A> {
+  return (me) => (isNone(me) ? right(a()) : both(me.value, a()))
 }
 
 /**
