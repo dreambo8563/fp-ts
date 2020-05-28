@@ -271,15 +271,6 @@ export function chainReaderTaskEitherK<R, E, A, B>(
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const alt_: <S, R, E, A>(
-  fx: StateReaderTaskEither<S, R, E, A>,
-  fy: () => StateReaderTaskEither<S, R, E, A>
-) => StateReaderTaskEither<S, R, E, A> = (fx, fy) => (s) =>
-  pipe(
-    fx(s),
-    RTE.alt(() => fy()(s))
-  )
-
 const bimap_: <S, R, E, A, G, B>(
   fea: StateReaderTaskEither<S, R, E, A>,
   f: (e: E) => G,
@@ -300,7 +291,11 @@ const mapLeft_: <S, R, E, A, G>(
  */
 export const alt: <S, R, E, A>(
   that: () => StateReaderTaskEither<S, R, E, A>
-) => (fa: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, A> = (that) => (fa) => alt_(fa, that)
+) => (fa: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, A> = (that) => (fa) => (s) =>
+  pipe(
+    fa(s),
+    RTE.alt(() => that()(s))
+  )
 
 /**
  * @since 2.0.0
@@ -475,13 +470,13 @@ export const filterOrElse: {
  */
 export const stateReaderTaskEither: Monad4<URI> & Bifunctor4<URI> & Alt4<URI> & MonadTask4<URI> & MonadThrow4<URI> = {
   URI,
-  map: T.map,
+  map,
   of: right,
-  ap: T.ap,
-  chain: T.chain,
+  ap,
+  chain,
   bimap: bimap_,
   mapLeft: mapLeft_,
-  alt: alt_,
+  alt,
   fromIO: rightIO,
   fromTask: rightTask,
   throwError: left

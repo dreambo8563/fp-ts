@@ -192,13 +192,25 @@ describe('ReaderEither', () => {
     const RV = _.getReaderValidation(semigroupString)
 
     it('alt', async () => {
-      const e1 = RV.alt(_.right(1), () => _.right(2))(undefined)
+      const e1 = pipe(
+        _.right(1),
+        RV.alt(() => _.right(2))
+      )(undefined)
       assert.deepStrictEqual(e1, E.right(1))
-      const e2 = RV.alt(_.left('a'), () => _.right(2))(undefined)
+      const e2 = pipe(
+        _.left('a'),
+        RV.alt(() => _.right(2))
+      )(undefined)
       assert.deepStrictEqual(e2, E.right(2))
-      const e3 = RV.alt(_.right(1), () => _.left('b'))(undefined)
+      const e3 = pipe(
+        _.right(1),
+        RV.alt(() => _.left('b'))
+      )(undefined)
       assert.deepStrictEqual(e3, E.right(1))
-      const e4 = RV.alt(_.left('a'), () => _.left('b'))(undefined)
+      const e4 = pipe(
+        _.left('a'),
+        RV.alt(() => _.left('b'))
+      )(undefined)
       assert.deepStrictEqual(e4, E.left('ab'))
     })
   })

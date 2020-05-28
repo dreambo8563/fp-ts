@@ -334,8 +334,7 @@ export function tryCatchK<E, A extends ReadonlyArray<unknown>, B>(
 /**
  * @since 2.0.0
  */
-export const alt: <E, A>(that: () => TaskEither<E, A>) => (fa: TaskEither<E, A>) => TaskEither<E, A> = (that) => (fa) =>
-  T.alt(fa, that)
+export const alt: <E, A>(that: () => TaskEither<E, A>) => (fa: TaskEither<E, A>) => TaskEither<E, A> = T.alt
 
 /**
  * @since 2.0.0

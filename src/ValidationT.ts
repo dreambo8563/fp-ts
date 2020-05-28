@@ -23,7 +23,7 @@ export interface ValidationT<M, E, A> extends HKT<M, Either<E, A>> {}
  */
 export interface ValidationM<M, E> extends ApplicativeCompositionHKT2C<M, URI, E> {
   readonly chain: <A, B>(f: (a: A) => ValidationT<M, E, B>) => (ma: ValidationT<M, E, A>) => ValidationT<M, E, B>
-  readonly alt: <A>(fx: ValidationT<M, E, A>, f: () => ValidationT<M, E, A>) => ValidationT<M, E, A>
+  readonly alt: <A>(that: () => ValidationT<M, E, A>) => (fa: ValidationT<M, E, A>) => ValidationT<M, E, A>
 }
 
 /**
@@ -36,7 +36,7 @@ export type ValidationT1<M extends URIS, E, A> = Kind<M, Either<E, A>>
  */
 export interface ValidationM1<M extends URIS, E> extends ApplicativeComposition12C<M, URI, E> {
   readonly chain: <A, B>(f: (a: A) => ValidationT1<M, E, B>) => (ma: ValidationT1<M, E, A>) => ValidationT1<M, E, B>
-  readonly alt: <A>(fx: ValidationT1<M, E, A>, f: () => ValidationT1<M, E, A>) => ValidationT1<M, E, A>
+  readonly alt: <A>(that: () => ValidationT1<M, E, A>) => (fa: ValidationT1<M, E, A>) => ValidationT1<M, E, A>
 }
 
 /**
@@ -51,7 +51,9 @@ export interface ValidationM2<M extends URIS2, E> extends ApplicativeComposition
   readonly chain: <R, A, B>(
     f: (a: A) => ValidationT2<M, R, E, B>
   ) => (ma: ValidationT2<M, R, E, A>) => ValidationT2<M, R, E, B>
-  readonly alt: <R, A>(fx: ValidationT2<M, R, E, A>, f: () => ValidationT2<M, R, E, A>) => ValidationT2<M, R, E, A>
+  readonly alt: <R, A>(
+    that: () => ValidationT2<M, R, E, A>
+  ) => (fa: ValidationT2<M, R, E, A>) => ValidationT2<M, R, E, A>
 }
 
 /**
@@ -70,14 +72,14 @@ export function getValidationM<E, M>(S: Semigroup<E>, M: Monad<M>): ValidationM<
         ma,
         M.chain((e) => (isLeft(e) ? M.of(left(e.left)) : f(e.right)))
       ),
-    alt: (fx, f) =>
+    alt: (that) => (fa) =>
       pipe(
-        fx,
+        fa,
         M.chain((e1) =>
           isRight(e1)
             ? A.of(e1.right)
             : pipe(
-                f(),
+                that(),
                 M.map((e2) => (isLeft(e2) ? left(S.concat(e1.left, e2.left)) : e2))
               )
         )

@@ -187,9 +187,8 @@ export function chainEitherK<E, A, B>(
 /**
  * @since 2.0.0
  */
-export const alt: <R, E, A>(
-  that: () => ReaderEither<R, E, A>
-) => (fa: ReaderEither<R, E, A>) => ReaderEither<R, E, A> = (that) => (fa) => T.alt(fa, that)
+export const alt: <R, E, A>(that: () => ReaderEither<R, E, A>) => (fa: ReaderEither<R, E, A>) => ReaderEither<R, E, A> =
+  T.alt
 
 /**
  * @since 2.0.0
@@ -332,7 +331,7 @@ export const readerEither: Monad3<URI> & Bifunctor3<URI> & Alt3<URI> & MonadThro
   map,
   of: right,
   ap,
-  chain: T.chain,
+  chain,
   alt: T.alt,
   throwError: left
 }

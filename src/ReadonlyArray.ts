@@ -1418,8 +1418,6 @@ const partitionMapWithIndex_ = <A, B, C>(
   }
 }
 
-const alt_: <A>(fx: ReadonlyArray<A>, fy: () => ReadonlyArray<A>) => ReadonlyArray<A> = (fx, f) => concat(fx, f())
-
 const zero_: <A>() => ReadonlyArray<A> = () => empty
 
 const reduce_: <A, B>(fa: ReadonlyArray<A>, b: B, f: (b: B, a: A) => B) => B = (fa, b, f) =>
@@ -1540,7 +1538,7 @@ const wilt_ = <F>(
  * @since 2.5.0
  */
 export const alt: <A>(that: () => ReadonlyArray<A>) => (fa: ReadonlyArray<A>) => ReadonlyArray<A> = (that) => (fa) =>
-  alt_(fa, that)
+  concat(fa, that())
 
 /**
  * @since 2.5.0
@@ -1816,7 +1814,7 @@ export const readonlyArray: Monad1<URI> &
   partitionWithIndex: partitionWithIndex_,
   filterMapWithIndex: filterMapWithIndex_,
   filterWithIndex: filterWithIndex_,
-  alt: alt_,
+  alt,
   zero: zero_,
   unfold: unfold_,
   reduce: reduce_,

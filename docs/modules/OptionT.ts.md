@@ -29,8 +29,8 @@ Added in v2.0.0
 
 ```ts
 export interface OptionM<M> extends ApplicativeCompositionHKT1<M, URI> {
-  readonly chain: <A, B>(ma: OptionT<M, A>, f: (a: A) => OptionT<M, B>) => OptionT<M, B>
-  readonly alt: <A>(fx: OptionT<M, A>, fy: () => OptionT<M, A>) => OptionT<M, A>
+  readonly chain: <A, B>(f: (a: A) => OptionT<M, B>) => (ma: OptionT<M, A>) => OptionT<M, B>
+  readonly alt: <A>(that: () => OptionT<M, A>) => (fa: OptionT<M, A>) => OptionT<M, A>
   readonly fold: <A, R>(ma: OptionT<M, A>, onNone: () => HKT<M, R>, onSome: (a: A) => HKT<M, R>) => HKT<M, R>
   readonly getOrElse: <A>(ma: OptionT<M, A>, onNone: () => HKT<M, A>) => HKT<M, A>
   readonly fromM: <A>(ma: HKT<M, A>) => OptionT<M, A>
@@ -38,7 +38,7 @@ export interface OptionM<M> extends ApplicativeCompositionHKT1<M, URI> {
 }
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # OptionM1 (interface)
 
@@ -46,8 +46,8 @@ Added in v2.0.0
 
 ```ts
 export interface OptionM1<M extends URIS> extends ApplicativeComposition11<M, URI> {
-  readonly chain: <A, B>(ma: OptionT1<M, A>, f: (a: A) => OptionT1<M, B>) => OptionT1<M, B>
-  readonly alt: <A>(fx: OptionT1<M, A>, fy: () => OptionT1<M, A>) => OptionT1<M, A>
+  readonly chain: <A, B>(f: (a: A) => OptionT1<M, B>) => (ma: OptionT1<M, A>) => OptionT1<M, B>
+  readonly alt: <A>(that: () => OptionT1<M, A>) => (fa: OptionT1<M, A>) => OptionT1<M, A>
   readonly fold: <A, R>(ma: OptionT1<M, A>, onNone: () => Kind<M, R>, onSome: (a: A) => Kind<M, R>) => Kind<M, R>
   readonly getOrElse: <A>(ma: OptionT1<M, A>, onNone: () => Kind<M, A>) => Kind<M, A>
   readonly fromM: <A>(ma: Kind<M, A>) => OptionT1<M, A>
@@ -55,7 +55,7 @@ export interface OptionM1<M extends URIS> extends ApplicativeComposition11<M, UR
 }
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # OptionM2 (interface)
 
@@ -63,8 +63,8 @@ Added in v2.0.0
 
 ```ts
 export interface OptionM2<M extends URIS2> extends ApplicativeComposition21<M, URI> {
-  readonly chain: <E, A, B>(ma: OptionT2<M, E, A>, f: (a: A) => OptionT2<M, E, B>) => OptionT2<M, E, B>
-  readonly alt: <E, A>(fx: OptionT2<M, E, A>, fy: () => OptionT2<M, E, A>) => OptionT2<M, E, A>
+  readonly chain: <E, A, B>(f: (a: A) => OptionT2<M, E, B>) => (ma: OptionT2<M, E, A>) => OptionT2<M, E, B>
+  readonly alt: <E, A>(that: () => OptionT2<M, E, A>) => (fa: OptionT2<M, E, A>) => OptionT2<M, E, A>
   readonly fold: <E, A, R>(
     ma: OptionT2<M, E, A>,
     onNone: () => Kind2<M, E, R>,
@@ -76,7 +76,7 @@ export interface OptionM2<M extends URIS2> extends ApplicativeComposition21<M, U
 }
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # OptionM2C (interface)
 
@@ -84,8 +84,8 @@ Added in v2.0.0
 
 ```ts
 export interface OptionM2C<M extends URIS2, E> extends ApplicativeComposition2C1<M, URI, E> {
-  readonly chain: <A, B>(ma: OptionT2<M, E, A>, f: (a: A) => OptionT2<M, E, B>) => OptionT2<M, E, B>
-  readonly alt: <A>(fx: OptionT2<M, E, A>, fy: () => OptionT2<M, E, A>) => OptionT2<M, E, A>
+  readonly chain: <A, B>(f: (a: A) => OptionT2<M, E, B>) => (ma: OptionT2<M, E, A>) => OptionT2<M, E, B>
+  readonly alt: <A>(that: () => OptionT2<M, E, A>) => (fa: OptionT2<M, E, A>) => OptionT2<M, E, A>
   readonly fold: <A, R>(
     ma: OptionT2<M, E, A>,
     onNone: () => Kind2<M, E, R>,

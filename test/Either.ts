@@ -533,15 +533,24 @@ describe('Either', () => {
       assert.deepStrictEqual(pipe(_.left<string, (n: number) => number>('foo'), M.ap(_.right(1))), _.left('foo'))
       assert.deepStrictEqual(pipe(_.left('foo'), M.ap(_.left('bar'))), _.left('foobar'))
       assert.deepStrictEqual(
-        M.alt(_.left('a'), () => _.right(1)),
+        pipe(
+          _.left('a'),
+          M.alt(() => _.right(1))
+        ),
         _.right(1)
       )
       assert.deepStrictEqual(
-        M.alt(_.right(1), () => _.left('a')),
+        pipe(
+          _.right(1),
+          M.alt(() => _.left('a'))
+        ),
         _.right(1)
       )
       assert.deepStrictEqual(
-        M.alt(_.left('a'), () => _.left('b')),
+        pipe(
+          _.left('a'),
+          M.alt(() => _.left('b'))
+        ),
         _.left('ab')
       )
     })

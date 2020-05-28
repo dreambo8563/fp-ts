@@ -389,13 +389,25 @@ describe('TaskEither', () => {
     })
 
     it('alt', async () => {
-      const e1 = await TV.alt(_.right(1), () => _.right(2))()
+      const e1 = await pipe(
+        _.right(1),
+        TV.alt(() => _.right(2))
+      )()
       assert.deepStrictEqual(e1, E.right(1))
-      const e2 = await TV.alt(_.left('a'), () => _.right(2))()
+      const e2 = await pipe(
+        _.left('a'),
+        TV.alt(() => _.right(2))
+      )()
       assert.deepStrictEqual(e2, E.right(2))
-      const e3 = await TV.alt(_.right(1), () => _.left('b'))()
+      const e3 = await pipe(
+        _.right(1),
+        TV.alt(() => _.left('b'))
+      )()
       assert.deepStrictEqual(e3, E.right(1))
-      const e4 = await TV.alt(_.left('a'), () => _.left('b'))()
+      const e4 = await pipe(
+        _.left('a'),
+        TV.alt(() => _.left('b'))
+      )()
       assert.deepStrictEqual(e4, E.left('ab'))
     })
   })

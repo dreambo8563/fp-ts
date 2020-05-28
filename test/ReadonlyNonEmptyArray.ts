@@ -296,7 +296,10 @@ describe('ReadonlyNonEmptyArray', () => {
   it('alt / concat', () => {
     assert.deepStrictEqual(_.concat(['a'], []), ['a'])
     assert.deepStrictEqual(
-      _.readonlyNonEmptyArray.alt(['a'], () => ['b']),
+      pipe(
+        ['a'],
+        _.alt(() => ['b'])
+      ),
       ['a', 'b']
     )
   })

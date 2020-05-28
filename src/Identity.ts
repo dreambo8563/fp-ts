@@ -48,8 +48,6 @@ export const getEq: <A>(E: Eq<A>) => Eq<Identity<A>> = id
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const alt_: <A>(fx: A, fy: () => A) => A = id
-
 const extend_: <A, B>(wa: A, f: (wa: A) => B) => B = (wa, f) => f(wa)
 
 const reduce_: <A, B>(fa: Identity<A>, b: B, f: (b: B, a: A) => B) => B = (fa, b, f) => f(b, fa)
@@ -69,7 +67,7 @@ const sequence_ = <F>(F: Applicative<F>) => <A>(ta: Identity<HKT<F, A>>): HKT<F,
 /**
  * @since 2.0.0
  */
-export const alt: <A>(that: () => Identity<A>) => (fa: Identity<A>) => Identity<A> = (that) => (fa) => alt_(fa, that)
+export const alt: <A>(that: () => Identity<A>) => (fa: Identity<A>) => Identity<A> = () => id
 
 /**
  * @since 2.0.0
@@ -189,7 +187,7 @@ export const identity: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Alt1<U
   reduceRight: reduceRight_,
   traverse: traverse_,
   sequence: sequence_,
-  alt: alt_,
+  alt,
   extract,
   extend: extend_
 }

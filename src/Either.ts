@@ -500,12 +500,12 @@ export function getValidation<E>(
         : isLeft(ma)
         ? ma
         : right(mab.right(ma.right)),
-    alt: (fx, f) => {
-      if (isRight(fx)) {
-        return fx
+    alt: (that) => (fa) => {
+      if (isRight(fa)) {
+        return fa
       }
-      const fy = f()
-      return isLeft(fy) ? left(S.concat(fx.left, fy.left)) : fy
+      const fy = that()
+      return isLeft(fy) ? left(S.concat(fa.left, fy.left)) : fy
     }
   }
 }
@@ -566,8 +566,6 @@ const bimap_: <E, A, G, B>(fea: Either<E, A>, f: (e: E) => G, g: (a: A) => B) =>
 const mapLeft_: <E, A, G>(fea: Either<E, A>, f: (e: E) => G) => Either<G, A> = (fea, f) =>
   isLeft(fea) ? left(f(fea.left)) : fea
 
-const alt_: <E, A>(fx: Either<E, A>, fy: () => Either<E, A>) => Either<E, A> = (fx, fy) => (isLeft(fx) ? fy() : fx)
-
 const extend_: <E, A, B>(wa: Either<E, A>, f: (wa: Either<E, A>) => B) => Either<E, B> = (wa, f) =>
   isLeft(wa) ? wa : right(f(wa))
 
@@ -575,7 +573,7 @@ const extend_: <E, A, B>(wa: Either<E, A>, f: (wa: Either<E, A>) => B) => Either
  * @since 2.0.0
  */
 export const alt: <E, A>(that: () => Either<E, A>) => (fa: Either<E, A>) => Either<E, A> = (that) => (fa) =>
-  alt_(fa, that)
+  isLeft(fa) ? that() : fa
 
 /**
  * @since 2.0.0
@@ -753,7 +751,7 @@ export const either: Monad2<URI> &
   sequence: sequence_,
   bimap: bimap_,
   mapLeft: mapLeft_,
-  alt: alt_,
+  alt,
   extend: extend_,
   throwError: left
 }

@@ -19,8 +19,14 @@ describe('OptionT', () => {
   })
 
   it('chain', () => {
-    const to1 = T.chain(T.of('foo'), (a) => T.of(a.length))
-    const to2 = T.chain(task.of(O.none), (a: string) => T.of(a.length))
+    const to1 = pipe(
+      T.of('foo'),
+      T.chain((a) => T.of(a.length))
+    )
+    const to2 = pipe(
+      task.of(O.none),
+      T.chain((a: string) => T.of(a.length))
+    )
     return Promise.all([to1(), to2()]).then(([o1, o2]) => {
       assert.deepStrictEqual(o1, O.some(3))
       assert.deepStrictEqual(o2, O.none)
@@ -37,9 +43,15 @@ describe('OptionT', () => {
   })
 
   it('alt', async () => {
-    const o1 = await T.alt(task.of(O.some(1)), () => task.of(O.some(2)))()
+    const o1 = await pipe(
+      task.of(O.some(1)),
+      T.alt(() => task.of(O.some(2)))
+    )()
     assert.deepStrictEqual(o1, O.some(1))
-    const o2 = await T.alt(task.of(O.none), () => task.of(O.some(2)))()
+    const o2 = await pipe(
+      task.of(O.none),
+      T.alt(() => task.of(O.some(2)))
+    )()
     assert.deepStrictEqual(o2, O.some(2))
   })
 

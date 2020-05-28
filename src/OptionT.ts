@@ -19,11 +19,11 @@ import { pipe } from './function'
 export interface OptionT<M, A> extends HKT<M, Option<A>> {}
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
 export interface OptionM<M> extends ApplicativeCompositionHKT1<M, URI> {
-  readonly chain: <A, B>(ma: OptionT<M, A>, f: (a: A) => OptionT<M, B>) => OptionT<M, B>
-  readonly alt: <A>(fx: OptionT<M, A>, fy: () => OptionT<M, A>) => OptionT<M, A>
+  readonly chain: <A, B>(f: (a: A) => OptionT<M, B>) => (ma: OptionT<M, A>) => OptionT<M, B>
+  readonly alt: <A>(that: () => OptionT<M, A>) => (fa: OptionT<M, A>) => OptionT<M, A>
   readonly fold: <A, R>(ma: OptionT<M, A>, onNone: () => HKT<M, R>, onSome: (a: A) => HKT<M, R>) => HKT<M, R>
   readonly getOrElse: <A>(ma: OptionT<M, A>, onNone: () => HKT<M, A>) => HKT<M, A>
   readonly fromM: <A>(ma: HKT<M, A>) => OptionT<M, A>
@@ -36,11 +36,11 @@ export interface OptionM<M> extends ApplicativeCompositionHKT1<M, URI> {
 export type OptionT1<M extends URIS, A> = Kind<M, Option<A>>
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
 export interface OptionM1<M extends URIS> extends ApplicativeComposition11<M, URI> {
-  readonly chain: <A, B>(ma: OptionT1<M, A>, f: (a: A) => OptionT1<M, B>) => OptionT1<M, B>
-  readonly alt: <A>(fx: OptionT1<M, A>, fy: () => OptionT1<M, A>) => OptionT1<M, A>
+  readonly chain: <A, B>(f: (a: A) => OptionT1<M, B>) => (ma: OptionT1<M, A>) => OptionT1<M, B>
+  readonly alt: <A>(that: () => OptionT1<M, A>) => (fa: OptionT1<M, A>) => OptionT1<M, A>
   readonly fold: <A, R>(ma: OptionT1<M, A>, onNone: () => Kind<M, R>, onSome: (a: A) => Kind<M, R>) => Kind<M, R>
   readonly getOrElse: <A>(ma: OptionT1<M, A>, onNone: () => Kind<M, A>) => Kind<M, A>
   readonly fromM: <A>(ma: Kind<M, A>) => OptionT1<M, A>
@@ -53,11 +53,11 @@ export interface OptionM1<M extends URIS> extends ApplicativeComposition11<M, UR
 export type OptionT2<M extends URIS2, E, A> = Kind2<M, E, Option<A>>
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
 export interface OptionM2<M extends URIS2> extends ApplicativeComposition21<M, URI> {
-  readonly chain: <E, A, B>(ma: OptionT2<M, E, A>, f: (a: A) => OptionT2<M, E, B>) => OptionT2<M, E, B>
-  readonly alt: <E, A>(fx: OptionT2<M, E, A>, fy: () => OptionT2<M, E, A>) => OptionT2<M, E, A>
+  readonly chain: <E, A, B>(f: (a: A) => OptionT2<M, E, B>) => (ma: OptionT2<M, E, A>) => OptionT2<M, E, B>
+  readonly alt: <E, A>(that: () => OptionT2<M, E, A>) => (fa: OptionT2<M, E, A>) => OptionT2<M, E, A>
   readonly fold: <E, A, R>(
     ma: OptionT2<M, E, A>,
     onNone: () => Kind2<M, E, R>,
@@ -72,8 +72,8 @@ export interface OptionM2<M extends URIS2> extends ApplicativeComposition21<M, U
  * @since 2.2.0
  */
 export interface OptionM2C<M extends URIS2, E> extends ApplicativeComposition2C1<M, URI, E> {
-  readonly chain: <A, B>(ma: OptionT2<M, E, A>, f: (a: A) => OptionT2<M, E, B>) => OptionT2<M, E, B>
-  readonly alt: <A>(fx: OptionT2<M, E, A>, fy: () => OptionT2<M, E, A>) => OptionT2<M, E, A>
+  readonly chain: <A, B>(f: (a: A) => OptionT2<M, E, B>) => (ma: OptionT2<M, E, A>) => OptionT2<M, E, B>
+  readonly alt: <A>(that: () => OptionT2<M, E, A>) => (fa: OptionT2<M, E, A>) => OptionT2<M, E, A>
   readonly fold: <A, R>(
     ma: OptionT2<M, E, A>,
     onNone: () => Kind2<M, E, R>,
@@ -97,8 +97,8 @@ export function getOptionM<M>(M: Monad<M>): OptionM<M> {
 
   return {
     ...A,
-    chain: (ma, f) => pipe(ma, M.chain(fold(() => fnone, f))),
-    alt: (fx, fy) => pipe(fx, M.chain(fold(fy, (a) => M.of(some(a))))),
+    chain: (f) => (ma) => pipe(ma, M.chain(fold(() => fnone, f))),
+    alt: (that) => (fa) => pipe(fa, M.chain(fold(that, (a) => M.of(some(a))))),
     fold: (ma, onNone, onSome) => pipe(ma, M.chain(fold(onNone, onSome))),
     getOrElse: (ma, onNone) => pipe(ma, M.chain(fold(onNone, M.of))),
     fromM: (ma) => pipe(ma, M.map(some)),

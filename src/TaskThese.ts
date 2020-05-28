@@ -157,7 +157,7 @@ export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TaskThese<E, A>) => Task
  */
 export const taskThese: Functor2<URI> & Bifunctor2<URI> = {
   URI,
-  map: T.map,
+  map,
   bimap: T.bimap,
   mapLeft: T.mapLeft
 }

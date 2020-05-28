@@ -647,8 +647,6 @@ const sequence_ = <F>(F: Applicative<F>) => <A>(ta: Option<HKT<F, A>>): HKT<F, O
   return isNone(ta) ? F.of(none) : pipe(ta.value, F.map(some))
 }
 
-const alt_: <A>(fx: Option<A>, fy: () => Option<A>) => Option<A> = (ma, f) => (isNone(ma) ? f() : ma)
-
 const filter_ = <A>(fa: Option<A>, predicate: Predicate<A>): Option<A> =>
   isNone(fa) ? none : predicate(fa.value) ? fa : none
 
@@ -698,7 +696,8 @@ const wilt_ = <F>(F: Applicative<F>) => <A, B, C>(
 /**
  * @since 2.0.0
  */
-export const alt: <A>(that: () => Option<A>) => (fa: Option<A>) => Option<A> = (that) => (fa) => alt_(fa, that)
+export const alt: <A>(that: () => Option<A>) => (fa: Option<A>) => Option<A> = (that) => (fa) =>
+  isNone(fa) ? that() : fa
 
 /**
  * @since 2.0.0
@@ -875,7 +874,7 @@ export const option: Monad1<URI> &
   traverse: traverse_,
   sequence: sequence_,
   zero: () => none,
-  alt: alt_,
+  alt,
   extend: extend_,
   compact,
   separate,

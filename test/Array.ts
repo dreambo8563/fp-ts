@@ -59,7 +59,8 @@ import {
   getEq,
   isNonEmpty,
   map,
-  chain
+  chain,
+  alt
 } from '../src/Array'
 import { left, right } from '../src/Either'
 import { fold as foldMonoid, monoidSum, monoidString } from '../src/Monoid'
@@ -81,7 +82,10 @@ describe('Array', () => {
 
   it('alt', () => {
     assert.deepStrictEqual(
-      array.alt([1, 2], () => [3, 4]),
+      pipe(
+        [1, 2],
+        alt(() => [3, 4])
+      ),
       [1, 2, 3, 4]
     )
   })

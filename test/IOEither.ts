@@ -320,13 +320,25 @@ describe('IOEither', () => {
     })
 
     it('alt', () => {
-      const e1 = IV.alt(_.right(1), () => _.right(2))()
+      const e1 = pipe(
+        _.right(1),
+        IV.alt(() => _.right(2))
+      )()
       assert.deepStrictEqual(e1, E.right(1))
-      const e2 = IV.alt(_.left('a'), () => _.right(2))()
+      const e2 = pipe(
+        _.left('a'),
+        IV.alt(() => _.right(2))
+      )()
       assert.deepStrictEqual(e2, E.right(2))
-      const e3 = IV.alt(_.right(1), () => _.left('b'))()
+      const e3 = pipe(
+        _.right(1),
+        IV.alt(() => _.left('b'))
+      )()
       assert.deepStrictEqual(e3, E.right(1))
-      const e4 = IV.alt(_.left('a'), () => _.left('b'))()
+      const e4 = pipe(
+        _.left('a'),
+        IV.alt(() => _.left('b'))
+      )()
       assert.deepStrictEqual(e4, E.left('ab'))
     })
   })

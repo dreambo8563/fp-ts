@@ -213,8 +213,7 @@ export function chainEitherK<E, A, B>(f: (a: A) => Either<E, B>): (ma: IOEither<
 /**
  * @since 2.0.0
  */
-export const alt: <E, A>(that: () => IOEither<E, A>) => (fa: IOEither<E, A>) => IOEither<E, A> = (that) => (fa) =>
-  T.alt(fa, that)
+export const alt: <E, A>(that: () => IOEither<E, A>) => (fa: IOEither<E, A>) => IOEither<E, A> = T.alt
 
 /**
  * @since 2.0.0
@@ -345,8 +344,8 @@ export const ioEither: Monad2<URI> & Bifunctor2<URI> & Alt2<URI> & MonadIO2<URI>
   map,
   of: right,
   ap,
-  chain: T.chain,
-  alt: T.alt,
+  chain,
+  alt,
   fromIO: rightIO,
   throwError: left
 }
