@@ -13,7 +13,6 @@ import { Contravariant1 } from './Contravariant'
 import { Eq } from './Eq'
 import { Monoid } from './Monoid'
 import { monoidOrdering, Ordering } from './Ordering'
-import { Semigroup } from './Semigroup'
 
 declare module './HKT' {
   interface URItoKind<A> {
@@ -159,18 +158,6 @@ export function fromCompare<A>(compare: (x: A, y: A) => Ordering): Ord<A> {
 }
 
 /**
- * Use `getMonoid` instead
- *
- * @since 2.0.0
- * @deprecated
- */
-export function getSemigroup<A = never>(): Semigroup<Ord<A>> {
-  return {
-    concat: (x, y) => fromCompare((a, b) => monoidOrdering.concat(x.compare(a, b), y.compare(a, b)))
-  }
-}
-
-/**
  * Returns a `Monoid` such that:
  *
  * - its `concat(ord1, ord2)` operation will order first by `ord1`, and then by `ord2`
@@ -234,10 +221,8 @@ export function getSemigroup<A = never>(): Semigroup<Ord<A>> {
  * @since 2.4.0
  */
 export function getMonoid<A = never>(): Monoid<Ord<A>> {
-  // tslint:disable-next-line: deprecation
-  const S = getSemigroup<A>()
   return {
-    concat: S.concat,
+    concat: (x, y) => fromCompare((a, b) => monoidOrdering.concat(x.compare(a, b), y.compare(a, b))),
     empty: fromCompare(() => 0)
   }
 }
@@ -280,13 +265,6 @@ export function getDualOrd<A>(O: Ord<A>): Ord<A> {
 
 const contramap_: <A, B>(fa: Ord<A>, f: (b: B) => A) => Ord<B> = (fa, f) =>
   fromCompare((x, y) => fa.compare(f(x), f(y)))
-
-/**
- * @since 2.0.0
- */
-export const ordDate: Ord<Date> =
-  /*#__PURE__*/
-  contramap_(ordNumber, (date) => date.valueOf())
 
 // -------------------------------------------------------------------------------------
 // pipeables

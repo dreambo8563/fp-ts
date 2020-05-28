@@ -49,18 +49,7 @@ export function fromEquals<A>(equals: (x: A, y: A) => boolean): Eq<A> {
  * @since 2.5.0
  */
 export const eqStrict: Eq<unknown> = {
-  // tslint:disable-next-line: deprecation
-  equals: strictEqual
-}
-
-/**
- * Use `eqStrict` instead
- *
- * @since 2.0.0
- * @deprecated
- */
-export function strictEqual<A>(a: A, b: A): boolean {
-  return a === b
+  equals: (x, y) => x === y
 }
 
 /**
@@ -110,13 +99,6 @@ export function getTupleEq<T extends ReadonlyArray<Eq<any>>>(
   ...eqs: T
 ): Eq<{ [K in keyof T]: T[K] extends Eq<infer A> ? A : never }> {
   return fromEquals((x, y) => eqs.every((E, i) => E.equals(x[i], y[i])))
-}
-
-/**
- * @since 2.0.0
- */
-export const eqDate: Eq<Date> = {
-  equals: (x, y) => x.valueOf() === y.valueOf()
 }
 
 const empty: Eq<unknown> = {

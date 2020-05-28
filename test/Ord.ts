@@ -84,12 +84,6 @@ describe('Ord', () => {
     assert.deepStrictEqual(O.compare(2, 2), 0)
   })
 
-  it('ordDate', () => {
-    assert.deepStrictEqual(_.ordDate.compare(new Date(0), new Date(0)), 0)
-    assert.deepStrictEqual(_.ordDate.compare(new Date(0), new Date(1)), -1)
-    assert.deepStrictEqual(_.ordDate.compare(new Date(1), new Date(0)), 1)
-  })
-
   it('leq', () => {
     assert.deepStrictEqual(_.leq(_.ordNumber)(0, 1), true)
     assert.deepStrictEqual(_.leq(_.ordNumber)(1, 1), true)

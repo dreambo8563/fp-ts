@@ -14,9 +14,11 @@ Added in v2.0.0
 
 - [create](#create)
 - [eqDate](#eqdate)
-- [eqMonth](#eqmonth)
-- [eqYear](#eqyear)
+- [eqGetDate](#eqgetdate)
+- [eqGetFullYear](#eqgetfullyear)
+- [eqGetMonth](#eqgetmonth)
 - [now](#now)
+- [ordDate](#orddate)
 
 ---
 
@@ -40,27 +42,37 @@ Added in v2.0.0
 export declare const eqDate: Eq<Date>
 ```
 
-Added in v2.6.0
+Added in v3.0.0
 
-# eqMonth
-
-**Signature**
-
-```ts
-export declare const eqMonth: Eq<Date>
-```
-
-Added in v2.6.0
-
-# eqYear
+# eqGetDate
 
 **Signature**
 
 ```ts
-export declare const eqYear: Eq<Date>
+export declare const eqGetDate: Eq<Date>
 ```
 
-Added in v2.6.0
+Added in v3.0.0
+
+# eqGetFullYear
+
+**Signature**
+
+```ts
+export declare const eqGetFullYear: Eq<Date>
+```
+
+Added in v3.0.0
+
+# eqGetMonth
+
+**Signature**
+
+```ts
+export declare const eqGetMonth: Eq<Date>
+```
+
+Added in v3.0.0
 
 # now
 
@@ -73,3 +85,13 @@ export declare const now: IO<number>
 ```
 
 Added in v2.0.0
+
+# ordDate
+
+**Signature**
+
+```ts
+export declare const ordDate: Ord<Date>
+```
+
+Added in v3.0.0

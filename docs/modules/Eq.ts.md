@@ -26,7 +26,6 @@ Added in v2.0.0
 - [contramap](#contramap)
 - [eq](#eq)
 - [eqBoolean](#eqboolean)
-- [eqDate](#eqdate)
 - [eqNumber](#eqnumber)
 - [eqStrict](#eqstrict)
 - [eqString](#eqstring)
@@ -34,7 +33,6 @@ Added in v2.0.0
 - [getMonoid](#getmonoid)
 - [getStructEq](#getstructeq)
 - [getTupleEq](#gettupleeq)
-- [~~strictEqual~~](#strictequal)
 
 ---
 
@@ -96,16 +94,6 @@ Added in v2.0.0
 
 ```ts
 export declare const eqBoolean: Eq<boolean>
-```
-
-Added in v2.0.0
-
-# eqDate
-
-**Signature**
-
-```ts
-export declare const eqDate: Eq<Date>
 ```
 
 Added in v2.0.0
@@ -192,18 +180,6 @@ assert.strictEqual(E.equals(['a', 1, true], ['a', 1, true]), true)
 assert.strictEqual(E.equals(['a', 1, true], ['b', 1, true]), false)
 assert.strictEqual(E.equals(['a', 1, true], ['a', 2, true]), false)
 assert.strictEqual(E.equals(['a', 1, true], ['a', 1, false]), false)
-```
-
-Added in v2.0.0
-
-# ~~strictEqual~~
-
-Use `eqStrict` instead
-
-**Signature**
-
-```ts
-export declare function strictEqual<A>(a: A, b: A): boolean
 ```
 
 Added in v2.0.0

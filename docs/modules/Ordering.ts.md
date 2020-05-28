@@ -17,7 +17,6 @@ Added in v2.0.0
 - [invert](#invert)
 - [monoidOrdering](#monoidordering)
 - [sign](#sign)
-- [~~semigroupOrdering~~](#semigroupordering)
 
 ---
 
@@ -67,18 +66,6 @@ Added in v2.4.0
 
 ```ts
 export declare function sign(n: number): Ordering
-```
-
-Added in v2.0.0
-
-# ~~semigroupOrdering~~
-
-Use `monoidOrdering` instead
-
-**Signature**
-
-```ts
-export declare const semigroupOrdering: Semigroup<Ordering>
 ```
 
 Added in v2.0.0

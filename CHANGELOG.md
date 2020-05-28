@@ -19,8 +19,17 @@ high state of flux, you're at risk of it changing without notice.
 - **Breaking Change**
   - remove `pipeable` module (@gcanti)
   - remove `ChainRec` module (@gcanti)
+  - remove deprecated APIs (@gcanti)
+  - `Date`
+    - rename `eqDate` to `eqGetDate` (@gcanti)
+    - rename `eqMonth` to `eqGetMonth` (@gcanti)
+    - rename `eqYear` to `eqGetFullYear` (@gcanti)
   - `Either`
     - make `fromNullable` lazy, closes #918 (@gcanti)
+  - `Eq`
+    - move `eqDate` to `Date` module (@gcanti)
+  - `Ord`
+    - move `ordDate` to `Date` module (@gcanti)
   - `ReadonlyTuple`
     - remove `getChainRec` function (@gcanti)
   - `TaskThese`

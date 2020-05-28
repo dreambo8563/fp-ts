@@ -38,10 +38,8 @@ Added in v2.0.0
 - [min](#min)
 - [ord](#ord)
 - [ordBoolean](#ordboolean)
-- [ordDate](#orddate)
 - [ordNumber](#ordnumber)
 - [ordString](#ordstring)
-- [~~getSemigroup~~](#getsemigroup)
 
 ---
 
@@ -321,16 +319,6 @@ export declare const ordBoolean: Ord<boolean>
 
 Added in v2.0.0
 
-# ordDate
-
-**Signature**
-
-```ts
-export declare const ordDate: Ord<Date>
-```
-
-Added in v2.0.0
-
 # ordNumber
 
 **Signature**
@@ -347,18 +335,6 @@ Added in v2.0.0
 
 ```ts
 export declare const ordString: Ord<string>
-```
-
-Added in v2.0.0
-
-# ~~getSemigroup~~
-
-Use `getMonoid` instead
-
-**Signature**
-
-```ts
-export declare function getSemigroup<A = never>(): Semigroup<Ord<A>>
 ```
 
 Added in v2.0.0
