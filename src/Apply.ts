@@ -14,7 +14,7 @@
  */
 import { Functor, Functor1, Functor2, Functor2C, Functor3, Functor4, Functor3C } from './Functor'
 import { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from './HKT'
-import { tuple } from './function'
+import { tuple, pipe } from './function'
 
 /**
  * @since 2.0.0
@@ -135,7 +135,7 @@ export function sequenceT<F>(F: Apply<F>): any {
   return <A>(...args: Array<HKT<F, A>>) => {
     const len = args.length
     const f = getTupleConstructor(len)
-    let fas = F.map(args[0], f)
+    let fas = pipe(args[0], F.map(f))
     for (let i = 1; i < len; i++) {
       fas = F.ap(fas, args[i])
     }
@@ -228,7 +228,7 @@ export function sequenceS<F>(F: Apply<F>): (r: Record<string, HKT<F, any>>) => H
     const keys = Object.keys(r)
     const len = keys.length
     const f = getRecordConstructor(keys)
-    let fr = F.map(r[keys[0]], f)
+    let fr = pipe(r[keys[0]], F.map(f))
     for (let i = 1; i < len; i++) {
       fr = F.ap(fr, r[keys[i]])
     }

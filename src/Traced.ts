@@ -83,7 +83,7 @@ export function getComonad<P>(monoid: Monoid<P>): Comonad2C<URI, P> {
   return {
     URI,
     _E: undefined as any,
-    map: map_,
+    map,
     extend,
     extract
   }
@@ -93,12 +93,10 @@ export function getComonad<P>(monoid: Monoid<P>): Comonad2C<URI, P> {
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const map_: <E, A, B>(fa: Traced<E, A>, f: (a: A) => B) => Traced<E, B> = (wa, f) => (p) => f(wa(p))
-
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: Traced<E, A>) => Traced<E, B> = (f) => (fa) => map_(fa, f)
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: Traced<E, A>) => Traced<E, B> = (f) => (fa) => (p) => f(fa(p))
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -109,5 +107,5 @@ export const map: <A, B>(f: (a: A) => B) => <E>(fa: Traced<E, A>) => Traced<E, B
  */
 export const traced: Functor2<URI> = {
   URI,
-  map: map_
+  map
 }

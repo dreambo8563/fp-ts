@@ -2,16 +2,13 @@
  * @since 2.0.0
  */
 import { Category2 } from './Category'
-import { Choice2 } from './Choice'
-import * as E from './Either'
-import { identity } from './function'
+import { identity, pipe } from './function'
 import { monadIdentity } from './Identity'
 import { Monad2 } from './Monad'
 import { Monoid } from './Monoid'
 import { Profunctor2 } from './Profunctor'
 import { getReaderM } from './ReaderT'
 import { Semigroup } from './Semigroup'
-import { Strong2 } from './Strong'
 
 const T = /*#__PURE__*/ getReaderM(monadIdentity)
 
@@ -106,7 +103,10 @@ export const ap: <R, A>(fa: Reader<R, A>) => <B>(fab: Reader<R, (a: A) => B>) =>
  */
 export const apFirst = <R, B>(fb: Reader<R, B>) => <A>(fa: Reader<R, A>): Reader<R, A> =>
   T.ap(
-    T.map(fa, (a) => (_: B) => a),
+    pipe(
+      fa,
+      T.map((a) => (_: B) => a)
+    ),
     fb
   )
 
@@ -115,7 +115,10 @@ export const apFirst = <R, B>(fb: Reader<R, B>) => <A>(fa: Reader<R, A>): Reader
  */
 export const apSecond = <R, B>(fb: Reader<R, B>) => <A>(fa: Reader<R, A>): Reader<R, B> =>
   T.ap(
-    T.map(fa, () => (b: B) => b),
+    pipe(
+      fa,
+      T.map(() => (b: B) => b)
+    ),
     fb
   )
 
@@ -129,7 +132,12 @@ export const chain: <R, A, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) =
  * @since 2.0.0
  */
 export const chainFirst: <R, A, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) => Reader<R, A> = (f) => (ma) =>
-  T.chain(ma, (a) => T.map(f(a), () => a))
+  T.chain(ma, (a) =>
+    pipe(
+      f(a),
+      T.map(() => a)
+    )
+  )
 
 /**
  * @since 2.6.0
@@ -144,7 +152,7 @@ export const flatten: <R, A>(mma: Reader<R, Reader<R, A>>) => Reader<R, A> = (mm
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <R>(fa: Reader<R, A>) => Reader<R, B> = (f) => (fa) => T.map(fa, f)
+export const map: <A, B>(f: (a: A) => B) => <R>(fa: Reader<R, A>) => Reader<R, B> = T.map
 
 /**
  * @since 2.0.0
@@ -177,7 +185,7 @@ export const monadReader: Monad2<URI> = {
 /**
  * @since 2.0.0
  */
-export const reader: Monad2<URI> & Profunctor2<URI> & Category2<URI> & Strong2<URI> & Choice2<URI> = {
+export const reader: Monad2<URI> & Profunctor2<URI> & Category2<URI> = {
   URI,
   map: T.map,
   of,
@@ -185,11 +193,5 @@ export const reader: Monad2<URI> & Profunctor2<URI> & Category2<URI> & Strong2<U
   chain: T.chain,
   promap: promap_,
   compose: compose_,
-  id: () => identity,
-  first: (pab) => ([a, c]) => [pab(a), c],
-  second: (pbc) => ([a, b]) => [a, pbc(b)],
-  left: <A, B, C>(pab: Reader<A, B>): Reader<E.Either<A, C>, E.Either<B, C>> =>
-    E.fold<A, C, E.Either<B, C>>((a) => E.left(pab(a)), E.right),
-  right: <A, B, C>(pbc: Reader<B, C>): Reader<E.Either<A, B>, E.Either<A, C>> =>
-    E.fold<A, B, E.Either<A, C>>(E.left, (b) => E.right(pbc(b)))
+  id: () => identity
 }

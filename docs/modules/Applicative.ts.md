@@ -348,6 +348,7 @@ export declare function getApplicativeComposition<F, G>(
 import { getApplicativeComposition } from 'fp-ts/lib/Applicative'
 import { option, Option, some } from 'fp-ts/lib/Option'
 import { task, Task } from 'fp-ts/lib/Task'
+import { pipe } from 'fp-ts/lib/function'
 
 // an Applicative instance for Task<Option<A>>
 const A = getApplicativeComposition(task, option)
@@ -357,7 +358,7 @@ const y: Task<Option<number>> = task.of(some(2))
 
 const sum = (a: number) => (b: number): number => a + b
 
-A.ap(A.map(x, sum), y)().then((result) => assert.deepStrictEqual(result, some(3)))
+A.ap(pipe(x, A.map(sum)), y)().then((result) => assert.deepStrictEqual(result, some(3)))
 ```
 
 Added in v2.0.0

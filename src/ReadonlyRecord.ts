@@ -8,7 +8,7 @@ import { Eq, fromEquals } from './Eq'
 import { FilterableWithIndex1, PredicateWithIndex, RefinementWithIndex } from './FilterableWithIndex'
 import { Foldable, Foldable1, Foldable2, Foldable3 } from './Foldable'
 import { FoldableWithIndex1 } from './FoldableWithIndex'
-import { identity, Predicate, Refinement } from './function'
+import { identity, Predicate, Refinement, pipe } from './function'
 import { FunctorWithIndex1 } from './FunctorWithIndex'
 import { HKT, Kind, Kind2, Kind3, URIS, URIS2, URIS3 } from './HKT'
 import { Magma } from './Magma'
@@ -691,9 +691,6 @@ export function elem<A>(E: Eq<A>): (a: A, fa: ReadonlyRecord<string, A>) => bool
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const map_: <A, B>(fa: Readonly<Record<string, A>>, f: (a: A) => B) => Readonly<Record<string, B>> = (fa, f) =>
-  mapWithIndex_(fa, (_, a) => f(a))
-
 const reduce_: <A, B>(fa: Readonly<Record<string, A>>, b: B, f: (b: B, a: A) => B) => B = (fa, b, f) =>
   reduceWithIndex_(fa, b, (_, b, a) => f(b, a))
 
@@ -870,10 +867,13 @@ const traverseWithIndex_ = <F>(F: Applicative<F>) => <A, B>(
   let fr: HKT<F, Record<string, B>> = F.of({})
   for (const key of keys) {
     fr = F.ap(
-      F.map(fr, (r) => (b: B) => {
-        r[key] = b
-        return r
-      }),
+      pipe(
+        fr,
+        F.map((r) => (b: B) => {
+          r[key] = b
+          return r
+        })
+      ),
       f(key, ta[key])
     )
   }
@@ -992,7 +992,7 @@ export const readonlyRecord: FunctorWithIndex1<URI, string> &
   Witherable1<URI> &
   FoldableWithIndex1<URI, string> = {
   URI,
-  map: map_,
+  map,
   reduce: reduce_,
   foldMap: foldMap_,
   reduceRight: reduceRight_,
@@ -1016,7 +1016,7 @@ export const readonlyRecord: FunctorWithIndex1<URI, string> &
     F: Applicative<F>
   ): (<A, B>(wa: ReadonlyRecord<string, A>, f: (a: A) => HKT<F, Option<B>>) => HKT<F, ReadonlyRecord<string, B>>) => {
     const traverseF = traverse_(F)
-    return (wa, f) => F.map(traverseF(wa, f), compact)
+    return (wa, f) => pipe(traverseF(wa, f), F.map(compact))
   },
   wilt: <F>(
     F: Applicative<F>
@@ -1025,7 +1025,7 @@ export const readonlyRecord: FunctorWithIndex1<URI, string> &
     f: (a: A) => HKT<F, Either<B, C>>
   ) => HKT<F, Separated<ReadonlyRecord<string, B>, ReadonlyRecord<string, C>>>) => {
     const traverseF = traverse_(F)
-    return (wa, f) => F.map(traverseF(wa, f), separate)
+    return (wa, f) => pipe(traverseF(wa, f), F.map(separate))
   },
   traverseWithIndex: traverseWithIndex_
 }

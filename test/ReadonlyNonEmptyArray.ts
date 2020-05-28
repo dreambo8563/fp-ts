@@ -1,7 +1,7 @@
 import * as assert from 'assert'
 import * as C from '../src/Const'
 import { eqNumber } from '../src/Eq'
-import { identity } from '../src/function'
+import { identity, pipe } from '../src/function'
 import * as I from '../src/Identity'
 import * as M from '../src/Monoid'
 import * as O from '../src/Option'
@@ -21,7 +21,7 @@ describe('ReadonlyNonEmptyArray', () => {
 
   it('map', () => {
     const double = (n: number) => n * 2
-    assert.deepStrictEqual(_.readonlyNonEmptyArray.map([1, 2], double), [2, 4])
+    assert.deepStrictEqual(pipe([1, 2], _.map(double)), [2, 4])
   })
 
   it('mapWithIndex', () => {

@@ -476,7 +476,11 @@ describe('ReadonlyArray', () => {
 
   const optionStringEq = O.getEq(Eq.eqString)
   const multipleOf3: Predicate<number> = (x: number) => x % 3 === 0
-  const multipleOf3AsString = (x: number) => O.option.map(O.fromPredicate(multipleOf3)(x), (x) => `${x}`)
+  const multipleOf3AsString = (x: number) =>
+    pipe(
+      O.fromPredicate(multipleOf3)(x),
+      O.map((x) => `${x}`)
+    )
 
   it('`findFirstMap(arr, fun)` is equivalent to map and `head(mapOption(arr, fun)`', () => {
     fc.assert(
@@ -893,7 +897,7 @@ describe('ReadonlyArray', () => {
       readonly bar: () => number
     }
     const f = (a: number, x?: Foo) => (x !== undefined ? `${a}${x.bar()}` : `${a}`)
-    const res = _.readonlyArray.map([1, 2], f)
+    const res = pipe([1, 2], _.map(f))
     assert.deepStrictEqual(res, ['1', '2'])
   })
 

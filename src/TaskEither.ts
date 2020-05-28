@@ -9,7 +9,7 @@ import { Bifunctor2 } from './Bifunctor'
 import * as E from './Either'
 import { getEitherM } from './EitherT'
 import { Filterable2C, getFilterableComposition } from './Filterable'
-import { identity, Lazy, Predicate, Refinement } from './function'
+import { identity, Lazy, Predicate, Refinement, pipe } from './function'
 import { IO } from './IO'
 import { IOEither } from './IOEither'
 import { Monad2, Monad2C } from './Monad'
@@ -187,7 +187,7 @@ export function bracket<E, A, B>(
   release: (a: A, e: Either<E, B>) => TaskEither<E, void>
 ): TaskEither<E, B> {
   return T.chain(acquire, (a) =>
-    T.chain(monadTask.map(use(a), E.right), (e) =>
+    T.chain(pipe(use(a), monadTask.map(E.right)), (e) =>
       T.chain(release(a, e), () => (E.isLeft(e) ? T.left(e.left) : T.of(e.right)))
     )
   )
@@ -340,7 +340,10 @@ export const ap: <E, A>(fa: TaskEither<E, A>) => <B>(fab: TaskEither<E, (a: A) =
  */
 export const apFirst: <E, B>(fb: TaskEither<E, B>) => <A>(fa: TaskEither<E, A>) => TaskEither<E, A> = (fb) => (fa) =>
   T.ap(
-    T.map(fa, (a) => () => a),
+    pipe(
+      fa,
+      T.map((a) => () => a)
+    ),
     fb
   )
 
@@ -349,7 +352,10 @@ export const apFirst: <E, B>(fb: TaskEither<E, B>) => <A>(fa: TaskEither<E, A>) 
  */
 export const apSecond = <E, B>(fb: TaskEither<E, B>) => <A>(fa: TaskEither<E, A>): TaskEither<E, B> =>
   T.ap(
-    T.map(fa, () => (b: B) => b),
+    pipe(
+      fa,
+      T.map(() => (b: B) => b)
+    ),
     fb
   )
 
@@ -394,7 +400,13 @@ export const chainIOEitherKW: <D, A, B>(
  */
 export const chainFirst: <E, A, B>(f: (a: A) => TaskEither<E, B>) => (ma: TaskEither<E, A>) => TaskEither<E, A> = (
   f
-) => (ma) => T.chain(ma, (a) => T.map(f(a), () => a))
+) => (ma) =>
+  T.chain(ma, (a) =>
+    pipe(
+      f(a),
+      T.map(() => a)
+    )
+  )
 
 /**
  * @since 2.0.0
@@ -404,7 +416,7 @@ export const flatten: <E, A>(mma: TaskEither<E, TaskEither<E, A>>) => TaskEither
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: TaskEither<E, A>) => TaskEither<E, B> = (f) => (fa) => T.map(fa, f)
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: TaskEither<E, A>) => TaskEither<E, B> = T.map
 
 /**
  * @since 2.0.0
@@ -483,6 +495,6 @@ export const taskEitherSeq: typeof taskEither =
   ((): typeof taskEither => {
     return {
       ...taskEither,
-      ap: (mab, ma) => T.chain(mab, (f) => T.map(ma, f))
+      ap: (mab, ma) => T.chain(mab, (f) => pipe(ma, T.map(f)))
     }
   })()

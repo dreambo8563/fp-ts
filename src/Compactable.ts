@@ -30,6 +30,7 @@ import {
 } from './Functor'
 import { HKT, Kind, Kind2, Kind3, URIS, URIS2, URIS3, URIS4, Kind4 } from './HKT'
 import { getLeft, getRight, Option } from './Option'
+import { pipe } from './function'
 
 /**
  * A `Separated` type which holds `left` and `right` parts.
@@ -255,10 +256,10 @@ export function getCompactableComposition<F, G>(
   const FC = getFunctorComposition(F, G)
   const CC: CompactableComposition<F, G> = {
     ...FC,
-    compact: (fga) => F.map(fga, G.compact),
+    compact: (fga) => pipe(fga, F.map(G.compact)),
     separate: (fge) => {
-      const left = CC.compact(FC.map(fge, getLeft))
-      const right = CC.compact(FC.map(fge, getRight))
+      const left = CC.compact(pipe(fge, FC.map(getLeft)))
+      const right = CC.compact(pipe(fge, FC.map(getRight)))
       return { left, right }
     }
   }

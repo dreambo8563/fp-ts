@@ -2,7 +2,7 @@ import * as assert from 'assert'
 import * as M from '../src/Map'
 import { semigroupSum, getStructSemigroup, getFirstSemigroup, getLastSemigroup } from '../src/Semigroup'
 import { monoidString } from '../src/Monoid'
-import { Refinement, identity } from '../src/function'
+import { Refinement, identity, pipe } from '../src/function'
 import { option, some, none, Option } from '../src/Option'
 import { Eq, eqNumber, fromEquals } from '../src/Eq'
 import { array } from '../src/Array'
@@ -630,7 +630,7 @@ describe('Map', () => {
           ['k2', 4]
         ])
         const double = (n: number): number => n * 2
-        assert.deepStrictEqual(map(d1, double), expected)
+        assert.deepStrictEqual(pipe(d1, map(double)), expected)
       })
     })
 

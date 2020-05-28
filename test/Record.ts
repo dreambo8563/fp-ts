@@ -31,11 +31,6 @@ describe('Record', () => {
     assert.deepStrictEqual(R.map(double)(d1), { k1: 2, k2: 4 })
   })
 
-  it('record.map', () => {
-    const double = (n: number): number => n * 2
-    assert.deepStrictEqual(R.record.map({ a: 1, b: 2 }, double), { a: 2, b: 4 })
-  })
-
   it('reduce', () => {
     const d1 = { k1: 'a', k2: 'b' }
     assert.deepStrictEqual(

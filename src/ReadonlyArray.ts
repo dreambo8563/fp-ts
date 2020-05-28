@@ -15,7 +15,7 @@ import {
   RefinementWithIndex
 } from './FilterableWithIndex'
 import { FoldableWithIndex1 } from './FoldableWithIndex'
-import { identity, Predicate, Refinement } from './function'
+import { identity, Predicate, Refinement, pipe } from './function'
 import { FunctorWithIndex1 } from './FunctorWithIndex'
 import { HKT } from './HKT'
 import { Monad1 } from './Monad'
@@ -1350,10 +1350,13 @@ export const of = <A>(a: A): ReadonlyArray<A> => [a]
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const map_: <A, B>(fa: ReadonlyArray<A>, f: (a: A) => B) => ReadonlyArray<B> = (fa, f) => fa.map((a) => f(a))
-
 const ap_: <A, B>(fab: ReadonlyArray<(a: A) => B>, fa: ReadonlyArray<A>) => ReadonlyArray<B> = (fab, fa) =>
-  flatten(map_(fab, (f) => map_(fa, f)))
+  flatten(
+    pipe(
+      fab,
+      map((f) => pipe(fa, map(f)))
+    )
+  )
 
 const mapWithIndex_: <A, B>(fa: ReadonlyArray<A>, f: (i: number, a: A) => B) => ReadonlyArray<B> = (fa, f) =>
   fa.map((a, i) => f(i, a))
@@ -1523,7 +1526,10 @@ const traverse_ = <F>(
 const sequence_ = <F>(F: Applicative<F>) => <A>(ta: ReadonlyArray<HKT<F, A>>): HKT<F, ReadonlyArray<A>> => {
   return reduce_(ta, F.of(zero_()), (fas, fa) =>
     F.ap(
-      F.map(fas, (as) => (a: A) => snoc(as, a)),
+      pipe(
+        fas,
+        F.map((as) => (a: A) => snoc(as, a))
+      ),
       fa
     )
   )
@@ -1535,7 +1541,10 @@ const traverseWithIndex_ = <F>(F: Applicative<F>) => <A, B>(
 ): HKT<F, ReadonlyArray<B>> => {
   return reduceWithIndex_(ta, F.of<ReadonlyArray<B>>(zero_()), (i, fbs, a) =>
     F.ap(
-      F.map(fbs, (bs) => (b: B) => snoc(bs, b)),
+      pipe(
+        fbs,
+        F.map((bs) => (b: B) => snoc(bs, b))
+      ),
       f(i, a)
     )
   )
@@ -1545,7 +1554,7 @@ const wither_ = <F>(
   F: Applicative<F>
 ): (<A, B>(ta: ReadonlyArray<A>, f: (a: A) => HKT<F, Option<B>>) => HKT<F, ReadonlyArray<B>>) => {
   const traverseF = traverse_(F)
-  return (wa, f) => F.map(traverseF(wa, f), compact)
+  return (wa, f) => pipe(traverseF(wa, f), F.map(compact))
 }
 
 const wilt_ = <F>(
@@ -1555,7 +1564,7 @@ const wilt_ = <F>(
   f: (a: A) => HKT<F, Either<B, C>>
 ) => HKT<F, Separated<ReadonlyArray<B>, ReadonlyArray<C>>>) => {
   const traverseF = traverse_(F)
-  return (wa, f) => F.map(traverseF(wa, f), separate)
+  return (wa, f) => pipe(traverseF(wa, f), F.map(separate))
 }
 
 /**
@@ -1576,7 +1585,10 @@ export const ap: <A>(fa: ReadonlyArray<A>) => <B>(fab: ReadonlyArray<(a: A) => B
  */
 export const apFirst: <B>(fb: ReadonlyArray<B>) => <A>(fa: ReadonlyArray<A>) => ReadonlyArray<A> = (fb) => (fa) =>
   ap_(
-    map_(fa, (a) => () => a),
+    pipe(
+      fa,
+      map((a) => () => a)
+    ),
     fb
   )
 
@@ -1585,7 +1597,10 @@ export const apFirst: <B>(fb: ReadonlyArray<B>) => <A>(fa: ReadonlyArray<A>) => 
  */
 export const apSecond = <B>(fb: ReadonlyArray<B>) => <A>(fa: ReadonlyArray<A>): ReadonlyArray<B> =>
   ap_(
-    map_(fa, () => (b: B) => b),
+    pipe(
+      fa,
+      map(() => (b: B) => b)
+    ),
     fb
   )
 
@@ -1600,7 +1615,13 @@ export const chain: <A, B>(f: (a: A) => ReadonlyArray<B>) => (ma: ReadonlyArray<
  */
 export const chainFirst: <A, B>(f: (a: A) => ReadonlyArray<B>) => (ma: ReadonlyArray<A>) => ReadonlyArray<A> = (f) => (
   ma
-) => chain_(ma, (a) => map_(f(a), () => a))
+) =>
+  chain_(ma, (a) =>
+    pipe(
+      f(a),
+      map(() => a)
+    )
+  )
 
 /**
  * @since 2.5.0
@@ -1610,7 +1631,8 @@ export const duplicate: <A>(wa: ReadonlyArray<A>) => ReadonlyArray<ReadonlyArray
 /**
  * @since 2.5.0
  */
-export const map: <A, B>(f: (a: A) => B) => (fa: ReadonlyArray<A>) => ReadonlyArray<B> = (f) => (fa) => map_(fa, f)
+export const map: <A, B>(f: (a: A) => B) => (fa: ReadonlyArray<A>) => ReadonlyArray<B> = (f) => (fa) =>
+  fa.map((a) => f(a))
 
 /**
  * @since 2.5.0
@@ -1785,7 +1807,7 @@ export const readonlyArray: Monad1<URI> &
   URI,
   compact,
   separate,
-  map: map_,
+  map,
   ap: ap_,
   of,
   chain: chain_,

@@ -1,6 +1,6 @@
 ---
 title: Reader.ts
-nav_order: 62
+nav_order: 61
 parent: Modules
 ---
 
@@ -239,11 +239,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const reader: Monad2<'Reader'> &
-  Profunctor2<'Reader'> &
-  Category2<'Reader'> &
-  Strong2<'Reader'> &
-  Choice2<'Reader'>
+export declare const reader: Monad2<'Reader'> & Profunctor2<'Reader'> & Category2<'Reader'>
 ```
 
 Added in v2.0.0

@@ -1,6 +1,6 @@
 ---
 title: ReaderT.ts
-nav_order: 64
+nav_order: 63
 parent: Modules
 ---
 
@@ -31,7 +31,7 @@ Added in v2.0.0
 
 ```ts
 export interface ReaderM<M> {
-  readonly map: <R, A, B>(ma: ReaderT<M, R, A>, f: (a: A) => B) => ReaderT<M, R, B>
+  readonly map: <A, B>(f: (a: A) => B) => <R>(ma: ReaderT<M, R, A>) => ReaderT<M, R, B>
   readonly of: <R, A>(a: A) => ReaderT<M, R, A>
   readonly ap: <R, A, B>(mab: ReaderT<M, R, (a: A) => B>, ma: ReaderT<M, R, A>) => ReaderT<M, R, B>
   readonly chain: <R, A, B>(ma: ReaderT<M, R, A>, f: (a: A) => ReaderT<M, R, B>) => ReaderT<M, R, B>
@@ -43,7 +43,7 @@ export interface ReaderM<M> {
 }
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # ReaderM1 (interface)
 
@@ -51,7 +51,7 @@ Added in v2.0.0
 
 ```ts
 export interface ReaderM1<M extends URIS> {
-  readonly map: <R, A, B>(ma: ReaderT1<M, R, A>, f: (a: A) => B) => ReaderT1<M, R, B>
+  readonly map: <A, B>(f: (a: A) => B) => <R>(ma: ReaderT1<M, R, A>) => ReaderT1<M, R, B>
   readonly of: <R, A>(a: A) => ReaderT1<M, R, A>
   readonly ap: <R, A, B>(mab: ReaderT1<M, R, (a: A) => B>, ma: ReaderT1<M, R, A>) => ReaderT1<M, R, B>
   readonly chain: <R, A, B>(ma: ReaderT1<M, R, A>, f: (a: A) => ReaderT1<M, R, B>) => ReaderT1<M, R, B>
@@ -63,7 +63,7 @@ export interface ReaderM1<M extends URIS> {
 }
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # ReaderM2 (interface)
 
@@ -71,7 +71,7 @@ Added in v2.0.0
 
 ```ts
 export interface ReaderM2<M extends URIS2> {
-  readonly map: <R, E, A, B>(ma: ReaderT2<M, R, E, A>, f: (a: A) => B) => ReaderT2<M, R, E, B>
+  readonly map: <A, B>(f: (a: A) => B) => <R, E>(ma: ReaderT2<M, R, E, A>) => ReaderT2<M, R, E, B>
   readonly of: <R, E, A>(a: A) => ReaderT2<M, R, E, A>
   readonly ap: <R, E, A, B>(mab: ReaderT2<M, R, E, (a: A) => B>, ma: ReaderT2<M, R, E, A>) => ReaderT2<M, R, E, B>
   readonly chain: <R, E, A, B>(ma: ReaderT2<M, R, E, A>, f: (a: A) => ReaderT2<M, R, E, B>) => ReaderT2<M, R, E, B>
@@ -83,7 +83,7 @@ export interface ReaderM2<M extends URIS2> {
 }
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # ReaderM2C (interface)
 
@@ -91,7 +91,7 @@ Added in v2.0.0
 
 ```ts
 export interface ReaderM2C<M extends URIS2, E> {
-  readonly map: <R, A, B>(ma: ReaderT2<M, R, E, A>, f: (a: A) => B) => ReaderT2<M, R, E, B>
+  readonly map: <A, B>(f: (a: A) => B) => <R>(ma: ReaderT2<M, R, E, A>) => ReaderT2<M, R, E, B>
   readonly of: <R, A>(a: A) => ReaderT2<M, R, E, A>
   readonly ap: <R, A, B>(mab: ReaderT2<M, R, E, (a: A) => B>, ma: ReaderT2<M, R, E, A>) => ReaderT2<M, R, E, B>
   readonly chain: <R, A, B>(ma: ReaderT2<M, R, E, A>, f: (a: A) => ReaderT2<M, R, E, B>) => ReaderT2<M, R, E, B>
@@ -103,7 +103,7 @@ export interface ReaderM2C<M extends URIS2, E> {
 }
 ```
 
-Added in v2.2.0
+Added in v3.0.0
 
 # ReaderM3 (interface)
 
@@ -111,7 +111,7 @@ Added in v2.2.0
 
 ```ts
 export interface ReaderM3<M extends URIS3> {
-  readonly map: <R, U, E, A, B>(ma: ReaderT3<M, R, U, E, A>, f: (a: A) => B) => ReaderT3<M, R, U, E, B>
+  readonly map: <A, B>(f: (a: A) => B) => <R, U, E>(ma: ReaderT3<M, R, U, E, A>) => ReaderT3<M, R, U, E, B>
   readonly of: <R, U, E, A>(a: A) => ReaderT3<M, R, U, E, A>
   readonly ap: <R, U, E, A, B>(
     mab: ReaderT3<M, R, U, E, (a: A) => B>,
@@ -129,7 +129,7 @@ export interface ReaderM3<M extends URIS3> {
 }
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # ReaderT (interface)
 

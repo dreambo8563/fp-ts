@@ -11,6 +11,7 @@ import {
 import { HKT, Kind, Kind2, URIS, URIS2 } from './HKT'
 import { Monad, Monad1, Monad2, Monad2C } from './Monad'
 import { fold, none, Option, applicativeOption, some, URI } from './Option'
+import { pipe } from './function'
 
 /**
  * @since 2.0.0
@@ -108,7 +109,7 @@ export function getOptionM<M>(M: Monad<M>): OptionM<M> {
       ),
     fold: (ma, onNone, onSome) => M.chain(ma, fold(onNone, onSome)),
     getOrElse: (ma, onNone) => M.chain(ma, fold(onNone, M.of)),
-    fromM: (ma) => M.map(ma, some),
+    fromM: (ma) => pipe(ma, M.map(some)),
     none: () => fnone
   }
 }

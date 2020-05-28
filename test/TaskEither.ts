@@ -345,9 +345,9 @@ describe('TaskEither', () => {
 
     it('map', async () => {
       const double = (n: number): number => n * 2
-      const e1 = await TV.map(TV.of(1), double)()
+      const e1 = await pipe(TV.of(1), TV.map(double))()
       assert.deepStrictEqual(e1, E.right(2))
-      const e2 = await TV.map(_.left('a'), double)()
+      const e2 = await pipe(_.left('a'), TV.map(double))()
       assert.deepStrictEqual(e2, E.left('a'))
     })
 

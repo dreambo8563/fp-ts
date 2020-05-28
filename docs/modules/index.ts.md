@@ -1,6 +1,6 @@
 ---
 title: index.ts
-nav_order: 40
+nav_order: 39
 parent: Modules
 ---
 
@@ -27,7 +27,6 @@ Added in v2.0.0
 - [boundedMeetSemilattice](#boundedmeetsemilattice)
 - [category](#category)
 - [chain](#chain)
-- [choice](#choice)
 - [comonad](#comonad)
 - [compactable](#compactable)
 - [console](#console)
@@ -94,7 +93,6 @@ Added in v2.0.0
 - [stateReaderTaskEither](#statereadertaskeither)
 - [stateT](#statet)
 - [store](#store)
-- [strong](#strong)
 - [task](#task)
 - [taskEither](#taskeither)
 - [taskThese](#taskthese)
@@ -259,16 +257,6 @@ Added in v2.0.0
 
 ```ts
 export declare const chain: typeof chain
-```
-
-Added in v2.0.0
-
-# choice
-
-**Signature**
-
-```ts
-export declare const choice: typeof choice
 ```
 
 Added in v2.0.0
@@ -929,16 +917,6 @@ Added in v2.0.0
 
 ```ts
 export declare const store: typeof store
-```
-
-Added in v2.0.0
-
-# strong
-
-**Signature**
-
-```ts
-export declare const strong: typeof strong
 ```
 
 Added in v2.0.0

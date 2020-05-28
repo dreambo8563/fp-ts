@@ -370,18 +370,24 @@ export const apFirst: <R, E, B>(
   fb: ReaderTaskEither<R, E, B>
 ) => <A>(fa: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, A> = (fb) => (fa) =>
   T.ap(
-    T.map(fa, (a) => () => a),
+    pipe(
+      fa,
+      T.map((a) => () => a)
+    ),
     fb
   )
 
 /**
  * @since 2.0.0
  */
-export const apSecond: <R, E, B>(
-  fb: ReaderTaskEither<R, E, B>
-) => <A>(fa: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> = (fb) => (fa) =>
+export const apSecond = <R, E, B>(fb: ReaderTaskEither<R, E, B>) => <A>(
+  fa: ReaderTaskEither<R, E, A>
+): ReaderTaskEither<R, E, B> =>
   T.ap(
-    T.map(fa, () => (b) => b),
+    pipe(
+      fa,
+      T.map(() => (b: B) => b)
+    ),
     fb
   )
 
@@ -406,7 +412,12 @@ export const chain: <R, E, A, B>(
 export const chainFirst: <R, E, A, B>(
   f: (a: A) => ReaderTaskEither<R, E, B>
 ) => (ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, A> = (f) => (ma) =>
-  T.chain(ma, (a) => T.map(f(a), () => a))
+  T.chain(ma, (a) =>
+    pipe(
+      f(a),
+      T.map(() => a)
+    )
+  )
 
 /**
  * @since 2.0.0
@@ -418,9 +429,7 @@ export const flatten: <R, E, A>(mma: ReaderTaskEither<R, E, ReaderTaskEither<R, 
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> = (
-  f
-) => (fa) => T.map(fa, f)
+export const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> = T.map
 
 /**
  * @since 2.0.0
@@ -502,7 +511,7 @@ export const readerTaskEitherSeq: typeof readerTaskEither =
   ((): typeof readerTaskEither => {
     return {
       ...readerTaskEither,
-      ap: (mab, ma) => T.chain(mab, (f) => T.map(ma, f))
+      ap: (mab, ma) => T.chain(mab, (f) => pipe(ma, T.map(f)))
     }
   })()
 

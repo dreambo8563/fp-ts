@@ -33,6 +33,7 @@ import {
   FunctorCompositionHKT2C
 } from './Functor'
 import { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from './HKT'
+import { pipe } from './function'
 
 /**
  * @since 2.0.0
@@ -190,6 +191,7 @@ export interface ApplicativeComposition22C<F extends URIS2, G extends URIS2, E> 
  * import { getApplicativeComposition } from 'fp-ts/lib/Applicative'
  * import { option, Option, some } from 'fp-ts/lib/Option'
  * import { task, Task } from 'fp-ts/lib/Task'
+ * import { pipe } from 'fp-ts/lib/function'
  *
  * // an Applicative instance for Task<Option<A>>
  * const A = getApplicativeComposition(task, option)
@@ -199,7 +201,7 @@ export interface ApplicativeComposition22C<F extends URIS2, G extends URIS2, E> 
  *
  * const sum = (a: number) => (b: number): number => a + b
  *
- * A.ap(A.map(x, sum), y)()
+ * A.ap(pipe(x, A.map(sum)), y)()
  *   .then(result => assert.deepStrictEqual(result, some(3)))
  *
  * @since 2.0.0
@@ -251,7 +253,10 @@ export function getApplicativeComposition<F, G>(F: Applicative<F>, G: Applicativ
     of: (a) => F.of(G.of(a)),
     ap: <A, B>(fgab: HKT<F, HKT<G, (a: A) => B>>, fga: HKT<F, HKT<G, A>>): HKT<F, HKT<G, B>> =>
       F.ap(
-        F.map(fgab, (h) => (ga: HKT<G, A>) => G.ap<A, B>(h, ga)),
+        pipe(
+          fgab,
+          F.map((h) => (ga: HKT<G, A>) => G.ap<A, B>(h, ga))
+        ),
         fga
       )
   }

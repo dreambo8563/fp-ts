@@ -2,7 +2,7 @@
  * @since 2.0.0
  */
 import { Comonad2 } from './Comonad'
-import { Endomorphism, identity } from './function'
+import { Endomorphism, identity, pipe } from './function'
 import { Functor, Functor1, Functor2, Functor2C, Functor3, Functor3C } from './Functor'
 import { HKT, Kind, Kind2, Kind3, URIS, URIS2, URIS3 } from './HKT'
 
@@ -79,17 +79,16 @@ export function experiment<F extends URIS>(
 ): <S>(f: (s: S) => Kind<F, S>) => <A>(wa: Store<S, A>) => Kind<F, A>
 export function experiment<F>(F: Functor<F>): <S>(f: (s: S) => HKT<F, S>) => <A>(wa: Store<S, A>) => HKT<F, A>
 export function experiment<F>(F: Functor<F>): <S>(f: (s: S) => HKT<F, S>) => <A>(wa: Store<S, A>) => HKT<F, A> {
-  return (f) => (wa) => F.map(f(wa.pos), (s) => wa.peek(s))
+  return (f) => (wa) =>
+    pipe(
+      f(wa.pos),
+      F.map((s) => wa.peek(s))
+    )
 }
 
 // -------------------------------------------------------------------------------------
 // pipeables
 // -------------------------------------------------------------------------------------
-
-const map_: <E, A, B>(fa: Store<E, A>, f: (a: A) => B) => Store<E, B> = (wa, f) => ({
-  peek: (s) => f(wa.peek(s)),
-  pos: wa.pos
-})
 
 const extend_: <E, A, B>(wa: Store<E, A>, f: (wa: Store<E, A>) => B) => Store<E, B> = (wa, f) => ({
   peek: (s) => f({ peek: wa.peek, pos: s }),
@@ -115,7 +114,10 @@ export const extend: <E, A, B>(f: (wa: Store<E, A>) => B) => (wa: Store<E, A>) =
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: Store<E, A>) => Store<E, B> = (f) => (fa) => map_(fa, f)
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: Store<E, A>) => Store<E, B> = (f) => (wa) => ({
+  peek: (s) => f(wa.peek(s)),
+  pos: wa.pos
+})
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -126,7 +128,7 @@ export const map: <A, B>(f: (a: A) => B) => <E>(fa: Store<E, A>) => Store<E, B> 
  */
 export const store: Comonad2<URI> = {
   URI,
-  map: map_,
+  map,
   extract,
   extend: extend_
 }

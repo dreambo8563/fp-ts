@@ -39,7 +39,7 @@ import { Separated } from './Compactable'
 import { Eq } from './Eq'
 import { Extend2 } from './Extend'
 import { Foldable2 } from './Foldable'
-import { Lazy, Predicate, identity, Refinement } from './function'
+import { Lazy, Predicate, identity, Refinement, pipe } from './function'
 import { HKT } from './HKT'
 import { Monad2, Monad2C } from './Monad'
 import { MonadThrow2, MonadThrow2C } from './MonadThrow'
@@ -444,7 +444,7 @@ export function getWitherable<E>(M: Monoid<E>): Witherable2C<URI, E> {
     F: Applicative<F>
   ): (<A, B>(ma: Either<E, A>, f: (a: A) => HKT<F, Option<B>>) => HKT<F, Either<E, B>>) => {
     const traverseF = traverse_(F)
-    return (ma, f) => F.map(traverseF(ma, f), compact)
+    return (ma, f) => pipe(traverseF(ma, f), F.map(compact))
   }
 
   const wilt = <F>(
@@ -454,13 +454,13 @@ export function getWitherable<E>(M: Monoid<E>): Witherable2C<URI, E> {
     f: (a: A) => HKT<F, Either<B, C>>
   ) => HKT<F, Separated<Either<E, B>, Either<E, C>>>) => {
     const traverseF = traverse_(F)
-    return (ma, f) => F.map(traverseF(ma, f), separate)
+    return (ma, f) => pipe(traverseF(ma, f), F.map(separate))
   }
 
   return {
     URI,
     _E: undefined as any,
-    map: map_,
+    map,
     compact,
     separate,
     filter,
@@ -540,9 +540,6 @@ export function getValidationMonoid<E, A>(SE: Semigroup<E>, SA: Monoid<A>): Mono
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const map_: <E, A, B>(fa: Either<E, A>, f: (a: A) => B) => Either<E, B> = (ma, f) =>
-  isLeft(ma) ? ma : right(f(ma.right))
-
 const ap_: <E, A, B>(fab: Either<E, (a: A) => B>, fa: Either<E, A>) => Either<E, B> = (mab, ma) =>
   isLeft(mab) ? mab : isLeft(ma) ? ma : right(mab.right(ma.right))
 
@@ -562,11 +559,11 @@ const traverse_ = <F>(F: Applicative<F>) => <E, A, B>(
   ma: Either<E, A>,
   f: (a: A) => HKT<F, B>
 ): HKT<F, Either<E, B>> => {
-  return isLeft(ma) ? F.of(left(ma.left)) : F.map<B, Either<E, B>>(f(ma.right), right)
+  return isLeft(ma) ? F.of(left(ma.left)) : pipe(f(ma.right), F.map(right))
 }
 
 const sequence_ = <F>(F: Applicative<F>) => <E, A>(ma: Either<E, HKT<F, A>>): HKT<F, Either<E, A>> => {
-  return isLeft(ma) ? F.of(left(ma.left)) : F.map<A, Either<E, A>>(ma.right, right)
+  return isLeft(ma) ? F.of(left(ma.left)) : pipe(ma.right, F.map(right))
 }
 
 const bimap_: <E, A, G, B>(fea: Either<E, A>, f: (e: E) => G, g: (a: A) => B) => Either<G, B> = (fea, f, g) =>
@@ -597,7 +594,10 @@ export const ap: <E, A>(fa: Either<E, A>) => <B>(fab: Either<E, (a: A) => B>) =>
  */
 export const apFirst: <E, B>(fb: Either<E, B>) => <A>(fa: Either<E, A>) => Either<E, A> = (fb) => (fa) =>
   ap_(
-    map_(fa, (a) => () => a),
+    pipe(
+      fa,
+      map((a) => () => a)
+    ),
     fb
   )
 
@@ -606,7 +606,10 @@ export const apFirst: <E, B>(fb: Either<E, B>) => <A>(fa: Either<E, A>) => Eithe
  */
 export const apSecond = <E, B>(fb: Either<E, B>) => <A>(fa: Either<E, A>): Either<E, B> =>
   ap_(
-    map_(fa, () => (b: B) => b),
+    pipe(
+      fa,
+      map(() => (b: B) => b)
+    ),
     fb
   )
 
@@ -620,7 +623,12 @@ export const chain: <E, A, B>(f: (a: A) => Either<E, B>) => (ma: Either<E, A>) =
  * @since 2.0.0
  */
 export const chainFirst: <E, A, B>(f: (a: A) => Either<E, B>) => (ma: Either<E, A>) => Either<E, A> = (f) => (ma) =>
-  chain_(ma, (a) => map_(f(a), () => a))
+  chain_(ma, (a) =>
+    pipe(
+      f(a),
+      map(() => a)
+    )
+  )
 
 /**
  * @since 2.6.0
@@ -661,7 +669,8 @@ export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => <E>(fa: Either
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: Either<E, A>) => Either<E, B> = (f) => (fa) => map_(fa, f)
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: Either<E, A>) => Either<E, B> = (f) => (fa) =>
+  isLeft(fa) ? fa : right(f(fa.right))
 
 /**
  * @since 2.0.0
@@ -712,7 +721,7 @@ export const filterOrElse: {
  */
 export const applicativeEither: Applicative2<URI> = {
   URI,
-  map: map_,
+  map,
   of: right,
   ap: ap_
 }
@@ -737,7 +746,7 @@ export const either: Monad2<URI> &
   Extend2<URI> &
   MonadThrow2<URI> = {
   URI,
-  map: map_,
+  map,
   of: right,
   ap: ap_,
   chain: chain_,

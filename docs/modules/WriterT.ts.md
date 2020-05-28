@@ -1,6 +1,6 @@
 ---
 title: WriterT.ts
-nav_order: 99
+nav_order: 97
 parent: Modules
 ---
 
@@ -31,7 +31,7 @@ Added in v2.4.0
 
 ```ts
 export interface WriterM<M> {
-  readonly map: <W, A, B>(fa: WriterT<M, W, A>, f: (a: A) => B) => WriterT<M, W, B>
+  readonly map: <A, B>(f: (a: A) => B) => <W>(fa: WriterT<M, W, A>) => WriterT<M, W, B>
   readonly evalWriter: <W, A>(fa: WriterT<M, W, A>) => HKT<M, A>
   readonly execWriter: <W, A>(fa: WriterT<M, W, A>) => HKT<M, W>
   readonly tell: <W>(w: W) => WriterT<M, W, void>
@@ -43,7 +43,7 @@ export interface WriterM<M> {
     M: Monoid<W>
   ) => {
     readonly _E: W
-    readonly map: <A, B>(ma: WriterT<M, W, A>, f: (a: A) => B) => WriterT<M, W, B>
+    readonly map: <A, B>(f: (a: A) => B) => (ma: WriterT<M, W, A>) => WriterT<M, W, B>
     readonly of: <A>(a: A) => WriterT<M, W, A>
     readonly ap: <A, B>(mab: WriterT<M, W, (a: A) => B>, ma: WriterT<M, W, A>) => WriterT<M, W, B>
     readonly chain: <A, B>(ma: WriterT<M, W, A>, f: (a: A) => WriterT<M, W, B>) => WriterT<M, W, B>
@@ -51,7 +51,7 @@ export interface WriterM<M> {
 }
 ```
 
-Added in v2.4.0
+Added in v3.0.0
 
 # WriterM1 (interface)
 
@@ -59,7 +59,7 @@ Added in v2.4.0
 
 ```ts
 export interface WriterM1<M extends URIS> {
-  readonly map: <W, A, B>(fa: WriterT1<M, W, A>, f: (a: A) => B) => WriterT1<M, W, B>
+  readonly map: <A, B>(f: (a: A) => B) => <W>(fa: WriterT1<M, W, A>) => WriterT1<M, W, B>
   readonly evalWriter: <W, A>(fa: WriterT1<M, W, A>) => Kind<M, A>
   readonly execWriter: <W, A>(fa: WriterT1<M, W, A>) => Kind<M, W>
   readonly tell: <W>(w: W) => WriterT1<M, W, void>
@@ -71,7 +71,7 @@ export interface WriterM1<M extends URIS> {
     M: Monoid<W>
   ) => {
     readonly _E: W
-    readonly map: <A, B>(ma: WriterT1<M, W, A>, f: (a: A) => B) => WriterT1<M, W, B>
+    readonly map: <A, B>(f: (a: A) => B) => (ma: WriterT1<M, W, A>) => WriterT1<M, W, B>
     readonly of: <A>(a: A) => WriterT1<M, W, A>
     readonly ap: <A, B>(mab: WriterT1<M, W, (a: A) => B>, ma: WriterT1<M, W, A>) => WriterT1<M, W, B>
     readonly chain: <A, B>(ma: WriterT1<M, W, A>, f: (a: A) => WriterT1<M, W, B>) => WriterT1<M, W, B>
@@ -79,7 +79,7 @@ export interface WriterM1<M extends URIS> {
 }
 ```
 
-Added in v2.4.0
+Added in v3.0.0
 
 # WriterM2 (interface)
 
@@ -87,7 +87,7 @@ Added in v2.4.0
 
 ```ts
 export interface WriterM2<M extends URIS2> {
-  readonly map: <E, W, A, B>(fa: WriterT2<M, E, W, A>, f: (a: A) => B) => WriterT2<M, E, W, B>
+  readonly map: <A, B>(f: (a: A) => B) => <E, W>(fa: WriterT2<M, E, W, A>) => WriterT2<M, E, W, B>
   readonly evalWriter: <E, W, A>(fa: WriterT2<M, E, W, A>) => Kind2<M, E, A>
   readonly execWriter: <E, W, A>(fa: WriterT2<M, E, W, A>) => Kind2<M, E, W>
   readonly tell: <E, W>(w: W) => WriterT2<M, E, W, void>
@@ -99,7 +99,7 @@ export interface WriterM2<M extends URIS2> {
     M: Monoid<W>
   ) => {
     readonly _E: W
-    readonly map: <E, A, B>(ma: WriterT2<M, E, W, A>, f: (a: A) => B) => WriterT2<M, E, W, B>
+    readonly map: <A, B>(f: (a: A) => B) => <E>(ma: WriterT2<M, E, W, A>) => WriterT2<M, E, W, B>
     readonly of: <E, A>(a: A) => WriterT2<M, E, W, A>
     readonly ap: <E, A, B>(mab: WriterT2<M, E, W, (a: A) => B>, ma: WriterT2<M, E, W, A>) => WriterT2<M, E, W, B>
     readonly chain: <E, A, B>(ma: WriterT2<M, E, W, A>, f: (a: A) => WriterT2<M, E, W, B>) => WriterT2<M, E, W, B>
@@ -107,7 +107,7 @@ export interface WriterM2<M extends URIS2> {
 }
 ```
 
-Added in v2.4.0
+Added in v3.0.0
 
 # WriterM2C (interface)
 
@@ -115,7 +115,7 @@ Added in v2.4.0
 
 ```ts
 export interface WriterM2C<M extends URIS2, E> {
-  readonly map: <W, A, B>(fa: WriterT2<M, E, W, A>, f: (a: A) => B) => WriterT2<M, E, W, B>
+  readonly map: <A, B>(f: (a: A) => B) => <W>(fa: WriterT2<M, E, W, A>) => WriterT2<M, E, W, B>
   readonly evalWriter: <W, A>(fa: WriterT2<M, E, W, A>) => Kind2<M, E, A>
   readonly execWriter: <W, A>(fa: WriterT2<M, E, W, A>) => Kind2<M, E, W>
   readonly tell: <W>(w: W) => WriterT2<M, E, W, void>
@@ -127,7 +127,7 @@ export interface WriterM2C<M extends URIS2, E> {
     M: Monoid<W>
   ) => {
     readonly _E: W
-    readonly map: <A, B>(ma: WriterT2<M, E, W, A>, f: (a: A) => B) => WriterT2<M, E, W, B>
+    readonly map: <A, B>(f: (a: A) => B) => (ma: WriterT2<M, E, W, A>) => WriterT2<M, E, W, B>
     readonly of: <A>(a: A) => WriterT2<M, E, W, A>
     readonly ap: <A, B>(mab: WriterT2<M, E, W, (a: A) => B>, ma: WriterT2<M, E, W, A>) => WriterT2<M, E, W, B>
     readonly chain: <A, B>(ma: WriterT2<M, E, W, A>, f: (a: A) => WriterT2<M, E, W, B>) => WriterT2<M, E, W, B>
@@ -135,7 +135,7 @@ export interface WriterM2C<M extends URIS2, E> {
 }
 ```
 
-Added in v2.4.0
+Added in v3.0.0
 
 # WriterM3 (interface)
 
@@ -143,7 +143,7 @@ Added in v2.4.0
 
 ```ts
 export interface WriterM3<M extends URIS3> {
-  readonly map: <R, E, W, A, B>(fa: WriterT3<M, R, E, W, A>, f: (a: A) => B) => WriterT3<M, R, E, W, B>
+  readonly map: <A, B>(f: (a: A) => B) => <R, E, W>(fa: WriterT3<M, R, E, W, A>) => WriterT3<M, R, E, W, B>
   readonly evalWriter: <R, E, W, A>(fa: WriterT3<M, R, E, W, A>) => Kind3<M, R, E, A>
   readonly execWriter: <R, E, W, A>(fa: WriterT3<M, R, E, W, A>) => Kind3<M, R, E, W>
   readonly tell: <R, E, W>(w: W) => WriterT3<M, R, E, W, void>
@@ -155,7 +155,7 @@ export interface WriterM3<M extends URIS3> {
     M: Monoid<W>
   ) => {
     readonly _E: W
-    readonly map: <R, E, A, B>(ma: WriterT3<M, R, E, W, A>, f: (a: A) => B) => WriterT3<M, R, E, W, B>
+    readonly map: <A, B>(f: (a: A) => B) => <R, E>(ma: WriterT3<M, R, E, W, A>) => WriterT3<M, R, E, W, B>
     readonly of: <R, E, A>(a: A) => WriterT3<M, R, E, W, A>
     readonly ap: <R, E, A, B>(
       mab: WriterT3<M, R, E, W, (a: A) => B>,
@@ -169,7 +169,7 @@ export interface WriterM3<M extends URIS3> {
 }
 ```
 
-Added in v2.4.0
+Added in v3.0.0
 
 # WriterT (interface)
 

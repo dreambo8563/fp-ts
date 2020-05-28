@@ -288,9 +288,9 @@ describe('IOEither', () => {
 
     it('map', () => {
       const double = (n: number): number => n * 2
-      const e1 = IV.map(IV.of(1), double)()
+      const e1 = pipe(IV.of(1), IV.map(double))()
       assert.deepStrictEqual(e1, E.right(2))
-      const e2 = IV.map(_.left('a'), double)()
+      const e2 = pipe(_.left('a'), IV.map(double))()
       assert.deepStrictEqual(e2, E.left('a'))
     })
 

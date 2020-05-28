@@ -9,7 +9,7 @@ import { Bifunctor2 } from './Bifunctor'
 import * as E from './Either'
 import { getEitherM } from './EitherT'
 import { Filterable2C, getFilterableComposition } from './Filterable'
-import { identity, Lazy, Predicate, Refinement } from './function'
+import { identity, Lazy, Predicate, Refinement, pipe } from './function'
 import { getSemigroup as getIOSemigroup, IO, monadIO } from './IO'
 import { Monad2, Monad2C } from './Monad'
 import { MonadIO2, MonadIO2C } from './MonadIO'
@@ -148,7 +148,7 @@ export function bracket<E, A, B>(
   release: (a: A, e: Either<E, B>) => IOEither<E, void>
 ): IOEither<E, B> {
   return T.chain(acquire, (a) =>
-    T.chain(monadIO.map(use(a), E.right), (e) =>
+    T.chain(pipe(use(a), monadIO.map(E.right)), (e) =>
       T.chain(release(a, e), () => (E.isLeft(e) ? T.left(e.left) : T.of(e.right)))
     )
   )
@@ -218,7 +218,10 @@ export const ap: <E, A>(fa: IOEither<E, A>) => <B>(fab: IOEither<E, (a: A) => B>
  */
 export const apFirst: <E, B>(fb: IOEither<E, B>) => <A>(fa: IOEither<E, A>) => IOEither<E, A> = (fb) => (fa) =>
   T.ap(
-    T.map(fa, (a) => () => a),
+    pipe(
+      fa,
+      T.map((a) => () => a)
+    ),
     fb
   )
 
@@ -227,7 +230,10 @@ export const apFirst: <E, B>(fb: IOEither<E, B>) => <A>(fa: IOEither<E, A>) => I
  */
 export const apSecond = <E, B>(fb: IOEither<E, B>) => <A>(fa: IOEither<E, A>): IOEither<E, B> =>
   T.ap(
-    T.map(fa, () => (b: B) => b),
+    pipe(
+      fa,
+      T.map(() => (b: B) => b)
+    ),
     fb
   )
 
@@ -242,7 +248,13 @@ export const chain: <E, A, B>(f: (a: A) => IOEither<E, B>) => (ma: IOEither<E, A
  */
 export const chainFirst: <E, A, B>(f: (a: A) => IOEither<E, B>) => (ma: IOEither<E, A>) => IOEither<E, A> = (f) => (
   ma
-) => T.chain(ma, (a) => T.map(f(a), () => a))
+) =>
+  T.chain(ma, (a) =>
+    pipe(
+      f(a),
+      T.map(() => a)
+    )
+  )
 
 /**
  * @since 2.6.0
@@ -273,7 +285,7 @@ export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: IOEithe
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: IOEither<E, A>) => IOEither<E, B> = (f) => (fa) => T.map(fa, f)
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: IOEither<E, A>) => IOEither<E, B> = T.map
 
 /**
  * @since 2.0.0

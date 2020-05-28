@@ -106,7 +106,7 @@ export function getMonad<W>(M: Monoid<W>): Monad2C<URI, W> {
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: Writer<E, A>) => Writer<E, B> = (f) => (fa) => T.map(fa, f)
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: Writer<E, A>) => Writer<E, B> = T.map
 
 // -------------------------------------------------------------------------------------
 // instances

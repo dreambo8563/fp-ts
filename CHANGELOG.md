@@ -19,6 +19,8 @@ high state of flux, you're at risk of it changing without notice.
 - **Breaking Change**
   - remove `pipeable` module (@gcanti)
   - remove `ChainRec` module (@gcanti)
+  - remove `Choice` module (@gcanti)
+  - remove `Strong` module (@gcanti)
   - remove deprecated APIs (@gcanti)
   - `Date`
     - rename `eqDate` to `eqGetDate` (@gcanti)

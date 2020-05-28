@@ -24,7 +24,7 @@ import {
   CompactableComposition23
 } from './Compactable'
 import { Either } from './Either'
-import { Predicate, Refinement } from './function'
+import { Predicate, Refinement, pipe } from './function'
 import {
   Functor,
   Functor1,
@@ -486,8 +486,16 @@ export function getFilterableComposition<F, G>(F: Functor<F>, G: Filterable<G>):
       const right = FC.filter(fga, p)
       return { left, right }
     },
-    filterMap: (fga, f) => F.map(fga, (ga) => G.filterMap(ga, f)),
-    filter: (fga, f) => F.map(fga, (ga) => G.filter(ga, f))
+    filterMap: (fga, f) =>
+      pipe(
+        fga,
+        F.map((ga) => G.filterMap(ga, f))
+      ),
+    filter: (fga, f) =>
+      pipe(
+        fga,
+        F.map((ga) => G.filter(ga, f))
+      )
   }
   return FC
 }

@@ -7,7 +7,7 @@ import { Bifunctor2 } from './Bifunctor'
 import { Chain2C } from './Chain'
 import { Comonad2 } from './Comonad'
 import { Foldable2 } from './Foldable'
-import { identity } from './function'
+import { identity, pipe } from './function'
 import { HKT } from './HKT'
 import { Monad2C } from './Monad'
 import { Monoid } from './Monoid'
@@ -59,7 +59,7 @@ export function getApply<S>(S: Semigroup<S>): Apply2C<URI, S> {
   return {
     URI,
     _E: undefined as any,
-    map: map_,
+    map,
     ap: (fab, fa) => [fst(fab)(fst(fa)), S.concat(snd(fab), snd(fa))]
   }
 }
@@ -106,8 +106,6 @@ export function getMonad<S>(M: Monoid<S>): Monad2C<URI, S> {
 // -------------------------------------------------------------------------------------
 
 const compose_: <E, A, B>(ab: readonly [B, A], la: readonly [A, E]) => readonly [B, E] = (ba, ae) => [fst(ba), snd(ae)]
-
-const map_: <E, A, B>(fa: readonly [A, E], f: (a: A) => B) => readonly [B, E] = (ae, f) => [f(fst(ae)), snd(ae)]
 
 const bimap_: <E, A, G, B>(fea: readonly [A, E], f: (e: E) => G, g: (a: A) => B) => readonly [B, G] = (fea, f, g) => [
   g(fst(fea)),
@@ -169,7 +167,10 @@ export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => <E>(fa: readon
 /**
  * @since 2.5.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: readonly [A, E]) => readonly [B, E] = (f) => (fa) => map_(fa, f)
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: readonly [A, E]) => readonly [B, E] = (f) => (fa) => [
+  f(fst(fa)),
+  snd(fa)
+]
 
 /**
  * @since 2.5.0
@@ -203,7 +204,7 @@ export const readonlyTuple: Semigroupoid2<URI> &
   Traversable2<URI> = {
   URI,
   compose: compose_,
-  map: map_,
+  map,
   bimap: bimap_,
   mapLeft: mapLeft_,
   extract,
@@ -215,9 +216,15 @@ export const readonlyTuple: Semigroupoid2<URI> &
     as: readonly [A, S],
     f: (a: A) => HKT<F, B>
   ): HKT<F, readonly [B, S]> => {
-    return F.map(f(fst(as)), (b) => [b, snd(as)])
+    return pipe(
+      f(fst(as)),
+      F.map((b) => [b, snd(as)])
+    )
   },
   sequence: <F>(F: Applicative<F>) => <A, S>(fas: readonly [HKT<F, A>, S]): HKT<F, readonly [A, S]> => {
-    return F.map(fst(fas), (a) => [a, snd(fas)])
+    return pipe(
+      fst(fas),
+      F.map((a) => [a, snd(fas)])
+    )
   }
 }

@@ -5,7 +5,7 @@ import { Alt3, Alt3C } from './Alt'
 import { Bifunctor3 } from './Bifunctor'
 import * as E from './Either'
 import { getEitherM } from './EitherT'
-import { identity, Predicate, Refinement } from './function'
+import { identity, Predicate, Refinement, pipe } from './function'
 import { Monad3, Monad3C } from './Monad'
 import { MonadThrow3, MonadThrow3C } from './MonadThrow'
 import { Monoid } from './Monoid'
@@ -205,7 +205,10 @@ export const apFirst: <R, E, B>(
   fb: ReaderEither<R, E, B>
 ) => <A>(fa: ReaderEither<R, E, A>) => ReaderEither<R, E, A> = (fb) => (fa) =>
   T.ap(
-    T.map(fa, (a) => () => a),
+    pipe(
+      fa,
+      T.map((a) => () => a)
+    ),
     fb
   )
 
@@ -214,7 +217,10 @@ export const apFirst: <R, E, B>(
  */
 export const apSecond = <R, E, B>(fb: ReaderEither<R, E, B>) => <A>(fa: ReaderEither<R, E, A>): ReaderEither<R, E, B> =>
   T.ap(
-    T.map(fa, () => (b: B) => b),
+    pipe(
+      fa,
+      T.map(() => (b: B) => b)
+    ),
     fb
   )
 
@@ -252,7 +258,13 @@ export const chainEitherKW: <D, A, B>(
  */
 export const chainFirst: <R, E, A, B>(
   f: (a: A) => ReaderEither<R, E, B>
-) => (ma: ReaderEither<R, E, A>) => ReaderEither<R, E, A> = (f) => (ma) => T.chain(ma, (a) => T.map(f(a), () => a))
+) => (ma: ReaderEither<R, E, A>) => ReaderEither<R, E, A> = (f) => (ma) =>
+  T.chain(ma, (a) =>
+    pipe(
+      f(a),
+      T.map(() => a)
+    )
+  )
 
 /**
  * @since 2.0.0
@@ -263,8 +275,7 @@ export const flatten: <R, E, A>(mma: ReaderEither<R, E, ReaderEither<R, E, A>>) 
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderEither<R, E, A>) => ReaderEither<R, E, B> = (f) => (fa) =>
-  T.map(fa, f)
+export const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderEither<R, E, A>) => ReaderEither<R, E, B> = T.map
 
 /**
  * @since 2.0.0

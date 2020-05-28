@@ -12,7 +12,7 @@ import { array, empty, getEq as getArrayEq, getMonoid } from './Array'
 import { Comonad1 } from './Comonad'
 import { Eq, fromEquals } from './Eq'
 import { Foldable1 } from './Foldable'
-import { identity } from './function'
+import { identity, pipe } from './function'
 import { HKT, Kind, Kind2, Kind3, URIS, URIS2, URIS3 } from './HKT'
 import { Monad, Monad1, Monad2, Monad2C, Monad3, Monad3C } from './Monad'
 import { Monoid } from './Monoid'
@@ -254,12 +254,7 @@ export function fold<A, B>(f: (a: A, bs: Array<B>) => B): (tree: Tree<A>) => B {
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const map_: <A, B>(fa: Tree<A>, f: (a: A) => B) => Tree<B> = (fa, f) => ({
-  value: f(fa.value),
-  forest: fa.forest.map((t) => map_(t, f))
-})
-
-const ap_: <A, B>(fab: Tree<(a: A) => B>, fa: Tree<A>) => Tree<B> = (fab, fa) => chain_(fab, (f) => map_(fa, f))
+const ap_: <A, B>(fab: Tree<(a: A) => B>, fa: Tree<A>) => Tree<B> = (fab, fa) => chain_(fab, (f) => pipe(fa, map(f)))
 
 const chain_ = <A, B>(fa: Tree<A>, f: (a: A) => Tree<B>): Tree<B> => {
   const { value, forest } = f(fa.value)
@@ -309,7 +304,10 @@ export const ap: <A>(fa: Tree<A>) => <B>(fab: Tree<(a: A) => B>) => Tree<B> = (f
  */
 export const apFirst: <B>(fb: Tree<B>) => <A>(fa: Tree<A>) => Tree<A> = (fb) => (fa) =>
   ap_(
-    map_(fa, (a) => () => a),
+    pipe(
+      fa,
+      map((a) => () => a)
+    ),
     fb
   )
 
@@ -318,7 +316,10 @@ export const apFirst: <B>(fb: Tree<B>) => <A>(fa: Tree<A>) => Tree<A> = (fb) => 
  */
 export const apSecond = <B>(fb: Tree<B>) => <A>(fa: Tree<A>): Tree<B> =>
   ap_(
-    map_(fa, () => (b: B) => b),
+    pipe(
+      fa,
+      map(() => (b: B) => b)
+    ),
     fb
   )
 
@@ -331,7 +332,12 @@ export const chain: <A, B>(f: (a: A) => Tree<B>) => (ma: Tree<A>) => Tree<B> = (
  * @since 2.0.0
  */
 export const chainFirst: <A, B>(f: (a: A) => Tree<B>) => (ma: Tree<A>) => Tree<A> = (f) => (ma) =>
-  chain_(ma, (a) => map_(f(a), () => a))
+  chain_(ma, (a) =>
+    pipe(
+      f(a),
+      map(() => a)
+    )
+  )
 
 /**
  * @since 2.0.0
@@ -359,7 +365,10 @@ export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: Tree<A>) 
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => (fa: Tree<A>) => Tree<B> = (f) => (fa) => map_(fa, f)
+export const map: <A, B>(f: (a: A) => B) => (fa: Tree<A>) => Tree<B> = (f) => (fa) => ({
+  value: f(fa.value),
+  forest: fa.forest.map((t) => pipe(t, map(f)))
+})
 
 /**
  * @since 2.0.0
@@ -386,7 +395,7 @@ export const extract: <A>(wa: Tree<A>) => A = (wa) => wa.value
  */
 export const tree: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Comonad1<URI> = {
   URI,
-  map: map_,
+  map,
   of: (a) => ({
     value: a,
     forest: empty
@@ -400,10 +409,13 @@ export const tree: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Comonad1<U
     const traverseF = array.traverse(F)
     const r = <A, B>(ta: Tree<A>, f: (a: A) => HKT<F, B>): HKT<F, Tree<B>> =>
       F.ap(
-        F.map(f(ta.value), (value: B) => (forest: Forest<B>) => ({
-          value,
-          forest
-        })),
+        pipe(
+          f(ta.value),
+          F.map((value: B) => (forest: Forest<B>) => ({
+            value,
+            forest
+          }))
+        ),
         traverseF(ta.forest, (t) => r(t, f))
       )
     return r

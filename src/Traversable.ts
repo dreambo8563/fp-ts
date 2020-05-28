@@ -48,6 +48,7 @@ import {
   getFunctorComposition
 } from './Functor'
 import { HKT, Kind, Kind2, Kind3, URIS, URIS2, URIS3 } from './HKT'
+import { pipe } from './function'
 
 /**
  * @since 2.0.0
@@ -369,7 +370,7 @@ export function getTraversableComposition<F, G>(F: Traversable<F>, G: Traversabl
     sequence: (H) => {
       const sequenceF = F.sequence(H)
       const sequenceG = G.sequence(H)
-      return (fgha) => sequenceF(F.map(fgha, sequenceG))
+      return (fgha) => sequenceF(pipe(fgha, F.map(sequenceG)))
     }
   }
 }

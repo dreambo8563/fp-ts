@@ -1,6 +1,6 @@
 ---
 title: TheseT.ts
-nav_order: 89
+nav_order: 87
 parent: Modules
 ---
 
@@ -28,7 +28,7 @@ Added in v2.4.0
 
 ```ts
 export interface TheseM<M> {
-  readonly map: <E, A, B>(fa: TheseT<M, E, A>, f: (a: A) => B) => TheseT<M, E, B>
+  readonly map: <A, B>(f: (a: A) => B) => <E>(fa: TheseT<M, E, A>) => TheseT<M, E, B>
   readonly bimap: <E, A, N, B>(fa: TheseT<M, E, A>, f: (e: E) => N, g: (a: A) => B) => TheseT<M, N, B>
   readonly mapLeft: <E, A, N>(fa: TheseT<M, E, A>, f: (e: E) => N) => TheseT<M, N, A>
   readonly fold: <E, A, R>(
@@ -49,7 +49,7 @@ export interface TheseM<M> {
     S: Semigroup<E>
   ) => {
     readonly _E: E
-    readonly map: <A, B>(ma: TheseT<M, E, A>, f: (a: A) => B) => TheseT<M, E, B>
+    readonly map: <A, B>(f: (a: A) => B) => (ma: TheseT<M, E, A>) => TheseT<M, E, B>
     readonly of: <A>(a: A) => TheseT<M, E, A>
     readonly ap: <A, B>(mab: TheseT<M, E, (a: A) => B>, ma: TheseT<M, E, A>) => TheseT<M, E, B>
     readonly chain: <A, B>(ma: TheseT<M, E, A>, f: (a: A) => TheseT<M, E, B>) => TheseT<M, E, B>
@@ -65,7 +65,7 @@ Added in v3.0.0
 
 ```ts
 export interface TheseM1<M extends URIS> {
-  readonly map: <E, A, B>(fa: TheseT1<M, E, A>, f: (a: A) => B) => TheseT1<M, E, B>
+  readonly map: <A, B>(f: (a: A) => B) => <E>(fa: TheseT1<M, E, A>) => TheseT1<M, E, B>
   readonly bimap: <E, A, N, B>(fa: TheseT1<M, E, A>, f: (e: E) => N, g: (a: A) => B) => TheseT1<M, N, B>
   readonly mapLeft: <E, A, N>(fa: TheseT1<M, E, A>, f: (e: E) => N) => TheseT1<M, N, A>
   readonly fold: <E, A, R>(
@@ -86,7 +86,7 @@ export interface TheseM1<M extends URIS> {
     S: Semigroup<E>
   ) => {
     readonly _E: E
-    readonly map: <A, B>(ma: TheseT1<M, E, A>, f: (a: A) => B) => TheseT1<M, E, B>
+    readonly map: <A, B>(f: (a: A) => B) => (ma: TheseT1<M, E, A>) => TheseT1<M, E, B>
     readonly of: <A>(a: A) => TheseT1<M, E, A>
     readonly ap: <A, B>(mab: TheseT1<M, E, (a: A) => B>, ma: TheseT1<M, E, A>) => TheseT1<M, E, B>
     readonly chain: <A, B>(ma: TheseT1<M, E, A>, f: (a: A) => TheseT1<M, E, B>) => TheseT1<M, E, B>
@@ -102,7 +102,7 @@ Added in v3.0.0
 
 ```ts
 export interface TheseM2<M extends URIS2> {
-  readonly map: <R, E, A, B>(fa: TheseT2<M, R, E, A>, f: (a: A) => B) => TheseT2<M, R, E, B>
+  readonly map: <A, B>(f: (a: A) => B) => <R, E>(fa: TheseT2<M, R, E, A>) => TheseT2<M, R, E, B>
   readonly bimap: <R, E, A, N, B>(fa: TheseT2<M, R, E, A>, f: (e: E) => N, g: (a: A) => B) => TheseT2<M, R, N, B>
   readonly mapLeft: <R, E, A, N>(fa: TheseT2<M, R, E, A>, f: (e: E) => N) => TheseT2<M, R, N, A>
   readonly fold: <R, E, A, B>(
@@ -123,7 +123,7 @@ export interface TheseM2<M extends URIS2> {
     S: Semigroup<E>
   ) => {
     readonly _E: E
-    readonly map: <R, A, B>(ma: TheseT2<M, R, E, A>, f: (a: A) => B) => TheseT2<M, R, E, B>
+    readonly map: <A, B>(f: (a: A) => B) => <R>(ma: TheseT2<M, R, E, A>) => TheseT2<M, R, E, B>
     readonly of: <R, A>(a: A) => TheseT2<M, R, E, A>
     readonly ap: <R, A, B>(mab: TheseT2<M, R, E, (a: A) => B>, ma: TheseT2<M, R, E, A>) => TheseT2<M, R, E, B>
     readonly chain: <R, A, B>(ma: TheseT2<M, R, E, A>, f: (a: A) => TheseT2<M, R, E, B>) => TheseT2<M, R, E, B>

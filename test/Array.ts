@@ -57,14 +57,15 @@ import {
   getShow,
   reverse,
   getEq,
-  isNonEmpty
+  isNonEmpty,
+  map
 } from '../src/Array'
 import { left, right } from '../src/Either'
 import { fold as foldMonoid, monoidSum, monoidString } from '../src/Monoid'
 import * as O from '../src/Option'
 import { ord, ordNumber, ordString } from '../src/Ord'
 import { eq, eqBoolean, eqNumber, eqString, Eq } from '../src/Eq'
-import { identity, tuple, Predicate } from '../src/function'
+import { identity, tuple, Predicate, pipe } from '../src/function'
 import * as I from '../src/Identity'
 import * as C from '../src/Const'
 import { showString } from '../src/Show'
@@ -282,7 +283,11 @@ describe('Array', () => {
 
   const optionStringEq = O.getEq(eqString)
   const multipleOf3: Predicate<number> = (x: number) => x % 3 === 0
-  const multipleOf3AsString = (x: number) => O.option.map(O.fromPredicate(multipleOf3)(x), (x) => `${x}`)
+  const multipleOf3AsString = (x: number) =>
+    pipe(
+      O.fromPredicate(multipleOf3)(x),
+      O.map((x) => `${x}`)
+    )
 
   it('`findFirstMap(arr, fun)` is equivalent to map and `head(mapOption(arr, fun)`', () => {
     fc.assert(
@@ -436,7 +441,10 @@ describe('Array', () => {
 
   it('map', () => {
     assert.deepStrictEqual(
-      array.map([1, 2, 3], (n) => n * 2),
+      pipe(
+        [1, 2, 3],
+        map((n) => n * 2)
+      ),
       [2, 4, 6]
     )
   })
@@ -848,7 +856,7 @@ describe('Array', () => {
       readonly bar: () => number
     }
     const f = (a: number, x?: Foo) => (x !== undefined ? `${a}${x.bar()}` : `${a}`)
-    const res = array.map([1, 2], f)
+    const res = pipe([1, 2], map(f))
     assert.deepStrictEqual(res, ['1', '2'])
   })
 

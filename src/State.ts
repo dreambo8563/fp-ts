@@ -6,7 +6,7 @@
 import { monadIdentity } from './Identity'
 import { Monad2 } from './Monad'
 import { getStateM } from './StateT'
-import { identity } from './function'
+import { identity, pipe } from './function'
 
 const T = /*#__PURE__*/ getStateM(monadIdentity)
 
@@ -97,16 +97,22 @@ export const ap: <E, A>(fa: State<E, A>) => <B>(fab: State<E, (a: A) => B>) => S
  */
 export const apFirst = <E, B>(fb: State<E, B>) => <A>(fa: State<E, A>): State<E, A> =>
   T.ap(
-    T.map(fa, (a) => (_: B) => a),
+    pipe(
+      fa,
+      T.map((a) => (_: B) => a)
+    ),
     fb
   )
 
 /**
  * @since 2.0.0
  */
-export const apSecond: <E, B>(fb: State<E, B>) => <A>(fa: State<E, A>) => State<E, B> = (fb) => (fa) =>
+export const apSecond = <E, B>(fb: State<E, B>) => <A>(fa: State<E, A>): State<E, B> =>
   T.ap(
-    T.map(fa, () => (b) => b),
+    pipe(
+      fa,
+      T.map(() => (b: B) => b)
+    ),
     fb
   )
 
@@ -120,7 +126,12 @@ export const chain: <E, A, B>(f: (a: A) => State<E, B>) => (ma: State<E, A>) => 
  * @since 2.0.0
  */
 export const chainFirst: <E, A, B>(f: (a: A) => State<E, B>) => (ma: State<E, A>) => State<E, A> = (f) => (ma) =>
-  T.chain(ma, (a) => T.map(f(a), () => a))
+  T.chain(ma, (a) =>
+    pipe(
+      f(a),
+      T.map(() => a)
+    )
+  )
 
 /**
  * @since 2.0.0
@@ -130,7 +141,7 @@ export const flatten: <E, A>(mma: State<E, State<E, A>>) => State<E, A> = (mma) 
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: State<E, A>) => State<E, B> = (f) => (fa) => T.map(fa, f)
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: State<E, A>) => State<E, B> = T.map
 
 // -------------------------------------------------------------------------------------
 // instances

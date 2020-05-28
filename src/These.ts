@@ -33,6 +33,7 @@ import { isNone, none, Option, some } from './Option'
 import { Semigroup } from './Semigroup'
 import { Show } from './Show'
 import { Traversable2 } from './Traversable'
+import { pipe } from './function'
 
 declare module './HKT' {
   interface URItoKind2<E, A> {
@@ -184,9 +185,9 @@ export function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E> & MonadThrow2C<URI
   return {
     URI,
     _E: undefined as any,
-    map: map_,
+    map,
     of: right,
-    ap: (mab, ma) => chain(mab, (f) => map_(ma, f)),
+    ap: (mab, ma) => chain(mab, (f) => pipe(ma, map(f))),
     chain,
     throwError: left
   }
@@ -363,9 +364,6 @@ export function fromOptions<E, A>(fe: Option<E>, fa: Option<A>): Option<These<E,
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const map_: <E, A, B>(fa: These<E, A>, f: (a: A) => B) => These<E, B> = (fa, f) =>
-  isLeft(fa) ? fa : isRight(fa) ? right(f(fa.right)) : both(fa.left, f(fa.right))
-
 const bimap_: <E, A, G, B>(fea: These<E, A>, f: (e: E) => G, g: (a: A) => B) => These<G, B> = (fea, f, g) =>
   isLeft(fea) ? left(f(fea.left)) : isRight(fea) ? right(g(fea.right)) : both(f(fea.left), g(fea.right))
 
@@ -398,7 +396,8 @@ export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => <E>(fa: These<
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: These<E, A>) => These<E, B> = (f) => (fa) => map_(fa, f)
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: These<E, A>) => These<E, B> = (f) => (fa) =>
+  isLeft(fa) ? fa : isRight(fa) ? right(f(fa.right)) : both(fa.left, f(fa.right))
 
 /**
  * @since 2.0.0
@@ -426,16 +425,30 @@ export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => <E>(fa: These<E,
  */
 export const these: Functor2<URI> & Bifunctor2<URI> & Foldable2<URI> & Traversable2<URI> = {
   URI,
-  map: map_,
+  map,
   bimap: bimap_,
   mapLeft: mapLeft_,
   reduce: reduce_,
   foldMap: foldMap_,
   reduceRight: reduceRight_,
   traverse: <F>(F: Applicative<F>) => <E, A, B>(ta: These<E, A>, f: (a: A) => HKT<F, B>): HKT<F, These<E, B>> => {
-    return isLeft(ta) ? F.of(ta) : isRight(ta) ? F.map(f(ta.right), right) : F.map(f(ta.right), (b) => both(ta.left, b))
+    return isLeft(ta)
+      ? F.of(ta)
+      : isRight(ta)
+      ? pipe(f(ta.right), F.map(right))
+      : pipe(
+          f(ta.right),
+          F.map((b) => both(ta.left, b))
+        )
   },
   sequence: <F>(F: Applicative<F>) => <E, A>(ta: These<E, HKT<F, A>>): HKT<F, These<E, A>> => {
-    return isLeft(ta) ? F.of(ta) : isRight(ta) ? F.map(ta.right, right) : F.map(ta.right, (b) => both(ta.left, b))
+    return isLeft(ta)
+      ? F.of(ta)
+      : isRight(ta)
+      ? pipe(ta.right, F.map(right))
+      : pipe(
+          ta.right,
+          F.map((b) => both(ta.left, b))
+        )
   }
 }

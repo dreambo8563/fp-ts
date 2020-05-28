@@ -36,7 +36,7 @@ import { Eq } from './Eq'
 import { Extend1 } from './Extend'
 import { Filterable1 } from './Filterable'
 import { Foldable1 } from './Foldable'
-import { identity, Lazy, Predicate, Refinement } from './function'
+import { identity, Lazy, Predicate, Refinement, pipe } from './function'
 import { HKT } from './HKT'
 import { Monad1 } from './Monad'
 import { MonadThrow1 } from './MonadThrow'
@@ -645,10 +645,10 @@ const reduceRight_: <A, B>(fa: Option<A>, b: B, f: (a: A, b: B) => B) => B = (fa
   isNone(fa) ? b : f(fa.value, b)
 
 const traverse_ = <F>(F: Applicative<F>) => <A, B>(ta: Option<A>, f: (a: A) => HKT<F, B>): HKT<F, Option<B>> => {
-  return isNone(ta) ? F.of(none) : F.map(f(ta.value), some)
+  return isNone(ta) ? F.of(none) : pipe(f(ta.value), F.map(some))
 }
 const sequence_ = <F>(F: Applicative<F>) => <A>(ta: Option<HKT<F, A>>): HKT<F, Option<A>> => {
-  return isNone(ta) ? F.of(none) : F.map(ta.value, some)
+  return isNone(ta) ? F.of(none) : pipe(ta.value, F.map(some))
 }
 
 const alt_: <A>(fx: Option<A>, fy: () => Option<A>) => Option<A> = (ma, f) => (isNone(ma) ? f() : ma)
@@ -680,10 +680,13 @@ const wilt_ = <F>(F: Applicative<F>) => <A, B, C>(
   f: (a: A) => HKT<F, Either<B, C>>
 ): HKT<F, Separated<Option<B>, Option<C>>> => {
   const o = map_(fa, (a) =>
-    F.map(f(a), (e) => ({
-      left: getLeft(e),
-      right: getRight(e)
-    }))
+    pipe(
+      f(a),
+      F.map((e) => ({
+        left: getLeft(e),
+        right: getRight(e)
+      }))
+    )
   )
   return isNone(o)
     ? F.of({
@@ -830,7 +833,7 @@ export const fromEither: <E, A>(ma: Either<E, A>) => Option<A> = (ma) => (ma._ta
  */
 export const applicativeOption: Applicative1<URI> = {
   URI,
-  map: map_,
+  map,
   of: some,
   ap: ap_
 }
@@ -848,7 +851,7 @@ export const option: Monad1<URI> &
   Witherable1<URI> &
   MonadThrow1<URI> = {
   URI,
-  map: map_,
+  map,
   of: some,
   ap: ap_,
   chain: chain_,

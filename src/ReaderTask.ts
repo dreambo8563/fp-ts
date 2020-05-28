@@ -1,7 +1,7 @@
 /**
  * @since 2.3.0
  */
-import { identity } from './function'
+import { identity, pipe } from './function'
 import { IO } from './IO'
 import { Monad2 } from './Monad'
 import { MonadTask2 } from './MonadTask'
@@ -147,7 +147,10 @@ export const ap: <R, A>(fa: ReaderTask<R, A>) => <B>(fab: ReaderTask<R, (a: A) =
  */
 export const apFirst = <R, B>(fb: ReaderTask<R, B>) => <A>(fa: ReaderTask<R, A>): ReaderTask<R, A> =>
   T.ap(
-    T.map(fa, (a) => (_: B) => a),
+    pipe(
+      fa,
+      T.map((a) => (_: B) => a)
+    ),
     fb
   )
 
@@ -156,7 +159,10 @@ export const apFirst = <R, B>(fb: ReaderTask<R, B>) => <A>(fa: ReaderTask<R, A>)
  */
 export const apSecond = <R, B>(fb: ReaderTask<R, B>) => <A>(fa: ReaderTask<R, A>): ReaderTask<R, B> =>
   T.ap(
-    T.map(fa, () => (b) => b),
+    pipe(
+      fa,
+      T.map(() => (b: B) => b)
+    ),
     fb
   )
 
@@ -172,7 +178,13 @@ export const chain: <R, A, B>(f: (a: A) => ReaderTask<R, B>) => (ma: ReaderTask<
  */
 export const chainFirst: <R, A, B>(f: (a: A) => ReaderTask<R, B>) => (ma: ReaderTask<R, A>) => ReaderTask<R, A> = (
   f
-) => (ma) => T.chain(ma, (a) => T.map(f(a), () => a))
+) => (ma) =>
+  T.chain(ma, (a) =>
+    pipe(
+      f(a),
+      T.map(() => a)
+    )
+  )
 
 /**
  * @since 2.3.0
@@ -182,7 +194,7 @@ export const flatten: <R, A>(mma: ReaderTask<R, ReaderTask<R, A>>) => ReaderTask
 /**
  * @since 2.3.0
  */
-export const map: <A, B>(f: (a: A) => B) => <R>(fa: ReaderTask<R, A>) => ReaderTask<R, B> = (f) => (fa) => T.map(fa, f)
+export const map: <A, B>(f: (a: A) => B) => <R>(fa: ReaderTask<R, A>) => ReaderTask<R, B> = T.map
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -221,6 +233,6 @@ export const readerTaskSeq: typeof readerTask =
   ((): typeof readerTask => {
     return {
       ...readerTask,
-      ap: (mab, ma) => T.chain(mab, (f) => T.map(ma, f))
+      ap: (mab, ma) => T.chain(mab, (f) => pipe(ma, T.map(f)))
     }
   })()
