@@ -1,5 +1,4 @@
 import * as assert from 'assert'
-import { left, right } from '../src/Either'
 import { eqNumber } from '../src/Eq'
 import { identity, pipe } from '../src/function'
 import * as _ from '../src/Identity'
@@ -90,12 +89,6 @@ describe('Identity', () => {
     assert.deepStrictEqual(S.equals(_.identity.of(1), _.identity.of(1)), true)
     assert.deepStrictEqual(S.equals(_.identity.of(1), _.identity.of(2)), false)
     assert.deepStrictEqual(S.equals(_.identity.of(2), _.identity.of(1)), false)
-  })
-
-  it('ChainRec', () => {
-    const x = _.identity.chainRec<number, number>(0, (a) => _.identity.of(a < 10 ? left(a + 1) : right(a)))
-    const expected = _.identity.of(10)
-    assert.deepStrictEqual(x, expected)
   })
 
   it('traverse', () => {

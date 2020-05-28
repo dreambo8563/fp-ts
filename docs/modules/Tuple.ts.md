@@ -1,6 +1,6 @@
 ---
 title: Tuple.ts
-nav_order: 95
+nav_order: 94
 parent: Modules
 ---
 
@@ -24,7 +24,6 @@ Added in v2.0.0
 - [getApplicative](#getapplicative)
 - [getApply](#getapply)
 - [getChain](#getchain)
-- [getChainRec](#getchainrec)
 - [getMonad](#getmonad)
 - [map](#map)
 - [mapLeft](#mapleft)
@@ -152,16 +151,6 @@ Added in v2.0.0
 
 ```ts
 export declare const getChain: <S>(S: Semigroup<S>) => Chain2C<'Tuple', S>
-```
-
-Added in v2.0.0
-
-# getChainRec
-
-**Signature**
-
-```ts
-export declare const getChainRec: <S>(M: Monoid<S>) => ChainRec2C<'Tuple', S>
 ```
 
 Added in v2.0.0

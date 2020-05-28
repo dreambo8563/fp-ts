@@ -18,8 +18,13 @@ high state of flux, you're at risk of it changing without notice.
 
 - **Breaking Change**
   - remove `pipeable` module (@gcanti)
+  - remove `ChainRec` module (@gcanti)
   - `Either`
     - make `fromNullable` lazy, closes #918 (@gcanti)
+  - `ReadonlyTuple`
+    - remove `getChainRec` function (@gcanti)
+  - `Tuple`
+    - remove `getChainRec` function (@gcanti)
 
 # 2.6.2
 

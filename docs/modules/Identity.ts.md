@@ -1,6 +1,6 @@
 ---
 title: Identity.ts
-nav_order: 40
+nav_order: 39
 parent: Modules
 ---
 
@@ -204,8 +204,7 @@ export declare const identity: Monad1<'Identity'> &
   Foldable1<'Identity'> &
   Traversable1<'Identity'> &
   Alt1<'Identity'> &
-  Comonad1<'Identity'> &
-  ChainRec1<'Identity'>
+  Comonad1<'Identity'>
 ```
 
 Added in v2.0.0

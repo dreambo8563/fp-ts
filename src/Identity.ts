@@ -3,7 +3,6 @@
  */
 import { Alt1 } from './Alt'
 import { Applicative } from './Applicative'
-import { ChainRec1, tailRec } from './ChainRec'
 import { Comonad1 } from './Comonad'
 import { Eq } from './Eq'
 import { Foldable1 } from './Foldable'
@@ -175,7 +174,7 @@ export const monadIdentity: Monad1<URI> = {
 /**
  * @since 2.0.0
  */
-export const identity: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Alt1<URI> & Comonad1<URI> & ChainRec1<URI> = {
+export const identity: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Alt1<URI> & Comonad1<URI> = {
   URI,
   map: map_,
   of: id,
@@ -188,6 +187,5 @@ export const identity: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Alt1<U
   sequence: sequence_,
   alt: alt_,
   extract,
-  extend: extend_,
-  chainRec: tailRec
+  extend: extend_
 }

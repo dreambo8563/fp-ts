@@ -1,6 +1,6 @@
 ---
 title: IO.ts
-nav_order: 43
+nav_order: 42
 parent: Modules
 ---
 
@@ -239,7 +239,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const io: Monad1<'IO'> & MonadIO1<'IO'> & ChainRec1<'IO'>
+export declare const io: Monad1<'IO'> & MonadIO1<'IO'>
 ```
 
 Added in v2.0.0

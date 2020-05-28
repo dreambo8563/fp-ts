@@ -5,9 +5,7 @@ import { Applicative, Applicative2C } from './Applicative'
 import { Apply2C } from './Apply'
 import { Bifunctor2 } from './Bifunctor'
 import { Chain2C } from './Chain'
-import { ChainRec2C } from './ChainRec'
 import { Comonad2 } from './Comonad'
-import { Either } from './Either'
 import { Foldable2 } from './Foldable'
 import { identity } from './function'
 import { HKT } from './HKT'
@@ -100,28 +98,6 @@ export function getMonad<S>(M: Monoid<S>): Monad2C<URI, S> {
   return {
     ...getChain(M),
     of: of(M)
-  }
-}
-
-/**
- * @since 2.5.0
- */
-export function getChainRec<S>(M: Monoid<S>): ChainRec2C<URI, S> {
-  const chainRec = <A, B>(a: A, f: (a: A) => readonly [Either<A, B>, S]): readonly [B, S] => {
-    let result: readonly [Either<A, B>, S] = f(a)
-    let acc: S = M.empty
-    let s: Either<A, B> = fst(result)
-    while (s._tag === 'Left') {
-      acc = M.concat(acc, snd(result))
-      result = f(s.left)
-      s = fst(result)
-    }
-    return [s.right, M.concat(acc, snd(result))]
-  }
-
-  return {
-    ...getChain(M),
-    chainRec
   }
 }
 

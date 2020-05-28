@@ -35,7 +35,6 @@
 import { Alt2, Alt2C } from './Alt'
 import { Applicative, Applicative2 } from './Applicative'
 import { Bifunctor2 } from './Bifunctor'
-import { ChainRec2, tailRec, ChainRec2C } from './ChainRec'
 import { Separated } from './Compactable'
 import { Eq } from './Eq'
 import { Extend2 } from './Extend'
@@ -489,7 +488,6 @@ export function getValidation<E>(
   Bifunctor2<URI> &
   Alt2C<URI, E> &
   Extend2<URI> &
-  ChainRec2C<URI, E> &
   MonadThrow2C<URI, E> {
   return {
     ...either,
@@ -581,11 +579,6 @@ const alt_: <E, A>(fx: Either<E, A>, fy: () => Either<E, A>) => Either<E, A> = (
 
 const extend_: <E, A, B>(wa: Either<E, A>, f: (wa: Either<E, A>) => B) => Either<E, B> = (wa, f) =>
   isLeft(wa) ? wa : right(f(wa))
-
-const chainRec_: <E, A, B>(a: A, f: (a: A) => Either<E, Either<A, B>>) => Either<E, B> = (a, f) =>
-  tailRec(f(a), (e) =>
-    isLeft(e) ? right(left(e.left)) : isLeft(e.right) ? left(f(e.right.left)) : right(right(e.right.right))
-  )
 
 /**
  * @since 2.0.0
@@ -742,7 +735,6 @@ export const either: Monad2<URI> &
   Bifunctor2<URI> &
   Alt2<URI> &
   Extend2<URI> &
-  ChainRec2<URI> &
   MonadThrow2<URI> = {
   URI,
   map: map_,
@@ -758,6 +750,5 @@ export const either: Monad2<URI> &
   mapLeft: mapLeft_,
   alt: alt_,
   extend: extend_,
-  chainRec: chainRec_,
   throwError: left
 }

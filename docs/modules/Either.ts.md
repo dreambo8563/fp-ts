@@ -1,6 +1,6 @@
 ---
 title: Either.ts
-nav_order: 25
+nav_order: 24
 parent: Modules
 ---
 
@@ -252,7 +252,6 @@ export declare const either: Monad2<'Either'> &
   Bifunctor2<'Either'> &
   Alt2<'Either'> &
   Extend2<'Either'> &
-  ChainRec2<'Either'> &
   MonadThrow2<'Either'>
 ```
 
@@ -528,7 +527,6 @@ export declare function getValidation<E>(
   Bifunctor2<URI> &
   Alt2C<URI, E> &
   Extend2<URI> &
-  ChainRec2C<URI, E> &
   MonadThrow2C<URI, E>
 ```
 
