@@ -30,6 +30,8 @@ high state of flux, you're at risk of it changing without notice.
     - make `fromNullable` lazy, closes #918 (@gcanti)
   - `Eq`
     - move `eqDate` to `Date` module (@gcanti)
+  - `Foldable`
+    - remove `traverse_` (@gcanti)
   - `Ord`
     - move `ordDate` to `Date` module (@gcanti)
   - `ReadonlyTuple`
