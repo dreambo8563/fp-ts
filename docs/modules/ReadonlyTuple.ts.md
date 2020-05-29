@@ -15,7 +15,6 @@ Added in v2.5.0
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
 - [bimap](#bimap)
-- [compose](#compose)
 - [duplicate](#duplicate)
 - [extend](#extend)
 - [extract](#extract)
@@ -27,6 +26,7 @@ Added in v2.5.0
 - [getMonad](#getmonad)
 - [map](#map)
 - [mapLeft](#mapleft)
+- [pipe](#pipe)
 - [readonlyTuple](#readonlytuple)
 - [reduce](#reduce)
 - [reduceRight](#reduceright)
@@ -61,16 +61,6 @@ Added in v2.5.0
 
 ```ts
 export declare const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fea: readonly [A, E]) => readonly [B, G]
-```
-
-Added in v2.5.0
-
-# compose
-
-**Signature**
-
-```ts
-export declare const compose: <E, A>(la: readonly [A, E]) => <B>(ab: readonly [B, A]) => readonly [B, E]
 ```
 
 Added in v2.5.0
@@ -184,6 +174,16 @@ export declare const mapLeft: <E, G>(f: (e: E) => G) => <A>(fea: readonly [A, E]
 ```
 
 Added in v2.5.0
+
+# pipe
+
+**Signature**
+
+```ts
+export declare const pipe: <B, C>(fbc: readonly [C, B]) => <A>(fab: readonly [B, A]) => readonly [C, A]
+```
+
+Added in v3.0.0
 
 # readonlyTuple
 

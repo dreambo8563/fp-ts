@@ -2,7 +2,7 @@
  * @since 2.0.0
  */
 import { Category2 } from './Category'
-import { identity, pipe } from './function'
+import * as F from './function'
 import { monadIdentity } from './Identity'
 import { Monad2 } from './Monad'
 import { Monoid } from './Monoid'
@@ -87,8 +87,6 @@ export const of: <R, A>(a: A) => Reader<R, A> = T.of
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const compose_: <E, A, B>(ab: Reader<A, B>, la: Reader<E, A>) => Reader<E, B> = (ab, la) => (l) => ab(la(l))
-
 const promap_: <E, A, D, B>(fbc: Reader<E, A>, f: (d: D) => E, g: (a: A) => B) => Reader<D, B> = (mbc, f, g) => (a) =>
   g(mbc(f(a)))
 
@@ -101,7 +99,7 @@ export const ap: <R, A>(fa: Reader<R, A>) => <B>(fab: Reader<R, (a: A) => B>) =>
  * @since 2.0.0
  */
 export const apFirst = <R, B>(fb: Reader<R, B>) => <A>(fa: Reader<R, A>): Reader<R, A> =>
-  pipe(
+  F.pipe(
     fa,
     map((a) => (_: B) => a),
     ap(fb)
@@ -111,7 +109,7 @@ export const apFirst = <R, B>(fb: Reader<R, B>) => <A>(fa: Reader<R, A>): Reader
  * @since 2.0.0
  */
 export const apSecond = <R, B>(fb: Reader<R, B>) => <A>(fa: Reader<R, A>): Reader<R, B> =>
-  pipe(
+  F.pipe(
     fa,
     map(() => (b: B) => b),
     ap(fb)
@@ -128,7 +126,7 @@ export const chain: <R, A, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) =
  */
 export const chainFirst: <R, A, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) => Reader<R, A> = (f) => (ma) =>
   T.chain(ma, (a) =>
-    pipe(
+    F.pipe(
       f(a),
       map(() => a)
     )
@@ -142,7 +140,7 @@ export const chainW: <Q, A, B>(f: (a: A) => Reader<Q, B>) => <R>(ma: Reader<R, A
 /**
  * @since 2.0.0
  */
-export const flatten: <R, A>(mma: Reader<R, Reader<R, A>>) => Reader<R, A> = (mma) => T.chain(mma, identity)
+export const flatten: <R, A>(mma: Reader<R, Reader<R, A>>) => Reader<R, A> = (mma) => T.chain(mma, F.identity)
 
 /**
  * @since 2.0.0
@@ -152,8 +150,8 @@ export const map: <A, B>(f: (a: A) => B) => <R>(fa: Reader<R, A>) => Reader<R, B
 /**
  * @since 2.0.0
  */
-export const compose: <E, A>(la: Reader<E, A>) => <B>(ab: Reader<A, B>) => Reader<E, B> = (la) => (ab) =>
-  compose_(ab, la)
+export const pipe: <B, C>(fbc: Reader<B, C>) => <A>(fab: Reader<A, B>) => Reader<A, C> = (fbc) => (fab) => (a) =>
+  fbc(fab(a))
 
 /**
  * @since 2.0.0
@@ -187,6 +185,6 @@ export const reader: Monad2<URI> & Profunctor2<URI> & Category2<URI> = {
   ap,
   chain,
   promap: promap_,
-  compose: compose_,
-  id: () => identity
+  pipe,
+  id: () => F.identity
 }

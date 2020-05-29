@@ -6,8 +6,8 @@ import * as _ from '../src/ReadonlyTuple'
 
 describe('ReadonlyTuple', () => {
   describe('pipeables', () => {
-    it('compose', () => {
-      assert.deepStrictEqual(pipe([true, 2] as const, _.compose([1, 'a'])), [true, 'a'])
+    it('pipe', () => {
+      assert.deepStrictEqual(pipe([1, 'a'] as const, _.pipe([true, 2])), [true, 'a'])
     })
 
     it('map', () => {

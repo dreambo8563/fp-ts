@@ -15,7 +15,6 @@ Added in v2.0.0
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
 - [bimap](#bimap)
-- [compose](#compose)
 - [duplicate](#duplicate)
 - [extend](#extend)
 - [extract](#extract)
@@ -27,6 +26,7 @@ Added in v2.0.0
 - [getMonad](#getmonad)
 - [map](#map)
 - [mapLeft](#mapleft)
+- [pipe](#pipe)
 - [reduce](#reduce)
 - [reduceRight](#reduceright)
 - [snd](#snd)
@@ -61,16 +61,6 @@ Added in v2.0.0
 
 ```ts
 export declare const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: [A, E]) => [B, G]
-```
-
-Added in v2.0.0
-
-# compose
-
-**Signature**
-
-```ts
-export declare const compose: <E, A>(la: [A, E]) => <B>(ab: [B, A]) => [B, E]
 ```
 
 Added in v2.0.0
@@ -184,6 +174,16 @@ export declare const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: [A, E]) => [A, G
 ```
 
 Added in v2.0.0
+
+# pipe
+
+**Signature**
+
+```ts
+export declare const pipe: <B, C>(fbc: [C, B]) => <A>(fab: [B, A]) => [C, A]
+```
+
+Added in v3.0.0
 
 # reduce
 

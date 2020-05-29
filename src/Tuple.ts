@@ -75,14 +75,17 @@ export const getMonad: <S>(M: Monoid<S>) => Monad2C<URI, S> = RT.getMonad as any
  * @since 2.0.0
  */
 export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: [A, E]) => [B, G] = RT.bimap as any
+
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const compose: <E, A>(la: [A, E]) => <B>(ab: [B, A]) => [B, E] = RT.compose as any
+export const pipe: <B, C>(fbc: [C, B]) => <A>(fab: [B, A]) => [C, A] = RT.pipe as any
+
 /**
  * @since 2.0.0
  */
 export const duplicate: <E, A>(ma: [A, E]) => [[A, E], E] = RT.duplicate as any
+
 /**
  * @since 2.0.0
  */
@@ -92,22 +95,27 @@ export const extend: <E, A, B>(f: (wa: [A, E]) => B) => (wa: [A, E]) => [B, E] =
  * @since 2.6.2
  */
 export const extract: <E, A>(wa: [A, E]) => A = RT.extract
+
 /**
  * @since 2.0.0
  */
 export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => <E>(fa: [A, E]) => M = RT.foldMap
+
 /**
  * @since 2.0.0
  */
 export const map: <A, B>(f: (a: A) => B) => <E>(fa: [A, E]) => [B, E] = RT.map as any
+
 /**
  * @since 2.0.0
  */
 export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: [A, E]) => [A, G] = RT.mapLeft as any
+
 /**
  * @since 2.0.0
  */
 export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => <E>(fa: [A, E]) => B = RT.reduce
+
 /**
  * @since 2.0.0
  */

@@ -34,6 +34,8 @@ high state of flux, you're at risk of it changing without notice.
     - move `ordDate` to `Date` module (@gcanti)
   - `ReadonlyTuple`
     - remove `getChainRec` function (@gcanti)
+  - `Semigroupoid`
+    - rename `compose` to `pipe` (@gcanti)
   - `TaskThese`
     - make `toTuple` lazy (@gcanti)
   - `These`

@@ -42,10 +42,10 @@ describe('Reader', () => {
       assert.deepStrictEqual(pipe(_.of(_.of('a')), _.flatten)({}), 'a')
     })
 
-    it('compose', () => {
+    it('pipe', () => {
       const double = (n: number) => n * 2
       const len = (s: string) => s.length
-      assert.deepStrictEqual(pipe(double, _.compose(len))('aaa'), 6)
+      assert.deepStrictEqual(pipe(len, _.pipe(double))('aaa'), 6)
     })
 
     it('promap', () => {
@@ -82,10 +82,10 @@ describe('Reader', () => {
     assert.deepStrictEqual(x(1), 1)
   })
 
-  it('compose', () => {
+  it('pipe', () => {
     const x = (s: string) => s.length
     const y = (n: number) => n >= 2
-    const z = _.reader.compose(y, x)
+    const z = pipe(x, _.pipe(y))
     assert.deepStrictEqual(z('foo'), true)
     assert.deepStrictEqual(z('a'), false)
   })

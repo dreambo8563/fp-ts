@@ -23,13 +23,13 @@ Added in v2.0.0
 - [chain](#chain)
 - [chainFirst](#chainfirst)
 - [chainW](#chainw)
-- [compose](#compose)
 - [flatten](#flatten)
 - [getMonoid](#getmonoid)
 - [getSemigroup](#getsemigroup)
 - [local](#local)
 - [map](#map)
 - [of](#of)
+- [pipe](#pipe)
 - [promap](#promap)
 - [reader](#reader)
 
@@ -151,16 +151,6 @@ export declare const chainW: <Q, A, B>(f: (a: A) => Reader<Q, B>) => <R>(ma: Rea
 
 Added in v2.6.0
 
-# compose
-
-**Signature**
-
-```ts
-export declare const compose: <E, A>(la: Reader<E, A>) => <B>(ab: Reader<A, B>) => Reader<E, B>
-```
-
-Added in v2.0.0
-
 # flatten
 
 **Signature**
@@ -220,6 +210,16 @@ Added in v2.0.0
 
 ```ts
 export declare const of: <R, A>(a: A) => Reader<R, A>
+```
+
+Added in v2.0.0
+
+# pipe
+
+**Signature**
+
+```ts
+export declare const pipe: <B, C>(fbc: Reader<B, C>) => <A>(fab: Reader<A, B>) => Reader<A, C>
 ```
 
 Added in v2.0.0
