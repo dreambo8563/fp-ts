@@ -229,7 +229,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const promap: <E, A, D, B>(f: (d: D) => E, g: (a: A) => B) => (fbc: Reader<E, A>) => Reader<D, B>
+export declare const promap: <D, E, A, B>(f: (d: D) => E, g: (a: A) => B) => (fbc: Reader<E, A>) => Reader<D, B>
 ```
 
 Added in v2.0.0

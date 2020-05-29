@@ -87,9 +87,6 @@ export const of: <R, A>(a: A) => Reader<R, A> = T.of
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const promap_: <E, A, D, B>(fbc: Reader<E, A>, f: (d: D) => E, g: (a: A) => B) => Reader<D, B> = (mbc, f, g) => (a) =>
-  g(mbc(f(a)))
-
 /**
  * @since 2.0.0
  */
@@ -156,9 +153,9 @@ export const pipe: <B, C>(fbc: Reader<B, C>) => <A>(fab: Reader<A, B>) => Reader
 /**
  * @since 2.0.0
  */
-export const promap: <E, A, D, B>(f: (d: D) => E, g: (a: A) => B) => (fbc: Reader<E, A>) => Reader<D, B> = (f, g) => (
-  fbc
-) => promap_(fbc, f, g)
+export const promap: <D, E, A, B>(f: (d: D) => E, g: (a: A) => B) => (fbc: Reader<E, A>) => Reader<D, B> = (f, g) => (
+  fea
+) => (a) => g(fea(f(a)))
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -184,7 +181,7 @@ export const reader: Monad2<URI> & Profunctor2<URI> & Category2<URI> = {
   of,
   ap,
   chain,
-  promap: promap_,
+  promap,
   pipe,
   id: () => F.identity
 }
