@@ -397,7 +397,10 @@ describe('Array', () => {
 
   it('mapWithIndex', () => {
     assert.deepStrictEqual(
-      _.array.mapWithIndex([1, 2, 3], (i, n) => n + i),
+      pipe(
+        [1, 2, 3],
+        _.mapWithIndex((i, n) => n + i)
+      ),
       [1, 3, 5]
     )
   })
@@ -774,7 +777,7 @@ describe('Array', () => {
 
     // FunctorWithIndex compatibility
     assert.deepStrictEqual(
-      _.array.mapWithIndex(ta, f),
+      pipe(ta, _.mapWithIndex(f)),
       _.array.traverseWithIndex(I.identity)(ta, (i, a) => I.identity.of(f(i, a)))
     )
   })

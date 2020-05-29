@@ -873,7 +873,7 @@ describe('ReadonlyArray', () => {
 
     // FunctorWithIndex compatibility
     assert.deepStrictEqual(
-      _.readonlyArray.mapWithIndex(ta, f),
+      pipe(ta, _.mapWithIndex(f)),
       _.readonlyArray.traverseWithIndex(I.identity)(ta, (i, a) => I.identity.of(f(i, a)))
     )
   })

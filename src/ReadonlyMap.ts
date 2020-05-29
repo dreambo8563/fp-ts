@@ -439,18 +439,6 @@ export function fromFoldable<F, K, A>(
   }
 }
 
-const mapWithIndex_ = <K, A, B>(fa: ReadonlyMap<K, A>, f: (k: K, a: A) => B): ReadonlyMap<K, B> => {
-  const m = new Map<K, B>()
-  const entries = fa.entries()
-  let e: Next<readonly [K, A]>
-  // tslint:disable-next-line: strict-boolean-expressions
-  while (!(e = entries.next()).done) {
-    const [key, a] = e.value
-    m.set(key, f(key, a))
-  }
-  return m
-}
-
 const partitionMapWithIndex_ = <K, A, B, C>(
   fa: ReadonlyMap<K, A>,
   f: (k: K, a: A) => Either<B, C>
@@ -560,10 +548,25 @@ export const filter: Filterable2<URI>['filter'] = <A>(predicate: Predicate<A>) =
 export const filterMap: Filterable2<URI>['filterMap'] = (f) => (fa) => filterMapWithIndex_(fa, (_, a) => f(a))
 
 /**
+ * @since 3.0.0
+ */
+export const mapWithIndex = <K, A, B>(f: (k: K, a: A) => B) => (fa: ReadonlyMap<K, A>): ReadonlyMap<K, B> => {
+  const m = new Map<K, B>()
+  const entries = fa.entries()
+  let e: Next<readonly [K, A]>
+  // tslint:disable-next-line: strict-boolean-expressions
+  while (!(e = entries.next()).done) {
+    const [key, a] = e.value
+    m.set(key, f(key, a))
+  }
+  return m
+}
+
+/**
  * @since 2.5.0
  */
-export const map: <A, B>(f: (a: A) => B) => <K>(fa: ReadonlyMap<K, A>) => ReadonlyMap<K, B> = (f) => (fa) =>
-  mapWithIndex_(fa, (_, a) => f(a))
+export const map: <A, B>(f: (a: A) => B) => <K>(fa: ReadonlyMap<K, A>) => ReadonlyMap<K, B> = (f) =>
+  mapWithIndex((_, a) => f(a))
 
 /**
  * @since 2.5.0
@@ -612,7 +615,7 @@ export function getFilterableWithIndex<K = never>(): FilterableWithIndex2C<URI, 
   return {
     ...readonlyMap,
     _E: undefined as any,
-    mapWithIndex: mapWithIndex_,
+    mapWithIndex,
     partitionMapWithIndex: partitionMapWithIndex_,
     partitionWithIndex: partitionWithIndex_,
     filterMapWithIndex: filterMapWithIndex_,
@@ -702,7 +705,7 @@ export function getWitherable<K>(O: Ord<K>): Witherable2C<URI, K> & TraversableW
     reduceRight: (b, f) => (fa) => reduceRightWithIndex(fa, b, (_, a, b) => f(a, b)),
     traverse,
     sequence,
-    mapWithIndex: mapWithIndex_,
+    mapWithIndex,
     reduceWithIndex,
     foldMapWithIndex,
     reduceRightWithIndex,

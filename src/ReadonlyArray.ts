@@ -1355,9 +1355,6 @@ export const of = <A>(a: A): ReadonlyArray<A> => [a]
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const mapWithIndex_: <A, B>(fa: ReadonlyArray<A>, f: (i: number, a: A) => B) => ReadonlyArray<B> = (fa, f) =>
-  fa.map((a, i) => f(i, a))
-
 const partitionWithIndex_: PartitionWithIndex1<URI, number> = <A>(
   fa: ReadonlyArray<A>,
   predicateWithIndex: (i: number, a: A) => boolean
@@ -1609,7 +1606,7 @@ export const map: <A, B>(f: (a: A) => B) => (fa: ReadonlyArray<A>) => ReadonlyAr
  */
 export const mapWithIndex: <A, B>(f: (i: number, a: A) => B) => (fa: ReadonlyArray<A>) => ReadonlyArray<B> = (f) => (
   fa
-) => mapWithIndex_(fa, f)
+) => fa.map((a, i) => f(i, a))
 
 /**
  * @since 2.5.0
@@ -1781,7 +1778,7 @@ export const readonlyArray: Monad1<URI> &
   filterMap,
   partition,
   partitionMap,
-  mapWithIndex: mapWithIndex_,
+  mapWithIndex,
   partitionMapWithIndex: partitionMapWithIndex_,
   partitionWithIndex: partitionWithIndex_,
   filterMapWithIndex: filterMapWithIndex_,

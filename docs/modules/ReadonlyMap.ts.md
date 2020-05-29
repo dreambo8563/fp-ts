@@ -35,6 +35,7 @@ Added in v2.5.0
 - [lookup](#lookup)
 - [lookupWithKey](#lookupwithkey)
 - [map](#map)
+- [mapWithIndex](#mapwithindex)
 - [member](#member)
 - [modifyAt](#modifyat)
 - [partition](#partition)
@@ -324,6 +325,16 @@ export declare const map: <A, B>(f: (a: A) => B) => <K>(fa: ReadonlyMap<K, A>) =
 ```
 
 Added in v2.5.0
+
+# mapWithIndex
+
+**Signature**
+
+```ts
+export declare const mapWithIndex: <K, A, B>(f: (k: K, a: A) => B) => (fa: ReadonlyMap<K, A>) => ReadonlyMap<K, B>
+```
+
+Added in v3.0.0
 
 # member
 

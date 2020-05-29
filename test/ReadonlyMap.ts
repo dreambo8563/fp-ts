@@ -746,11 +746,13 @@ describe('ReadonlyMap', () => {
     const W = _.getWitherable(ordUser)
 
     it('mapWithIndex', () => {
-      const mapWithIndex = W.mapWithIndex
       const aa1 = new Map<User, number>([[{ id: 'aa' }, 1]])
       const aa3 = new Map<User, number>([[{ id: 'aa' }, 3]])
       assert.deepStrictEqual(
-        mapWithIndex(aa1, (k, a) => a + k.id.length),
+        pipe(
+          aa1,
+          W.mapWithIndex((k, a) => a + k.id.length)
+        ),
         aa3
       )
     })

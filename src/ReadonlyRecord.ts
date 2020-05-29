@@ -335,7 +335,14 @@ export function mapWithIndex<K extends string, A, B>(
 export function mapWithIndex<A, B>(
   f: (k: string, a: A) => B
 ): (fa: ReadonlyRecord<string, A>) => ReadonlyRecord<string, B> {
-  return (fa) => mapWithIndex_(fa, f)
+  return (fa) => {
+    const out: Record<string, B> = {}
+    const keys = Object.keys(fa)
+    for (const key of keys) {
+      out[key] = f(key, fa[key])
+    }
+    return out
+  }
 }
 
 /**
@@ -694,15 +701,6 @@ export function elem<A>(E: Eq<A>): (a: A, fa: ReadonlyRecord<string, A>) => bool
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const mapWithIndex_ = <A, B>(fa: ReadonlyRecord<string, A>, f: (k: string, a: A) => B) => {
-  const out: Record<string, B> = {}
-  const keys = Object.keys(fa)
-  for (const key of keys) {
-    out[key] = f(key, fa[key])
-  }
-  return out
-}
-
 const reduceWithIndex_: <A, B>(fa: Readonly<Record<string, A>>, b: B, f: (i: string, b: B, a: A) => B) => B = (
   fa,
   b,
@@ -952,7 +950,7 @@ export const readonlyRecord: FunctorWithIndex1<URI, string> &
   filterMap,
   partition,
   partitionMap,
-  mapWithIndex: mapWithIndex_,
+  mapWithIndex,
   reduceWithIndex: reduceWithIndex_,
   foldMapWithIndex: foldMapWithIndex_,
   reduceRightWithIndex: reduceRightWithIndex_,

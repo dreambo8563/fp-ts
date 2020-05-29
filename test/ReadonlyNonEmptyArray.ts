@@ -26,7 +26,7 @@ describe('ReadonlyNonEmptyArray', () => {
 
   it('mapWithIndex', () => {
     const add = (i: number, n: number) => n + i
-    assert.deepStrictEqual(_.readonlyNonEmptyArray.mapWithIndex([1, 2], add), [1, 3])
+    assert.deepStrictEqual(pipe([1, 2], _.mapWithIndex(add)), [1, 3])
   })
 
   it('of', () => {
@@ -292,7 +292,7 @@ describe('ReadonlyNonEmptyArray', () => {
 
     // FunctorWithIndex compatibility
     assert.deepStrictEqual(
-      _.readonlyNonEmptyArray.mapWithIndex(['a', 'bb'], f),
+      pipe(['a', 'bb'], _.mapWithIndex(f)),
       _.readonlyNonEmptyArray.traverseWithIndex(I.identity)(['a', 'bb'], (i, a) => I.identity.of(f(i, a)))
     )
   })
