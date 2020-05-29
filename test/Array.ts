@@ -80,13 +80,9 @@ describe('Array', () => {
   })
 
   it('traverse', () => {
-    const tfanone = [1, 2]
     const f = (n: number): O.Option<number> => (n % 2 === 0 ? O.none : O.some(n))
-    const fasnone = _.array.traverse(O.option)(tfanone, f)
-    assert.deepStrictEqual(O.isNone(fasnone), true)
-    const tfa = [1, 3]
-    const fas = _.array.traverse(O.option)(tfa, f)
-    assert.deepStrictEqual(fas, O.some([1, 3]))
+    assert.deepStrictEqual(O.isNone(_.traverse(O.option)(f)([1, 2])), true)
+    assert.deepStrictEqual(_.traverse(O.option)(f)([1, 3]), O.some([1, 3]))
   })
 
   it('sequence', () => {

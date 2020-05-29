@@ -32,6 +32,8 @@ Added in v2.0.0
 - [map](#map)
 - [reduce](#reduce)
 - [reduceRight](#reduceright)
+- [sequence](#sequence)
+- [traverse](#traverse)
 
 ---
 
@@ -238,3 +240,23 @@ export declare const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: A) 
 ```
 
 Added in v2.0.0
+
+# sequence
+
+**Signature**
+
+```ts
+export declare const sequence: Sequence1<'Identity'>
+```
+
+Added in v3.0.0
+
+# traverse
+
+**Signature**
+
+```ts
+export declare const traverse: Traverse1<'Identity'>
+```
+
+Added in v3.0.0

@@ -92,11 +92,17 @@ describe('ReadonlyTuple', () => {
 
   it('traverse', () => {
     assert.deepStrictEqual(
-      _.readonlyTuple.traverse(option)([2, 'a'], (n) => (n >= 2 ? some(n) : none)),
+      pipe(
+        [2, 'a'] as const,
+        _.traverse(option)((n) => (n >= 2 ? some(n) : none))
+      ),
       some([2, 'a'])
     )
     assert.deepStrictEqual(
-      _.readonlyTuple.traverse(option)([1, 'a'], (n) => (n >= 2 ? some(n) : none)),
+      pipe(
+        [1, 'a'] as const,
+        _.traverse(option)((n) => (n >= 2 ? some(n) : none))
+      ),
       none
     )
   })

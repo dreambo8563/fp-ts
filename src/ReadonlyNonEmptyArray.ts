@@ -18,6 +18,7 @@ import { ReadonlyRecord } from './ReadonlyRecord'
 import { getJoinSemigroup, getMeetSemigroup, Semigroup } from './Semigroup'
 import { Show } from './Show'
 import { TraversableWithIndex1 } from './TraversableWithIndex'
+import { Traversable1 } from './Traversable'
 
 declare module './HKT' {
   interface URItoKind<A> {
@@ -477,6 +478,16 @@ export const reduceRightWithIndex: <A, B>(
   f: (i: number, a: A, b: B) => B
 ) => (fa: ReadonlyNonEmptyArray<A>) => B = RA.reduceRightWithIndex
 
+/**
+ * @since 3.0.0
+ */
+export const traverse: Traversable1<URI>['traverse'] = RA.traverse as any
+
+/**
+ * @since 3.0.0
+ */
+export const sequence: Traversable1<URI>['sequence'] = RA.sequence as any
+
 // -------------------------------------------------------------------------------------
 // instances
 // -------------------------------------------------------------------------------------
@@ -493,19 +504,19 @@ export const readonlyNonEmptyArray: Monad1<URI> &
   URI,
   of,
   extract: head,
-  map: RA.readonlyArray.map as any,
+  map: RA.map as any,
   mapWithIndex: RA.readonlyArray.mapWithIndex as any,
-  ap: RA.readonlyArray.ap as any,
-  chain: RA.readonlyArray.chain as any,
-  extend: RA.readonlyArray.extend as any,
-  reduce: RA.readonlyArray.reduce,
-  foldMap: RA.readonlyArray.foldMap,
-  reduceRight: RA.readonlyArray.reduceRight,
-  traverse: RA.readonlyArray.traverse as any,
-  sequence: RA.readonlyArray.sequence as any,
+  ap: RA.ap as any,
+  chain: RA.chain as any,
+  extend: RA.extend as any,
+  reduce: RA.reduce,
+  foldMap: RA.foldMap,
+  reduceRight: RA.reduceRight,
+  traverse: RA.traverse as any,
+  sequence: RA.sequence as any,
   reduceWithIndex: RA.readonlyArray.reduceWithIndex,
   foldMapWithIndex: RA.readonlyArray.foldMapWithIndex,
   reduceRightWithIndex: RA.readonlyArray.reduceRightWithIndex,
   traverseWithIndex: RA.readonlyArray.traverseWithIndex as any,
-  alt: RA.readonlyArray.alt as any
+  alt: RA.alt as any
 }

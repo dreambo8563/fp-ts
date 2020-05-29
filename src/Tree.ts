@@ -8,7 +8,7 @@
  * @since 2.0.0
  */
 import { Applicative } from './Applicative'
-import { array, empty, getEq as getArrayEq, getMonoid } from './Array'
+import * as A from './Array'
 import { Comonad1 } from './Comonad'
 import { Eq, fromEquals } from './Eq'
 import { Foldable1 } from './Foldable'
@@ -53,7 +53,7 @@ export interface Tree<A> {
 /**
  * @since 2.0.0
  */
-export function make<A>(value: A, forest: Forest<A> = empty): Tree<A> {
+export function make<A>(value: A, forest: Forest<A> = A.empty): Tree<A> {
   return {
     value,
     forest
@@ -65,7 +65,7 @@ export function make<A>(value: A, forest: Forest<A> = empty): Tree<A> {
  */
 export function getShow<A>(S: Show<A>): Show<Tree<A>> {
   const show = (t: Tree<A>): string => {
-    return t.forest === empty || t.forest.length === 0
+    return t.forest === A.empty || t.forest.length === 0
       ? `make(${S.show(t.value)})`
       : `make(${S.show(t.value)}, [${t.forest.map(show).join(', ')}])`
   }
@@ -80,7 +80,7 @@ export function getShow<A>(S: Show<A>): Show<Tree<A>> {
 export function getEq<A>(E: Eq<A>): Eq<Tree<A>> {
   let SA: Eq<Array<Tree<A>>>
   const R: Eq<Tree<A>> = fromEquals((x, y) => E.equals(x.value, y.value) && SA.equals(x.forest, y.forest))
-  SA = getArrayEq(R)
+  SA = A.getEq(R)
   return R
 }
 
@@ -212,8 +212,12 @@ export function unfoldForestM<M>(
 export function unfoldForestM<M>(
   M: Monad<M>
 ): <A, B>(bs: Array<B>, f: (b: B) => HKT<M, [A, Array<B>]>) => HKT<M, Forest<A>> {
-  const traverseM = array.traverse(M)
-  return (bs, f) => traverseM(bs, (b) => unfoldTreeM(M)(b, f))
+  const traverseM = A.traverse(M)
+  return (bs, f) =>
+    pipe(
+      bs,
+      traverseM((b) => unfoldTreeM(M)(b, f))
+    )
 }
 
 /**
@@ -297,7 +301,7 @@ export const apSecond = <B>(fb: Tree<B>) => <A>(fa: Tree<A>): Tree<B> =>
  */
 export const chain = <A, B>(f: (a: A) => Tree<B>) => (ma: Tree<A>): Tree<B> => {
   const { value, forest } = f(ma.value)
-  const concat = getMonoid<Tree<B>>().concat
+  const concat = A.getMonoid<Tree<B>>().concat
   return {
     value,
     forest: concat(
@@ -382,6 +386,35 @@ export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: Tree<A>) =>
  */
 export const extract: <A>(wa: Tree<A>) => A = (wa) => wa.value
 
+/**
+ * @since 3.0.0
+ */
+export const traverse: Traversable1<URI>['traverse'] = <F>(
+  F: Applicative<F>
+): (<A, B>(f: (a: A) => HKT<F, B>) => (ta: Tree<A>) => HKT<F, Tree<B>>) => {
+  const traverseF = A.traverse(F)
+  const r = <A, B>(f: (a: A) => HKT<F, B>) => (ta: Tree<A>): HKT<F, Tree<B>> =>
+    pipe(
+      f(ta.value),
+      F.map((value: B) => (forest: Forest<B>) => ({
+        value,
+        forest
+      })),
+      F.ap(pipe(ta.forest, traverseF(r(f))))
+    )
+  return r
+}
+
+/**
+ * @since 3.0.0
+ */
+export const sequence: Traversable1<URI>['sequence'] = <F>(
+  F: Applicative<F>
+): (<A>(ta: Tree<HKT<F, A>>) => HKT<F, Tree<A>>) => {
+  const traverseF = tree.traverse(F)
+  return traverseF(identity)
+}
+
 // -------------------------------------------------------------------------------------
 // instances
 // -------------------------------------------------------------------------------------
@@ -394,30 +427,15 @@ export const tree: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Comonad1<U
   map,
   of: (a) => ({
     value: a,
-    forest: empty
+    forest: A.empty
   }),
   ap,
   chain,
   reduce,
   foldMap,
   reduceRight,
-  traverse: <F>(F: Applicative<F>): (<A, B>(ta: Tree<A>, f: (a: A) => HKT<F, B>) => HKT<F, Tree<B>>) => {
-    const traverseF = array.traverse(F)
-    const r = <A, B>(ta: Tree<A>, f: (a: A) => HKT<F, B>): HKT<F, Tree<B>> =>
-      pipe(
-        f(ta.value),
-        F.map((value: B) => (forest: Forest<B>) => ({
-          value,
-          forest
-        })),
-        F.ap(traverseF(ta.forest, (t) => r(t, f)))
-      )
-    return r
-  },
-  sequence: <F>(F: Applicative<F>): (<A>(ta: Tree<HKT<F, A>>) => HKT<F, Tree<A>>) => {
-    const traverseF = tree.traverse(F)
-    return (ta) => traverseF(ta, identity)
-  },
+  traverse,
+  sequence,
   extract,
   extend
 }

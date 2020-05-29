@@ -86,6 +86,7 @@ Added in v2.0.0
 - [scanLeft](#scanleft)
 - [scanRight](#scanright)
 - [separate](#separate)
+- [sequence](#sequence)
 - [snoc](#snoc)
 - [sort](#sort)
 - [sortBy](#sortby)
@@ -95,6 +96,7 @@ Added in v2.0.0
 - [takeLeft](#takeleft)
 - [takeLeftWhile](#takeleftwhile)
 - [takeRight](#takeright)
+- [traverse](#traverse)
 - [union](#union)
 - [uniq](#uniq)
 - [unsafeDeleteAt](#unsafedeleteat)
@@ -1399,6 +1401,16 @@ export declare const separate: <A, B>(fa: Either<A, B>[]) => Separated<A[], B[]>
 
 Added in v2.0.0
 
+# sequence
+
+**Signature**
+
+```ts
+export declare const sequence: Sequence1<'Array'>
+```
+
+Added in v3.0.0
+
 # snoc
 
 Append an element to the end of an array, creating a new non empty array
@@ -1622,6 +1634,16 @@ assert.deepStrictEqual(takeRight(2)([1, 2, 3, 4, 5]), [4, 5])
 ```
 
 Added in v2.0.0
+
+# traverse
+
+**Signature**
+
+```ts
+export declare const traverse: Traverse1<'Array'>
+```
+
+Added in v3.0.0
 
 # union
 

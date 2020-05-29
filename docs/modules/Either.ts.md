@@ -88,9 +88,11 @@ Added in v2.0.0
 - [reduce](#reduce)
 - [reduceRight](#reduceright)
 - [right](#right)
+- [sequence](#sequence)
 - [stringifyJSON](#stringifyjson)
 - [swap](#swap)
 - [toError](#toerror)
+- [traverse](#traverse)
 - [tryCatch](#trycatch)
 
 ---
@@ -685,6 +687,16 @@ export declare function right<E = never, A = never>(a: A): Either<E, A>
 
 Added in v2.0.0
 
+# sequence
+
+**Signature**
+
+```ts
+export declare const sequence: Sequence2<'Either'>
+```
+
+Added in v3.0.0
+
 # stringifyJSON
 
 Converts a JavaScript value to a JavaScript Object Notation (JSON) string.
@@ -736,6 +748,16 @@ export declare function toError(e: unknown): Error
 ```
 
 Added in v2.0.0
+
+# traverse
+
+**Signature**
+
+```ts
+export declare const traverse: Traverse2<'Either'>
+```
+
+Added in v3.0.0
 
 # tryCatch
 

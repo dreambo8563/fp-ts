@@ -30,8 +30,10 @@ Added in v2.5.0
 - [readonlyTuple](#readonlytuple)
 - [reduce](#reduce)
 - [reduceRight](#reduceright)
+- [sequence](#sequence)
 - [snd](#snd)
 - [swap](#swap)
+- [traverse](#traverse)
 
 ---
 
@@ -219,6 +221,16 @@ export declare const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => <E>(fa: 
 
 Added in v2.5.0
 
+# sequence
+
+**Signature**
+
+```ts
+export declare const sequence: Sequence2<'ReadonlyTuple'>
+```
+
+Added in v3.0.0
+
 # snd
 
 **Signature**
@@ -238,3 +250,13 @@ export declare function swap<A, S>(sa: readonly [A, S]): readonly [S, A]
 ```
 
 Added in v2.5.0
+
+# traverse
+
+**Signature**
+
+```ts
+export declare const traverse: Traverse2<'ReadonlyTuple'>
+```
+
+Added in v3.0.0

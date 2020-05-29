@@ -443,8 +443,8 @@ export function getWitherable<E>(M: Monoid<E>): Witherable2C<URI, E> {
   const wither = <F>(
     F: Applicative<F>
   ): (<A, B>(ma: Either<E, A>, f: (a: A) => HKT<F, Option<B>>) => HKT<F, Either<E, B>>) => {
-    const traverseF = traverse_(F)
-    return (ma, f) => pipe(traverseF(ma, f), F.map(compact))
+    const traverseF = traverse(F)
+    return (ma, f) => pipe(ma, traverseF(f), F.map(compact))
   }
 
   const wilt = <F>(
@@ -453,8 +453,8 @@ export function getWitherable<E>(M: Monoid<E>): Witherable2C<URI, E> {
     ma: Either<E, A>,
     f: (a: A) => HKT<F, Either<B, C>>
   ) => HKT<F, Separated<Either<E, B>, Either<E, C>>>) => {
-    const traverseF = traverse_(F)
-    return (ma, f) => pipe(traverseF(ma, f), F.map(separate))
+    const traverseF = traverse(F)
+    return (ma, f) => pipe(ma, traverseF(f), F.map(separate))
   }
 
   return {
@@ -467,8 +467,8 @@ export function getWitherable<E>(M: Monoid<E>): Witherable2C<URI, E> {
     filterMap,
     partition,
     partitionMap,
-    traverse: traverse_,
-    sequence: sequence_,
+    traverse,
+    sequence,
     reduce,
     foldMap,
     reduceRight,
@@ -540,14 +540,19 @@ export function getValidationMonoid<E, A>(SE: Semigroup<E>, SA: Monoid<A>): Mono
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const traverse_ = <F>(F: Applicative<F>) => <E, A, B>(
-  ma: Either<E, A>,
-  f: (a: A) => HKT<F, B>
-): HKT<F, Either<E, B>> => {
-  return isLeft(ma) ? F.of(left(ma.left)) : pipe(f(ma.right), F.map(right))
-}
+/**
+ * @since 3.0.0
+ */
+export const traverse: Traversable2<URI>['traverse'] = <F>(F: Applicative<F>) => <A, B>(f: (a: A) => HKT<F, B>) => <E>(
+  ma: Either<E, A>
+): HKT<F, Either<E, B>> => (isLeft(ma) ? F.of(left(ma.left)) : pipe(f(ma.right), F.map(right)))
 
-const sequence_ = <F>(F: Applicative<F>) => <E, A>(ma: Either<E, HKT<F, A>>): HKT<F, Either<E, A>> => {
+/**
+ * @since 3.0.0
+ */
+export const sequence: Traversable2<URI>['sequence'] = <F>(F: Applicative<F>) => <E, A>(
+  ma: Either<E, HKT<F, A>>
+): HKT<F, Either<E, A>> => {
   return isLeft(ma) ? F.of(left(ma.left)) : pipe(ma.right, F.map(right))
 }
 
@@ -728,8 +733,8 @@ export const either: Monad2<URI> &
   reduce,
   foldMap,
   reduceRight,
-  traverse: traverse_,
-  sequence: sequence_,
+  traverse,
+  sequence,
   bimap,
   mapLeft,
   alt,

@@ -42,6 +42,8 @@ Added in v2.0.0
 - [map](#map)
 - [reduce](#reduce)
 - [reduceRight](#reduceright)
+- [sequence](#sequence)
+- [traverse](#traverse)
 - [tree](#tree)
 - [unfoldForest](#unfoldforest)
 - [unfoldForestM](#unfoldforestm)
@@ -305,7 +307,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function make<A>(value: A, forest: Forest<A> = empty): Tree<A>
+export declare function make<A>(value: A, forest: Forest<A> = A.empty): Tree<A>
 ```
 
 Added in v2.0.0
@@ -339,6 +341,26 @@ export declare const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: Tre
 ```
 
 Added in v2.0.0
+
+# sequence
+
+**Signature**
+
+```ts
+export declare const sequence: Sequence1<'Tree'>
+```
+
+Added in v3.0.0
+
+# traverse
+
+**Signature**
+
+```ts
+export declare const traverse: Traverse1<'Tree'>
+```
+
+Added in v3.0.0
 
 # tree
 

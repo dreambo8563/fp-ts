@@ -16,6 +16,7 @@ import * as RNEA from './ReadonlyNonEmptyArray'
 import { Semigroup } from './Semigroup'
 import { Show } from './Show'
 import { TraversableWithIndex1 } from './TraversableWithIndex'
+import { Traversable1 } from './Traversable'
 
 /* tslint:disable:readonly-array */
 
@@ -395,6 +396,16 @@ export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: NonEmptyArr
  */
 export const reduceRightWithIndex: <A, B>(b: B, f: (i: number, a: A, b: B) => B) => (fa: NonEmptyArray<A>) => B =
   RNEA.reduceRightWithIndex
+
+/**
+ * @since 3.0.0
+ */
+export const traverse: Traversable1<URI>['traverse'] = RNEA.traverse as any
+
+/**
+ * @since 3.0.0
+ */
+export const sequence: Traversable1<URI>['sequence'] = RNEA.sequence as any
 
 // -------------------------------------------------------------------------------------
 // instances

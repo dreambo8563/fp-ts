@@ -87,6 +87,7 @@ Added in v2.5.0
 - [scanLeft](#scanleft)
 - [scanRight](#scanright)
 - [separate](#separate)
+- [sequence](#sequence)
 - [snoc](#snoc)
 - [sort](#sort)
 - [sortBy](#sortby)
@@ -97,6 +98,7 @@ Added in v2.5.0
 - [takeLeftWhile](#takeleftwhile)
 - [takeRight](#takeright)
 - [toArray](#toarray)
+- [traverse](#traverse)
 - [union](#union)
 - [uniq](#uniq)
 - [unsafeDeleteAt](#unsafedeleteat)
@@ -1433,6 +1435,16 @@ export declare const separate: <A, B>(fa: readonly Either<A, B>[]) => Separated<
 
 Added in v2.5.0
 
+# sequence
+
+**Signature**
+
+```ts
+export declare const sequence: Sequence1<'ReadonlyArray'>
+```
+
+Added in v3.0.0
+
 # snoc
 
 Append an element to the end of an array, creating a new non empty array
@@ -1666,6 +1678,16 @@ export declare function toArray<A>(ras: ReadonlyArray<A>): Array<A>
 ```
 
 Added in v2.5.0
+
+# traverse
+
+**Signature**
+
+```ts
+export declare const traverse: Traverse1<'ReadonlyArray'>
+```
+
+Added in v3.0.0
 
 # union
 

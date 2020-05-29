@@ -693,13 +693,6 @@ export function elem<A>(E: Eq<A>): (a: A, fa: ReadonlyRecord<string, A>) => bool
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const traverse_ = <F>(
-  F: Applicative<F>
-): (<A, B>(ta: ReadonlyRecord<string, A>, f: (a: A) => HKT<F, B>) => HKT<F, ReadonlyRecord<string, B>>) => {
-  const traverseWithIndexF = traverseWithIndex_(F)
-  return (ta, f) => traverseWithIndexF(ta, (_, a) => f(a))
-}
-
 const filter_ = <A>(fa: ReadonlyRecord<string, A>, predicate: Predicate<A>): ReadonlyRecord<string, A> => {
   return filterWithIndex_(fa, (_, a) => predicate(a))
 }
@@ -985,7 +978,7 @@ export const readonlyRecord: FunctorWithIndex1<URI, string> &
   reduce,
   foldMap,
   reduceRight,
-  traverse: traverse_,
+  traverse,
   sequence,
   compact,
   separate,
@@ -1004,8 +997,8 @@ export const readonlyRecord: FunctorWithIndex1<URI, string> &
   wither: <F>(
     F: Applicative<F>
   ): (<A, B>(wa: ReadonlyRecord<string, A>, f: (a: A) => HKT<F, Option<B>>) => HKT<F, ReadonlyRecord<string, B>>) => {
-    const traverseF = traverse_(F)
-    return (wa, f) => pipe(traverseF(wa, f), F.map(compact))
+    const traverseF = traverse(F)
+    return (wa, f) => pipe(wa, traverseF(f), F.map(compact))
   },
   wilt: <F>(
     F: Applicative<F>
@@ -1013,8 +1006,8 @@ export const readonlyRecord: FunctorWithIndex1<URI, string> &
     wa: ReadonlyRecord<string, A>,
     f: (a: A) => HKT<F, Either<B, C>>
   ) => HKT<F, Separated<ReadonlyRecord<string, B>, ReadonlyRecord<string, C>>>) => {
-    const traverseF = traverse_(F)
-    return (wa, f) => pipe(traverseF(wa, f), F.map(separate))
+    const traverseF = traverse(F)
+    return (wa, f) => pipe(wa, traverseF(f), F.map(separate))
   },
   traverseWithIndex: traverseWithIndex_
 }

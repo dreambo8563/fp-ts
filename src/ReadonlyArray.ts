@@ -27,6 +27,7 @@ import { Show } from './Show'
 import { TraversableWithIndex1 } from './TraversableWithIndex'
 import { Unfoldable1 } from './Unfoldable'
 import { Witherable1 } from './Witherable'
+import { Traversable1 } from './Traversable'
 
 declare module './HKT' {
   interface URItoKind<A> {
@@ -1473,14 +1474,22 @@ const unfold_ = <A, B>(b: B, f: (b: B) => Option<readonly [A, B]>): ReadonlyArra
   return ret
 }
 
-const traverse_ = <F>(
+/**
+ * @since 3.0.0
+ */
+export const traverse: Traversable1<URI>['traverse'] = <F>(
   F: Applicative<F>
-): (<A, B>(ta: ReadonlyArray<A>, f: (a: A) => HKT<F, B>) => HKT<F, ReadonlyArray<B>>) => {
+): (<A, B>(f: (a: A) => HKT<F, B>) => (ta: ReadonlyArray<A>) => HKT<F, ReadonlyArray<B>>) => {
   const traverseWithIndexF = traverseWithIndex_(F)
-  return (ta, f) => traverseWithIndexF(ta, (_, a) => f(a))
+  return (f) => (ta) => traverseWithIndexF(ta, (_, a) => f(a))
 }
 
-const sequence_ = <F>(F: Applicative<F>) => <A>(ta: ReadonlyArray<HKT<F, A>>): HKT<F, ReadonlyArray<A>> => {
+/**
+ * @since 3.0.0
+ */
+export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F>) => <A>(
+  ta: ReadonlyArray<HKT<F, A>>
+): HKT<F, ReadonlyArray<A>> => {
   return pipe(
     ta,
     reduce(F.of(zero_()), (fas, fa) =>
@@ -1509,8 +1518,8 @@ const traverseWithIndex_ = <F>(F: Applicative<F>) => <A, B>(
 const wither_ = <F>(
   F: Applicative<F>
 ): (<A, B>(ta: ReadonlyArray<A>, f: (a: A) => HKT<F, Option<B>>) => HKT<F, ReadonlyArray<B>>) => {
-  const traverseF = traverse_(F)
-  return (wa, f) => pipe(traverseF(wa, f), F.map(compact))
+  const traverseF = traverse(F)
+  return (wa, f) => pipe(wa, traverseF(f), F.map(compact))
 }
 
 const wilt_ = <F>(
@@ -1519,8 +1528,8 @@ const wilt_ = <F>(
   wa: ReadonlyArray<A>,
   f: (a: A) => HKT<F, Either<B, C>>
 ) => HKT<F, Separated<ReadonlyArray<B>, ReadonlyArray<C>>>) => {
-  const traverseF = traverse_(F)
-  return (wa, f) => pipe(traverseF(wa, f), F.map(separate))
+  const traverseF = traverse(F)
+  return (wa, f) => pipe(wa, traverseF(f), F.map(separate))
 }
 
 /**
@@ -1809,8 +1818,8 @@ export const readonlyArray: Monad1<URI> &
   reduce,
   foldMap,
   reduceRight,
-  traverse: traverse_,
-  sequence: sequence_,
+  traverse,
+  sequence,
   reduceWithIndex: reduceWithIndex_,
   foldMapWithIndex: foldMapWithIndex_,
   reduceRightWithIndex: reduceRightWithIndex_,

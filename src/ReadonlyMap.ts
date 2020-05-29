@@ -707,9 +707,9 @@ export function getWitherable<K>(O: Ord<K>): Witherable2C<URI, K> & TraversableW
 
   const traverse = <F>(
     F: Applicative<F>
-  ): (<K, A, B>(ta: ReadonlyMap<K, A>, f: (a: A) => HKT<F, B>) => HKT<F, ReadonlyMap<K, B>>) => {
+  ): (<K, A, B>(f: (a: A) => HKT<F, B>) => (ta: ReadonlyMap<K, A>) => HKT<F, ReadonlyMap<K, B>>) => {
     const traverseWithIndexF = traverseWithIndex(F)
-    return (ta, f) => traverseWithIndexF(ta, (_, a) => f(a))
+    return (f) => (ta) => traverseWithIndexF(ta, (_, a) => f(a))
   }
 
   const sequence = <F>(F: Applicative<F>): (<K, A>(ta: ReadonlyMap<K, HKT<F, A>>) => HKT<F, ReadonlyMap<K, A>>) => {
@@ -740,13 +740,13 @@ export function getWitherable<K>(O: Ord<K>): Witherable2C<URI, K> & TraversableW
       f: (a: A) => HKT<F, Either<B, C>>
     ) => HKT<F, Separated<ReadonlyMap<K, B>, ReadonlyMap<K, C>>>) => {
       const traverseF = traverse(F)
-      return (wa, f) => pipe(traverseF(wa, f), F.map(separate))
+      return (wa, f) => pipe(wa, traverseF(f), F.map(separate))
     },
     wither: <F>(
       F: Applicative<F>
     ): (<K, A, B>(wa: ReadonlyMap<K, A>, f: (a: A) => HKT<F, O.Option<B>>) => HKT<F, ReadonlyMap<K, B>>) => {
       const traverseF = traverse(F)
-      return (wa, f) => pipe(traverseF(wa, f), F.map(compact))
+      return (wa, f) => pipe(wa, traverseF(f), F.map(compact))
     }
   }
 }

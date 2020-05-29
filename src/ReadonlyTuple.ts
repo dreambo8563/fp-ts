@@ -172,6 +172,30 @@ export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => <E>(fa: readonly [A, 
 export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => <E>(fa: readonly [A, E]) => B = (b, f) => (fa) =>
   f(fst(fa), b)
 
+/**
+ * @since 3.0.0
+ */
+export const traverse: Traversable2<URI>['traverse'] = <F>(A: Applicative<F>) => <A, B>(f: (a: A) => HKT<F, B>) => <S>(
+  as: readonly [A, S]
+): HKT<F, readonly [B, S]> => {
+  return F.pipe(
+    f(fst(as)),
+    A.map((b) => [b, snd(as)])
+  )
+}
+
+/**
+ * @since 3.0.0
+ */
+export const sequence: Traversable2<URI>['sequence'] = <F>(A: Applicative<F>) => <A, S>(
+  fas: readonly [HKT<F, A>, S]
+): HKT<F, readonly [A, S]> => {
+  return F.pipe(
+    fst(fas),
+    A.map((a) => [a, snd(fas)])
+  )
+}
+
 // -------------------------------------------------------------------------------------
 // instances
 // -------------------------------------------------------------------------------------
@@ -194,19 +218,6 @@ export const readonlyTuple: Semigroupoid2<URI> &
   reduce,
   foldMap,
   reduceRight,
-  traverse: <F>(A: Applicative<F>) => <A, S, B>(
-    as: readonly [A, S],
-    f: (a: A) => HKT<F, B>
-  ): HKT<F, readonly [B, S]> => {
-    return F.pipe(
-      f(fst(as)),
-      A.map((b) => [b, snd(as)])
-    )
-  },
-  sequence: <F>(A: Applicative<F>) => <A, S>(fas: readonly [HKT<F, A>, S]): HKT<F, readonly [A, S]> => {
-    return F.pipe(
-      fst(fas),
-      A.map((a) => [a, snd(fas)])
-    )
-  }
+  traverse,
+  sequence
 }

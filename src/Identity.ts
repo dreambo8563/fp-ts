@@ -48,11 +48,19 @@ export const getEq: <A>(E: Eq<A>) => Eq<Identity<A>> = id
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const traverse_ = <F>(F: Applicative<F>) => <A, B>(ta: Identity<A>, f: (a: A) => HKT<F, B>): HKT<F, Identity<B>> => {
-  return pipe(f(ta), F.map(id))
-}
+/**
+ * @since 3.0.0
+ */
+export const traverse: Traversable1<URI>['traverse'] = <F>(F: Applicative<F>) => <A, B>(f: (a: A) => HKT<F, B>) => (
+  ta: Identity<A>
+): HKT<F, Identity<B>> => pipe(f(ta), F.map(id))
 
-const sequence_ = <F>(F: Applicative<F>) => <A>(ta: Identity<HKT<F, A>>): HKT<F, Identity<A>> => {
+/**
+ * @since 3.0.0
+ */
+export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F>) => <A>(
+  ta: Identity<HKT<F, A>>
+): HKT<F, Identity<A>> => {
   return pipe(ta, F.map(id))
 }
 
@@ -172,8 +180,8 @@ export const identity: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Alt1<U
   reduce,
   foldMap,
   reduceRight,
-  traverse: traverse_,
-  sequence: sequence_,
+  traverse,
+  sequence,
   alt,
   extract,
   extend

@@ -57,9 +57,11 @@ Added in v2.0.0
 - [reduceRightWithIndex](#reducerightwithindex)
 - [reduceWithIndex](#reducewithindex)
 - [reverse](#reverse)
+- [sequence](#sequence)
 - [snoc](#snoc)
 - [sort](#sort)
 - [tail](#tail)
+- [traverse](#traverse)
 - [unzip](#unzip)
 - [updateAt](#updateat)
 - [zip](#zip)
@@ -589,6 +591,16 @@ export declare const reverse: <A>(nea: NonEmptyArray<A>) => NonEmptyArray<A>
 
 Added in v2.0.0
 
+# sequence
+
+**Signature**
+
+```ts
+export declare const sequence: Sequence1<'NonEmptyArray'>
+```
+
+Added in v3.0.0
+
 # snoc
 
 Append an element to the end of an array, creating a new non empty array
@@ -628,6 +640,16 @@ export declare const tail: <A>(nea: NonEmptyArray<A>) => A[]
 ```
 
 Added in v2.0.0
+
+# traverse
+
+**Signature**
+
+```ts
+export declare const traverse: Traverse1<'NonEmptyArray'>
+```
+
+Added in v3.0.0
 
 # unzip
 

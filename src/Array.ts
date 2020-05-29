@@ -21,6 +21,7 @@ import { Show } from './Show'
 import { TraversableWithIndex1 } from './TraversableWithIndex'
 import { Unfoldable1 } from './Unfoldable'
 import { Witherable1 } from './Witherable'
+import { Traversable1 } from './Traversable'
 
 /* tslint:disable:readonly-array */
 
@@ -1068,6 +1069,16 @@ export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: Array<A>) =
  */
 export const reduceRightWithIndex: <A, B>(b: B, f: (i: number, a: A, b: B) => B) => (fa: Array<A>) => B =
   RA.reduceRightWithIndex
+
+/**
+ * @since 3.0.0
+ */
+export const traverse: Traversable1<URI>['traverse'] = RA.traverse as any
+
+/**
+ * @since 3.0.0
+ */
+export const sequence: Traversable1<URI>['sequence'] = RA.sequence as any
 
 // -------------------------------------------------------------------------------------
 // instances

@@ -629,12 +629,19 @@ const defaultSeparate = { left: none, right: none }
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const traverse_ = <F>(F: Applicative<F>) => <A, B>(ta: Option<A>, f: (a: A) => HKT<F, B>): HKT<F, Option<B>> => {
-  return isNone(ta) ? F.of(none) : pipe(f(ta.value), F.map(some))
-}
-const sequence_ = <F>(F: Applicative<F>) => <A>(ta: Option<HKT<F, A>>): HKT<F, Option<A>> => {
-  return isNone(ta) ? F.of(none) : pipe(ta.value, F.map(some))
-}
+/**
+ * @since 3.0.0
+ */
+export const traverse: Traversable1<URI>['traverse'] = <F>(F: Applicative<F>) => <A, B>(f: (a: A) => HKT<F, B>) => (
+  ta: Option<A>
+): HKT<F, Option<B>> => (isNone(ta) ? F.of(none) : pipe(f(ta.value), F.map(some)))
+
+/**
+ * @since 3.0.0
+ */
+export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F>) => <A>(
+  ta: Option<HKT<F, A>>
+): HKT<F, Option<A>> => (isNone(ta) ? F.of(none) : pipe(ta.value, F.map(some)))
 
 const filter_ = <A>(fa: Option<A>, predicate: Predicate<A>): Option<A> =>
   isNone(fa) ? none : predicate(fa.value) ? fa : none
@@ -858,8 +865,8 @@ export const option: Monad1<URI> &
   reduce,
   foldMap,
   reduceRight,
-  traverse: traverse_,
-  sequence: sequence_,
+  traverse,
+  sequence,
   zero: () => none,
   alt,
   extend,

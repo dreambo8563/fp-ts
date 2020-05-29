@@ -55,11 +55,17 @@ describe('NonEmptyArray', () => {
 
   it('traverse', () => {
     assert.deepStrictEqual(
-      _.nonEmptyArray.traverse(option)([1, 2, 3], (n) => (n >= 0 ? some(n) : none)),
+      pipe(
+        [1, 2, 3],
+        _.traverse(option)((n) => (n >= 0 ? some(n) : none))
+      ),
       some([1, 2, 3])
     )
     assert.deepStrictEqual(
-      _.nonEmptyArray.traverse(option)([1, 2, 3], (n) => (n >= 2 ? some(n) : none)),
+      pipe(
+        [1, 2, 3],
+        _.traverse(option)((n) => (n >= 2 ? some(n) : none))
+      ),
       none
     )
   })

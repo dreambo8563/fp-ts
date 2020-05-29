@@ -87,9 +87,11 @@ Added in v2.0.0
 - [reduce](#reduce)
 - [reduceRight](#reduceright)
 - [separate](#separate)
+- [sequence](#sequence)
 - [some](#some)
 - [toNullable](#tonullable)
 - [toUndefined](#toundefined)
+- [traverse](#traverse)
 - [tryCatch](#trycatch)
 
 ---
@@ -926,6 +928,16 @@ export declare const separate: <A, B>(ma: Option<Either<A, B>>) => Separated<Opt
 
 Added in v2.0.0
 
+# sequence
+
+**Signature**
+
+```ts
+export declare const sequence: Sequence1<'Option'>
+```
+
+Added in v3.0.0
+
 # some
 
 **Signature**
@@ -979,6 +991,16 @@ assert.strictEqual(pipe(none, toUndefined), undefined)
 ```
 
 Added in v2.0.0
+
+# traverse
+
+**Signature**
+
+```ts
+export declare const traverse: Traverse1<'Option'>
+```
+
+Added in v3.0.0
 
 # tryCatch
 

@@ -405,6 +405,38 @@ export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => <E>(fa: These<E, A>) 
 export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => <E>(fa: These<E, A>) => B = (b, f) => (fa) =>
   isLeft(fa) ? b : isRight(fa) ? f(fa.right, b) : f(fa.right, b)
 
+/**
+ * @since 3.0.0
+ */
+export const traverse: Traversable2<URI>['traverse'] = <F>(F: Applicative<F>) => <A, B>(f: (a: A) => HKT<F, B>) => <E>(
+  ta: These<E, A>
+): HKT<F, These<E, B>> => {
+  return isLeft(ta)
+    ? F.of(ta)
+    : isRight(ta)
+    ? pipe(f(ta.right), F.map(right))
+    : pipe(
+        f(ta.right),
+        F.map((b) => both(ta.left, b))
+      )
+}
+
+/**
+ * @since 3.0.0
+ */
+export const sequence: Traversable2<URI>['sequence'] = <F>(F: Applicative<F>) => <E, A>(
+  ta: These<E, HKT<F, A>>
+): HKT<F, These<E, A>> => {
+  return isLeft(ta)
+    ? F.of(ta)
+    : isRight(ta)
+    ? pipe(ta.right, F.map(right))
+    : pipe(
+        ta.right,
+        F.map((b) => both(ta.left, b))
+      )
+}
+
 // -------------------------------------------------------------------------------------
 // instances
 // -------------------------------------------------------------------------------------
@@ -420,24 +452,6 @@ export const these: Functor2<URI> & Bifunctor2<URI> & Foldable2<URI> & Traversab
   reduce,
   foldMap,
   reduceRight,
-  traverse: <F>(F: Applicative<F>) => <E, A, B>(ta: These<E, A>, f: (a: A) => HKT<F, B>): HKT<F, These<E, B>> => {
-    return isLeft(ta)
-      ? F.of(ta)
-      : isRight(ta)
-      ? pipe(f(ta.right), F.map(right))
-      : pipe(
-          f(ta.right),
-          F.map((b) => both(ta.left, b))
-        )
-  },
-  sequence: <F>(F: Applicative<F>) => <E, A>(ta: These<E, HKT<F, A>>): HKT<F, These<E, A>> => {
-    return isLeft(ta)
-      ? F.of(ta)
-      : isRight(ta)
-      ? pipe(ta.right, F.map(right))
-      : pipe(
-          ta.right,
-          F.map((b) => both(ta.left, b))
-        )
-  }
+  traverse,
+  sequence
 }

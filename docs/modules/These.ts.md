@@ -58,9 +58,11 @@ Added in v2.0.0
 - [reduceRight](#reduceright)
 - [right](#right)
 - [rightOrBoth](#rightorboth)
+- [sequence](#sequence)
 - [swap](#swap)
 - [these](#these)
 - [toTuple](#totuple)
+- [traverse](#traverse)
 
 ---
 
@@ -446,6 +448,16 @@ assert.deepStrictEqual(f(some('a')), both('a', 1))
 
 Added in v3.0.0
 
+# sequence
+
+**Signature**
+
+```ts
+export declare const sequence: Sequence2<'These'>
+```
+
+Added in v3.0.0
+
 # swap
 
 **Signature**
@@ -486,6 +498,16 @@ const f = toTuple(
 assert.deepStrictEqual(f(left('b')), ['b', 1])
 assert.deepStrictEqual(f(right(2)), ['a', 2])
 assert.deepStrictEqual(f(both('b', 2)), ['b', 2])
+```
+
+Added in v3.0.0
+
+# traverse
+
+**Signature**
+
+```ts
+export declare const traverse: Traverse2<'These'>
 ```
 
 Added in v3.0.0

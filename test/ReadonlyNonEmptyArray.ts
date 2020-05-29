@@ -53,12 +53,19 @@ describe('ReadonlyNonEmptyArray', () => {
   })
 
   it('traverse', () => {
+    const as: _.ReadonlyNonEmptyArray<number> = [1, 2, 3]
     assert.deepStrictEqual(
-      _.readonlyNonEmptyArray.traverse(O.option)([1, 2, 3], (n) => (n >= 0 ? O.some(n) : O.none)),
+      pipe(
+        as,
+        _.traverse(O.option)((n) => (n >= 0 ? O.some(n) : O.none))
+      ),
       O.some([1, 2, 3])
     )
     assert.deepStrictEqual(
-      _.readonlyNonEmptyArray.traverse(O.option)([1, 2, 3], (n) => (n >= 2 ? O.some(n) : O.none)),
+      pipe(
+        as,
+        _.traverse(O.option)((n) => (n >= 2 ? O.some(n) : O.none))
+      ),
       O.none
     )
   })

@@ -847,17 +847,22 @@ describe('ReadonlyMap', () => {
     })
 
     it('traverse', () => {
-      const optionTraverse = W.traverse(option)
       const x = new Map<User, number>([
         [{ id: 'k1' }, 1],
         [{ id: 'k2' }, 2]
       ])
       assert.deepStrictEqual(
-        optionTraverse(x, (n) => (n <= 2 ? some(n) : none)),
+        pipe(
+          x,
+          W.traverse(option)((n) => (n <= 2 ? some(n) : none))
+        ),
         some(x)
       )
       assert.deepStrictEqual(
-        optionTraverse(x, (n) => (n >= 2 ? some(n) : none)),
+        pipe(
+          x,
+          W.traverse(option)((n) => (n >= 2 ? some(n) : none))
+        ),
         none
       )
     })
