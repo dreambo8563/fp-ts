@@ -249,21 +249,30 @@ describe('NonEmptyArray', () => {
 
   it('reduceWithIndex', () => {
     assert.deepStrictEqual(
-      _.nonEmptyArray.reduceWithIndex(['a', 'b'], '', (i, b, a) => b + i + a),
+      pipe(
+        ['a', 'b'],
+        _.reduceWithIndex('', (i, b, a) => b + i + a)
+      ),
       '0a1b'
     )
   })
 
   it('foldMapWithIndex', () => {
     assert.deepStrictEqual(
-      _.nonEmptyArray.foldMapWithIndex(M.monoidString)(['a', 'b'], (i, a) => i + a),
+      pipe(
+        ['a', 'b'],
+        _.foldMapWithIndex(M.monoidString)((i, a) => i + a)
+      ),
       '0a1b'
     )
   })
 
   it('reduceRightWithIndex', () => {
     assert.deepStrictEqual(
-      _.nonEmptyArray.reduceRightWithIndex(['a', 'b'], '', (i, a, b) => b + i + a),
+      pipe(
+        ['a', 'b'],
+        _.reduceRightWithIndex('', (i, a, b) => b + i + a)
+      ),
       '1b0a'
     )
   })
@@ -281,7 +290,7 @@ describe('NonEmptyArray', () => {
     // FoldableWithIndex compatibility
     const f = (i: number, s: string): string => s + i
     assert.deepStrictEqual(
-      _.nonEmptyArray.foldMapWithIndex(M.monoidString)(['a', 'bb'], f),
+      pipe(['a', 'bb'], _.foldMapWithIndex(M.monoidString)(f)),
       _.nonEmptyArray.traverseWithIndex(C.getApplicative(M.monoidString))(['a', 'bb'], (i, a) => C.make(f(i, a)))
     )
 

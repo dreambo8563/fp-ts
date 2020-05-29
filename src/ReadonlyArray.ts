@@ -1401,23 +1401,6 @@ const partitionMapWithIndex_ = <A, B, C>(
 
 const zero_: <A>() => ReadonlyArray<A> = () => empty
 
-const reduceWithIndex_: <A, B>(fa: ReadonlyArray<A>, b: B, f: (i: number, b: B, a: A) => B) => B = (fa, b, f) => {
-  const l = fa.length
-  let r = b
-  for (let i = 0; i < l; i++) {
-    r = f(i, r, fa[i])
-  }
-  return r
-}
-
-const foldMapWithIndex_: <M>(M: Monoid<M>) => <A>(fa: ReadonlyArray<A>, f: (i: number, a: A) => M) => M = (M) => (
-  fa,
-  f
-) => fa.reduce((b, a, i) => M.concat(b, f(i, a)), M.empty)
-
-const reduceRightWithIndex_: <A, B>(fa: ReadonlyArray<A>, b: B, f: (i: number, a: A, b: B) => B) => B = (fa, b, f) =>
-  fa.reduceRight((b, a, i) => f(i, a, b), b)
-
 const filterMapWithIndex_ = <A, B>(fa: ReadonlyArray<A>, f: (i: number, a: A) => Option<B>): ReadonlyArray<B> => {
   // tslint:disable-next-line: readonly-array
   const result: Array<B> = []
@@ -1486,11 +1469,14 @@ const traverseWithIndex_ = <F>(F: Applicative<F>) => <A, B>(
   ta: ReadonlyArray<A>,
   f: (i: number, a: A) => HKT<F, B>
 ): HKT<F, ReadonlyArray<B>> => {
-  return reduceWithIndex_(ta, F.of<ReadonlyArray<B>>(zero_()), (i, fbs, a) =>
-    pipe(
-      fbs,
-      F.map((bs) => (b: B) => snoc(bs, b)),
-      F.ap(f(i, a))
+  return pipe(
+    ta,
+    reduceWithIndex(F.of<ReadonlyArray<B>>(zero_()), (i, fbs, a) =>
+      pipe(
+        fbs,
+        F.map((bs) => (b: B) => snoc(bs, b)),
+        F.ap(f(i, a))
+      )
     )
   )
 }
@@ -1709,8 +1695,8 @@ export const duplicate: <A>(wa: ReadonlyArray<A>) => ReadonlyArray<ReadonlyArray
  * @since 2.5.0
  */
 export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: ReadonlyArray<A>) => M = (M) => {
-  const foldMapWithIndexM = foldMapWithIndex_(M)
-  return (f) => (fa) => foldMapWithIndexM(fa, (_, a) => f(a))
+  const foldMapWithIndexM = foldMapWithIndex(M)
+  return (f) => foldMapWithIndexM((_, a) => f(a))
 }
 
 /**
@@ -1718,29 +1704,33 @@ export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: ReadonlyA
  */
 export const foldMapWithIndex: <M>(M: Monoid<M>) => <A>(f: (i: number, a: A) => M) => (fa: ReadonlyArray<A>) => M = (
   M
-) => {
-  const foldMapWithIndexM = foldMapWithIndex_(M)
-  return (f) => (fa) => foldMapWithIndexM(fa, f)
-}
+) => (f) => (fa) => fa.reduce((b, a, i) => M.concat(b, f(i, a)), M.empty)
 
 /**
  * @since 2.5.0
  */
-export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: ReadonlyArray<A>) => B = (b, f) => (fa) =>
-  reduceWithIndex_(fa, b, (_, b, a) => f(b, a))
+export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: ReadonlyArray<A>) => B = (b, f) =>
+  reduceWithIndex(b, (_, b, a) => f(b, a))
 
 /**
  * @since 2.5.0
  */
 export const reduceWithIndex: <A, B>(b: B, f: (i: number, b: B, a: A) => B) => (fa: ReadonlyArray<A>) => B = (b, f) => (
   fa
-) => reduceWithIndex_(fa, b, f)
+) => {
+  const l = fa.length
+  let r = b
+  for (let i = 0; i < l; i++) {
+    r = f(i, r, fa[i])
+  }
+  return r
+}
 
 /**
  * @since 2.5.0
  */
-export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: ReadonlyArray<A>) => B = (b, f) => (fa) =>
-  reduceRightWithIndex_(fa, b, (_, a, b) => f(a, b))
+export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: ReadonlyArray<A>) => B = (b, f) =>
+  reduceRightWithIndex(b, (_, a, b) => f(a, b))
 
 /**
  * @since 2.5.0
@@ -1748,7 +1738,7 @@ export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: ReadonlyArr
 export const reduceRightWithIndex: <A, B>(b: B, f: (i: number, a: A, b: B) => B) => (fa: ReadonlyArray<A>) => B = (
   b,
   f
-) => (fa) => reduceRightWithIndex_(fa, b, f)
+) => (fa) => fa.reduceRight((b, a, i) => f(i, a, b), b)
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -1791,9 +1781,9 @@ export const readonlyArray: Monad1<URI> &
   reduceRight,
   traverse,
   sequence,
-  reduceWithIndex: reduceWithIndex_,
-  foldMapWithIndex: foldMapWithIndex_,
-  reduceRightWithIndex: reduceRightWithIndex_,
+  reduceWithIndex,
+  foldMapWithIndex,
+  reduceRightWithIndex,
   traverseWithIndex: traverseWithIndex_,
   extend,
   wither: wither_,

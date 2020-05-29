@@ -363,7 +363,16 @@ export function reduceWithIndex<K extends string, A, B>(
   f: (k: K, b: B, a: A) => B
 ): (fa: ReadonlyRecord<K, A>) => B
 export function reduceWithIndex<A, B>(b: B, f: (k: string, b: B, a: A) => B): (fa: ReadonlyRecord<string, A>) => B {
-  return (fa) => reduceWithIndex_(fa, b, f)
+  return (fa) => {
+    let out = b
+    const keys = Object.keys(fa).sort()
+    const len = keys.length
+    for (let i = 0; i < len; i++) {
+      const k = keys[i]
+      out = f(k, out, fa[k])
+    }
+    return out
+  }
 }
 
 /**
@@ -375,8 +384,16 @@ export function foldMapWithIndex<M>(
 export function foldMapWithIndex<M>(
   M: Monoid<M>
 ): <A>(f: (k: string, a: A) => M) => (fa: ReadonlyRecord<string, A>) => M {
-  const foldMapWithIndexM = foldMapWithIndex_(M)
-  return (f) => (fa) => foldMapWithIndexM(fa, f)
+  return (f) => (fa) => {
+    let out = M.empty
+    const keys = Object.keys(fa).sort()
+    const len = keys.length
+    for (let i = 0; i < len; i++) {
+      const k = keys[i]
+      out = M.concat(out, f(k, fa[k]))
+    }
+    return out
+  }
 }
 
 /**
@@ -390,7 +407,16 @@ export function reduceRightWithIndex<A, B>(
   b: B,
   f: (k: string, a: A, b: B) => B
 ): (fa: ReadonlyRecord<string, A>) => B {
-  return (fa) => reduceRightWithIndex_(fa, b, f)
+  return (fa) => {
+    let out = b
+    const keys = Object.keys(fa).sort()
+    const len = keys.length
+    for (let i = len - 1; i >= 0; i--) {
+      const k = keys[i]
+      out = f(k, fa[k], out)
+    }
+    return out
+  }
 }
 
 /**
@@ -701,49 +727,6 @@ export function elem<A>(E: Eq<A>): (a: A, fa: ReadonlyRecord<string, A>) => bool
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const reduceWithIndex_: <A, B>(fa: Readonly<Record<string, A>>, b: B, f: (i: string, b: B, a: A) => B) => B = (
-  fa,
-  b,
-  f
-) => {
-  let out = b
-  const keys = Object.keys(fa).sort()
-  const len = keys.length
-  for (let i = 0; i < len; i++) {
-    const k = keys[i]
-    out = f(k, out, fa[k])
-  }
-  return out
-}
-
-const foldMapWithIndex_: <M>(M: Monoid<M>) => <A>(fa: Readonly<Record<string, A>>, f: (i: string, a: A) => M) => M = (
-  M
-) => (fa, f) => {
-  let out = M.empty
-  const keys = Object.keys(fa).sort()
-  const len = keys.length
-  for (let i = 0; i < len; i++) {
-    const k = keys[i]
-    out = M.concat(out, f(k, fa[k]))
-  }
-  return out
-}
-
-const reduceRightWithIndex_: <A, B>(fa: Readonly<Record<string, A>>, b: B, f: (i: string, a: A, b: B) => B) => B = (
-  fa,
-  b,
-  f
-) => {
-  let out = b
-  const keys = Object.keys(fa).sort()
-  const len = keys.length
-  for (let i = len - 1; i >= 0; i--) {
-    const k = keys[i]
-    out = f(k, fa[k], out)
-  }
-  return out
-}
-
 const partitionMapWithIndex_: <A, B, C>(
   fa: Readonly<Record<string, A>>,
   f: (i: string, a: A) => Either<B, C>
@@ -853,8 +836,8 @@ export const filterMap: Filterable1<URI>['filterMap'] = (f) => (fa) => filterMap
  * @since 2.5.0
  */
 export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: Readonly<Record<string, A>>) => M = (M) => {
-  const foldMapWithIndexM = foldMapWithIndex_(M)
-  return (f) => (fa) => foldMapWithIndexM(fa, (_, a) => f(a))
+  const foldMapWithIndexM = foldMapWithIndex(M)
+  return (f) => foldMapWithIndexM((_, a) => f(a))
 }
 
 /**
@@ -872,15 +855,14 @@ export const partitionMap: Filterable1<URI>['partitionMap'] = (f) => (fa) => par
 /**
  * @since 2.5.0
  */
-export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: Readonly<Record<string, A>>) => B = (b, f) => (fa) =>
-  reduceWithIndex_(fa, b, (_, b, a) => f(b, a))
+export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: Readonly<Record<string, A>>) => B = (b, f) =>
+  reduceWithIndex(b, (_, b, a) => f(b, a))
 
 /**
  * @since 2.5.0
  */
-export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: Readonly<Record<string, A>>) => B = (b, f) => (
-  fa
-) => reduceRightWithIndex_(fa, b, (_, a, b) => f(a, b))
+export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: Readonly<Record<string, A>>) => B = (b, f) =>
+  reduceRightWithIndex(b, (_, a, b) => f(a, b))
 
 /**
  * @since 2.5.0
@@ -951,9 +933,9 @@ export const readonlyRecord: FunctorWithIndex1<URI, string> &
   partition,
   partitionMap,
   mapWithIndex,
-  reduceWithIndex: reduceWithIndex_,
-  foldMapWithIndex: foldMapWithIndex_,
-  reduceRightWithIndex: reduceRightWithIndex_,
+  reduceWithIndex,
+  foldMapWithIndex,
+  reduceRightWithIndex,
   partitionMapWithIndex: partitionMapWithIndex_,
   partitionWithIndex: partitionWithIndex_,
   filterMapWithIndex: filterMapWithIndex_,

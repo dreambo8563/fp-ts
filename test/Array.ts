@@ -737,21 +737,30 @@ describe('Array', () => {
 
   it('reduceWithIndex', () => {
     assert.deepStrictEqual(
-      _.array.reduceWithIndex(['a', 'b'], '', (i, b, a) => b + i + a),
+      pipe(
+        ['a', 'b'],
+        _.reduceWithIndex('', (i, b, a) => b + i + a)
+      ),
       '0a1b'
     )
   })
 
   it('foldMapWithIndex', () => {
     assert.deepStrictEqual(
-      _.array.foldMapWithIndex(monoidString)(['a', 'b'], (i, a) => i + a),
+      pipe(
+        ['a', 'b'],
+        _.foldMapWithIndex(monoidString)((i, a) => i + a)
+      ),
       '0a1b'
     )
   })
 
   it('reduceRightWithIndex', () => {
     assert.deepStrictEqual(
-      _.array.reduceRightWithIndex(['a', 'b'], '', (i, a, b) => b + i + a),
+      pipe(
+        ['a', 'b'],
+        _.reduceRightWithIndex('', (i, a, b) => b + i + a)
+      ),
       '1b0a'
     )
   })
@@ -771,7 +780,7 @@ describe('Array', () => {
     const M = monoidString
     const f = (i: number, s: string): string => s + i
     assert.deepStrictEqual(
-      _.array.foldMapWithIndex(M)(ta, f),
+      pipe(ta, _.foldMapWithIndex(M)(f)),
       _.array.traverseWithIndex(C.getApplicative(M))(ta, (i, a) => C.make(f(i, a)))
     )
 

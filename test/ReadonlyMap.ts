@@ -809,9 +809,11 @@ describe('ReadonlyMap', () => {
         [{ id: 'k1' }, 'a'],
         [{ id: 'k2' }, 'b']
       ])
-      const reduceWithIndexO = W.reduceWithIndex
       assert.deepStrictEqual(
-        reduceWithIndexO(d1, '', (k, b, a) => b + k.id + a),
+        pipe(
+          d1,
+          W.reduceWithIndex('', (k, b, a) => b + k.id + a)
+        ),
         'k1ak2b'
       )
       const d2 = new Map<User, string>([
@@ -819,31 +821,38 @@ describe('ReadonlyMap', () => {
         [{ id: 'k1' }, 'a']
       ])
       assert.deepStrictEqual(
-        reduceWithIndexO(d2, '', (k, b, a) => b + k.id + a),
+        pipe(
+          d2,
+          W.reduceWithIndex('', (k, b, a) => b + k.id + a)
+        ),
         'k1ak2b'
       )
     })
 
     it('foldMapWithIndex', () => {
-      const foldMapWithIndexOM = W.foldMapWithIndex(monoidString)
       const m = new Map<User, string>([
         [{ id: 'k1' }, 'a'],
         [{ id: 'k2' }, 'b']
       ])
       assert.deepStrictEqual(
-        foldMapWithIndexOM(m, (k, a) => k.id + a),
+        pipe(
+          m,
+          W.foldMapWithIndex(monoidString)((k, a) => k.id + a)
+        ),
         'k1ak2b'
       )
     })
 
     it('reduceRightWithIndex', () => {
-      const reduceRightWithIndexO = W.reduceRightWithIndex
       const m = new Map<User, string>([
         [{ id: 'k1' }, 'a'],
         [{ id: 'k2' }, 'b']
       ])
       assert.deepStrictEqual(
-        reduceRightWithIndexO(m, '', (k, a, b) => b + k.id + a),
+        pipe(
+          m,
+          W.reduceRightWithIndex('', (k, a, b) => b + k.id + a)
+        ),
         'k2bk1a'
       )
     })

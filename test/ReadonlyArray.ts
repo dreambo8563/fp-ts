@@ -867,7 +867,7 @@ describe('ReadonlyArray', () => {
     // FoldableWithIndex compatibility
     const f = (i: number, s: string): string => s + i
     assert.deepStrictEqual(
-      _.readonlyArray.foldMapWithIndex(M.monoidString)(ta, f),
+      pipe(ta, _.foldMapWithIndex(M.monoidString)(f)),
       _.readonlyArray.traverseWithIndex(C.getApplicative(M.monoidString))(ta, (i, a) => C.make(f(i, a)))
     )
 
