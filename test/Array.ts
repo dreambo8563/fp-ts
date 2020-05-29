@@ -768,11 +768,17 @@ describe('Array', () => {
   it('traverseWithIndex', () => {
     const ta = ['a', 'bb']
     assert.deepStrictEqual(
-      _.array.traverseWithIndex(O.option)(ta, (i, s) => (s.length >= 1 ? O.some(s + i) : O.none)),
+      pipe(
+        ta,
+        _.array.traverseWithIndex(O.option)((i, s) => (s.length >= 1 ? O.some(s + i) : O.none))
+      ),
       O.some(['a0', 'bb1'])
     )
     assert.deepStrictEqual(
-      _.array.traverseWithIndex(O.option)(ta, (i, s) => (s.length > 1 ? O.some(s + i) : O.none)),
+      pipe(
+        ta,
+        _.array.traverseWithIndex(O.option)((i, s) => (s.length > 1 ? O.some(s + i) : O.none))
+      ),
       O.none
     )
 
@@ -781,13 +787,19 @@ describe('Array', () => {
     const f = (i: number, s: string): string => s + i
     assert.deepStrictEqual(
       pipe(ta, _.foldMapWithIndex(M)(f)),
-      _.array.traverseWithIndex(C.getApplicative(M))(ta, (i, a) => C.make(f(i, a)))
+      pipe(
+        ta,
+        _.array.traverseWithIndex(C.getApplicative(M))((i, a) => C.make(f(i, a)))
+      )
     )
 
     // FunctorWithIndex compatibility
     assert.deepStrictEqual(
       pipe(ta, _.mapWithIndex(f)),
-      _.array.traverseWithIndex(I.identity)(ta, (i, a) => I.identity.of(f(i, a)))
+      pipe(
+        ta,
+        _.array.traverseWithIndex(I.identity)((i, a) => I.identity.of(f(i, a)))
+      )
     )
   })
 

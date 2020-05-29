@@ -1443,7 +1443,7 @@ export const traverse: Traversable1<URI>['traverse'] = <F>(
   F: Applicative<F>
 ): (<A, B>(f: (a: A) => HKT<F, B>) => (ta: ReadonlyArray<A>) => HKT<F, ReadonlyArray<B>>) => {
   const traverseWithIndexF = traverseWithIndex_(F)
-  return (f) => (ta) => traverseWithIndexF(ta, (_, a) => f(a))
+  return (f) => traverseWithIndexF((_, a) => f(a))
 }
 
 /**
@@ -1464,9 +1464,8 @@ export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F>) =>
   )
 }
 
-const traverseWithIndex_ = <F>(F: Applicative<F>) => <A, B>(
-  ta: ReadonlyArray<A>,
-  f: (i: number, a: A) => HKT<F, B>
+const traverseWithIndex_ = <F>(F: Applicative<F>) => <A, B>(f: (i: number, a: A) => HKT<F, B>) => (
+  ta: ReadonlyArray<A>
 ): HKT<F, ReadonlyArray<B>> => {
   return pipe(
     ta,

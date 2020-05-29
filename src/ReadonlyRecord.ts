@@ -462,8 +462,7 @@ export function traverseWithIndex<F>(
 export function traverseWithIndex<F>(
   F: Applicative<F>
 ): <A, B>(f: (k: string, a: A) => HKT<F, B>) => (ta: ReadonlyRecord<string, A>) => HKT<F, ReadonlyRecord<string, B>> {
-  const traverseWithIndexF = traverseWithIndex_(F)
-  return (f) => (ta) => traverseWithIndexF(ta, f)
+  return traverseWithIndex_(F)
 }
 
 /**
@@ -796,9 +795,8 @@ const filterWithIndex_ = <A>(predicateWithIndex: PredicateWithIndex<string, A>) 
   return changed ? out : fa
 }
 
-const traverseWithIndex_ = <F>(F: Applicative<F>) => <A, B>(
-  ta: ReadonlyRecord<string, A>,
-  f: (k: string, a: A) => HKT<F, B>
+const traverseWithIndex_ = <F>(F: Applicative<F>) => <A, B>(f: (k: string, a: A) => HKT<F, B>) => (
+  ta: ReadonlyRecord<string, A>
 ) => {
   const keys = Object.keys(ta)
   if (keys.length === 0) {

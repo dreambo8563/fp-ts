@@ -881,23 +881,22 @@ describe('Map', () => {
     })
 
     it('traverseWithIndex', () => {
-      const optionTraverseWithIndex = W.traverseWithIndex(option)
       const d1 = new Map<User, number>([
         [{ id: 'k1' }, 1],
         [{ id: 'k2' }, 2]
       ])
-      const t1 = optionTraverseWithIndex(
+      const t1 = pipe(
         d1,
-        (k, n): Option<number> => (!ordUser.equals(k, { id: 'k1' }) ? some(n) : none)
+        W.traverseWithIndex(option)((k, n): Option<number> => (!ordUser.equals(k, { id: 'k1' }) ? some(n) : none))
       )
       assert.deepStrictEqual(t1, none)
       const d2 = new Map<User, number>([
         [{ id: 'k1' }, 2],
         [{ id: 'k2' }, 3]
       ])
-      const t2 = optionTraverseWithIndex(
+      const t2 = pipe(
         d2,
-        (k, n): Option<number> => (!ordUser.equals(k, { id: 'k3' }) ? some(n) : none)
+        W.traverseWithIndex(option)((k, n): Option<number> => (!ordUser.equals(k, { id: 'k3' }) ? some(n) : none))
       )
       const expected = new Map<User, number>([
         [{ id: 'k1' }, 2],

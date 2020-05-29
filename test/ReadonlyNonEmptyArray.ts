@@ -279,14 +279,16 @@ describe('ReadonlyNonEmptyArray', () => {
 
   it('traverseWithIndex', () => {
     assert.deepStrictEqual(
-      _.readonlyNonEmptyArray.traverseWithIndex(O.option)(['a', 'bb'], (i, s) =>
-        s.length >= 1 ? O.some(s + i) : O.none
+      pipe(
+        ['a', 'bb'],
+        _.readonlyNonEmptyArray.traverseWithIndex(O.option)((i, s: string) => (s.length >= 1 ? O.some(s + i) : O.none))
       ),
       O.some(['a0', 'bb1'])
     )
     assert.deepStrictEqual(
-      _.readonlyNonEmptyArray.traverseWithIndex(O.option)(['a', 'bb'], (i, s) =>
-        s.length > 1 ? O.some(s + i) : O.none
+      pipe(
+        ['a', 'bb'],
+        _.readonlyNonEmptyArray.traverseWithIndex(O.option)((i, s: string) => (s.length > 1 ? O.some(s + i) : O.none))
       ),
       O.none
     )
@@ -295,15 +297,19 @@ describe('ReadonlyNonEmptyArray', () => {
     const f = (i: number, s: string): string => s + i
     assert.deepStrictEqual(
       pipe(['a', 'bb'], _.foldMapWithIndex(M.monoidString)(f)),
-      _.readonlyNonEmptyArray.traverseWithIndex(C.getApplicative(M.monoidString))(['a', 'bb'], (i, a) =>
-        C.make(f(i, a))
+      pipe(
+        ['a', 'bb'],
+        _.readonlyNonEmptyArray.traverseWithIndex(C.getApplicative(M.monoidString))((i, a: string) => C.make(f(i, a)))
       )
     )
 
     // FunctorWithIndex compatibility
     assert.deepStrictEqual(
       pipe(['a', 'bb'], _.mapWithIndex(f)),
-      _.readonlyNonEmptyArray.traverseWithIndex(I.identity)(['a', 'bb'], (i, a) => I.identity.of(f(i, a)))
+      pipe(
+        ['a', 'bb'],
+        _.readonlyNonEmptyArray.traverseWithIndex(I.identity)((i, a: string) => I.identity.of(f(i, a)))
+      )
     )
   })
 
