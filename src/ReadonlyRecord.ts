@@ -538,7 +538,7 @@ export function partitionMapWithIndex<K extends string, A, B, C>(
 export function partitionMapWithIndex<A, B, C>(
   f: (key: string, a: A) => Either<B, C>
 ): (fa: ReadonlyRecord<string, A>) => Separated<ReadonlyRecord<string, B>, ReadonlyRecord<string, C>> {
-  return (fa) => partitionMapWithIndex_(fa, f)
+  return partitionMapWithIndex_(f)
 }
 
 /**
@@ -553,7 +553,7 @@ export function partitionWithIndex<K extends string, A>(
 export function partitionWithIndex<A>(
   predicateWithIndex: PredicateWithIndex<string, A>
 ): (fa: ReadonlyRecord<string, A>) => Separated<ReadonlyRecord<string, A>, ReadonlyRecord<string, A>> {
-  return (fa) => partitionWithIndex_(fa, predicateWithIndex)
+  return partitionWithIndex_(predicateWithIndex)
 }
 
 /**
@@ -565,7 +565,7 @@ export function filterMapWithIndex<K extends string, A, B>(
 export function filterMapWithIndex<A, B>(
   f: (key: string, a: A) => Option<B>
 ): (fa: ReadonlyRecord<string, A>) => ReadonlyRecord<string, B> {
-  return (fa) => filterMapWithIndex_(fa, f)
+  return filterMapWithIndex_(f)
 }
 
 /**
@@ -580,7 +580,7 @@ export function filterWithIndex<K extends string, A>(
 export function filterWithIndex<A>(
   predicateWithIndex: PredicateWithIndex<string, A>
 ): (fa: ReadonlyRecord<string, A>) => ReadonlyRecord<string, A> {
-  return (fa) => filterWithIndex_(fa, predicateWithIndex)
+  return filterWithIndex_(predicateWithIndex)
 }
 
 /**
@@ -727,13 +727,7 @@ export function elem<A>(E: Eq<A>): (a: A, fa: ReadonlyRecord<string, A>) => bool
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const partitionMapWithIndex_: <A, B, C>(
-  fa: Readonly<Record<string, A>>,
-  f: (i: string, a: A) => Either<B, C>
-) => Separated<Readonly<Record<string, B>>, Readonly<Record<string, C>>> = <A, B, C>(
-  fa: ReadonlyRecord<string, A>,
-  f: (key: string, a: A) => Either<B, C>
-) => {
+const partitionMapWithIndex_ = <A, B, C>(f: (key: string, a: A) => Either<B, C>) => (fa: ReadonlyRecord<string, A>) => {
   const left: Record<string, B> = {}
   const right: Record<string, C> = {}
   const keys = Object.keys(fa)
@@ -754,7 +748,9 @@ const partitionMapWithIndex_: <A, B, C>(
   }
 }
 
-const partitionWithIndex_ = <A>(fa: ReadonlyRecord<string, A>, predicateWithIndex: PredicateWithIndex<string, A>) => {
+const partitionWithIndex_ = <A>(predicateWithIndex: PredicateWithIndex<string, A>) => (
+  fa: ReadonlyRecord<string, A>
+) => {
   const left: Record<string, A> = {}
   const right: Record<string, A> = {}
   const keys = Object.keys(fa)
@@ -772,7 +768,7 @@ const partitionWithIndex_ = <A>(fa: ReadonlyRecord<string, A>, predicateWithInde
   }
 }
 
-const filterMapWithIndex_ = <A, B>(fa: ReadonlyRecord<string, A>, f: (key: string, a: A) => Option<B>) => {
+const filterMapWithIndex_ = <A, B>(f: (key: string, a: A) => Option<B>) => (fa: ReadonlyRecord<string, A>) => {
   const r: Record<string, B> = {}
   const keys = Object.keys(fa)
   for (const key of keys) {
@@ -784,7 +780,7 @@ const filterMapWithIndex_ = <A, B>(fa: ReadonlyRecord<string, A>, f: (key: strin
   return r
 }
 
-const filterWithIndex_ = <A>(fa: ReadonlyRecord<string, A>, predicateWithIndex: PredicateWithIndex<string, A>) => {
+const filterWithIndex_ = <A>(predicateWithIndex: PredicateWithIndex<string, A>) => (fa: ReadonlyRecord<string, A>) => {
   const out: Record<string, A> = {}
   let changed = false
   for (const key in fa) {
@@ -826,11 +822,19 @@ const traverseWithIndex_ = <F>(F: Applicative<F>) => <A, B>(
  * @since 2.5.0
  */
 export const filter: Filterable1<URI>['filter'] = <A>(predicate: Predicate<A>) => (fa: Readonly<Record<string, A>>) =>
-  filterWithIndex_(fa, (_, a) => predicate(a))
+  pipe(
+    fa,
+    filterWithIndex_((_, a) => predicate(a))
+  )
+
 /**
  * @since 2.5.0
  */
-export const filterMap: Filterable1<URI>['filterMap'] = (f) => (fa) => filterMapWithIndex_(fa, (_, a) => f(a))
+export const filterMap: Filterable1<URI>['filterMap'] = (f) => (fa) =>
+  pipe(
+    fa,
+    filterMapWithIndex_((_, a) => f(a))
+  )
 
 /**
  * @since 2.5.0
@@ -845,12 +849,20 @@ export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: Readonly<
  */
 export const partition: Filterable1<URI>['partition'] = <A>(predicate: Predicate<A>) => (
   fa: Readonly<Record<string, A>>
-) => partitionWithIndex_(fa, (_, a) => predicate(a))
+) =>
+  pipe(
+    fa,
+    partitionWithIndex_((_, a) => predicate(a))
+  )
 
 /**
  * @since 2.5.0
  */
-export const partitionMap: Filterable1<URI>['partitionMap'] = (f) => (fa) => partitionMapWithIndex_(fa, (_, a) => f(a))
+export const partitionMap: Filterable1<URI>['partitionMap'] = (f) => (fa) =>
+  pipe(
+    fa,
+    partitionMapWithIndex_((_, a) => f(a))
+  )
 
 /**
  * @since 2.5.0

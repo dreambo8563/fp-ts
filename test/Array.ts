@@ -572,7 +572,7 @@ describe('Array', () => {
 
   it('filterWithIndex', () => {
     const f = (n: number) => n % 2 === 0
-    assert.deepStrictEqual(_.array.filterWithIndex(['a', 'b', 'c'], f), ['a', 'c'])
+    assert.deepStrictEqual(pipe(['a', 'b', 'c'], _.filterWithIndex(f)), ['a', 'c'])
   })
 
   it('filterMap', () => {

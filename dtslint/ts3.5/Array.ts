@@ -28,7 +28,7 @@ pipe(tns, _.unzip) // $ExpectType [number[], string[]]
 // Filterable overlodings
 //
 
-declare function isStringWithIndex(i: number, x: unknown): x is string
+declare function isStringWithIndex(i: number, x: string | number): x is string
 
-_.array.filterWithIndex([] as Array<string | number>, isStringWithIndex) // $ExpectType string[]
-_.array.partitionWithIndex([] as Array<string | number>, isStringWithIndex) // $ExpectType Separated<(string | number)[], string[]>
+pipe([] as Array<string | number>, _.filterWithIndex(isStringWithIndex)) // $ExpectType string[]
+pipe([] as Array<string | number>, _.partitionWithIndex(isStringWithIndex)) // $ExpectType Separated<(string | number)[], string[]>

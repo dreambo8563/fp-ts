@@ -500,23 +500,12 @@ export const readonlyNonEmptyArray: Monad1<URI> &
   TraversableWithIndex1<URI, number> &
   FunctorWithIndex1<URI, number> &
   FoldableWithIndex1<URI, number> &
-  Alt1<URI> = {
-  URI,
-  of,
-  extract: head,
-  map: RA.map as any,
-  mapWithIndex: RA.readonlyArray.mapWithIndex as any,
-  ap: RA.ap as any,
-  chain: RA.chain as any,
-  extend: RA.extend as any,
-  reduce: RA.reduce,
-  foldMap: RA.foldMap,
-  reduceRight: RA.reduceRight,
-  traverse: RA.traverse as any,
-  sequence: RA.sequence as any,
-  reduceWithIndex: RA.readonlyArray.reduceWithIndex,
-  foldMapWithIndex: RA.readonlyArray.foldMapWithIndex,
-  reduceRightWithIndex: RA.readonlyArray.reduceRightWithIndex,
-  traverseWithIndex: RA.readonlyArray.traverseWithIndex as any,
-  alt: RA.alt as any
-}
+  Alt1<URI> =
+  /*#__PURE__*/
+  (() => {
+    return {
+      ...(RA.readonlyArray as any),
+      URI,
+      extract: head
+    }
+  })()

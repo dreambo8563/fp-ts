@@ -1355,9 +1355,8 @@ export const of = <A>(a: A): ReadonlyArray<A> => [a]
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const partitionWithIndex_: PartitionWithIndex1<URI, number> = <A>(
-  fa: ReadonlyArray<A>,
-  predicateWithIndex: (i: number, a: A) => boolean
+const partitionWithIndex_: PartitionWithIndex1<URI, number> = <A>(predicateWithIndex: (i: number, a: A) => boolean) => (
+  fa: ReadonlyArray<A>
 ): Separated<ReadonlyArray<A>, ReadonlyArray<A>> => {
   // tslint:disable-next-line: readonly-array
   const left: Array<A> = []
@@ -1401,7 +1400,7 @@ const partitionMapWithIndex_ = <A, B, C>(
 
 const zero_: <A>() => ReadonlyArray<A> = () => empty
 
-const filterMapWithIndex_ = <A, B>(fa: ReadonlyArray<A>, f: (i: number, a: A) => Option<B>): ReadonlyArray<B> => {
+const filterMapWithIndex_ = <A, B>(f: (i: number, a: A) => Option<B>) => (fa: ReadonlyArray<A>): ReadonlyArray<B> => {
   // tslint:disable-next-line: readonly-array
   const result: Array<B> = []
   for (let i = 0; i < fa.length; i++) {
@@ -1624,7 +1623,7 @@ export const filter: Filterable1<URI>['filter'] = <A>(predicate: Predicate<A>) =
 /**
  * @since 2.5.0
  */
-export const filterMap: Filterable1<URI>['filterMap'] = (f) => (fa) => filterMapWithIndex_(fa, (_, a) => f(a))
+export const filterMap: Filterable1<URI>['filterMap'] = (f) => filterMapWithIndex_((_, a) => f(a))
 
 /**
  * @since 2.5.0
@@ -1635,7 +1634,10 @@ export const compact: <A>(fa: ReadonlyArray<Option<A>>) => ReadonlyArray<A> = fi
  * @since 2.5.0
  */
 export const partition: Filterable1<URI>['partition'] = <A>(predicate: Predicate<A>) => (fa: ReadonlyArray<A>) =>
-  partitionWithIndex_(fa, (_, a) => predicate(a))
+  pipe(
+    fa,
+    partitionWithIndex_((_, a) => predicate(a))
+  )
 
 /**
  * @since 2.5.0
@@ -1648,7 +1650,7 @@ export const partitionWithIndex: {
     fa: ReadonlyArray<A>
   ) => Separated<ReadonlyArray<A>, ReadonlyArray<A>>
 } = <A>(predicateWithIndex: PredicateWithIndex<number, A>) => (fa: ReadonlyArray<A>) =>
-  partitionWithIndex_(fa, predicateWithIndex)
+  pipe(fa, partitionWithIndex_(predicateWithIndex))
 
 /**
  * @since 2.5.0
@@ -1668,7 +1670,7 @@ export const partitionMapWithIndex: <A, B, C>(
  */
 export const filterMapWithIndex: <A, B>(
   f: (i: number, a: A) => Option<B>
-) => (fa: ReadonlyArray<A>) => ReadonlyArray<B> = (f) => (fa) => filterMapWithIndex_(fa, f)
+) => (fa: ReadonlyArray<A>) => ReadonlyArray<B> = filterMapWithIndex_
 
 /**
  * @since 2.5.0
@@ -1769,10 +1771,10 @@ export const readonlyArray: Monad1<URI> &
   partition,
   partitionMap,
   mapWithIndex,
-  partitionMapWithIndex: partitionMapWithIndex_,
+  partitionMapWithIndex,
   partitionWithIndex: partitionWithIndex_,
   filterMapWithIndex: filterMapWithIndex_,
-  filterWithIndex: filterWithIndex_,
+  filterWithIndex,
   alt,
   zero: zero_,
   unfold: unfold_,
