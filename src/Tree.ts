@@ -284,11 +284,6 @@ const reduceRight_ = <A, B>(fa: Tree<A>, b: B, f: (a: A, b: B) => B): B => {
   return f(fa.value, r)
 }
 
-const extend_: <A, B>(wa: Tree<A>, f: (wa: Tree<A>) => B) => Tree<B> = (wa, f) => ({
-  value: f(wa),
-  forest: wa.forest.map((t) => extend_(t, f))
-})
-
 /**
  * @since 2.0.0
  */
@@ -350,12 +345,15 @@ export const chainFirst: <A, B>(f: (a: A) => Tree<B>) => (ma: Tree<A>) => Tree<A
 /**
  * @since 2.0.0
  */
-export const duplicate: <A>(wa: Tree<A>) => Tree<Tree<A>> = (wa) => extend_(wa, identity)
+export const extend: <A, B>(f: (wa: Tree<A>) => B) => (wa: Tree<A>) => Tree<B> = (f) => (wa) => ({
+  value: f(wa),
+  forest: wa.forest.map(extend(f))
+})
 
 /**
  * @since 2.0.0
  */
-export const extend: <A, B>(f: (wa: Tree<A>) => B) => (wa: Tree<A>) => Tree<B> = (f) => (wa) => extend_(wa, f)
+export const duplicate: <A>(wa: Tree<A>) => Tree<Tree<A>> = extend(identity)
 
 /**
  * @since 2.0.0
@@ -431,5 +429,5 @@ export const tree: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Comonad1<U
     return (ta) => traverseF(ta, identity)
   },
   extract,
-  extend: extend_
+  extend
 }

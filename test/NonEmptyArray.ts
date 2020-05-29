@@ -46,7 +46,7 @@ describe('NonEmptyArray', () => {
 
   it('extend', () => {
     const sum = _.fold(M.monoidSum)
-    assert.deepStrictEqual(_.nonEmptyArray.extend([1, 2, 3, 4], sum), [10, 9, 7, 4])
+    assert.deepStrictEqual(pipe([1, 2, 3, 4], _.extend(sum)), [10, 9, 7, 4])
   })
 
   it('extract', () => {

@@ -653,9 +653,6 @@ const filter_ = <A>(fa: Option<A>, predicate: Predicate<A>): Option<A> =>
 const filterMap_: <A, B>(fa: Option<A>, f: (a: A) => Option<B>) => Option<B> = (ma, f) =>
   isNone(ma) ? none : f(ma.value)
 
-const extend_: <A, B>(wa: Option<A>, f: (wa: Option<A>) => B) => Option<B> = (wa, f) =>
-  isNone(wa) ? none : some(f(wa))
-
 const partition_ = <A>(fa: Option<A>, predicate: Predicate<A>): Separated<Option<A>, Option<A>> => {
   return {
     left: filter_(fa, (a) => !predicate(a)),
@@ -747,12 +744,13 @@ export const chainFirst: <A, B>(f: (a: A) => Option<B>) => (ma: Option<A>) => Op
 /**
  * @since 2.0.0
  */
-export const duplicate: <A>(ma: Option<A>) => Option<Option<A>> = (wa) => extend_(wa, identity)
+export const extend: <A, B>(f: (wa: Option<A>) => B) => (wa: Option<A>) => Option<B> = (f) => (wa) =>
+  isNone(wa) ? none : some(f(wa))
 
 /**
  * @since 2.0.0
  */
-export const extend: <A, B>(f: (wa: Option<A>) => B) => (wa: Option<A>) => Option<B> = (f) => (ma) => extend_(ma, f)
+export const duplicate: <A>(ma: Option<A>) => Option<Option<A>> = extend(identity)
 
 /**
  * @since 2.0.0
@@ -875,7 +873,7 @@ export const option: Monad1<URI> &
   sequence: sequence_,
   zero: () => none,
   alt,
-  extend: extend_,
+  extend,
   compact,
   separate,
   filter: filter_,

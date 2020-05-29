@@ -105,11 +105,6 @@ export function getMonad<S>(M: Monoid<S>): Monad2C<URI, S> {
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const extend_: <E, A, B>(wa: readonly [A, E], f: (wa: readonly [A, E]) => B) => readonly [B, E] = (ae, f) => [
-  f(ae),
-  snd(ae)
-]
-
 const reduce_: <E, A, B>(fa: readonly [A, E], b: B, f: (b: B, a: A) => B) => B = (ae, b, f) => f(b, fst(ae))
 
 const foldMap_: <M>(M: Monoid<M>) => <E, A>(fa: readonly [A, E], f: (a: A) => M) => M = (_) => (ae, f) => f(fst(ae))
@@ -135,14 +130,14 @@ export const pipe: <B, C>(fbc: readonly [C, B]) => <A>(fab: readonly [B, A]) => 
 /**
  * @since 2.5.0
  */
-export const duplicate: <E, A>(ma: readonly [A, E]) => readonly [readonly [A, E], E] = (ma) => extend_(ma, F.identity)
+export const extend: <E, A, B>(f: (fa: readonly [A, E]) => B) => (wa: readonly [A, E]) => readonly [B, E] = (f) => (
+  wa
+) => [f(wa), snd(wa)]
 
 /**
  * @since 2.5.0
  */
-export const extend: <E, A, B>(f: (fa: readonly [A, E]) => B) => (wa: readonly [A, E]) => readonly [B, E] = (f) => (
-  ma
-) => extend_(ma, f)
+export const duplicate: <E, A>(ma: readonly [A, E]) => readonly [readonly [A, E], E] = extend(F.identity)
 
 /**
  * @since 2.6.2
@@ -203,7 +198,7 @@ export const readonlyTuple: Semigroupoid2<URI> &
   bimap,
   mapLeft,
   extract,
-  extend: extend_,
+  extend,
   reduce: reduce_,
   foldMap: foldMap_,
   reduceRight: reduceRight_,

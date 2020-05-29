@@ -1467,9 +1467,6 @@ const filterWithIndex_ = <A>(
   return fa.filter((a, i) => predicateWithIndex(i, a))
 }
 
-const extend_: <A, B>(wa: ReadonlyArray<A>, f: (wa: ReadonlyArray<A>) => B) => ReadonlyArray<B> = (fa, f) =>
-  fa.map((_, i, as) => f(as.slice(i)))
-
 const unfold_ = <A, B>(b: B, f: (b: B) => Option<readonly [A, B]>): ReadonlyArray<A> => {
   // tslint:disable-next-line: readonly-array
   const ret: Array<A> = []
@@ -1620,11 +1617,6 @@ export const chainFirst: <A, B>(f: (a: A) => ReadonlyArray<B>) => (ma: ReadonlyA
 /**
  * @since 2.5.0
  */
-export const duplicate: <A>(wa: ReadonlyArray<A>) => ReadonlyArray<ReadonlyArray<A>> = (wa) => extend_(wa, identity)
-
-/**
- * @since 2.5.0
- */
 export const map: <A, B>(f: (a: A) => B) => (fa: ReadonlyArray<A>) => ReadonlyArray<B> = (f) => (fa) =>
   fa.map((a) => f(a))
 
@@ -1733,8 +1725,13 @@ export const filterWithIndex: {
  * @since 2.5.0
  */
 export const extend: <A, B>(f: (fa: ReadonlyArray<A>) => B) => (wa: ReadonlyArray<A>) => ReadonlyArray<B> = (f) => (
-  ma
-) => extend_(ma, f)
+  wa
+) => wa.map((_, i, as) => f(as.slice(i)))
+
+/**
+ * @since 2.5.0
+ */
+export const duplicate: <A>(wa: ReadonlyArray<A>) => ReadonlyArray<ReadonlyArray<A>> = extend(identity)
 
 /**
  * @since 2.5.0
@@ -1826,7 +1823,7 @@ export const readonlyArray: Monad1<URI> &
   foldMapWithIndex: foldMapWithIndex_,
   reduceRightWithIndex: reduceRightWithIndex_,
   traverseWithIndex: traverseWithIndex_,
-  extend: extend_,
+  extend,
   wither: wither_,
   wilt: wilt_
 }

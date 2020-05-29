@@ -90,16 +90,6 @@ export function experiment<F>(F: Functor<F>): <S>(f: (s: S) => HKT<F, S>) => <A>
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const extend_: <E, A, B>(wa: Store<E, A>, f: (wa: Store<E, A>) => B) => Store<E, B> = (wa, f) => ({
-  peek: (s) => f({ peek: wa.peek, pos: s }),
-  pos: wa.pos
-})
-
-/**
- * @since 2.0.0
- */
-export const duplicate: <E, A>(wa: Store<E, A>) => Store<E, Store<E, A>> = (wa) => extend_(wa, identity)
-
 /**
  * @since 2.6.2
  */
@@ -108,8 +98,15 @@ export const extract: <E, A>(wa: Store<E, A>) => A = (wa) => wa.peek(wa.pos)
 /**
  * @since 2.0.0
  */
-export const extend: <E, A, B>(f: (wa: Store<E, A>) => B) => (wa: Store<E, A>) => Store<E, B> = (f) => (wa) =>
-  extend_(wa, f)
+export const extend: <E, A, B>(f: (wa: Store<E, A>) => B) => (wa: Store<E, A>) => Store<E, B> = (f) => (wa) => ({
+  peek: (s) => f({ peek: wa.peek, pos: s }),
+  pos: wa.pos
+})
+
+/**
+ * @since 2.0.0
+ */
+export const duplicate: <E, A>(wa: Store<E, A>) => Store<E, Store<E, A>> = extend(identity)
 
 /**
  * @since 2.0.0
@@ -130,5 +127,5 @@ export const store: Comonad2<URI> = {
   URI,
   map,
   extract,
-  extend: extend_
+  extend
 }

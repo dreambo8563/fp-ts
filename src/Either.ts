@@ -560,9 +560,6 @@ const sequence_ = <F>(F: Applicative<F>) => <E, A>(ma: Either<E, HKT<F, A>>): HK
   return isLeft(ma) ? F.of(left(ma.left)) : pipe(ma.right, F.map(right))
 }
 
-const extend_: <E, A, B>(wa: Either<E, A>, f: (wa: Either<E, A>) => B) => Either<E, B> = (wa, f) =>
-  isLeft(wa) ? wa : right(f(wa))
-
 /**
  * @since 2.0.0
  */
@@ -623,13 +620,13 @@ export const chainW: <D, A, B>(f: (a: A) => Either<D, B>) => <E>(ma: Either<E, A
 /**
  * @since 2.0.0
  */
-export const duplicate: <E, A>(ma: Either<E, A>) => Either<E, Either<E, A>> = (wa) => extend_(wa, identity)
+export const extend: <E, A, B>(f: (wa: Either<E, A>) => B) => (wa: Either<E, A>) => Either<E, B> = (f) => (wa) =>
+  isLeft(wa) ? wa : right(f(wa))
 
 /**
  * @since 2.0.0
  */
-export const extend: <E, A, B>(f: (wa: Either<E, A>) => B) => (wa: Either<E, A>) => Either<E, B> = (f) => (ma) =>
-  extend_(ma, f)
+export const duplicate: <E, A>(ma: Either<E, A>) => Either<E, Either<E, A>> = extend(identity)
 
 /**
  * @since 2.0.0
@@ -747,6 +744,6 @@ export const either: Monad2<URI> &
   bimap,
   mapLeft,
   alt,
-  extend: extend_,
+  extend,
   throwError: left
 }

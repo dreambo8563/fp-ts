@@ -48,8 +48,6 @@ export const getEq: <A>(E: Eq<A>) => Eq<Identity<A>> = id
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const extend_: <A, B>(wa: A, f: (wa: A) => B) => B = (wa, f) => f(wa)
-
 const reduce_: <A, B>(fa: Identity<A>, b: B, f: (b: B, a: A) => B) => B = (fa, b, f) => f(b, fa)
 
 const foldMap_: <M>(M: Monoid<M>) => <A>(fa: Identity<A>, f: (a: A) => M) => M = (_) => (fa, f) => f(fa)
@@ -114,11 +112,6 @@ export const chainFirst: <A, B>(f: (a: A) => Identity<B>) => (ma: Identity<A>) =
   )
 
 /**
- * @since 2.0.0
- */
-export const duplicate: <A>(ma: Identity<A>) => Identity<Identity<A>> = (wa) => extend_(wa, id)
-
-/**
  * @since 2.6.2
  */
 export const extract: <A>(wa: Identity<A>) => A = id
@@ -126,8 +119,12 @@ export const extract: <A>(wa: Identity<A>) => A = id
 /**
  * @since 2.0.0
  */
-export const extend: <A, B>(f: (wa: Identity<A>) => B) => (wa: Identity<A>) => Identity<B> = (f) => (ma) =>
-  extend_(ma, f)
+export const extend: <A, B>(f: (wa: Identity<A>) => B) => (wa: Identity<A>) => Identity<B> = (f) => (wa) => f(wa)
+
+/**
+ * @since 2.0.0
+ */
+export const duplicate: <A>(ma: Identity<A>) => Identity<Identity<A>> = extend(id)
 
 /**
  * @since 2.0.0
@@ -189,5 +186,5 @@ export const identity: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Alt1<U
   sequence: sequence_,
   alt,
   extract,
-  extend: extend_
+  extend
 }
