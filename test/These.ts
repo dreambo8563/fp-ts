@@ -2,7 +2,7 @@ import * as assert from 'assert'
 import { eqNumber } from '../src/Eq'
 import { identity, pipe } from '../src/function'
 import { monoidString, monoidSum } from '../src/Monoid'
-import { none, option, some } from '../src/Option'
+import * as O from '../src/Option'
 import { semigroupString } from '../src/Semigroup'
 import { showString } from '../src/Show'
 import * as _ from '../src/These'
@@ -141,95 +141,95 @@ describe('These', () => {
     assert.deepStrictEqual(
       pipe(
         _.left('a'),
-        _.traverse(option)((n) => (n >= 2 ? some(n) : none))
+        _.traverse(O.applicativeOption)((n) => (n >= 2 ? O.some(n) : O.none))
       ),
-      some(_.left('a'))
+      O.some(_.left('a'))
     )
     assert.deepStrictEqual(
       pipe(
         _.right(2),
-        _.traverse(option)((n) => (n >= 2 ? some(n) : none))
+        _.traverse(O.applicativeOption)((n) => (n >= 2 ? O.some(n) : O.none))
       ),
-      some(_.right(2))
+      O.some(_.right(2))
     )
     assert.deepStrictEqual(
       pipe(
         _.right(1),
-        _.traverse(option)((n) => (n >= 2 ? some(n) : none))
+        _.traverse(O.applicativeOption)((n) => (n >= 2 ? O.some(n) : O.none))
       ),
-      none
+      O.none
     )
     assert.deepStrictEqual(
       pipe(
         _.both('a', 2),
-        _.traverse(option)((n) => (n >= 2 ? some(n) : none))
+        _.traverse(O.applicativeOption)((n) => (n >= 2 ? O.some(n) : O.none))
       ),
-      some(_.both('a', 2))
+      O.some(_.both('a', 2))
     )
     assert.deepStrictEqual(
       pipe(
         _.both('a', 1),
-        _.traverse(option)((n) => (n >= 2 ? some(n) : none))
+        _.traverse(O.applicativeOption)((n) => (n >= 2 ? O.some(n) : O.none))
       ),
-      none
+      O.none
     )
   })
 
   it('sequence', () => {
-    const sequence = _.these.sequence(option)
+    const sequence = _.these.sequence(O.applicativeOption)
     const x1 = _.left('a')
-    assert.deepStrictEqual(sequence(x1), some(_.left('a')))
-    const x2 = _.right(some(1))
-    assert.deepStrictEqual(sequence(x2), some(_.right(1)))
-    const x3 = _.right(none)
-    assert.deepStrictEqual(sequence(x3), none)
-    const x4 = _.both('a', some(1))
-    assert.deepStrictEqual(sequence(x4), some(_.both('a', 1)))
-    const x5 = _.both('a', none)
-    assert.deepStrictEqual(sequence(x5), none)
+    assert.deepStrictEqual(sequence(x1), O.some(_.left('a')))
+    const x2 = _.right(O.some(1))
+    assert.deepStrictEqual(sequence(x2), O.some(_.right(1)))
+    const x3 = _.right(O.none)
+    assert.deepStrictEqual(sequence(x3), O.none)
+    const x4 = _.both('a', O.some(1))
+    assert.deepStrictEqual(sequence(x4), O.some(_.both('a', 1)))
+    const x5 = _.both('a', O.none)
+    assert.deepStrictEqual(sequence(x5), O.none)
   })
 
   it('getLeft', () => {
-    assert.deepStrictEqual(_.getLeft(_.left('a')), some('a'))
-    assert.deepStrictEqual(_.getLeft(_.right(1)), none)
-    assert.deepStrictEqual(_.getLeft(_.both('a', 1)), some('a'))
+    assert.deepStrictEqual(_.getLeft(_.left('a')), O.some('a'))
+    assert.deepStrictEqual(_.getLeft(_.right(1)), O.none)
+    assert.deepStrictEqual(_.getLeft(_.both('a', 1)), O.some('a'))
   })
 
   it('getRight', () => {
-    assert.deepStrictEqual(_.getRight(_.left('a')), none)
-    assert.deepStrictEqual(_.getRight(_.right(1)), some(1))
-    assert.deepStrictEqual(_.getRight(_.both('a', 1)), some(1))
+    assert.deepStrictEqual(_.getRight(_.left('a')), O.none)
+    assert.deepStrictEqual(_.getRight(_.right(1)), O.some(1))
+    assert.deepStrictEqual(_.getRight(_.both('a', 1)), O.some(1))
   })
 
   it('leftOrBoth', () => {
     const f = _.leftOrBoth(() => 'a')
-    assert.deepStrictEqual(f(none), _.left('a'))
-    assert.deepStrictEqual(f(some(1)), _.both('a', 1))
+    assert.deepStrictEqual(f(O.none), _.left('a'))
+    assert.deepStrictEqual(f(O.some(1)), _.both('a', 1))
   })
 
   it('rightOrBoth', () => {
     const f = _.rightOrBoth(() => 1)
-    assert.deepStrictEqual(f(none), _.right(1))
-    assert.deepStrictEqual(f(some('a')), _.both('a', 1))
+    assert.deepStrictEqual(f(O.none), _.right(1))
+    assert.deepStrictEqual(f(O.some('a')), _.both('a', 1))
   })
 
   it('getLeftOnly', () => {
-    assert.deepStrictEqual(_.getLeftOnly(_.left('a')), some('a'))
-    assert.deepStrictEqual(_.getLeftOnly(_.right(1)), none)
-    assert.deepStrictEqual(_.getLeftOnly(_.both('a', 1)), none)
+    assert.deepStrictEqual(_.getLeftOnly(_.left('a')), O.some('a'))
+    assert.deepStrictEqual(_.getLeftOnly(_.right(1)), O.none)
+    assert.deepStrictEqual(_.getLeftOnly(_.both('a', 1)), O.none)
   })
 
   it('getRightOnly', () => {
-    assert.deepStrictEqual(_.getRightOnly(_.left('a')), none)
-    assert.deepStrictEqual(_.getRightOnly(_.right(1)), some(1))
-    assert.deepStrictEqual(_.getRightOnly(_.both('a', 1)), none)
+    assert.deepStrictEqual(_.getRightOnly(_.left('a')), O.none)
+    assert.deepStrictEqual(_.getRightOnly(_.right(1)), O.some(1))
+    assert.deepStrictEqual(_.getRightOnly(_.both('a', 1)), O.none)
   })
 
   it('fromOptions', () => {
-    assert.deepStrictEqual(_.fromOptions(none, none), none)
-    assert.deepStrictEqual(_.fromOptions(some('a'), none), some(_.left('a')))
-    assert.deepStrictEqual(_.fromOptions(none, some(1)), some(_.right(1)))
-    assert.deepStrictEqual(_.fromOptions(some('a'), some(1)), some(_.both('a', 1)))
+    assert.deepStrictEqual(_.fromOptions(O.none, O.none), O.none)
+    assert.deepStrictEqual(_.fromOptions(O.some('a'), O.none), O.some(_.left('a')))
+    assert.deepStrictEqual(_.fromOptions(O.none, O.some(1)), O.some(_.right(1)))
+    assert.deepStrictEqual(_.fromOptions(O.some('a'), O.some(1)), O.some(_.both('a', 1)))
   })
 
   it('isLeft', () => {

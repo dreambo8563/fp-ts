@@ -291,12 +291,12 @@ export declare function foldM<M, F>(
 
 ```ts
 import { foldM } from 'fp-ts/lib/Foldable'
-import { option, some } from 'fp-ts/lib/Option'
+import { monadOption, some } from 'fp-ts/lib/Option'
 import { make, tree } from 'fp-ts/lib/Tree'
 
 const t = make(1, [make(2, []), make(3, []), make(4, [])])
 assert.deepStrictEqual(
-  foldM(option, tree)(t, 0, (b, a) => (a > 2 ? some(b + a) : some(b))),
+  foldM(monadOption, tree)(t, 0, (b, a) => (a > 2 ? some(b + a) : some(b))),
   some(7)
 )
 ```
@@ -346,11 +346,11 @@ export declare function getFoldableComposition<F, G>(F: Foldable<F>, G: Foldable
 ```ts
 import { getFoldableComposition } from 'fp-ts/lib/Foldable'
 import { array } from 'fp-ts/lib/Array'
-import { option, some, none } from 'fp-ts/lib/Option'
+import { foldableOption, some, none } from 'fp-ts/lib/Option'
 import { monoidString } from 'fp-ts/lib/Monoid'
 import { pipe } from 'fp-ts/lib/function'
 
-const F = getFoldableComposition(array, option)
+const F = getFoldableComposition(array, foldableOption)
 assert.strictEqual(pipe([some('a'), some('b'), some('c')], F.reduce('', monoidString.concat)), 'abc')
 assert.strictEqual(pipe([some('a'), none, some('c')], F.reduce('', monoidString.concat)), 'ac')
 ```

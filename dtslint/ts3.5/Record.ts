@@ -132,14 +132,14 @@ R.reduceRightWithIndex('', (k: 'a' | 'b', _n, _b) => k)(r1) // $ExpectType strin
 
 R.singleton('a', 1) // $ExpectType Record<"a", number>
 
-R.traverseWithIndex(O.option)((_k, n: number) => O.some(n))(d1) // $ExpectType Option<Record<string, number>>
-R.traverseWithIndex(O.option)((_k: 'a' | 'b', n: number) => O.some(n))(r1) // $ExpectType Option<Record<"a" | "b", number>>
+R.traverseWithIndex(O.applicativeOption)((_k, n: number) => O.some(n))(d1) // $ExpectType Option<Record<string, number>>
+R.traverseWithIndex(O.applicativeOption)((_k: 'a' | 'b', n: number) => O.some(n))(r1) // $ExpectType Option<Record<"a" | "b", number>>
 
-R.traverse(O.option)((n: number) => O.some(n))(d1) // $ExpectType Option<Record<string, number>>
-R.traverse(O.option)((n: number) => O.some(n))(r1) // $ExpectType Option<Record<"a" | "b", number>>
+R.traverse(O.applicativeOption)((n: number) => O.some(n))(d1) // $ExpectType Option<Record<string, number>>
+R.traverse(O.applicativeOption)((n: number) => O.some(n))(r1) // $ExpectType Option<Record<"a" | "b", number>>
 
-R.sequence(O.option)(do1) // $ExpectType Option<Record<string, number>>
-R.sequence(O.option)(ro1) // $ExpectType Option<Record<"a" | "b", number>>
+R.sequence(O.applicativeOption)(do1) // $ExpectType Option<Record<string, number>>
+R.sequence(O.applicativeOption)(ro1) // $ExpectType Option<Record<"a" | "b", number>>
 
 R.record.compact(do1) // $ExpectType Record<string, number>
 

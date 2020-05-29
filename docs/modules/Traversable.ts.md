@@ -446,10 +446,10 @@ export declare function getTraversableComposition<F, G>(
 ```ts
 import { array } from 'fp-ts/lib/Array'
 import { io } from 'fp-ts/lib/IO'
-import { none, option, some } from 'fp-ts/lib/Option'
+import { none, traversableOption, some } from 'fp-ts/lib/Option'
 import { getTraversableComposition } from 'fp-ts/lib/Traversable'
 
-const T = getTraversableComposition(array, option)
+const T = getTraversableComposition(array, traversableOption)
 const state: Record<string, number | undefined> = {
   a: 1,
   b: 2,

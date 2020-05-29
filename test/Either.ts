@@ -4,7 +4,7 @@ import { eqNumber, eqString } from '../src/Eq'
 import { identity, pipe } from '../src/function'
 import * as I from '../src/Identity'
 import { monoidString, monoidSum } from '../src/Monoid'
-import { none, option, some } from '../src/Option'
+import * as O from '../src/Option'
 import { semigroupSum } from '../src/Semigroup'
 import { showString } from '../src/Show'
 
@@ -355,31 +355,31 @@ describe('Either', () => {
       assert.deepStrictEqual(
         pipe(
           _.left('foo'),
-          _.traverse(option)((a) => (a >= 2 ? some(a) : none))
+          _.traverse(O.applicativeOption)((a) => (a >= 2 ? O.some(a) : O.none))
         ),
-        some(_.left('foo'))
+        O.some(_.left('foo'))
       )
       assert.deepStrictEqual(
         pipe(
           _.right(1),
-          _.traverse(option)((a) => (a >= 2 ? some(a) : none))
+          _.traverse(O.applicativeOption)((a) => (a >= 2 ? O.some(a) : O.none))
         ),
-        none
+        O.none
       )
       assert.deepStrictEqual(
         pipe(
           _.right(3),
-          _.traverse(option)((a) => (a >= 2 ? some(a) : none))
+          _.traverse(O.applicativeOption)((a) => (a >= 2 ? O.some(a) : O.none))
         ),
-        some(_.right(3))
+        O.some(_.right(3))
       )
     })
 
     it('sequence', () => {
-      const sequence = _.either.sequence(option)
-      assert.deepStrictEqual(sequence(_.right(some('a'))), some(_.right('a')))
-      assert.deepStrictEqual(sequence(_.left(1)), some(_.left(1)))
-      assert.deepStrictEqual(sequence(_.right(none)), none)
+      const sequence = _.either.sequence(O.applicativeOption)
+      assert.deepStrictEqual(sequence(_.right(O.some('a'))), O.some(_.right('a')))
+      assert.deepStrictEqual(sequence(_.left(1)), O.some(_.left(1)))
+      assert.deepStrictEqual(sequence(_.right(O.none)), O.none)
     })
   })
 
@@ -389,8 +389,8 @@ describe('Either', () => {
 
     it('compact', () => {
       assert.deepStrictEqual(W.compact(_.left('1')), _.left('1'))
-      assert.deepStrictEqual(W.compact(_.right(none)), _.left(monoidString.empty))
-      assert.deepStrictEqual(W.compact(_.right(some(123))), _.right(123))
+      assert.deepStrictEqual(W.compact(_.right(O.none)), _.left(monoidString.empty))
+      assert.deepStrictEqual(W.compact(_.right(O.some(123))), _.right(123))
     })
 
     it('separate', () => {
@@ -443,14 +443,14 @@ describe('Either', () => {
     })
 
     it('filterMap', () => {
-      const f = (n: number) => (p(n) ? some(n + 1) : none)
+      const f = (n: number) => (p(n) ? O.some(n + 1) : O.none)
       assert.deepStrictEqual(pipe(_.left('123'), W.filterMap(f)), _.left('123'))
       assert.deepStrictEqual(pipe(_.right(1), W.filterMap(f)), _.left(monoidString.empty))
       assert.deepStrictEqual(pipe(_.right(3), W.filterMap(f)), _.right(4))
     })
 
     it('wither', () => {
-      const f = (n: number) => I.identity.of(p(n) ? some(n + 1) : none)
+      const f = (n: number) => I.identity.of(p(n) ? O.some(n + 1) : O.none)
       const witherIdentity = W.wither(I.identity)
       assert.deepStrictEqual(witherIdentity(_.left('foo'), f), I.identity.of(_.left('foo')))
       assert.deepStrictEqual(witherIdentity(_.right(1), f), I.identity.of(_.left(monoidString.empty)))
@@ -576,8 +576,8 @@ describe('Either', () => {
   })
 
   it('fromOption', () => {
-    assert.deepStrictEqual(_.fromOption(() => 'none')(none), _.left('none'))
-    assert.deepStrictEqual(_.fromOption(() => 'none')(some(1)), _.right(1))
+    assert.deepStrictEqual(_.fromOption(() => 'O.none')(O.none), _.left('O.none'))
+    assert.deepStrictEqual(_.fromOption(() => 'O.none')(O.some(1)), _.right(1))
   })
 
   it('exists', () => {

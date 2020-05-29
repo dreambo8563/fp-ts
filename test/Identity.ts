@@ -3,7 +3,7 @@ import { eqNumber } from '../src/Eq'
 import { identity, pipe } from '../src/function'
 import * as _ from '../src/Identity'
 import { monoidString } from '../src/Monoid'
-import { none, option, some } from '../src/Option'
+import * as O from '../src/Option'
 import { showString } from '../src/Show'
 
 describe('Identity', () => {
@@ -92,20 +92,20 @@ describe('Identity', () => {
   })
 
   it('traverse', () => {
-    assert.deepStrictEqual(pipe(_.identity.of(1), _.traverse(option)(some)), some(_.identity.of(1)))
+    assert.deepStrictEqual(pipe(_.identity.of(1), _.traverse(O.applicativeOption)(O.some)), O.some(_.identity.of(1)))
     assert.deepStrictEqual(
       pipe(
         _.identity.of(1),
-        _.traverse(option)(() => none)
+        _.traverse(O.applicativeOption)(() => O.none)
       ),
-      none
+      O.none
     )
   })
 
   it('sequence', () => {
-    const sequence = _.identity.sequence(option)
-    const x1 = _.identity.of(some('a'))
-    assert.deepStrictEqual(sequence(x1), some(_.identity.of('a')))
+    const sequence = _.identity.sequence(O.applicativeOption)
+    const x1 = _.identity.of(O.some('a'))
+    assert.deepStrictEqual(sequence(x1), O.some(_.identity.of('a')))
   })
 
   it('getShow', () => {

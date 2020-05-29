@@ -45,24 +45,33 @@ Added in v2.0.0
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
 - [alt](#alt)
+- [altOption](#altoption)
+- [alternativeOption](#alternativeoption)
 - [ap](#ap)
 - [apFirst](#apfirst)
 - [apSecond](#apsecond)
+- [applicativeOption](#applicativeoption)
+- [applyOption](#applyoption)
 - [chain](#chain)
 - [chainFirst](#chainfirst)
 - [compact](#compact)
+- [compactableOption](#compactableoption)
 - [duplicate](#duplicate)
 - [elem](#elem)
 - [exists](#exists)
 - [extend](#extend)
+- [extendOption](#extendoption)
 - [filter](#filter)
 - [filterMap](#filtermap)
+- [filterableOption](#filterableoption)
 - [flatten](#flatten)
 - [fold](#fold)
 - [foldMap](#foldmap)
+- [foldableOption](#foldableoption)
 - [fromEither](#fromeither)
 - [fromNullable](#fromnullable)
 - [fromPredicate](#frompredicate)
+- [functorOption](#functoroption)
 - [getApplyMonoid](#getapplymonoid)
 - [getApplySemigroup](#getapplysemigroup)
 - [getEq](#geteq)
@@ -80,8 +89,10 @@ Added in v2.0.0
 - [isSome](#issome)
 - [map](#map)
 - [mapNullable](#mapnullable)
+- [monadOption](#monadoption)
+- [monadThrowOption](#monadthrowoption)
 - [none](#none)
-- [option](#option)
+- [of](#of)
 - [partition](#partition)
 - [partitionMap](#partitionmap)
 - [reduce](#reduce)
@@ -91,8 +102,10 @@ Added in v2.0.0
 - [some](#some)
 - [toNullable](#tonullable)
 - [toUndefined](#toundefined)
+- [traversableOption](#traversableoption)
 - [traverse](#traverse)
 - [tryCatch](#trycatch)
+- [witherableOption](#witherableoption)
 
 ---
 
@@ -161,6 +174,26 @@ export declare const alt: <A>(that: () => Option<A>) => (fa: Option<A>) => Optio
 
 Added in v2.0.0
 
+# altOption
+
+**Signature**
+
+```ts
+export declare const altOption: Alt1<'Option'>
+```
+
+Added in v3.0.0
+
+# alternativeOption
+
+**Signature**
+
+```ts
+export declare const alternativeOption: O<'Option'>
+```
+
+Added in v3.0.0
+
 # ap
 
 **Signature**
@@ -191,12 +224,32 @@ export declare const apSecond: <B>(fb: Option<B>) => <A>(fa: Option<A>) => Optio
 
 Added in v2.0.0
 
+# applicativeOption
+
+**Signature**
+
+```ts
+export declare const applicativeOption: Applicative1<'Option'>
+```
+
+Added in v3.0.0
+
+# applyOption
+
+**Signature**
+
+```ts
+export declare const applyOption: Apply1<'Option'>
+```
+
+Added in v3.0.0
+
 # chain
 
 **Signature**
 
 ```ts
-export declare const chain: <A, B>(f: (a: A) => Option<B>) => (ma: Option<A>) => Option<B>
+export declare const chain: <A, B>(f: (a: A) => Option<B>) => (fa: Option<A>) => Option<B>
 ```
 
 Added in v2.0.0
@@ -220,6 +273,16 @@ export declare const compact: <A>(fa: Option<Option<A>>) => Option<A>
 ```
 
 Added in v2.0.0
+
+# compactableOption
+
+**Signature**
+
+```ts
+export declare const compactableOption: Compactable1<'Option'>
+```
+
+Added in v3.0.0
 
 # duplicate
 
@@ -305,6 +368,16 @@ export declare const extend: <A, B>(f: (wa: Option<A>) => B) => (wa: Option<A>) 
 
 Added in v2.0.0
 
+# extendOption
+
+**Signature**
+
+```ts
+export declare const extendOption: Extend1<'Option'>
+```
+
+Added in v3.0.0
+
 # filter
 
 **Signature**
@@ -324,6 +397,16 @@ export declare const filterMap: <A, B>(f: (a: A) => Option<B>) => (fa: Option<A>
 ```
 
 Added in v2.0.0
+
+# filterableOption
+
+**Signature**
+
+```ts
+export declare const filterableOption: Filterable1<'Option'>
+```
+
+Added in v3.0.0
 
 # flatten
 
@@ -387,6 +470,16 @@ export declare const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: O
 
 Added in v2.0.0
 
+# foldableOption
+
+**Signature**
+
+```ts
+export declare const foldableOption: Foldable1<'Option'>
+```
+
+Added in v3.0.0
+
 # fromEither
 
 **Signature**
@@ -443,6 +536,16 @@ assert.deepStrictEqual(getOption(1), some(1))
 ```
 
 Added in v2.0.0
+
+# functorOption
+
+**Signature**
+
+```ts
+export declare const functorOption: Functor1<'Option'>
+```
+
+Added in v3.0.0
 
 # getApplyMonoid
 
@@ -842,6 +945,26 @@ assert.deepStrictEqual(
 
 Added in v2.0.0
 
+# monadOption
+
+**Signature**
+
+```ts
+export declare const monadOption: Monad1<'Option'>
+```
+
+Added in v3.0.0
+
+# monadThrowOption
+
+**Signature**
+
+```ts
+export declare const monadThrowOption: MonadThrow1<'Option'>
+```
+
+Added in v3.0.0
+
 # none
 
 **Signature**
@@ -852,23 +975,15 @@ export declare const none: Option<never>
 
 Added in v2.0.0
 
-# option
+# of
 
 **Signature**
 
 ```ts
-export declare const option: Monad1<'Option'> &
-  Foldable1<'Option'> &
-  Traversable1<'Option'> &
-  Alternative1<'Option'> &
-  Extend1<'Option'> &
-  Compactable1<'Option'> &
-  Filterable1<'Option'> &
-  Witherable1<'Option'> &
-  MonadThrow1<'Option'>
+export declare const of: <A>(a: A) => Option<A>
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # partition
 
@@ -986,6 +1101,16 @@ assert.strictEqual(pipe(none, toUndefined), undefined)
 
 Added in v2.0.0
 
+# traversableOption
+
+**Signature**
+
+```ts
+export declare const traversableOption: Traversable1<'Option'>
+```
+
+Added in v3.0.0
+
 # traverse
 
 **Signature**
@@ -1025,3 +1150,13 @@ assert.deepStrictEqual(
 ```
 
 Added in v2.0.0
+
+# witherableOption
+
+**Signature**
+
+```ts
+export declare const witherableOption: Witherable1<'Option'>
+```
+
+Added in v3.0.0

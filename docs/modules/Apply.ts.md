@@ -239,9 +239,9 @@ export declare function sequenceT<F>(
 
 ```ts
 import { sequenceT } from 'fp-ts/lib/Apply'
-import { option, some, none } from 'fp-ts/lib/Option'
+import { applyOption, some, none } from 'fp-ts/lib/Option'
 
-const sequenceTOption = sequenceT(option)
+const sequenceTOption = sequenceT(applyOption)
 assert.deepStrictEqual(sequenceTOption(some(1)), some([1]))
 assert.deepStrictEqual(sequenceTOption(some(1), some('2')), some([1, '2']))
 assert.deepStrictEqual(sequenceTOption(some(1), some('2'), none), none)

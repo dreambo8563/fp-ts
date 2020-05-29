@@ -169,7 +169,7 @@ describe('Option', () => {
   })
 
   it('zero', () => {
-    assert.deepStrictEqual(_.option.zero(), _.none)
+    assert.deepStrictEqual(_.alternativeOption.zero(), _.none)
   })
 
   it('fold', () => {
@@ -330,8 +330,8 @@ describe('Option', () => {
     })
 
     it('sequence', () => {
-      assert.deepStrictEqual(_.option.sequence(array)(_.some([1, 2])), [_.some(1), _.some(2)])
-      assert.deepStrictEqual(_.option.sequence(array)(_.none), [_.none])
+      assert.deepStrictEqual(_.sequence(array)(_.some([1, 2])), [_.some(1), _.some(2)])
+      assert.deepStrictEqual(_.sequence(array)(_.none), [_.none])
     })
   })
 
@@ -403,7 +403,7 @@ describe('Option', () => {
 
   describe('Witherable', () => {
     it('wither', () => {
-      const witherIdentity = _.option.wither(I.identity)
+      const witherIdentity = _.witherableOption.wither(I.identity)
       const f = (n: number) => I.identity.of(p(n) ? _.some(n + 1) : _.none)
       assert.deepStrictEqual(witherIdentity(_.none, f), I.identity.of(_.none))
       assert.deepStrictEqual(witherIdentity(_.some(1), f), I.identity.of(_.none))
@@ -411,7 +411,7 @@ describe('Option', () => {
     })
 
     it('wilt', () => {
-      const wiltIdentity = _.option.wilt(I.identity)
+      const wiltIdentity = _.witherableOption.wilt(I.identity)
       const f = (n: number) => I.identity.of(p(n) ? right(n + 1) : left(n - 1))
       assert.deepStrictEqual(wiltIdentity(_.none, f), I.identity.of({ left: _.none, right: _.none }))
       assert.deepStrictEqual(wiltIdentity(_.some(1), f), I.identity.of({ left: _.some(0), right: _.none }))
@@ -449,6 +449,6 @@ describe('Option', () => {
   })
 
   it('throwError', () => {
-    assert.deepStrictEqual(_.option.throwError(undefined), _.none)
+    assert.deepStrictEqual(_.monadThrowOption.throwError(undefined), _.none)
   })
 })

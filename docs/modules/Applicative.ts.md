@@ -348,12 +348,12 @@ export declare function getApplicativeComposition<F, G>(
 
 ```ts
 import { getApplicativeComposition } from 'fp-ts/lib/Applicative'
-import { option, Option, some } from 'fp-ts/lib/Option'
+import { applicativeOption, Option, some } from 'fp-ts/lib/Option'
 import { task, Task } from 'fp-ts/lib/Task'
 import { pipe } from 'fp-ts/lib/function'
 
 // an Applicative instance for Task<Option<A>>
-const A = getApplicativeComposition(task, option)
+const A = getApplicativeComposition(task, applicativeOption)
 
 const x: Task<Option<number>> = task.of(some(1))
 const y: Task<Option<number>> = task.of(some(2))

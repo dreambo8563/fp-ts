@@ -16,13 +16,13 @@ describe('ReadonlyArray', () => {
   describe('instances', () => {
     it('traverse', () => {
       const f = (n: number): O.Option<number> => (n % 2 === 0 ? O.none : O.some(n))
-      assert.deepStrictEqual(O.isNone(_.traverse(O.option)(f)([1, 2])), true)
-      assert.deepStrictEqual(_.traverse(O.option)(f)([1, 3]), O.some([1, 3]))
+      assert.deepStrictEqual(O.isNone(_.traverse(O.applicativeOption)(f)([1, 2])), true)
+      assert.deepStrictEqual(_.traverse(O.applicativeOption)(f)([1, 3]), O.some([1, 3]))
     })
 
     it('sequence', () => {
-      assert.deepStrictEqual(_.readonlyArray.sequence(O.option)([O.some(1), O.some(3)]), O.some([1, 3]))
-      assert.deepStrictEqual(_.readonlyArray.sequence(O.option)([O.some(1), O.none]), O.none)
+      assert.deepStrictEqual(_.readonlyArray.sequence(O.applicativeOption)([O.some(1), O.some(3)]), O.some([1, 3]))
+      assert.deepStrictEqual(_.readonlyArray.sequence(O.applicativeOption)([O.some(1), O.none]), O.none)
     })
 
     it('unfold', () => {
@@ -858,14 +858,14 @@ describe('ReadonlyArray', () => {
     assert.deepStrictEqual(
       pipe(
         ta,
-        _.readonlyArray.traverseWithIndex(O.option)((i, s) => (s.length >= 1 ? O.some(s + i) : O.none))
+        _.readonlyArray.traverseWithIndex(O.applicativeOption)((i, s) => (s.length >= 1 ? O.some(s + i) : O.none))
       ),
       O.some(['a0', 'bb1'])
     )
     assert.deepStrictEqual(
       pipe(
         ta,
-        _.readonlyArray.traverseWithIndex(O.option)((i, s) => (s.length > 1 ? O.some(s + i) : O.none))
+        _.readonlyArray.traverseWithIndex(O.applicativeOption)((i, s) => (s.length > 1 ? O.some(s + i) : O.none))
       ),
       O.none
     )
