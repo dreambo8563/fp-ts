@@ -560,12 +560,6 @@ const sequence_ = <F>(F: Applicative<F>) => <E, A>(ma: Either<E, HKT<F, A>>): HK
   return isLeft(ma) ? F.of(left(ma.left)) : pipe(ma.right, F.map(right))
 }
 
-const bimap_: <E, A, G, B>(fea: Either<E, A>, f: (e: E) => G, g: (a: A) => B) => Either<G, B> = (fea, f, g) =>
-  isLeft(fea) ? left(f(fea.left)) : right(g(fea.right))
-
-const mapLeft_: <E, A, G>(fea: Either<E, A>, f: (e: E) => G) => Either<G, A> = (fea, f) =>
-  isLeft(fea) ? left(f(fea.left)) : fea
-
 const extend_: <E, A, B>(wa: Either<E, A>, f: (wa: Either<E, A>) => B) => Either<E, B> = (wa, f) =>
   isLeft(wa) ? wa : right(f(wa))
 
@@ -646,8 +640,8 @@ export const flatten: <E, A>(mma: Either<E, Either<E, A>>) => Either<E, A> = cha
  * @since 2.0.0
  */
 export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: Either<E, A>) => Either<G, B> = (f, g) => (
-  fa
-) => bimap_(fa, f, g)
+  fea
+) => (isLeft(fea) ? left(f(fea.left)) : right(g(fea.right)))
 
 /**
  * @since 2.0.0
@@ -666,7 +660,8 @@ export const map: <A, B>(f: (a: A) => B) => <E>(fa: Either<E, A>) => Either<E, B
 /**
  * @since 2.0.0
  */
-export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: Either<E, A>) => Either<G, A> = (f) => (fa) => mapLeft_(fa, f)
+export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: Either<E, A>) => Either<G, A> = (f) => (fea) =>
+  isLeft(fea) ? left(f(fea.left)) : fea
 
 /**
  * @since 2.0.0
@@ -725,8 +720,8 @@ export const applicativeEither: Applicative2<URI> = {
  */
 export const bifunctorEither: Bifunctor2<URI> = {
   URI,
-  bimap: bimap_,
-  mapLeft: mapLeft_
+  bimap,
+  mapLeft
 }
 
 /**
@@ -749,8 +744,8 @@ export const either: Monad2<URI> &
   reduceRight: reduceRight_,
   traverse: traverse_,
   sequence: sequence_,
-  bimap: bimap_,
-  mapLeft: mapLeft_,
+  bimap,
+  mapLeft,
   alt,
   extend: extend_,
   throwError: left

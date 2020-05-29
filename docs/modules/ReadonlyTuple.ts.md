@@ -60,7 +60,7 @@ Added in v2.5.0
 **Signature**
 
 ```ts
-export declare const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: readonly [A, E]) => readonly [B, G]
+export declare const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fea: readonly [A, E]) => readonly [B, G]
 ```
 
 Added in v2.5.0
@@ -180,7 +180,7 @@ Added in v2.5.0
 **Signature**
 
 ```ts
-export declare const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: readonly [A, E]) => readonly [A, G]
+export declare const mapLeft: <E, G>(f: (e: E) => G) => <A>(fea: readonly [A, E]) => readonly [A, G]
 ```
 
 Added in v2.5.0

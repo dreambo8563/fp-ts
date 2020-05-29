@@ -30,8 +30,8 @@ Added in v2.0.0
 export interface EitherM<M> extends ApplicativeCompositionHKT2<M, URI> {
   readonly chain: <E, A, B>(f: (a: A) => EitherT<M, E, B>) => (ma: EitherT<M, E, A>) => EitherT<M, E, B>
   readonly alt: <E, A>(that: () => EitherT<M, E, A>) => (fa: EitherT<M, E, A>) => EitherT<M, E, A>
-  readonly bimap: <E, A, N, B>(ma: EitherT<M, E, A>, f: (e: E) => N, g: (a: A) => B) => EitherT<M, N, B>
-  readonly mapLeft: <E, A, N>(ma: EitherT<M, E, A>, f: (e: E) => N) => EitherT<M, N, A>
+  readonly bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fea: EitherT<M, E, A>) => EitherT<M, G, B>
+  readonly mapLeft: <E, G>(f: (e: E) => G) => <A>(fea: EitherT<M, E, A>) => EitherT<M, G, A>
   readonly fold: <E, A, R>(ma: EitherT<M, E, A>, onLeft: (e: E) => HKT<M, R>, onRight: (a: A) => HKT<M, R>) => HKT<M, R>
   readonly getOrElse: <E, A>(ma: EitherT<M, E, A>, onLeft: (e: E) => HKT<M, A>) => HKT<M, A>
   readonly orElse: <E, A, N>(ma: EitherT<M, E, A>, onLeft: (e: E) => EitherT<M, N, A>) => EitherT<M, N, A>
@@ -42,7 +42,7 @@ export interface EitherM<M> extends ApplicativeCompositionHKT2<M, URI> {
 }
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # EitherM1 (interface)
 
@@ -52,8 +52,8 @@ Added in v2.0.0
 export interface EitherM1<M extends URIS> extends ApplicativeComposition12<M, URI> {
   readonly chain: <E, A, B>(f: (a: A) => EitherT1<M, E, B>) => (ma: EitherT1<M, E, A>) => EitherT1<M, E, B>
   readonly alt: <E, A>(that: () => EitherT1<M, E, A>) => (fa: EitherT1<M, E, A>) => EitherT1<M, E, A>
-  readonly bimap: <E, A, N, B>(ma: EitherT1<M, E, A>, f: (e: E) => N, g: (a: A) => B) => EitherT1<M, N, B>
-  readonly mapLeft: <E, A, N>(ma: EitherT1<M, E, A>, f: (e: E) => N) => EitherT1<M, N, A>
+  readonly bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fea: EitherT1<M, E, A>) => EitherT1<M, G, B>
+  readonly mapLeft: <E, G>(f: (e: E) => G) => <A>(fea: EitherT1<M, E, A>) => EitherT1<M, G, A>
   readonly fold: <E, A, R>(
     ma: EitherT1<M, E, A>,
     onLeft: (e: E) => Kind<M, R>,
@@ -78,8 +78,8 @@ Added in v3.0.0
 export interface EitherM2<M extends URIS2> extends ApplicativeComposition22<M, URI> {
   readonly chain: <R, E, A, B>(f: (a: A) => EitherT2<M, R, E, B>) => (ma: EitherT2<M, R, E, A>) => EitherT2<M, R, E, B>
   readonly alt: <R, E, A>(that: () => EitherT2<M, R, E, A>) => (fa: EitherT2<M, R, E, A>) => EitherT2<M, R, E, A>
-  readonly bimap: <R, E, A, N, B>(ma: EitherT2<M, R, E, A>, f: (e: E) => N, g: (a: A) => B) => EitherT2<M, R, N, B>
-  readonly mapLeft: <R, E, A, N>(ma: EitherT2<M, R, E, A>, f: (e: E) => N) => EitherT2<M, R, N, A>
+  readonly bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => <R>(fea: EitherT2<M, R, E, A>) => EitherT2<M, R, G, B>
+  readonly mapLeft: <E, G>(f: (e: E) => G) => <R, A>(fea: EitherT2<M, R, E, A>) => EitherT2<M, R, G, A>
   readonly fold: <R, E, A, B>(
     ma: EitherT2<M, R, E, A>,
     onLeft: (e: E) => Kind2<M, R, B>,

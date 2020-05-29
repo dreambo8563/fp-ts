@@ -29,8 +29,8 @@ Added in v2.4.0
 ```ts
 export interface TheseM<M> {
   readonly map: <A, B>(f: (a: A) => B) => <E>(fa: TheseT<M, E, A>) => TheseT<M, E, B>
-  readonly bimap: <E, A, N, B>(fa: TheseT<M, E, A>, f: (e: E) => N, g: (a: A) => B) => TheseT<M, N, B>
-  readonly mapLeft: <E, A, N>(fa: TheseT<M, E, A>, f: (e: E) => N) => TheseT<M, N, A>
+  readonly bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: TheseT<M, E, A>) => TheseT<M, G, B>
+  readonly mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TheseT<M, E, A>) => TheseT<M, G, A>
   readonly fold: <E, A, R>(
     fa: TheseT<M, E, A>,
     onLeft: (e: E) => HKT<M, R>,
@@ -66,8 +66,8 @@ Added in v3.0.0
 ```ts
 export interface TheseM1<M extends URIS> {
   readonly map: <A, B>(f: (a: A) => B) => <E>(fa: TheseT1<M, E, A>) => TheseT1<M, E, B>
-  readonly bimap: <E, A, N, B>(fa: TheseT1<M, E, A>, f: (e: E) => N, g: (a: A) => B) => TheseT1<M, N, B>
-  readonly mapLeft: <E, A, N>(fa: TheseT1<M, E, A>, f: (e: E) => N) => TheseT1<M, N, A>
+  readonly bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: TheseT1<M, E, A>) => TheseT1<M, G, B>
+  readonly mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TheseT1<M, E, A>) => TheseT1<M, G, A>
   readonly fold: <E, A, R>(
     fa: TheseT1<M, E, A>,
     onLeft: (e: E) => Kind<M, R>,
@@ -103,8 +103,8 @@ Added in v3.0.0
 ```ts
 export interface TheseM2<M extends URIS2> {
   readonly map: <A, B>(f: (a: A) => B) => <R, E>(fa: TheseT2<M, R, E, A>) => TheseT2<M, R, E, B>
-  readonly bimap: <R, E, A, N, B>(fa: TheseT2<M, R, E, A>, f: (e: E) => N, g: (a: A) => B) => TheseT2<M, R, N, B>
-  readonly mapLeft: <R, E, A, N>(fa: TheseT2<M, R, E, A>, f: (e: E) => N) => TheseT2<M, R, N, A>
+  readonly bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => <R>(fa: TheseT2<M, R, E, A>) => TheseT2<M, R, G, B>
+  readonly mapLeft: <E, G>(f: (e: E) => G) => <R, A>(fa: TheseT2<M, R, E, A>) => TheseT2<M, R, G, A>
   readonly fold: <R, E, A, B>(
     fa: TheseT2<M, R, E, A>,
     onLeft: (e: E) => Kind2<M, R, B>,

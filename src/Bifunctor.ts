@@ -4,56 +4,59 @@
 import { HKT2, Kind2, Kind3, URIS2, URIS3, URIS4, Kind4 } from './HKT'
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
 export interface Bifunctor<F> {
   readonly URI: F
-  readonly bimap: <E, A, G, B>(fea: HKT2<F, E, A>, f: (e: E) => G, g: (a: A) => B) => HKT2<F, G, B>
-  readonly mapLeft: <E, A, G>(fea: HKT2<F, E, A>, f: (e: E) => G) => HKT2<F, G, A>
+  readonly bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fea: HKT2<F, E, A>) => HKT2<F, G, B>
+  readonly mapLeft: <E, G>(f: (e: E) => G) => <A>(fea: HKT2<F, E, A>) => HKT2<F, G, A>
 }
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
 export interface Bifunctor2<F extends URIS2> {
   readonly URI: F
-  readonly bimap: <E, A, G, B>(fea: Kind2<F, E, A>, f: (e: E) => G, g: (a: A) => B) => Kind2<F, G, B>
-  readonly mapLeft: <E, A, G>(fea: Kind2<F, E, A>, f: (e: E) => G) => Kind2<F, G, A>
+  readonly bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fea: Kind2<F, E, A>) => Kind2<F, G, B>
+  readonly mapLeft: <E, G>(f: (e: E) => G) => <A>(fea: Kind2<F, E, A>) => Kind2<F, G, A>
 }
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
 export interface Bifunctor2C<F extends URIS2, E> {
   readonly URI: F
   readonly _E: E
-  readonly bimap: <A, G, B>(fea: Kind2<F, E, A>, f: (e: E) => G, g: (a: A) => B) => Kind2<F, G, B>
-  readonly mapLeft: <A, M>(fea: Kind2<F, E, A>, f: (e: E) => M) => Kind2<F, M, A>
+  readonly bimap: <G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fea: Kind2<F, E, A>) => Kind2<F, G, B>
+  readonly mapLeft: <G>(f: (e: E) => G) => <A>(fea: Kind2<F, E, A>) => Kind2<F, G, A>
 }
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
 export interface Bifunctor3<F extends URIS3> {
   readonly URI: F
-  readonly bimap: <R, E, A, G, B>(fea: Kind3<F, R, E, A>, f: (e: E) => G, g: (a: A) => B) => Kind3<F, R, G, B>
-  readonly mapLeft: <R, E, A, G>(fea: Kind3<F, R, E, A>, f: (e: E) => G) => Kind3<F, R, G, A>
+  readonly bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => <R>(fea: Kind3<F, R, E, A>) => Kind3<F, R, G, B>
+  readonly mapLeft: <E, G>(f: (e: E) => G) => <R, A>(fea: Kind3<F, R, E, A>) => Kind3<F, R, G, A>
 }
 
 /**
- * @since 2.2.0
+ * @since 3.0.0
  */
 export interface Bifunctor3C<F extends URIS3, E> {
   readonly URI: F
-  readonly bimap: <R, A, G, B>(fea: Kind3<F, R, E, A>, f: (e: E) => G, g: (a: A) => B) => Kind3<F, R, G, B>
-  readonly mapLeft: <R, A, G>(fea: Kind3<F, R, E, A>, f: (e: E) => G) => Kind3<F, R, G, A>
+  readonly bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => <R>(fea: Kind3<F, R, E, A>) => Kind3<F, R, G, B>
+  readonly mapLeft: <G>(f: (e: E) => G) => <R, A>(fea: Kind3<F, R, E, A>) => Kind3<F, R, G, A>
 }
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
 export interface Bifunctor4<F extends URIS4> {
   readonly URI: F
-  readonly bimap: <S, R, E, A, G, B>(fea: Kind4<F, S, R, E, A>, f: (e: E) => G, g: (a: A) => B) => Kind4<F, S, R, G, B>
-  readonly mapLeft: <S, R, E, A, G>(fea: Kind4<F, S, R, E, A>, f: (e: E) => G) => Kind4<F, S, R, G, A>
+  readonly bimap: <E, G, A, B>(
+    f: (e: E) => G,
+    g: (a: A) => B
+  ) => <S, R>(fea: Kind4<F, S, R, E, A>) => Kind4<F, S, R, G, B>
+  readonly mapLeft: <E, G>(f: (e: E) => G) => <S, R, A>(fea: Kind4<F, S, R, E, A>) => Kind4<F, S, R, G, A>
 }

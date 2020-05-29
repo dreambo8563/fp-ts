@@ -368,12 +368,6 @@ export function fromOptions<E, A>(fe: Option<E>, fa: Option<A>): Option<These<E,
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const bimap_: <E, A, G, B>(fea: These<E, A>, f: (e: E) => G, g: (a: A) => B) => These<G, B> = (fea, f, g) =>
-  isLeft(fea) ? left(f(fea.left)) : isRight(fea) ? right(g(fea.right)) : both(f(fea.left), g(fea.right))
-
-const mapLeft_: <E, A, G>(fea: These<E, A>, f: (e: E) => G) => These<G, A> = (fea, f) =>
-  isLeft(fea) ? left(f(fea.left)) : isBoth(fea) ? both(f(fea.left), fea.right) : fea
-
 const reduce_: <E, A, B>(fa: These<E, A>, b: B, f: (b: B, a: A) => B) => B = (fa, b, f) =>
   isLeft(fa) ? b : isRight(fa) ? f(b, fa.right) : f(b, fa.right)
 
@@ -386,8 +380,9 @@ const reduceRight_: <E, A, B>(fa: These<E, A>, b: B, f: (a: A, b: B) => B) => B 
 /**
  * @since 2.0.0
  */
-export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: These<E, A>) => These<G, B> = (f, g) => (fa) =>
-  bimap_(fa, f, g)
+export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: These<E, A>) => These<G, B> = (f, g) => (
+  fea
+) => (isLeft(fea) ? left(f(fea.left)) : isRight(fea) ? right(g(fea.right)) : both(f(fea.left), g(fea.right)))
 
 /**
  * @since 2.0.0
@@ -406,7 +401,8 @@ export const map: <A, B>(f: (a: A) => B) => <E>(fa: These<E, A>) => These<E, B> 
 /**
  * @since 2.0.0
  */
-export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: These<E, A>) => These<G, A> = (f) => (fa) => mapLeft_(fa, f)
+export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: These<E, A>) => These<G, A> = (f) => (fea) =>
+  isLeft(fea) ? left(f(fea.left)) : isBoth(fea) ? both(f(fea.left), fea.right) : fea
 
 /**
  * @since 2.0.0
@@ -430,8 +426,8 @@ export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => <E>(fa: These<E,
 export const these: Functor2<URI> & Bifunctor2<URI> & Foldable2<URI> & Traversable2<URI> = {
   URI,
   map,
-  bimap: bimap_,
-  mapLeft: mapLeft_,
+  bimap,
+  mapLeft,
   reduce: reduce_,
   foldMap: foldMap_,
   reduceRight: reduceRight_,

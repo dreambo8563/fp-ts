@@ -225,7 +225,7 @@ export const apSecond = <R, E, B>(fb: ReaderEither<R, E, B>) => <A>(fa: ReaderEi
 export const bimap: <E, G, A, B>(
   f: (e: E) => G,
   g: (a: A) => B
-) => <R>(fa: ReaderEither<R, E, A>) => ReaderEither<R, G, B> = (f, g) => (fa) => T.bimap(fa, f, g)
+) => <R>(fa: ReaderEither<R, E, A>) => ReaderEither<R, G, B> = T.bimap
 
 /**
  * @since 2.0.0
@@ -279,9 +279,7 @@ export const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderEither<R, E, A>) =>
 /**
  * @since 2.0.0
  */
-export const mapLeft: <E, G>(f: (e: E) => G) => <R, A>(fa: ReaderEither<R, E, A>) => ReaderEither<R, G, A> = (f) => (
-  fa
-) => T.mapLeft(fa, f)
+export const mapLeft: <E, G>(f: (e: E) => G) => <R, A>(fa: ReaderEither<R, E, A>) => ReaderEither<R, G, A> = T.mapLeft
 
 /**
  * @since 2.0.0

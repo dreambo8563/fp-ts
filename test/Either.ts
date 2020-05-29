@@ -292,8 +292,8 @@ describe('Either', () => {
   describe('Bifunctor', () => {
     it('mapLeft', () => {
       const double = (n: number): number => n * 2
-      assert.deepStrictEqual(_.either.mapLeft(_.right('bar'), double), _.right('bar'))
-      assert.deepStrictEqual(_.either.mapLeft(_.left(2), double), _.left(4))
+      assert.deepStrictEqual(pipe(_.right('bar'), _.mapLeft(double)), _.right('bar'))
+      assert.deepStrictEqual(pipe(_.left(2), _.mapLeft(double)), _.left(4))
     })
   })
 

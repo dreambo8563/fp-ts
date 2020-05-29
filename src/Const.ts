@@ -130,10 +130,6 @@ export function getApplicative<E>(M: Monoid<E>): Applicative2C<URI, E> {
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const bimap_: <E, A, G, B>(fea: Const<E, A>, f: (e: E) => G, g: (a: A) => B) => Const<G, B> = (fea, f) => make(f(fea))
-
-const mapLeft_: <E, A, G>(fea: Const<E, A>, f: (e: E) => G) => Const<G, A> = (fea, f) => make(f(fea))
-
 /**
  * @since 2.0.0
  */
@@ -147,13 +143,13 @@ export const map: <A, B>(f: (a: A) => B) => <E>(fa: Const<E, A>) => Const<E, B> 
 /**
  * @since 2.6.2
  */
-export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: Const<E, A>) => Const<G, B> = (f, g) => (fa) =>
-  bimap_(fa, f, g)
+export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: Const<E, A>) => Const<G, B> = (f) => (fea) =>
+  make(f(fea))
 
 /**
  * @since 2.6.2
  */
-export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: Const<E, A>) => Const<G, A> = (f) => (fa) => mapLeft_(fa, f)
+export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: Const<E, A>) => Const<G, A> = (f) => (fea) => make(f(fea))
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -166,6 +162,6 @@ export const const_: Functor2<URI> & Contravariant2<URI> & Bifunctor2<URI> = {
   URI,
   map,
   contramap,
-  bimap: bimap_,
-  mapLeft: mapLeft_
+  bimap,
+  mapLeft
 }

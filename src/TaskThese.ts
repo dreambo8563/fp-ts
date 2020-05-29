@@ -132,10 +132,7 @@ export function toTuple<E, A>(e: () => E, a: () => A): (fa: TaskThese<E, A>) => 
 /**
  * @since 2.4.0
  */
-export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: TaskThese<E, A>) => TaskThese<G, B> = (
-  f,
-  g
-) => (fa) => T.bimap(fa, f, g)
+export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: TaskThese<E, A>) => TaskThese<G, B> = T.bimap
 
 /**
  * @since 2.4.0
@@ -145,8 +142,7 @@ export const map: <A, B>(f: (a: A) => B) => <E>(fa: TaskThese<E, A>) => TaskThes
 /**
  * @since 2.4.0
  */
-export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TaskThese<E, A>) => TaskThese<G, A> = (f) => (fa) =>
-  T.mapLeft(fa, f)
+export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TaskThese<E, A>) => TaskThese<G, A> = T.mapLeft
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -158,6 +154,6 @@ export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TaskThese<E, A>) => Task
 export const taskThese: Functor2<URI> & Bifunctor2<URI> = {
   URI,
   map,
-  bimap: T.bimap,
-  mapLeft: T.mapLeft
+  bimap,
+  mapLeft
 }

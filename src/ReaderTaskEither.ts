@@ -329,16 +329,6 @@ export function chainTaskEitherK<E, A, B>(
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const bimap_: <R, E, A, G, B>(
-  fea: ReaderTaskEither<R, E, A>,
-  f: (e: E) => G,
-  g: (a: A) => B
-) => ReaderTaskEither<R, G, B> = (ma, f, g) => (e) => pipe(ma(e), TE.bimap(f, g))
-
-const mapLeft_: <R, E, A, G>(fea: ReaderTaskEither<R, E, A>, f: (e: E) => G) => ReaderTaskEither<R, G, A> = (ma, f) => (
-  e
-) => pipe(ma(e), TE.mapLeft(f))
-
 /**
  * @since 2.0.0
  */
@@ -388,7 +378,8 @@ export const apSecond = <R, E, B>(fb: ReaderTaskEither<R, E, B>) => <A>(
 export const bimap: <E, G, A, B>(
   f: (e: E) => G,
   g: (a: A) => B
-) => <R>(fa: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, G, B> = (f, g) => (fa) => bimap_(fa, f, g)
+) => <R>(fa: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, G, B> = (f, g) => (fea) => (e) =>
+  pipe(fea(e), TE.bimap(f, g))
 
 /**
  * @since 2.0.0
@@ -427,7 +418,7 @@ export const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderTaskEither<R, E, A>
  */
 export const mapLeft: <E, G>(f: (e: E) => G) => <R, A>(fa: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, G, A> = (
   f
-) => (fa) => mapLeft_(fa, f)
+) => (fea) => (e) => pipe(fea(e), TE.mapLeft(f))
 
 /**
  * @since 2.0.0
@@ -486,8 +477,8 @@ export const readerTaskEither: Monad3<URI> & Bifunctor3<URI> & Alt3<URI> & Monad
   ap,
   chain,
   alt,
-  bimap: bimap_,
-  mapLeft: mapLeft_,
+  bimap,
+  mapLeft,
   fromIO: rightIO,
   fromTask: rightTask,
   throwError: left
