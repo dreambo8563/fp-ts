@@ -234,7 +234,7 @@ describe('Array', () => {
       fc.property(fc.array(fc.integer()), (arr) =>
         optionStringEq.equals(
           _.findFirstMap(multipleOf3AsString)(arr),
-          _.head(_.array.filterMap(arr, multipleOf3AsString))
+          _.head(pipe(arr, _.filterMap(multipleOf3AsString)))
         )
       )
     )
@@ -264,7 +264,7 @@ describe('Array', () => {
       fc.property(fc.array(fc.integer()), (arr) =>
         optionStringEq.equals(
           _.findLastMap(multipleOf3AsString)(arr),
-          _.last(_.array.filterMap(arr, multipleOf3AsString))
+          _.last(pipe(arr, _.filterMap(multipleOf3AsString)))
         )
       )
     )
@@ -559,13 +559,11 @@ describe('Array', () => {
   })
 
   it('filter', () => {
-    const filter = _.array.filter
     const g = (n: number) => n % 2 === 1
-    assert.deepStrictEqual(filter([1, 2, 3], g), [1, 3])
-    assert.deepStrictEqual(_.array.filter([1, 2, 3], g), [1, 3])
-    const x = filter([O.some(3), O.some(2), O.some(1)], O.isSome)
+    assert.deepStrictEqual(pipe([1, 2, 3], _.filter(g)), [1, 3])
+    const x = pipe([O.some(3), O.some(2), O.some(1)], _.filter(O.isSome))
     assert.deepStrictEqual(x, [O.some(3), O.some(2), O.some(1)])
-    const y = filter([O.some(3), O.none, O.some(1)], O.isSome)
+    const y = pipe([O.some(3), O.none, O.some(1)], _.filter(O.isSome))
     assert.deepStrictEqual(y, [O.some(3), O.some(1)])
   })
 
@@ -576,26 +574,25 @@ describe('Array', () => {
 
   it('filterMap', () => {
     const f = (n: number) => (n % 2 === 0 ? O.none : O.some(n))
-    assert.deepStrictEqual(_.array.filterMap(as, f), [1, 3])
-    assert.deepStrictEqual(_.array.filterMap([], f), [])
+    assert.deepStrictEqual(pipe(as, _.filterMap(f)), [1, 3])
+    assert.deepStrictEqual(pipe([], _.filterMap(f)), [])
   })
 
   it('partitionMap', () => {
-    assert.deepStrictEqual(_.array.partitionMap([], identity), { left: [], right: [] })
-    assert.deepStrictEqual(_.array.partitionMap([right(1), left('foo'), right(2)], identity), {
+    assert.deepStrictEqual(pipe([], _.partitionMap(identity)), { left: [], right: [] })
+    assert.deepStrictEqual(pipe([right(1), left('foo'), right(2)], _.partitionMap(identity)), {
       left: ['foo'],
       right: [1, 2]
     })
   })
 
   it('partition', () => {
-    const partition = _.array.partition
-    assert.deepStrictEqual(partition([], p), { left: [], right: [] })
-    assert.deepStrictEqual(partition([1, 3], p), { left: [1], right: [3] })
+    assert.deepStrictEqual(pipe([], _.partition(p)), { left: [], right: [] })
+    assert.deepStrictEqual(pipe([1, 3], _.partition(p)), { left: [1], right: [3] })
     // refinements
     const xs: Array<string | number> = ['a', 'b', 1]
     const isNumber = (x: string | number): x is number => typeof x === 'number'
-    const actual = partition(xs, isNumber)
+    const actual = pipe(xs, _.partition(isNumber))
     assert.deepStrictEqual(actual, { left: ['a', 'b'], right: [1] })
   })
 

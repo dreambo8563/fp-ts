@@ -5,10 +5,11 @@ import { Applicative, Applicative1, Applicative2, Applicative2C, Applicative3, A
 import { Compactable1, Separated } from './Compactable'
 import { Either } from './Either'
 import { Eq, fromEquals } from './Eq'
+import { Filterable1 } from './Filterable'
 import { FilterableWithIndex1, PredicateWithIndex, RefinementWithIndex } from './FilterableWithIndex'
 import { Foldable, Foldable1, Foldable2, Foldable3 } from './Foldable'
 import { FoldableWithIndex1 } from './FoldableWithIndex'
-import { identity, Predicate, Refinement, pipe } from './function'
+import { identity, pipe, Predicate } from './function'
 import { FunctorWithIndex1 } from './FunctorWithIndex'
 import { HKT, Kind, Kind2, Kind3, URIS, URIS2, URIS3 } from './HKT'
 import { Magma } from './Magma'
@@ -693,28 +694,6 @@ export function elem<A>(E: Eq<A>): (a: A, fa: ReadonlyRecord<string, A>) => bool
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const filter_ = <A>(fa: ReadonlyRecord<string, A>, predicate: Predicate<A>): ReadonlyRecord<string, A> => {
-  return filterWithIndex_(fa, (_, a) => predicate(a))
-}
-
-const filterMap_: <A, B>(fa: Readonly<Record<string, A>>, f: (a: A) => Option<B>) => Readonly<Record<string, B>> = (
-  fa,
-  f
-) => filterMapWithIndex_(fa, (_, a) => f(a))
-
-const partition_ = <A>(
-  fa: ReadonlyRecord<string, A>,
-  predicate: Predicate<A>
-): Separated<ReadonlyRecord<string, A>, ReadonlyRecord<string, A>> => {
-  return partitionWithIndex_(fa, (_, a) => predicate(a))
-}
-
-const partitionMap_: <A, B, C>(
-  fa: Readonly<Record<string, A>>,
-  f: (a: A) => Either<B, C>
-) => Separated<Readonly<Record<string, B>>, Readonly<Record<string, C>>> = (fa, f) =>
-  partitionMapWithIndex_(fa, (_, a) => f(a))
-
 const mapWithIndex_ = <A, B>(fa: ReadonlyRecord<string, A>, f: (k: string, a: A) => B) => {
   const out: Record<string, B> = {}
   const keys = Object.keys(fa)
@@ -865,16 +844,12 @@ const traverseWithIndex_ = <F>(F: Applicative<F>) => <A, B>(
 /**
  * @since 2.5.0
  */
-export const filter: {
-  <A, B extends A>(refinement: Refinement<A, B>): (fa: Readonly<Record<string, A>>) => Readonly<Record<string, B>>
-  <A>(predicate: Predicate<A>): (fa: Readonly<Record<string, A>>) => Readonly<Record<string, A>>
-} = <A>(predicate: Predicate<A>) => (fa: Readonly<Record<string, A>>) => filter_(fa, predicate)
+export const filter: Filterable1<URI>['filter'] = <A>(predicate: Predicate<A>) => (fa: Readonly<Record<string, A>>) =>
+  filterWithIndex_(fa, (_, a) => predicate(a))
 /**
  * @since 2.5.0
  */
-export const filterMap: <A, B>(
-  f: (a: A) => Option<B>
-) => (fa: Readonly<Record<string, A>>) => Readonly<Record<string, B>> = (f) => (fa) => filterMap_(fa, f)
+export const filterMap: Filterable1<URI>['filterMap'] = (f) => (fa) => filterMapWithIndex_(fa, (_, a) => f(a))
 
 /**
  * @since 2.5.0
@@ -887,23 +862,14 @@ export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: Readonly<
 /**
  * @since 2.5.0
  */
-export const partition: {
-  <A, B extends A>(refinement: Refinement<A, B>): (
-    fa: Readonly<Record<string, A>>
-  ) => Separated<Readonly<Record<string, A>>, Readonly<Record<string, B>>>
-  <A>(predicate: Predicate<A>): (
-    fa: Readonly<Record<string, A>>
-  ) => Separated<Readonly<Record<string, A>>, Readonly<Record<string, A>>>
-} = <A>(predicate: Predicate<A>) => (fa: Readonly<Record<string, A>>) => partition_(fa, predicate)
+export const partition: Filterable1<URI>['partition'] = <A>(predicate: Predicate<A>) => (
+  fa: Readonly<Record<string, A>>
+) => partitionWithIndex_(fa, (_, a) => predicate(a))
 
 /**
  * @since 2.5.0
  */
-export const partitionMap: <A, B, C>(
-  f: (a: A) => Either<B, C>
-) => (fa: Readonly<Record<string, A>>) => Separated<Readonly<Record<string, B>>, Readonly<Record<string, C>>> = (f) => (
-  fa
-) => partitionMap_(fa, f)
+export const partitionMap: Filterable1<URI>['partitionMap'] = (f) => (fa) => partitionMapWithIndex_(fa, (_, a) => f(a))
 
 /**
  * @since 2.5.0
@@ -982,10 +948,10 @@ export const readonlyRecord: FunctorWithIndex1<URI, string> &
   sequence,
   compact,
   separate,
-  filter: filter_,
-  filterMap: filterMap_,
-  partition: partition_,
-  partitionMap: partitionMap_,
+  filter,
+  filterMap,
+  partition,
+  partitionMap,
   mapWithIndex: mapWithIndex_,
   reduceWithIndex: reduceWithIndex_,
   foldMapWithIndex: foldMapWithIndex_,

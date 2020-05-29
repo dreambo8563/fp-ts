@@ -133,10 +133,7 @@ Added in v2.5.0
 **Signature**
 
 ```ts
-export declare const filter: {
-  <A, B extends A>(refinement: Refinement<A, B>): <K>(fa: ReadonlyMap<K, A>) => ReadonlyMap<K, B>
-  <A>(predicate: Predicate<A>): <K>(fa: ReadonlyMap<K, A>) => ReadonlyMap<K, A>
-}
+export declare const filter: Filter2<'ReadonlyMap'>
 ```
 
 Added in v2.5.0
@@ -146,7 +143,7 @@ Added in v2.5.0
 **Signature**
 
 ```ts
-export declare const filterMap: <A, B>(f: (a: A) => O.Option<B>) => <K>(fa: ReadonlyMap<K, A>) => ReadonlyMap<K, B>
+export declare const filterMap: <A, B>(f: (a: A) => O.Option<B>) => <E>(fa: ReadonlyMap<E, A>) => ReadonlyMap<E, B>
 ```
 
 Added in v2.5.0
@@ -357,12 +354,7 @@ Added in v2.5.0
 **Signature**
 
 ```ts
-export declare const partition: {
-  <A, B extends A>(refinement: Refinement<A, B>): <K>(
-    fa: ReadonlyMap<K, A>
-  ) => Separated<ReadonlyMap<K, A>, ReadonlyMap<K, B>>
-  <A>(predicate: Predicate<A>): <K>(fa: ReadonlyMap<K, A>) => Separated<ReadonlyMap<K, A>, ReadonlyMap<K, A>>
-}
+export declare const partition: Partition2<'ReadonlyMap'>
 ```
 
 Added in v2.5.0
@@ -374,7 +366,7 @@ Added in v2.5.0
 ```ts
 export declare const partitionMap: <A, B, C>(
   f: (a: A) => Either<B, C>
-) => <K>(fa: ReadonlyMap<K, A>) => Separated<ReadonlyMap<K, B>, ReadonlyMap<K, C>>
+) => <E>(fa: ReadonlyMap<E, A>) => Separated<ReadonlyMap<E, B>, ReadonlyMap<E, C>>
 ```
 
 Added in v2.5.0

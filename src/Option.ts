@@ -643,22 +643,6 @@ export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F>) =>
   ta: Option<HKT<F, A>>
 ): HKT<F, Option<A>> => (isNone(ta) ? F.of(none) : pipe(ta.value, F.map(some)))
 
-const filter_ = <A>(fa: Option<A>, predicate: Predicate<A>): Option<A> =>
-  isNone(fa) ? none : predicate(fa.value) ? fa : none
-
-const filterMap_: <A, B>(fa: Option<A>, f: (a: A) => Option<B>) => Option<B> = (ma, f) =>
-  isNone(ma) ? none : f(ma.value)
-
-const partition_ = <A>(fa: Option<A>, predicate: Predicate<A>): Separated<Option<A>, Option<A>> => {
-  return {
-    left: filter_(fa, (a) => !predicate(a)),
-    right: filter_(fa, predicate)
-  }
-}
-
-const partitionMap_: <A, B, C>(fa: Option<A>, f: (a: A) => Either<B, C>) => Separated<Option<B>, Option<C>> = (fa, f) =>
-  separate(pipe(fa, map(f)))
-
 const wither_ = <F>(F: Applicative<F>) => <A, B>(fa: Option<A>, f: (a: A) => HKT<F, Option<B>>): HKT<F, Option<B>> =>
   isNone(fa) ? F.of(none) : f(fa.value)
 
@@ -800,31 +784,29 @@ export const separate: <A, B>(ma: Option<Either<A, B>>) => Separated<Option<A>, 
 /**
  * @since 2.0.0
  */
-export const filter: {
-  <A, B extends A>(refinement: Refinement<A, B>): (fa: Option<A>) => Option<B>
-  <A>(predicate: Predicate<A>): (fa: Option<A>) => Option<A>
-} = <A>(predicate: Predicate<A>) => (fa: Option<A>) => filter_(fa, predicate)
+export const filter: Filterable1<URI>['filter'] = <A>(predicate: Predicate<A>) => (fa: Option<A>) =>
+  isNone(fa) ? none : predicate(fa.value) ? fa : none
 
 /**
  * @since 2.0.0
  */
-export const filterMap: <A, B>(f: (a: A) => Option<B>) => (fa: Option<A>) => Option<B> = (f) => (fa) =>
-  filterMap_(fa, f)
+export const filterMap: Filterable1<URI>['filterMap'] = (f) => (fa) => (isNone(fa) ? none : f(fa.value))
 
 /**
  * @since 2.0.0
  */
-export const partition: {
-  <A, B extends A>(refinement: Refinement<A, B>): (fa: Option<A>) => Separated<Option<A>, Option<B>>
-  <A>(predicate: Predicate<A>): (fa: Option<A>) => Separated<Option<A>, Option<A>>
-} = <A>(predicate: Predicate<A>) => (fa: Option<A>) => partition_(fa, predicate)
+export const partition: Filterable1<URI>['partition'] = <A>(predicate: Predicate<A>) => (fa: Option<A>) => ({
+  left: pipe(
+    fa,
+    filter((a) => !predicate(a))
+  ),
+  right: pipe(fa, filter(predicate))
+})
 
 /**
  * @since 2.0.0
  */
-export const partitionMap: <A, B, C>(
-  f: (a: A) => Either<B, C>
-) => (fa: Option<A>) => Separated<Option<B>, Option<C>> = (f) => (fa) => partitionMap_(fa, f)
+export const partitionMap: Filterable1<URI>['partitionMap'] = (f) => (fa) => separate(pipe(fa, map(f)))
 
 /**
  * @since 2.0.0
@@ -872,10 +854,10 @@ export const option: Monad1<URI> &
   extend,
   compact,
   separate,
-  filter: filter_,
-  filterMap: filterMap_,
-  partition: partition_,
-  partitionMap: partitionMap_,
+  filter,
+  filterMap,
+  partition,
+  partitionMap,
   wither: wither_,
   wilt: wilt_,
   throwError: () => none

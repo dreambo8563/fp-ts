@@ -3,39 +3,40 @@ import { array } from '../src/Array'
 import { getFilterableComposition } from '../src/Filterable'
 import { some, none } from '../src/Option'
 import { right, left } from '../src/Either'
+import { pipe } from '../src/function'
 
 describe('Filterable', () => {
   it('getFilterableComposition', () => {
     const F = getFilterableComposition(array, array)
     assert.deepStrictEqual(
-      F.filter(
+      pipe(
         [
           [1, 2],
           [3, 4]
         ],
-        (a) => a > 1
+        F.filter((a) => a > 1)
       ),
       [[2], [3, 4]]
     )
 
     assert.deepStrictEqual(
-      F.filterMap(
+      pipe(
         [
           ['a', 'bb'],
           ['ccc', 'dddd']
         ],
-        (a) => (a.length > 1 ? some(a.length) : none)
+        F.filterMap((a) => (a.length > 1 ? some(a.length) : none))
       ),
       [[2], [3, 4]]
     )
 
     assert.deepStrictEqual(
-      F.partition(
+      pipe(
         [
           ['a', 'bb'],
           ['ccc', 'dddd']
         ],
-        (a) => a.length % 2 === 0
+        F.partition((a) => a.length % 2 === 0)
       ),
       {
         left: [['a'], ['ccc']],
@@ -44,12 +45,12 @@ describe('Filterable', () => {
     )
 
     assert.deepStrictEqual(
-      F.partitionMap(
+      pipe(
         [
           ['a', 'bb'],
           ['ccc', 'dddd']
         ],
-        (a) => (a.length % 2 === 0 ? right(a.length) : left(a))
+        F.partitionMap((a) => (a.length % 2 === 0 ? right(a.length) : left(a)))
       ),
       {
         left: [['a'], ['ccc']],

@@ -7,7 +7,7 @@ import { Compactable1, Separated } from './Compactable'
 import { Either } from './Either'
 import { Eq } from './Eq'
 import { Extend1 } from './Extend'
-import { Filter1, Partition1 } from './Filterable'
+import { Filterable1 } from './Filterable'
 import {
   FilterableWithIndex1,
   PartitionWithIndex1,
@@ -15,7 +15,7 @@ import {
   RefinementWithIndex
 } from './FilterableWithIndex'
 import { FoldableWithIndex1 } from './FoldableWithIndex'
-import { identity, Predicate, Refinement, pipe } from './function'
+import { identity, pipe, Predicate, Refinement } from './function'
 import { FunctorWithIndex1 } from './FunctorWithIndex'
 import { HKT } from './HKT'
 import { Monad1 } from './Monad'
@@ -24,10 +24,10 @@ import { isSome, none, Option, some } from './Option'
 import { fromCompare, getMonoid as getOrdMonoid, Ord, ordNumber } from './Ord'
 import { ReadonlyNonEmptyArray } from './ReadonlyNonEmptyArray'
 import { Show } from './Show'
+import { Traversable1 } from './Traversable'
 import { TraversableWithIndex1 } from './TraversableWithIndex'
 import { Unfoldable1 } from './Unfoldable'
 import { Witherable1 } from './Witherable'
-import { Traversable1 } from './Traversable'
 
 declare module './HKT' {
   interface URItoKind<A> {
@@ -1358,11 +1358,6 @@ export const of = <A>(a: A): ReadonlyArray<A> => [a]
 const mapWithIndex_: <A, B>(fa: ReadonlyArray<A>, f: (i: number, a: A) => B) => ReadonlyArray<B> = (fa, f) =>
   fa.map((a, i) => f(i, a))
 
-const filterMap_: <A, B>(fa: ReadonlyArray<A>, f: (a: A) => Option<B>) => ReadonlyArray<B> = (as, f) =>
-  filterMapWithIndex_(as, (_, a) => f(a))
-
-const filter_: Filter1<URI> = <A>(as: ReadonlyArray<A>, predicate: Predicate<A>) => as.filter(predicate)
-
 const partitionWithIndex_: PartitionWithIndex1<URI, number> = <A>(
   fa: ReadonlyArray<A>,
   predicateWithIndex: (i: number, a: A) => boolean
@@ -1384,18 +1379,6 @@ const partitionWithIndex_: PartitionWithIndex1<URI, number> = <A>(
     right
   }
 }
-
-const partition_: Partition1<URI> = <A>(
-  fa: ReadonlyArray<A>,
-  predicate: Predicate<A>
-): Separated<ReadonlyArray<A>, ReadonlyArray<A>> => {
-  return partitionWithIndex_(fa, (_, a) => predicate(a))
-}
-
-const partitionMap_: <A, B, C>(
-  fa: ReadonlyArray<A>,
-  f: (a: A) => Either<B, C>
-) => Separated<ReadonlyArray<B>, ReadonlyArray<C>> = (fa, f) => partitionMapWithIndex_(fa, (_, a) => f(a))
 
 const partitionMapWithIndex_ = <A, B, C>(
   fa: ReadonlyArray<A>,
@@ -1631,11 +1614,6 @@ export const mapWithIndex: <A, B>(f: (i: number, a: A) => B) => (fa: ReadonlyArr
 /**
  * @since 2.5.0
  */
-export const compact: <A>(fa: ReadonlyArray<Option<A>>) => ReadonlyArray<A> = (as) => filterMap_(as, identity)
-
-/**
- * @since 2.5.0
- */
 export const separate = <A, B>(fa: ReadonlyArray<Either<A, B>>): Separated<ReadonlyArray<A>, ReadonlyArray<B>> => {
   // tslint:disable-next-line: readonly-array
   const left: Array<A> = []
@@ -1657,26 +1635,24 @@ export const separate = <A, B>(fa: ReadonlyArray<Either<A, B>>): Separated<Reado
 /**
  * @since 2.5.0
  */
-export const filter: {
-  <A, B extends A>(refinement: Refinement<A, B>): (fa: ReadonlyArray<A>) => ReadonlyArray<B>
-  <A>(predicate: Predicate<A>): (fa: ReadonlyArray<A>) => ReadonlyArray<A>
-} = <A>(predicate: Predicate<A>) => (fa: ReadonlyArray<A>) => filter_(fa, predicate)
+export const filter: Filterable1<URI>['filter'] = <A>(predicate: Predicate<A>) => (fa: ReadonlyArray<A>) =>
+  fa.filter(predicate)
 
 /**
  * @since 2.5.0
  */
-export const filterMap: <A, B>(f: (a: A) => Option<B>) => (fa: ReadonlyArray<A>) => ReadonlyArray<B> = (f) => (fa) =>
-  filterMap_(fa, f)
+export const filterMap: Filterable1<URI>['filterMap'] = (f) => (fa) => filterMapWithIndex_(fa, (_, a) => f(a))
 
 /**
  * @since 2.5.0
  */
-export const partition: {
-  <A, B extends A>(refinement: Refinement<A, B>): (
-    fa: ReadonlyArray<A>
-  ) => Separated<ReadonlyArray<A>, ReadonlyArray<B>>
-  <A>(predicate: Predicate<A>): (fa: ReadonlyArray<A>) => Separated<ReadonlyArray<A>, ReadonlyArray<A>>
-} = <A>(predicate: Predicate<A>) => (fa: ReadonlyArray<A>) => partition_(fa, predicate)
+export const compact: <A>(fa: ReadonlyArray<Option<A>>) => ReadonlyArray<A> = filterMap(identity)
+
+/**
+ * @since 2.5.0
+ */
+export const partition: Filterable1<URI>['partition'] = <A>(predicate: Predicate<A>) => (fa: ReadonlyArray<A>) =>
+  partitionWithIndex_(fa, (_, a) => predicate(a))
 
 /**
  * @since 2.5.0
@@ -1694,9 +1670,7 @@ export const partitionWithIndex: {
 /**
  * @since 2.5.0
  */
-export const partitionMap: <A, B, C>(
-  f: (a: A) => Either<B, C>
-) => (fa: ReadonlyArray<A>) => Separated<ReadonlyArray<B>, ReadonlyArray<C>> = (f) => (fa) => partitionMap_(fa, f)
+export const partitionMap: Filterable1<URI>['partitionMap'] = (f) => (fa) => partitionMapWithIndex_(fa, (_, a) => f(a))
 
 /**
  * @since 2.5.0
@@ -1803,10 +1777,10 @@ export const readonlyArray: Monad1<URI> &
   ap,
   of,
   chain,
-  filter: filter_,
-  filterMap: filterMap_,
-  partition: partition_,
-  partitionMap: partitionMap_,
+  filter,
+  filterMap,
+  partition,
+  partitionMap,
   mapWithIndex: mapWithIndex_,
   partitionMapWithIndex: partitionMapWithIndex_,
   partitionWithIndex: partitionWithIndex_,

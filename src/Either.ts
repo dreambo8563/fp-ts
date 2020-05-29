@@ -410,9 +410,8 @@ export function getWitherable<E>(M: Monoid<E>): Witherable2C<URI, E> {
       : { left: empty, right: right(ma.right.right) }
   }
 
-  const partitionMap = <A, B, C>(
-    ma: Either<E, A>,
-    f: (a: A) => Either<B, C>
+  const partitionMap = <A, B, C>(f: (a: A) => Either<B, C>) => (
+    ma: Either<E, A>
   ): Separated<Either<E, B>, Either<E, C>> => {
     if (isLeft(ma)) {
       return { left: ma, right: ma }
@@ -421,7 +420,7 @@ export function getWitherable<E>(M: Monoid<E>): Witherable2C<URI, E> {
     return isLeft(e) ? { left: right(e.left), right: empty } : { left: empty, right: right(e.right) }
   }
 
-  const partition = <A>(ma: Either<E, A>, p: Predicate<A>): Separated<Either<E, A>, Either<E, A>> => {
+  const partition = <A>(p: Predicate<A>) => (ma: Either<E, A>): Separated<Either<E, A>, Either<E, A>> => {
     return isLeft(ma)
       ? { left: ma, right: ma }
       : p(ma.right)
@@ -429,7 +428,7 @@ export function getWitherable<E>(M: Monoid<E>): Witherable2C<URI, E> {
       : { left: right(ma.right), right: empty }
   }
 
-  const filterMap = <A, B>(ma: Either<E, A>, f: (a: A) => Option<B>): Either<E, B> => {
+  const filterMap = <A, B>(f: (a: A) => Option<B>) => (ma: Either<E, A>): Either<E, B> => {
     if (isLeft(ma)) {
       return ma
     }
@@ -437,7 +436,7 @@ export function getWitherable<E>(M: Monoid<E>): Witherable2C<URI, E> {
     return ob._tag === 'None' ? left(M.empty) : right(ob.value)
   }
 
-  const filter = <A>(ma: Either<E, A>, predicate: Predicate<A>): Either<E, A> =>
+  const filter = <A>(predicate: Predicate<A>) => (ma: Either<E, A>): Either<E, A> =>
     isLeft(ma) ? ma : predicate(ma.right) ? ma : left(M.empty)
 
   const wither = <F>(

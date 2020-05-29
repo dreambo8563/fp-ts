@@ -133,7 +133,6 @@ describe('ReadonlyArray', () => {
     it('filter', () => {
       const g = (n: number) => n % 2 === 1
       assert.deepStrictEqual(pipe([1, 2, 3], _.filter(g)), [1, 3])
-      assert.deepStrictEqual(_.readonlyArray.filter([1, 2, 3], g), [1, 3])
       const x = pipe([O.some(3), O.some(2), O.some(1)], _.filter(O.isSome))
       assert.deepStrictEqual(x, [O.some(3), O.some(2), O.some(1)])
       const y = pipe([O.some(3), O.none, O.some(1)], _.filter(O.isSome))
@@ -483,7 +482,7 @@ describe('ReadonlyArray', () => {
       fc.property(fc.array(fc.integer()), (arr) =>
         optionStringEq.equals(
           _.findFirstMap(multipleOf3AsString)(arr),
-          _.head(_.readonlyArray.filterMap(arr, multipleOf3AsString))
+          _.head(pipe(arr, _.filterMap(multipleOf3AsString)))
         )
       )
     )
@@ -513,7 +512,7 @@ describe('ReadonlyArray', () => {
       fc.property(fc.array(fc.integer()), (arr) =>
         optionStringEq.equals(
           _.findLastMap(multipleOf3AsString)(arr),
-          _.last(_.readonlyArray.filterMap(arr, multipleOf3AsString))
+          _.last(pipe(arr, _.filterMap(multipleOf3AsString)))
         )
       )
     )

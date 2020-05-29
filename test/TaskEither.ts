@@ -1,14 +1,14 @@
 import * as assert from 'assert'
 import { array } from '../src/Array'
-import { getMonoid } from '../src/ReadonlyArray'
 import * as E from '../src/Either'
+import { pipe } from '../src/function'
 import { io } from '../src/IO'
+import { ioEither } from '../src/IOEither'
 import { monoidString } from '../src/Monoid'
 import { none, some } from '../src/Option'
-import { pipe, Refinement, Predicate } from '../src/function'
+import { getMonoid } from '../src/ReadonlyArray'
 import { semigroupString, semigroupSum } from '../src/Semigroup'
 import * as _ from '../src/TaskEither'
-import { ioEither } from '../src/IOEither'
 
 describe('TaskEither', () => {
   describe('pipeables', () => {
@@ -418,29 +418,20 @@ describe('TaskEither', () => {
       ..._.getFilterable(getMonoid<string>())
     }
 
-    const filter: {
-      <A, B extends A>(refinement: Refinement<A, B>): (
-        fa: _.TaskEither<ReadonlyArray<string>, A>
-      ) => _.TaskEither<ReadonlyArray<string>, B>
-      <A>(predicate: Predicate<A>): (
-        fa: _.TaskEither<ReadonlyArray<string>, A>
-      ) => _.TaskEither<ReadonlyArray<string>, A>
-    } = <A>(predicate: Predicate<A>) => (fa: _.TaskEither<ReadonlyArray<string>, A>) => F_.filter(fa, predicate)
-
     it('filter', async () => {
       const r1 = pipe(
         _.right(1),
-        filter((n) => n > 0)
+        F_.filter((n) => n > 0)
       )
       assert.deepStrictEqual(await r1(), await _.right(1)())
       const r2 = pipe(
         _.right(-1),
-        filter((n) => n > 0)
+        F_.filter((n) => n > 0)
       )
       assert.deepStrictEqual(await r2(), await _.left([])())
       const r3 = pipe(
         _.left(['a']),
-        filter((n) => n > 0)
+        F_.filter((n) => n > 0)
       )
       assert.deepStrictEqual(await r3(), await _.left(['a'])())
     })

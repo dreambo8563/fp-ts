@@ -190,34 +190,37 @@ describe('Record', () => {
 
   it('filter', () => {
     const d = { a: 1, b: 3 }
-    assert.deepStrictEqual(_.record.filter(d, p), { b: 3 })
+    assert.deepStrictEqual(pipe(d, _.filter(p)), { b: 3 })
 
     // refinements
     const isNumber = (u: string | number): u is number => typeof u === 'number'
     const y: Record<string, string | number> = { a: 1, b: 'foo' }
-    const actual = _.record.filter(y, isNumber)
+    const actual = pipe(y, _.filter(isNumber))
     assert.deepStrictEqual(actual, { a: 1 })
 
     assert.deepStrictEqual(
-      _.record.filter(y, (_) => true),
+      pipe(
+        y,
+        _.filter((_) => true)
+      ),
       y
     )
 
     const x = Object.assign(Object.create({ c: true }), { a: 1, b: 'foo' })
-    assert.deepStrictEqual(_.record.filter(x, isNumber), { a: 1 })
+    assert.deepStrictEqual(pipe(x, _.filter(isNumber)), { a: 1 })
 
-    assert.deepStrictEqual(_.record.filter(noPrototype, isNumber), noPrototype)
+    assert.deepStrictEqual(pipe(noPrototype, _.filter(isNumber)), noPrototype)
   })
 
   it('filterMap', () => {
     const f = (n: number) => (p(n) ? some(n + 1) : none)
-    assert.deepStrictEqual(_.record.filterMap({}, f), {})
-    assert.deepStrictEqual(_.record.filterMap({ a: 1, b: 3 }, f), { b: 4 })
+    assert.deepStrictEqual(pipe({}, _.filterMap(f)), {})
+    assert.deepStrictEqual(pipe({ a: 1, b: 3 }, _.filterMap(f)), { b: 4 })
   })
 
   it('partition', () => {
-    assert.deepStrictEqual(_.record.partition({}, p), { left: {}, right: {} })
-    assert.deepStrictEqual(_.record.partition({ a: 1, b: 3 }, p), {
+    assert.deepStrictEqual(pipe({}, _.partition(p)), { left: {}, right: {} })
+    assert.deepStrictEqual(pipe({ a: 1, b: 3 }, _.partition(p)), {
       left: { a: 1 },
       right: { b: 3 }
     })
@@ -225,8 +228,8 @@ describe('Record', () => {
 
   it('partitionMap', () => {
     const f = (n: number) => (p(n) ? right(n + 1) : left(n - 1))
-    assert.deepStrictEqual(_.record.partitionMap({}, f), { left: {}, right: {} })
-    assert.deepStrictEqual(_.record.partitionMap({ a: 1, b: 3 }, f), {
+    assert.deepStrictEqual(pipe({}, _.partitionMap(f)), { left: {}, right: {} })
+    assert.deepStrictEqual(pipe({ a: 1, b: 3 }, _.partitionMap(f)), {
       left: { a: 0 },
       right: { b: 4 }
     })
