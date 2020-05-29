@@ -263,27 +263,6 @@ export function fold<A, B>(f: (a: A, bs: Array<B>) => B): (tree: Tree<A>) => B {
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const reduce_ = <A, B>(fa: Tree<A>, b: B, f: (b: B, a: A) => B): B => {
-  let r: B = f(b, fa.value)
-  const len = fa.forest.length
-  for (let i = 0; i < len; i++) {
-    r = reduce_(fa.forest[i], r, f)
-  }
-  return r
-}
-
-const foldMap_: <M>(M: Monoid<M>) => <A>(fa: Tree<A>, f: (a: A) => M) => M = (M) => (fa, f) =>
-  reduce_(fa, M.empty, (acc, a) => M.concat(acc, f(a)))
-
-const reduceRight_ = <A, B>(fa: Tree<A>, b: B, f: (a: A, b: B) => B): B => {
-  let r: B = b
-  const len = fa.forest.length
-  for (let i = len - 1; i >= 0; i--) {
-    r = reduceRight_(fa.forest[i], r, f)
-  }
-  return f(fa.value, r)
-}
-
 /**
  * @since 2.0.0
  */
@@ -363,10 +342,8 @@ export const flatten: <A>(mma: Tree<Tree<A>>) => Tree<A> = chain(identity)
 /**
  * @since 2.0.0
  */
-export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: Tree<A>) => M = (M) => {
-  const foldMapM = foldMap_(M)
-  return (f) => (fa) => foldMapM(fa, f)
-}
+export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: Tree<A>) => M = (M) => (f) =>
+  reduce(M.empty, (acc, a) => M.concat(acc, f(a)))
 
 /**
  * @since 2.0.0
@@ -379,13 +356,26 @@ export const map: <A, B>(f: (a: A) => B) => (fa: Tree<A>) => Tree<B> = (f) => (f
 /**
  * @since 2.0.0
  */
-export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: Tree<A>) => B = (b, f) => (fa) => reduce_(fa, b, f)
+export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: Tree<A>) => B = (b, f) => (fa) => {
+  let r = f(b, fa.value)
+  const len = fa.forest.length
+  for (let i = 0; i < len; i++) {
+    r = pipe(fa.forest[i], reduce(r, f))
+  }
+  return r
+}
 
 /**
  * @since 2.0.0
  */
-export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: Tree<A>) => B = (b, f) => (fa) =>
-  reduceRight_(fa, b, f)
+export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: Tree<A>) => B = (b, f) => (fa) => {
+  let r = b
+  const len = fa.forest.length
+  for (let i = len - 1; i >= 0; i--) {
+    r = pipe(fa.forest[i], reduceRight(r, f))
+  }
+  return f(fa.value, r)
+}
 
 /**
  * @since 2.6.2
@@ -408,9 +398,9 @@ export const tree: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Comonad1<U
   }),
   ap,
   chain,
-  reduce: reduce_,
-  foldMap: foldMap_,
-  reduceRight: reduceRight_,
+  reduce,
+  foldMap,
+  reduceRight,
   traverse: <F>(F: Applicative<F>): (<A, B>(ta: Tree<A>, f: (a: A) => HKT<F, B>) => HKT<F, Tree<B>>) => {
     const traverseF = array.traverse(F)
     const r = <A, B>(ta: Tree<A>, f: (a: A) => HKT<F, B>): HKT<F, Tree<B>> =>

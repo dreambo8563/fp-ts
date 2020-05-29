@@ -105,12 +105,6 @@ export function getMonad<S>(M: Monoid<S>): Monad2C<URI, S> {
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const reduce_: <E, A, B>(fa: readonly [A, E], b: B, f: (b: B, a: A) => B) => B = (ae, b, f) => f(b, fst(ae))
-
-const foldMap_: <M>(M: Monoid<M>) => <E, A>(fa: readonly [A, E], f: (a: A) => M) => M = (_) => (ae, f) => f(fst(ae))
-
-const reduceRight_: <E, A, B>(fa: readonly [A, E], b: B, f: (a: A, b: B) => B) => B = (ae, b, f) => f(fst(ae), b)
-
 /**
  * @since 2.5.0
  */
@@ -147,10 +141,8 @@ export const extract: <E, A>(wa: readonly [A, E]) => A = fst
 /**
  * @since 2.5.0
  */
-export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => <E>(fa: readonly [A, E]) => M = (M) => {
-  const foldMapM = foldMap_(M)
-  return (f) => (fa) => foldMapM(fa, f)
-}
+export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => <E>(fa: readonly [A, E]) => M = () => (f) => (fa) =>
+  f(fst(fa))
 
 /**
  * @since 2.5.0
@@ -172,13 +164,13 @@ export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fea: readonly [A, E]) => rea
  * @since 2.5.0
  */
 export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => <E>(fa: readonly [A, E]) => B = (b, f) => (fa) =>
-  reduce_(fa, b, f)
+  f(b, fst(fa))
 
 /**
  * @since 2.5.0
  */
 export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => <E>(fa: readonly [A, E]) => B = (b, f) => (fa) =>
-  reduceRight_(fa, b, f)
+  f(fst(fa), b)
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -199,9 +191,9 @@ export const readonlyTuple: Semigroupoid2<URI> &
   mapLeft,
   extract,
   extend,
-  reduce: reduce_,
-  foldMap: foldMap_,
-  reduceRight: reduceRight_,
+  reduce,
+  foldMap,
+  reduceRight,
   traverse: <F>(A: Applicative<F>) => <A, S, B>(
     as: readonly [A, S],
     f: (a: A) => HKT<F, B>

@@ -429,28 +429,23 @@ describe('Array', () => {
 
   it('reduce', () => {
     assert.deepStrictEqual(
-      _.array.reduce(['a', 'b', 'c'], '', (acc, a) => acc + a),
+      pipe(
+        ['a', 'b', 'c'],
+        _.reduce('', (acc, a) => acc + a)
+      ),
       'abc'
     )
   })
 
   it('foldMap', () => {
-    const foldMap = _.array.foldMap(monoidString)
-    const x1 = ['a', 'b', 'c']
-    const f1 = identity
-    assert.deepStrictEqual(foldMap(x1, f1), 'abc')
-    const x2: Array<string> = []
-    assert.deepStrictEqual(foldMap(x2, f1), '')
+    assert.deepStrictEqual(pipe(['a', 'b', 'c'], _.foldMap(monoidString)(identity)), 'abc')
+    assert.deepStrictEqual(pipe([], _.foldMap(monoidString)(identity)), '')
   })
 
   it('reduceRight', () => {
-    const reduceRight = _.array.reduceRight
-    const x1 = ['a', 'b', 'c']
-    const init1 = ''
-    const f1 = (a: string, acc: string) => acc + a
-    assert.deepStrictEqual(reduceRight(x1, init1, f1), 'cba')
-    const x2: Array<string> = []
-    assert.deepStrictEqual(reduceRight(x2, init1, f1), '')
+    const f = (a: string, acc: string) => acc + a
+    assert.deepStrictEqual(pipe(['a', 'b', 'c'], _.reduceRight('', f)), 'cba')
+    assert.deepStrictEqual(pipe([], _.reduceRight('', f)), '')
   })
 
   it('foldLeft', () => {

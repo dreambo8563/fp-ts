@@ -48,12 +48,6 @@ export const getEq: <A>(E: Eq<A>) => Eq<Identity<A>> = id
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const reduce_: <A, B>(fa: Identity<A>, b: B, f: (b: B, a: A) => B) => B = (fa, b, f) => f(b, fa)
-
-const foldMap_: <M>(M: Monoid<M>) => <A>(fa: Identity<A>, f: (a: A) => M) => M = (_) => (fa, f) => f(fa)
-
-const reduceRight_: <A, B>(fa: Identity<A>, b: B, f: (a: A, b: B) => B) => B = (fa, b, f) => f(fa, b)
-
 const traverse_ = <F>(F: Applicative<F>) => <A, B>(ta: Identity<A>, f: (a: A) => HKT<F, B>): HKT<F, Identity<B>> => {
   return pipe(f(ta), F.map(id))
 }
@@ -134,10 +128,7 @@ export const flatten: <A>(mma: Identity<Identity<A>>) => Identity<A> = chain(id)
 /**
  * @since 2.0.0
  */
-export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: Identity<A>) => M = (M) => {
-  const foldMapM = foldMap_(M)
-  return (f) => (fa) => foldMapM(fa, f)
-}
+export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: Identity<A>) => M = () => (f) => (fa) => f(fa)
 
 /**
  * @since 2.0.0
@@ -147,13 +138,12 @@ export const map: <A, B>(f: (a: A) => B) => (fa: Identity<A>) => Identity<B> = (
 /**
  * @since 2.0.0
  */
-export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: Identity<A>) => B = (b, f) => (fa) => reduce_(fa, b, f)
+export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: Identity<A>) => B = (b, f) => (fa) => f(b, fa)
 
 /**
  * @since 2.0.0
  */
-export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: Identity<A>) => B = (b, f) => (fa) =>
-  reduceRight_(fa, b, f)
+export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: Identity<A>) => B = (b, f) => (fa) => f(fa, b)
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -179,9 +169,9 @@ export const identity: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Alt1<U
   of: id,
   ap,
   chain,
-  reduce: reduce_,
-  foldMap: foldMap_,
-  reduceRight: reduceRight_,
+  reduce,
+  foldMap,
+  reduceRight,
   traverse: traverse_,
   sequence: sequence_,
   alt,

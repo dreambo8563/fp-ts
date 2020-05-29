@@ -1420,17 +1420,6 @@ const partitionMapWithIndex_ = <A, B, C>(
 
 const zero_: <A>() => ReadonlyArray<A> = () => empty
 
-const reduce_: <A, B>(fa: ReadonlyArray<A>, b: B, f: (b: B, a: A) => B) => B = (fa, b, f) =>
-  reduceWithIndex_(fa, b, (_, b, a) => f(b, a))
-
-const foldMap_: <M>(M: Monoid<M>) => <A>(fa: ReadonlyArray<A>, f: (a: A) => M) => M = (M) => {
-  const foldMapWithIndexM = foldMapWithIndex_(M)
-  return (fa, f) => foldMapWithIndexM(fa, (_, a) => f(a))
-}
-
-const reduceRight_: <A, B>(fa: ReadonlyArray<A>, b: B, f: (a: A, b: B) => B) => B = (fa, b, f) =>
-  reduceRightWithIndex_(fa, b, (_, a, b) => f(a, b))
-
 const reduceWithIndex_: <A, B>(fa: ReadonlyArray<A>, b: B, f: (i: number, b: B, a: A) => B) => B = (fa, b, f) => {
   const l = fa.length
   let r = b
@@ -1492,11 +1481,14 @@ const traverse_ = <F>(
 }
 
 const sequence_ = <F>(F: Applicative<F>) => <A>(ta: ReadonlyArray<HKT<F, A>>): HKT<F, ReadonlyArray<A>> => {
-  return reduce_(ta, F.of(zero_()), (fas, fa) =>
-    pipe(
-      fas,
-      F.map((as) => (a: A) => snoc(as, a)),
-      F.ap(fa)
+  return pipe(
+    ta,
+    reduce(F.of(zero_()), (fas, fa) =>
+      pipe(
+        fas,
+        F.map((as) => (a: A) => snoc(as, a)),
+        F.ap(fa)
+      )
     )
   )
 }
@@ -1737,8 +1729,8 @@ export const duplicate: <A>(wa: ReadonlyArray<A>) => ReadonlyArray<ReadonlyArray
  * @since 2.5.0
  */
 export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: ReadonlyArray<A>) => M = (M) => {
-  const foldMapM = foldMap_(M)
-  return (f) => (fa) => foldMapM(fa, f)
+  const foldMapWithIndexM = foldMapWithIndex_(M)
+  return (f) => (fa) => foldMapWithIndexM(fa, (_, a) => f(a))
 }
 
 /**
@@ -1755,7 +1747,7 @@ export const foldMapWithIndex: <M>(M: Monoid<M>) => <A>(f: (i: number, a: A) => 
  * @since 2.5.0
  */
 export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: ReadonlyArray<A>) => B = (b, f) => (fa) =>
-  reduce_(fa, b, f)
+  reduceWithIndex_(fa, b, (_, b, a) => f(b, a))
 
 /**
  * @since 2.5.0
@@ -1768,7 +1760,7 @@ export const reduceWithIndex: <A, B>(b: B, f: (i: number, b: B, a: A) => B) => (
  * @since 2.5.0
  */
 export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: ReadonlyArray<A>) => B = (b, f) => (fa) =>
-  reduceRight_(fa, b, f)
+  reduceRightWithIndex_(fa, b, (_, a, b) => f(a, b))
 
 /**
  * @since 2.5.0
@@ -1814,9 +1806,9 @@ export const readonlyArray: Monad1<URI> &
   alt,
   zero: zero_,
   unfold: unfold_,
-  reduce: reduce_,
-  foldMap: foldMap_,
-  reduceRight: reduceRight_,
+  reduce,
+  foldMap,
+  reduceRight,
   traverse: traverse_,
   sequence: sequence_,
   reduceWithIndex: reduceWithIndex_,

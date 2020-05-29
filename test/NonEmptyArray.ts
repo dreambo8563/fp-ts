@@ -82,21 +82,26 @@ describe('NonEmptyArray', () => {
 
   it('reduce', () => {
     assert.deepStrictEqual(
-      _.nonEmptyArray.reduce(['a', 'b'], '', (b, a) => b + a),
+      pipe(
+        ['a', 'b'],
+        _.reduce('', (b, a) => b + a)
+      ),
       'ab'
     )
   })
 
   it('foldMap', () => {
-    const foldMap = _.nonEmptyArray.foldMap(M.monoidString)
-    assert.deepStrictEqual(foldMap(['a', 'b', 'c'], identity), 'abc')
+    assert.deepStrictEqual(pipe(['a', 'b', 'c'], _.foldMap(M.monoidString)(identity)), 'abc')
   })
 
   it('reduceRight', () => {
-    const reduceRight = _.nonEmptyArray.reduceRight
-    const init1 = ''
-    const f = (a: string, acc: string) => acc + a
-    assert.deepStrictEqual(reduceRight(['a', 'b', 'c'], init1, f), 'cba')
+    assert.deepStrictEqual(
+      pipe(
+        ['a', 'b', 'c'],
+        _.reduceRight('', (a, acc) => acc + a)
+      ),
+      'cba'
+    )
   })
 
   it('fromArray', () => {

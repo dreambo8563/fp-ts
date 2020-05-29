@@ -629,17 +629,6 @@ const defaultSeparate = { left: none, right: none }
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const ap_: <A, B>(fab: Option<(a: A) => B>, fa: Option<A>) => Option<B> = (mab, ma) =>
-  isNone(mab) ? none : isNone(ma) ? none : some(mab.value(ma.value))
-
-const reduce_: <A, B>(fa: Option<A>, b: B, f: (b: B, a: A) => B) => B = (fa, b, f) => (isNone(fa) ? b : f(b, fa.value))
-
-const foldMap_: <M>(M: Monoid<M>) => <A>(fa: Option<A>, f: (a: A) => M) => M = (M) => (fa, f) =>
-  isNone(fa) ? M.empty : f(fa.value)
-
-const reduceRight_: <A, B>(fa: Option<A>, b: B, f: (a: A, b: B) => B) => B = (fa, b, f) =>
-  isNone(fa) ? b : f(fa.value, b)
-
 const traverse_ = <F>(F: Applicative<F>) => <A, B>(ta: Option<A>, f: (a: A) => HKT<F, B>): HKT<F, Option<B>> => {
   return isNone(ta) ? F.of(none) : pipe(f(ta.value), F.map(some))
 }
@@ -699,7 +688,8 @@ export const alt: <A>(that: () => Option<A>) => (fa: Option<A>) => Option<A> = (
 /**
  * @since 2.0.0
  */
-export const ap: <A>(fa: Option<A>) => <B>(fab: Option<(a: A) => B>) => Option<B> = (fa) => (fab) => ap_(fab, fa)
+export const ap: <A>(fa: Option<A>) => <B>(fab: Option<(a: A) => B>) => Option<B> = (fa) => (fab) =>
+  isNone(fab) ? none : isNone(fa) ? none : some(fab.value(fa.value))
 
 /**
  * @since 2.0.0
@@ -760,10 +750,8 @@ export const flatten: <A>(mma: Option<Option<A>>) => Option<A> = chain(identity)
 /**
  * @since 2.0.0
  */
-export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: Option<A>) => M = (M) => {
-  const foldMapM = foldMap_(M)
-  return (f) => (fa) => foldMapM(fa, f)
-}
+export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: Option<A>) => M = (M) => (f) => (fa) =>
+  isNone(fa) ? M.empty : f(fa.value)
 
 /**
  * @since 2.0.0
@@ -774,13 +762,14 @@ export const map: <A, B>(f: (a: A) => B) => (fa: Option<A>) => Option<B> = (f) =
 /**
  * @since 2.0.0
  */
-export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: Option<A>) => B = (b, f) => (fa) => reduce_(fa, b, f)
+export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: Option<A>) => B = (b, f) => (fa) =>
+  isNone(fa) ? b : f(b, fa.value)
 
 /**
  * @since 2.0.0
  */
 export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: Option<A>) => B = (b, f) => (fa) =>
-  reduceRight_(fa, b, f)
+  isNone(fa) ? b : f(fa.value, b)
 
 /**
  * @since 2.0.0
@@ -866,9 +855,9 @@ export const option: Monad1<URI> &
   of: some,
   ap,
   chain,
-  reduce: reduce_,
-  foldMap: foldMap_,
-  reduceRight: reduceRight_,
+  reduce,
+  foldMap,
+  reduceRight,
   traverse: traverse_,
   sequence: sequence_,
   zero: () => none,

@@ -469,9 +469,9 @@ export function getWitherable<E>(M: Monoid<E>): Witherable2C<URI, E> {
     partitionMap,
     traverse: traverse_,
     sequence: sequence_,
-    reduce: reduce_,
-    foldMap: foldMap_,
-    reduceRight: reduceRight_,
+    reduce,
+    foldMap,
+    reduceRight,
     wither,
     wilt
   }
@@ -539,15 +539,6 @@ export function getValidationMonoid<E, A>(SE: Semigroup<E>, SA: Monoid<A>): Mono
 // -------------------------------------------------------------------------------------
 // pipeables
 // -------------------------------------------------------------------------------------
-
-const reduce_: <E, A, B>(fa: Either<E, A>, b: B, f: (b: B, a: A) => B) => B = (fa, b, f) =>
-  isLeft(fa) ? b : f(b, fa.right)
-
-const foldMap_: <M>(M: Monoid<M>) => <E, A>(fa: Either<E, A>, f: (a: A) => M) => M = (M) => (fa, f) =>
-  isLeft(fa) ? M.empty : f(fa.right)
-
-const reduceRight_: <E, A, B>(fa: Either<E, A>, b: B, f: (a: A, b: B) => B) => B = (fa, b, f) =>
-  isLeft(fa) ? b : f(fa.right, b)
 
 const traverse_ = <F>(F: Applicative<F>) => <E, A, B>(
   ma: Either<E, A>,
@@ -643,10 +634,8 @@ export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: Either<
 /**
  * @since 2.0.0
  */
-export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => <E>(fa: Either<E, A>) => M = (M) => {
-  const foldMapM = foldMap_(M)
-  return (f) => (fa) => foldMapM(fa, f)
-}
+export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => <E>(fa: Either<E, A>) => M = (M) => (f) => (fa) =>
+  isLeft(fa) ? M.empty : f(fa.right)
 
 /**
  * @since 2.0.0
@@ -664,13 +653,13 @@ export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: Either<E, A>) => Either<
  * @since 2.0.0
  */
 export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => <E>(fa: Either<E, A>) => B = (b, f) => (fa) =>
-  reduce_(fa, b, f)
+  isLeft(fa) ? b : f(b, fa.right)
 
 /**
  * @since 2.0.0
  */
 export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => <E>(fa: Either<E, A>) => B = (b, f) => (fa) =>
-  reduceRight_(fa, b, f)
+  isLeft(fa) ? b : f(fa.right, b)
 
 /**
  * @since 2.0.0
@@ -736,9 +725,9 @@ export const either: Monad2<URI> &
   of: right,
   ap,
   chain,
-  reduce: reduce_,
-  foldMap: foldMap_,
-  reduceRight: reduceRight_,
+  reduce,
+  foldMap,
+  reduceRight,
   traverse: traverse_,
   sequence: sequence_,
   bimap,

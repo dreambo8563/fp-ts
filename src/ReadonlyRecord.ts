@@ -636,13 +636,15 @@ export function fromFoldableMap<F, B>(
   M: Magma<B>,
   F: Foldable<F>
 ): <A>(fa: HKT<F, A>, f: (a: A) => readonly [string, B]) => ReadonlyRecord<string, B> {
-  return <A>(ta: HKT<F, A>, f: (a: A) => readonly [string, B]) => {
-    return F.reduce<A, Record<string, B>>(ta, {}, (r, a) => {
-      const [k, b] = f(a)
-      r[k] = _hasOwnProperty.call(r, k) ? M.concat(r[k], b) : b
-      return r
-    })
-  }
+  return <A>(ta: HKT<F, A>, f: (a: A) => readonly [string, B]) =>
+    pipe(
+      ta,
+      F.reduce<A, Record<string, B>>({}, (r, a) => {
+        const [k, b] = f(a)
+        r[k] = _hasOwnProperty.call(r, k) ? M.concat(r[k], b) : b
+        return r
+      })
+    )
 }
 
 /**
@@ -690,17 +692,6 @@ export function elem<A>(E: Eq<A>): (a: A, fa: ReadonlyRecord<string, A>) => bool
 // -------------------------------------------------------------------------------------
 // pipeables
 // -------------------------------------------------------------------------------------
-
-const reduce_: <A, B>(fa: Readonly<Record<string, A>>, b: B, f: (b: B, a: A) => B) => B = (fa, b, f) =>
-  reduceWithIndex_(fa, b, (_, b, a) => f(b, a))
-
-const foldMap_: <M>(M: Monoid<M>) => <A>(fa: Readonly<Record<string, A>>, f: (a: A) => M) => M = (M) => {
-  const foldMapWithIndexM = foldMapWithIndex_(M)
-  return (fa, f) => foldMapWithIndexM(fa, (_, a) => f(a))
-}
-
-const reduceRight_: <A, B>(fa: Readonly<Record<string, A>>, b: B, f: (a: A, b: B) => B) => B = (fa, b, f) =>
-  reduceRightWithIndex_(fa, b, (_, a, b) => f(a, b))
 
 const traverse_ = <F>(
   F: Applicative<F>
@@ -896,8 +887,8 @@ export const filterMap: <A, B>(
  * @since 2.5.0
  */
 export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: Readonly<Record<string, A>>) => M = (M) => {
-  const foldMapM = foldMap_(M)
-  return (f) => (fa) => foldMapM(fa, f)
+  const foldMapWithIndexM = foldMapWithIndex_(M)
+  return (f) => (fa) => foldMapWithIndexM(fa, (_, a) => f(a))
 }
 
 /**
@@ -925,14 +916,14 @@ export const partitionMap: <A, B, C>(
  * @since 2.5.0
  */
 export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: Readonly<Record<string, A>>) => B = (b, f) => (fa) =>
-  reduce_(fa, b, f)
+  reduceWithIndex_(fa, b, (_, b, a) => f(b, a))
 
 /**
  * @since 2.5.0
  */
 export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: Readonly<Record<string, A>>) => B = (b, f) => (
   fa
-) => reduceRight_(fa, b, f)
+) => reduceRightWithIndex_(fa, b, (_, a, b) => f(a, b))
 
 /**
  * @since 2.5.0
@@ -991,9 +982,9 @@ export const readonlyRecord: FunctorWithIndex1<URI, string> &
   FoldableWithIndex1<URI, string> = {
   URI,
   map,
-  reduce: reduce_,
-  foldMap: foldMap_,
-  reduceRight: reduceRight_,
+  reduce,
+  foldMap,
+  reduceRight,
   traverse: traverse_,
   sequence,
   compact,

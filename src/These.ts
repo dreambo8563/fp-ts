@@ -368,15 +368,6 @@ export function fromOptions<E, A>(fe: Option<E>, fa: Option<A>): Option<These<E,
 // pipeables
 // -------------------------------------------------------------------------------------
 
-const reduce_: <E, A, B>(fa: These<E, A>, b: B, f: (b: B, a: A) => B) => B = (fa, b, f) =>
-  isLeft(fa) ? b : isRight(fa) ? f(b, fa.right) : f(b, fa.right)
-
-const foldMap_: <M>(M: Monoid<M>) => <E, A>(fa: These<E, A>, f: (a: A) => M) => M = (M) => (fa, f) =>
-  isLeft(fa) ? M.empty : isRight(fa) ? f(fa.right) : f(fa.right)
-
-const reduceRight_: <E, A, B>(fa: These<E, A>, b: B, f: (a: A, b: B) => B) => B = (fa, b, f) =>
-  isLeft(fa) ? b : isRight(fa) ? f(fa.right, b) : f(fa.right, b)
-
 /**
  * @since 2.0.0
  */
@@ -387,10 +378,8 @@ export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: These<E
 /**
  * @since 2.0.0
  */
-export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => <E>(fa: These<E, A>) => M = (M) => {
-  const foldMapM = foldMap_(M)
-  return (f) => (fa) => foldMapM(fa, f)
-}
+export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => <E>(fa: These<E, A>) => M = (M) => (f) => (fa) =>
+  isLeft(fa) ? M.empty : isRight(fa) ? f(fa.right) : f(fa.right)
 
 /**
  * @since 2.0.0
@@ -408,13 +397,13 @@ export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: These<E, A>) => These<G,
  * @since 2.0.0
  */
 export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => <E>(fa: These<E, A>) => B = (b, f) => (fa) =>
-  reduce_(fa, b, f)
+  isLeft(fa) ? b : isRight(fa) ? f(b, fa.right) : f(b, fa.right)
 
 /**
  * @since 2.0.0
  */
 export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => <E>(fa: These<E, A>) => B = (b, f) => (fa) =>
-  reduceRight_(fa, b, f)
+  isLeft(fa) ? b : isRight(fa) ? f(fa.right, b) : f(fa.right, b)
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -428,9 +417,9 @@ export const these: Functor2<URI> & Bifunctor2<URI> & Foldable2<URI> & Traversab
   map,
   bimap,
   mapLeft,
-  reduce: reduce_,
-  foldMap: foldMap_,
-  reduceRight: reduceRight_,
+  reduce,
+  foldMap,
+  reduceRight,
   traverse: <F>(F: Applicative<F>) => <E, A, B>(ta: These<E, A>, f: (a: A) => HKT<F, B>): HKT<F, These<E, B>> => {
     return isLeft(ta)
       ? F.of(ta)
