@@ -2,14 +2,18 @@
  * @since 2.0.0
  */
 import { Alt3, Alt3C } from './Alt'
+import { Applicative3, Applicative3C } from './Applicative'
+import { Apply3 } from './Apply'
 import { Bifunctor3 } from './Bifunctor'
 import { Either } from './Either'
 import { identity, pipe, Predicate, Refinement } from './function'
+import { Functor3 } from './Functor'
 import { IO } from './IO'
 import { IOEither } from './IOEither'
-import { Monad3, Monad3C } from './Monad'
-import { MonadTask3, MonadTask3C } from './MonadTask'
-import { MonadThrow3, MonadThrow3C } from './MonadThrow'
+import { Monad3 } from './Monad'
+import { MonadIO3 } from './MonadIO'
+import { MonadTask3 } from './MonadTask'
+import { MonadThrow3 } from './MonadThrow'
 import { Monoid } from './Monoid'
 import { Option } from './Option'
 import { getSemigroup as getReaderSemigroup, Reader } from './Reader'
@@ -259,13 +263,11 @@ export function bracket<R, E, A, B>(
 /**
  * @since 2.3.0
  */
-export function getReaderTaskValidation<E>(
-  S: Semigroup<E>
-): Monad3C<URI, E> & Bifunctor3<URI> & Alt3C<URI, E> & MonadTask3C<URI, E> & MonadThrow3C<URI, E> {
+export function getReaderTaskValidation<E>(S: Semigroup<E>): Applicative3C<URI, E> & Alt3C<URI, E> {
   const T = getValidationM(S, monadReaderTask)
   return {
+    URI,
     _E: undefined as any,
-    ...readerTaskEither,
     ...T
   }
 }
@@ -454,55 +456,6 @@ export const filterOrElse: {
     chain((a) => (predicate(a) ? right(a) : left(onFalse(a))))
   )
 
-// -------------------------------------------------------------------------------------
-// instances
-// -------------------------------------------------------------------------------------
-
-/**
- * @internal
- */
-export const monadReaderTaskEither: Monad3<URI> = {
-  URI,
-  map,
-  of: right,
-  ap,
-  chain
-}
-
-/**
- * @since 2.0.0
- */
-export const readerTaskEither: Monad3<URI> & Bifunctor3<URI> & Alt3<URI> & MonadTask3<URI> & MonadThrow3<URI> = {
-  URI,
-  map,
-  of: right,
-  ap,
-  chain,
-  alt,
-  bimap,
-  mapLeft,
-  fromIO: rightIO,
-  fromTask: rightTask,
-  throwError: left
-}
-
-/**
- * Like `readerTaskEither` but `ap` is sequential
- * @since 2.0.0
- */
-export const readerTaskEitherSeq: typeof readerTaskEither =
-  /*#__PURE__*/
-  ((): typeof readerTaskEither => {
-    return {
-      ...readerTaskEither,
-      ap: (fa) => (fab) =>
-        pipe(
-          fab,
-          chain((f) => pipe(fa, map(f)))
-        )
-    }
-  })()
-
 /**
  * @since 2.6.0
  */
@@ -530,3 +483,101 @@ export const chainTaskEitherKW: <D, A, B>(
 export const chainIOEitherKW: <D, A, B>(
   f: (a: A) => IOEither<D, B>
 ) => <R, E>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E | D, B> = chainIOEitherK as any
+
+// -------------------------------------------------------------------------------------
+// instances
+// -------------------------------------------------------------------------------------
+
+/**
+ * @since 3.0.0
+ */
+export const functorReaderTaskEither: Functor3<URI> = {
+  URI,
+  map
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applyReaderTaskEither: Apply3<URI> = {
+  ...functorReaderTaskEither,
+  ap
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applicativeReaderTaskEither: Applicative3<URI> = {
+  ...applyReaderTaskEither,
+  of: right
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadReaderTaskEither: Monad3<URI> = {
+  ...applicativeReaderTaskEither,
+  chain
+}
+
+/**
+ * @since 3.0.0
+ */
+export const bifunctorReaderTaskEither: Bifunctor3<URI> = {
+  URI,
+  bimap,
+  mapLeft
+}
+
+/**
+ * @since 3.0.0
+ */
+export const altReaderTaskEither: Alt3<URI> = {
+  ...functorReaderTaskEither,
+  alt
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadIOReaderTaskEither: MonadIO3<URI> = {
+  ...monadReaderTaskEither,
+  fromIO: rightIO
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadTaskReaderTaskEither: MonadTask3<URI> = {
+  ...monadIOReaderTaskEither,
+  fromTask: rightTask
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadThrowReaderTaskEither: MonadThrow3<URI> = {
+  ...monadReaderTaskEither,
+  throwError: left
+}
+
+/**
+ * @since 2.0.0
+ */
+export const readerTaskEitherSeq: Monad3<URI> & Bifunctor3<URI> & Alt3<URI> & MonadTask3<URI> & MonadThrow3<URI> = {
+  URI,
+  map,
+  of: right,
+  ap: (fa) => (fab) =>
+    pipe(
+      fab,
+      chain((f) => pipe(fa, map(f)))
+    ),
+  chain,
+  alt,
+  bimap,
+  mapLeft,
+  fromIO: rightIO,
+  fromTask: rightTask,
+  throwError: left
+}

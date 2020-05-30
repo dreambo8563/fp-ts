@@ -16,11 +16,15 @@ Added in v2.0.0
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
 - [alt](#alt)
+- [altReaderTaskEither](#altreadertaskeither)
 - [ap](#ap)
 - [apFirst](#apfirst)
 - [apSecond](#apsecond)
+- [applicativeReaderTaskEither](#applicativereadertaskeither)
+- [applyReaderTaskEither](#applyreadertaskeither)
 - [ask](#ask)
 - [asks](#asks)
+- [bifunctorReaderTaskEither](#bifunctorreadertaskeither)
 - [bimap](#bimap)
 - [bracket](#bracket)
 - [chain](#chain)
@@ -44,6 +48,7 @@ Added in v2.0.0
 - [fromReaderEither](#fromreadereither)
 - [fromTaskEither](#fromtaskeither)
 - [fromTaskEitherK](#fromtaskeitherk)
+- [functorReaderTaskEither](#functorreadertaskeither)
 - [getApplyMonoid](#getapplymonoid)
 - [getApplySemigroup](#getapplysemigroup)
 - [getOrElse](#getorelse)
@@ -58,8 +63,11 @@ Added in v2.0.0
 - [local](#local)
 - [map](#map)
 - [mapLeft](#mapleft)
+- [monadIOReaderTaskEither](#monadioreadertaskeither)
+- [monadReaderTaskEither](#monadreadertaskeither)
+- [monadTaskReaderTaskEither](#monadtaskreadertaskeither)
+- [monadThrowReaderTaskEither](#monadthrowreadertaskeither)
 - [orElse](#orelse)
-- [readerTaskEither](#readertaskeither)
 - [readerTaskEitherSeq](#readertaskeitherseq)
 - [right](#right)
 - [rightIO](#rightio)
@@ -115,6 +123,16 @@ export declare const alt: <R, E, A>(
 
 Added in v2.0.0
 
+# altReaderTaskEither
+
+**Signature**
+
+```ts
+export declare const altReaderTaskEither: Alt3<'ReaderTaskEither'>
+```
+
+Added in v3.0.0
+
 # ap
 
 **Signature**
@@ -151,6 +169,26 @@ export declare const apSecond: <R, E, B>(
 
 Added in v2.0.0
 
+# applicativeReaderTaskEither
+
+**Signature**
+
+```ts
+export declare const applicativeReaderTaskEither: Applicative3<'ReaderTaskEither'>
+```
+
+Added in v3.0.0
+
+# applyReaderTaskEither
+
+**Signature**
+
+```ts
+export declare const applyReaderTaskEither: Apply3<'ReaderTaskEither'>
+```
+
+Added in v3.0.0
+
 # ask
 
 **Signature**
@@ -170,6 +208,16 @@ export declare const asks: <R, E = never, A = never>(f: (r: R) => A) => ReaderTa
 ```
 
 Added in v2.0.0
+
+# bifunctorReaderTaskEither
+
+**Signature**
+
+```ts
+export declare const bifunctorReaderTaskEither: Bifunctor3<'ReaderTaskEither'>
+```
+
+Added in v3.0.0
 
 # bimap
 
@@ -450,6 +498,16 @@ export declare function fromTaskEitherK<E, A extends ReadonlyArray<unknown>, B>(
 
 Added in v2.4.0
 
+# functorReaderTaskEither
+
+**Signature**
+
+```ts
+export declare const functorReaderTaskEither: Functor3<'ReaderTaskEither'>
+```
+
+Added in v3.0.0
+
 # getApplyMonoid
 
 **Signature**
@@ -502,9 +560,7 @@ Added in v2.6.0
 **Signature**
 
 ```ts
-export declare function getReaderTaskValidation<E>(
-  S: Semigroup<E>
-): Monad3C<URI, E> & Bifunctor3<URI> & Alt3C<URI, E> & MonadTask3C<URI, E> & MonadThrow3C<URI, E>
+export declare function getReaderTaskValidation<E>(S: Semigroup<E>): Applicative3C<URI, E> & Alt3C<URI, E>
 ```
 
 Added in v2.3.0
@@ -604,6 +660,46 @@ export declare const mapLeft: <E, G>(
 
 Added in v2.0.0
 
+# monadIOReaderTaskEither
+
+**Signature**
+
+```ts
+export declare const monadIOReaderTaskEither: MonadIO3<'ReaderTaskEither'>
+```
+
+Added in v3.0.0
+
+# monadReaderTaskEither
+
+**Signature**
+
+```ts
+export declare const monadReaderTaskEither: Monad3<'ReaderTaskEither'>
+```
+
+Added in v3.0.0
+
+# monadTaskReaderTaskEither
+
+**Signature**
+
+```ts
+export declare const monadTaskReaderTaskEither: MonadTask3<'ReaderTaskEither'>
+```
+
+Added in v3.0.0
+
+# monadThrowReaderTaskEither
+
+**Signature**
+
+```ts
+export declare const monadThrowReaderTaskEither: MonadThrow3<'ReaderTaskEither'>
+```
+
+Added in v3.0.0
+
 # orElse
 
 **Signature**
@@ -616,23 +712,7 @@ export declare function orElse<R, E, A, M>(
 
 Added in v2.0.0
 
-# readerTaskEither
-
-**Signature**
-
-```ts
-export declare const readerTaskEither: Monad3<'ReaderTaskEither'> &
-  Bifunctor3<'ReaderTaskEither'> &
-  Alt3<'ReaderTaskEither'> &
-  MonadTask3<'ReaderTaskEither'> &
-  MonadThrow3<'ReaderTaskEither'>
-```
-
-Added in v2.0.0
-
 # readerTaskEitherSeq
-
-Like `readerTaskEither` but `ap` is sequential
 
 **Signature**
 

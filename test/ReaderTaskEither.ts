@@ -1,20 +1,31 @@
 import * as assert from 'assert'
+import { readerTask } from '../src'
 import * as A from '../src/Array'
 import * as E from '../src/Either'
+import { pipe } from '../src/function'
 import * as IO from '../src/IO'
 import * as IE from '../src/IOEither'
 import { monoidSum } from '../src/Monoid'
 import { none, some } from '../src/Option'
-import { pipe } from '../src/function'
 import * as R from '../src/Reader'
 import * as RE from '../src/ReaderEither'
 import * as _ from '../src/ReaderTaskEither'
-import { semigroupString, semigroupSum } from '../src/Semigroup'
+import { semigroupSum, semigroupString } from '../src/Semigroup'
 import { task } from '../src/Task'
 import * as TE from '../src/TaskEither'
-import { readerTask } from '../src'
 
 describe('ReaderTaskEither', () => {
+  it('getReaderTaskValidation', async () => {
+    const RTV = _.getReaderTaskValidation(semigroupString)
+    assert.deepStrictEqual(
+      await pipe(
+        _.left('a'),
+        RTV.alt(() => _.right('b'))
+      )({})(),
+      E.right('b')
+    )
+  })
+
   describe('pipeables', () => {
     it('map', async () => {
       const double = (n: number): number => n * 2
@@ -291,7 +302,7 @@ describe('ReaderTaskEither', () => {
       append('start 2'),
       _.chain(() => append('end 2'))
     )
-    const sequenceParallel = A.sequence(_.readerTaskEither)
+    const sequenceParallel = A.sequence(_.applicativeReaderTaskEither)
     const ns = await _.run(sequenceParallel([t1, t2]), {})
     assert.deepStrictEqual(ns, E.right([3, 4]))
     assert.deepStrictEqual(log, ['start 1', 'start 2', 'end 1', 'end 2'])
@@ -319,7 +330,7 @@ describe('ReaderTaskEither', () => {
   describe('MonadIO', () => {
     it('fromIO', async () => {
       const e = await _.run(
-        _.readerTaskEither.fromIO(() => 1),
+        _.monadIOReaderTaskEither.fromIO(() => 1),
         {}
       )
       assert.deepStrictEqual(e, E.right(1))
@@ -381,29 +392,6 @@ describe('ReaderTaskEither', () => {
     assert.deepStrictEqual(e2, E.right(1))
   })
 
-  describe('getReaderTaskValidation', () => {
-    const RTV = _.getReaderTaskValidation(semigroupString)
-    it('of', async () => {
-      const e = await RTV.of(1)({})()
-      assert.deepStrictEqual(e, E.right(1))
-    })
-
-    it('throwError', async () => {
-      const e = await RTV.throwError('error')({})()
-      assert.deepStrictEqual(e, E.left('error'))
-    })
-
-    // TODO
-    // it('traverse', async () => {
-    //   const e1 = await array.traverse(RTV)([1, 2, 3], RTV.of)({})()
-    //   assert.deepStrictEqual(e1, E.right([1, 2, 3]))
-    //   const e2 = await array.traverse(RTV)([1, 2, 3], (v) => RTV.throwError(`${v}`))({})()
-    //   assert.deepStrictEqual(e2, E.left('123'))
-    //   const e3 = await array.traverse(RTV)([1, 2, 3], (v) => (v % 2 === 1 ? RTV.throwError(`${v}`) : RTV.of(v)))({})()
-    //   assert.deepStrictEqual(e3, E.left('13'))
-    // })
-  })
-
   describe('bracket', () => {
     // tslint:disable-next-line: readonly-array
     let log: Array<string> = []
@@ -413,7 +401,7 @@ describe('ReaderTaskEither', () => {
     const useSuccess = () => _.right('use success')
     const useFailure = () => _.left('use failure')
     const releaseSuccess = () =>
-      _.readerTaskEither.fromIO(() => {
+      _.rightIO(() => {
         log.push('release success')
       })
     const releaseFailure = () => _.left('release failure')
