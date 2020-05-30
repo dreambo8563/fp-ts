@@ -1080,6 +1080,11 @@ export const traverse: Traversable1<URI>['traverse'] = RA.traverse as any
  */
 export const sequence: Traversable1<URI>['sequence'] = RA.sequence as any
 
+/**
+ * @since 3.0.0
+ */
+export const traverseWithIndex: TraversableWithIndex1<URI, number>['traverseWithIndex'] = RA.traverseWithIndex as any
+
 // -------------------------------------------------------------------------------------
 // instances
 // -------------------------------------------------------------------------------------

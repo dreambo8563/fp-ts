@@ -62,6 +62,7 @@ Added in v2.0.0
 - [sort](#sort)
 - [tail](#tail)
 - [traverse](#traverse)
+- [traverseWithIndex](#traversewithindex)
 - [unzip](#unzip)
 - [updateAt](#updateat)
 - [zip](#zip)
@@ -647,6 +648,16 @@ Added in v2.0.0
 
 ```ts
 export declare const traverse: Traverse1<'NonEmptyArray'>
+```
+
+Added in v3.0.0
+
+# traverseWithIndex
+
+**Signature**
+
+```ts
+export declare const traverseWithIndex: TraverseWithIndex1<'NonEmptyArray', number>
 ```
 
 Added in v3.0.0

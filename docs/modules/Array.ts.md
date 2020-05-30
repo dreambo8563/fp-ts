@@ -97,6 +97,7 @@ Added in v2.0.0
 - [takeLeftWhile](#takeleftwhile)
 - [takeRight](#takeright)
 - [traverse](#traverse)
+- [traverseWithIndex](#traversewithindex)
 - [union](#union)
 - [uniq](#uniq)
 - [unsafeDeleteAt](#unsafedeleteat)
@@ -1641,6 +1642,16 @@ Added in v2.0.0
 
 ```ts
 export declare const traverse: Traverse1<'Array'>
+```
+
+Added in v3.0.0
+
+# traverseWithIndex
+
+**Signature**
+
+```ts
+export declare const traverseWithIndex: TraverseWithIndex1<'Array', number>
 ```
 
 Added in v3.0.0

@@ -1442,7 +1442,7 @@ const unfold_ = <A, B>(b: B, f: (b: B) => Option<readonly [A, B]>): ReadonlyArra
 export const traverse: Traversable1<URI>['traverse'] = <F>(
   F: Applicative<F>
 ): (<A, B>(f: (a: A) => HKT<F, B>) => (ta: ReadonlyArray<A>) => HKT<F, ReadonlyArray<B>>) => {
-  const traverseWithIndexF = traverseWithIndex_(F)
+  const traverseWithIndexF = traverseWithIndex(F)
   return (f) => traverseWithIndexF((_, a) => f(a))
 }
 
@@ -1464,9 +1464,15 @@ export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F>) =>
   )
 }
 
-const traverseWithIndex_ = <F>(F: Applicative<F>) => <A, B>(f: (i: number, a: A) => HKT<F, B>) => (
-  ta: ReadonlyArray<A>
-): HKT<F, ReadonlyArray<B>> => {
+/**
+ * @since 3.0.0
+ */
+export const traverseWithIndex: TraversableWithIndex1<URI, number>['traverseWithIndex'] = <F>(F: Applicative<F>) => <
+  A,
+  B
+>(
+  f: (i: number, a: A) => HKT<F, B>
+) => (ta: ReadonlyArray<A>): HKT<F, ReadonlyArray<B>> => {
   return pipe(
     ta,
     reduceWithIndex(F.of<ReadonlyArray<B>>(zero_()), (i, fbs, a) =>
@@ -1790,7 +1796,7 @@ export const readonlyArray: Monad1<URI> &
   reduceWithIndex,
   foldMapWithIndex,
   reduceRightWithIndex,
-  traverseWithIndex: traverseWithIndex_,
+  traverseWithIndex,
   extend,
   wither,
   wilt

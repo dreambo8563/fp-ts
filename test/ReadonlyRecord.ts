@@ -15,6 +15,38 @@ const p = (n: number) => n > 2
 const noPrototype = Object.create(null)
 
 describe('ReadonlyRecord', () => {
+  describe('instances', () => {
+    describe('Traversable', () => {
+      it('traverse', () => {
+        assert.deepStrictEqual(
+          _.traverse(O.applicativeOption)((n: number) => (n <= 2 ? O.some(n) : O.none))({ k1: 1, k2: 2 }),
+          O.some({ k1: 1, k2: 2 })
+        )
+        assert.deepStrictEqual(
+          _.traverse(O.applicativeOption)((n: number) => (n >= 2 ? O.some(n) : O.none))({ k1: 1, k2: 2 }),
+          O.none
+        )
+      })
+
+      it('sequence', () => {
+        const sequence = _.sequence(O.applicativeOption)
+        assert.deepStrictEqual(sequence({ k1: O.some(1), k2: O.some(2) }), O.some({ k1: 1, k2: 2 }))
+        assert.deepStrictEqual(sequence({ k1: O.none, k2: O.some(2) }), O.none)
+      })
+    })
+
+    describe('TraversableWithIndex', () => {
+      it('traverseWithIndex', () => {
+        const traverse1 = _.traverseWithIndex(O.applicativeOption)(
+          (k, n: number): O.Option<number> => (k !== 'k1' ? O.some(n) : O.none)
+        )
+        assert.deepStrictEqual(traverse1({ k1: 1, k2: 2 }), O.none)
+        const t2 = _.traverseWithIndex(O.applicativeOption)((): O.Option<number> => O.none)(_.empty)
+        assert.deepStrictEqual(O.getOrElse((): _.ReadonlyRecord<string, number> => _.empty)(t2), _.empty)
+      })
+    })
+  })
+
   describe('pipeables', () => {
     it('map', () => {
       const double = (n: number): number => n * 2
@@ -198,25 +230,6 @@ describe('ReadonlyRecord', () => {
     assert.deepStrictEqual(M.concat(d1, {}), d1)
   })
 
-  it('traverse', () => {
-    assert.deepStrictEqual(
-      _.traverse(O.applicativeOption)((n: number) => (n <= 2 ? O.some(n) : O.none))({ k1: 1, k2: 2 }),
-      O.some({ k1: 1, k2: 2 })
-    )
-    assert.deepStrictEqual(
-      _.traverse(O.applicativeOption)((n: number) => (n >= 2 ? O.some(n) : O.none))({ k1: 1, k2: 2 }),
-      O.none
-    )
-  })
-
-  it('sequence', () => {
-    const sequence = _.sequence(O.applicativeOption)
-    const x1 = { k1: O.some(1), k2: O.some(2) }
-    assert.deepStrictEqual(sequence(x1), O.some({ k1: 1, k2: 2 }))
-    const x2 = { k1: O.none, k2: O.some(2) }
-    assert.deepStrictEqual(sequence(x2), O.none)
-  })
-
   it('getEq', () => {
     assert.deepStrictEqual(_.getEq(eqNumber).equals({ a: 1 }, { a: 1 }), true)
     assert.deepStrictEqual(_.getEq(eqNumber).equals({ a: 1 }, { a: 2 }), false)
@@ -273,16 +286,6 @@ describe('ReadonlyRecord', () => {
 
   it('toUnfoldable', () => {
     assert.deepStrictEqual(_.toUnfoldable(readonlyArray)({ a: 1 }), [['a', 1]])
-  })
-
-  it('traverseWithIndex', () => {
-    const d1 = { k1: 1, k2: 2 }
-    const t1 = _.traverseWithIndex(O.applicativeOption)(
-      (k, n: number): O.Option<number> => (k !== 'k1' ? O.some(n) : O.none)
-    )(d1)
-    assert.deepStrictEqual(t1, O.none)
-    const t2 = _.traverseWithIndex(O.applicativeOption)((): O.Option<number> => O.none)(_.empty)
-    assert.deepStrictEqual(O.getOrElse((): _.ReadonlyRecord<string, number> => _.empty)(t2), _.empty)
   })
 
   it('size', () => {

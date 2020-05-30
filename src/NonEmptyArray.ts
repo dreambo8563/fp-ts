@@ -407,6 +407,11 @@ export const traverse: Traversable1<URI>['traverse'] = RNEA.traverse as any
  */
 export const sequence: Traversable1<URI>['sequence'] = RNEA.sequence as any
 
+/**
+ * @since 3.0.0
+ */
+export const traverseWithIndex: TraversableWithIndex1<URI, number>['traverseWithIndex'] = RNEA.traverseWithIndex as any
+
 // -------------------------------------------------------------------------------------
 // instances
 // -------------------------------------------------------------------------------------

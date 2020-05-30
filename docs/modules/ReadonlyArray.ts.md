@@ -99,6 +99,7 @@ Added in v2.5.0
 - [takeRight](#takeright)
 - [toArray](#toarray)
 - [traverse](#traverse)
+- [traverseWithIndex](#traversewithindex)
 - [union](#union)
 - [uniq](#uniq)
 - [unsafeDeleteAt](#unsafedeleteat)
@@ -1681,6 +1682,16 @@ Added in v2.5.0
 
 ```ts
 export declare const traverse: Traverse1<'ReadonlyArray'>
+```
+
+Added in v3.0.0
+
+# traverseWithIndex
+
+**Signature**
+
+```ts
+export declare const traverseWithIndex: TraverseWithIndex1<'ReadonlyArray', number>
 ```
 
 Added in v3.0.0

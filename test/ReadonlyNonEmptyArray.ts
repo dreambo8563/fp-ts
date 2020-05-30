@@ -11,6 +11,46 @@ import * as S from '../src/Semigroup'
 import { showString } from '../src/Show'
 
 describe('ReadonlyNonEmptyArray', () => {
+  describe('instances', () => {
+    describe('Traversable', () => {
+      it('traverse', () => {
+        const traverse = _.traverse(O.applicativeOption)((n: number) => (n > 1 ? O.some(n) : O.none))
+        assert.deepStrictEqual(pipe([2, 3, 4], traverse), O.some([2, 3, 4]))
+        assert.deepStrictEqual(pipe([1, 2, 3], traverse), O.none)
+      })
+
+      it('sequence', () => {
+        const sequence = _.sequence(O.applicativeOption)
+        assert.deepStrictEqual(sequence([O.some(1), O.some(2), O.some(3)]), O.some([1, 2, 3]))
+        assert.deepStrictEqual(sequence([O.none, O.some(2), O.some(3)]), O.none)
+      })
+    })
+
+    describe('TraversableWithIndex', () => {
+      it('traverseWithIndex', () => {
+        const traverseWithIndex = _.traverseWithIndex(O.applicativeOption)((i, s: string) =>
+          s.length > 1 ? O.some(s + i) : O.none
+        )
+        assert.deepStrictEqual(traverseWithIndex(['aa', 'bbb']), O.some(['aa0', 'bbb1']))
+        assert.deepStrictEqual(traverseWithIndex(['a', 'bb']), O.none)
+      })
+
+      it('should be compatible with FoldableWithIndex', () => {
+        const f = (i: number, s: string): string => s + i
+        const traverseWithIndex = _.traverseWithIndex(C.getApplicative(M.monoidString))((i, s: string) =>
+          C.make(f(i, s))
+        )
+        assert.deepStrictEqual(pipe(['a', 'bb'], _.foldMapWithIndex(M.monoidString)(f)), traverseWithIndex(['a', 'bb']))
+      })
+
+      it('should be compatible with FunctorWithIndex', () => {
+        const f = (i: number, s: string): string => s + i
+        const traverseWithIndex = _.traverseWithIndex(I.identity)((i, s: string) => f(i, s))
+        assert.deepStrictEqual(pipe(['a', 'bb'], _.mapWithIndex(f)), traverseWithIndex(['a', 'bb']))
+      })
+    })
+  })
+
   it('head', () => {
     assert.deepStrictEqual(_.head([1, 2]), 1)
   })
@@ -50,30 +90,6 @@ describe('ReadonlyNonEmptyArray', () => {
 
   it('extract', () => {
     assert.deepStrictEqual(_.readonlyNonEmptyArray.extract([1, 2, 3]), 1)
-  })
-
-  it('traverse', () => {
-    const as: _.ReadonlyNonEmptyArray<number> = [1, 2, 3]
-    assert.deepStrictEqual(
-      pipe(
-        as,
-        _.traverse(O.applicativeOption)((n) => (n >= 0 ? O.some(n) : O.none))
-      ),
-      O.some([1, 2, 3])
-    )
-    assert.deepStrictEqual(
-      pipe(
-        as,
-        _.traverse(O.applicativeOption)((n) => (n >= 2 ? O.some(n) : O.none))
-      ),
-      O.none
-    )
-  })
-
-  it('sequence', () => {
-    const sequence = _.readonlyNonEmptyArray.sequence(O.applicativeOption)
-    assert.deepStrictEqual(sequence([O.some(1), O.some(2), O.some(3)]), O.some([1, 2, 3]))
-    assert.deepStrictEqual(sequence([O.none, O.some(2), O.some(3)]), O.none)
   })
 
   it('min', () => {
