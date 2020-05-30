@@ -525,11 +525,10 @@ export const monadThrowTaskEither: MonadThrow2<URI> = {
 }
 
 /**
- * Like `TaskEither` but `ap` is sequential
- *
+ * TODO
  * @since 2.0.0
  */
-export const taskEitherSeq: Monad2<URI> & Bifunctor2<URI> & Alt2<URI> & MonadTask2<URI> & MonadThrow2<URI> = {
+export const monadTaskEitherSeq: Monad2<URI> & Bifunctor2<URI> & Alt2<URI> & MonadTask2<URI> & MonadThrow2<URI> = {
   URI,
   bimap: T.bimap,
   mapLeft: T.mapLeft,

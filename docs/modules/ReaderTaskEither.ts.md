@@ -65,10 +65,10 @@ Added in v2.0.0
 - [mapLeft](#mapleft)
 - [monadIOReaderTaskEither](#monadioreadertaskeither)
 - [monadReaderTaskEither](#monadreadertaskeither)
+- [monadReaderTaskEitherSeq](#monadreadertaskeitherseq)
 - [monadTaskReaderTaskEither](#monadtaskreadertaskeither)
 - [monadThrowReaderTaskEither](#monadthrowreadertaskeither)
 - [orElse](#orelse)
-- [readerTaskEitherSeq](#readertaskeitherseq)
 - [right](#right)
 - [rightIO](#rightio)
 - [rightReader](#rightreader)
@@ -680,6 +680,22 @@ export declare const monadReaderTaskEither: Monad3<'ReaderTaskEither'>
 
 Added in v3.0.0
 
+# monadReaderTaskEitherSeq
+
+TODO
+
+**Signature**
+
+```ts
+export declare const monadReaderTaskEitherSeq: Monad3<'ReaderTaskEither'> &
+  Bifunctor3<'ReaderTaskEither'> &
+  Alt3<'ReaderTaskEither'> &
+  MonadTask3<'ReaderTaskEither'> &
+  MonadThrow3<'ReaderTaskEither'>
+```
+
+Added in v2.0.0
+
 # monadTaskReaderTaskEither
 
 **Signature**
@@ -708,20 +724,6 @@ Added in v3.0.0
 export declare function orElse<R, E, A, M>(
   onLeft: (e: E) => ReaderTaskEither<R, M, A>
 ): (ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, M, A>
-```
-
-Added in v2.0.0
-
-# readerTaskEitherSeq
-
-**Signature**
-
-```ts
-export declare const readerTaskEitherSeq: Monad3<'ReaderTaskEither'> &
-  Bifunctor3<'ReaderTaskEither'> &
-  Alt3<'ReaderTaskEither'> &
-  MonadTask3<'ReaderTaskEither'> &
-  MonadThrow3<'ReaderTaskEither'>
 ```
 
 Added in v2.0.0

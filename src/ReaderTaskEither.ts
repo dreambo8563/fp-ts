@@ -562,9 +562,14 @@ export const monadThrowReaderTaskEither: MonadThrow3<URI> = {
 }
 
 /**
+ * TODO
  * @since 2.0.0
  */
-export const readerTaskEitherSeq: Monad3<URI> & Bifunctor3<URI> & Alt3<URI> & MonadTask3<URI> & MonadThrow3<URI> = {
+export const monadReaderTaskEitherSeq: Monad3<URI> &
+  Bifunctor3<URI> &
+  Alt3<URI> &
+  MonadTask3<URI> &
+  MonadThrow3<URI> = {
   URI,
   map,
   of: right,

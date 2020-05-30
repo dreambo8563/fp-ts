@@ -18,6 +18,10 @@ import { State } from './State'
 import { getStateM } from './StateT'
 import { Task } from './Task'
 import { TaskEither } from './TaskEither'
+import { Functor4 } from './Functor'
+import { Apply4 } from './Apply'
+import { Applicative4 } from './Applicative'
+import { MonadIO4 } from './MonadIO'
 
 import ReaderTaskEither = RTE.ReaderTaskEither
 
@@ -451,13 +455,95 @@ export const filterOrElse: {
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const stateReaderTaskEither: Monad4<URI> & Bifunctor4<URI> & Alt4<URI> & MonadTask4<URI> & MonadThrow4<URI> = {
+export const functorStateReaderTaskEither: Functor4<URI> = {
+  URI,
+  map
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applyStateReaderTaskEither: Apply4<URI> = {
+  ...functorStateReaderTaskEither,
+  ap
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applicativeStateReaderTaskEither: Applicative4<URI> = {
+  ...applyStateReaderTaskEither,
+  of: right
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadStateReaderTaskEither: Monad4<URI> = {
+  ...applicativeStateReaderTaskEither,
+  chain
+}
+
+/**
+ * @since 3.0.0
+ */
+export const bifunctorStateReaderTaskEither: Bifunctor4<URI> = {
+  URI,
+  bimap,
+  mapLeft
+}
+
+/**
+ * @since 3.0.0
+ */
+export const altStateReaderTaskEither: Alt4<URI> = {
+  ...functorStateReaderTaskEither,
+  alt
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadIOStateReaderTaskEither: MonadIO4<URI> = {
+  ...monadStateReaderTaskEither,
+  fromIO: rightIO
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadTaskStateReaderTaskEither: MonadTask4<URI> = {
+  ...monadIOStateReaderTaskEither,
+  fromTask: rightTask
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadThrowStateReaderTaskEither: MonadThrow4<URI> = {
+  ...monadStateReaderTaskEither,
+  throwError: left
+}
+
+/**
+ * TODO
+ * @since 3.0.0
+ */
+export const monadReaderTaskEitherSeq: Monad4<URI> &
+  Bifunctor4<URI> &
+  Alt4<URI> &
+  MonadTask4<URI> &
+  MonadThrow4<URI> = {
   URI,
   map,
   of: right,
-  ap,
+  ap: (fa) => (fab) =>
+    pipe(
+      fab,
+      chain((f) => pipe(fa, map(f)))
+    ),
   chain,
   bimap,
   mapLeft,
@@ -466,20 +552,3 @@ export const stateReaderTaskEither: Monad4<URI> & Bifunctor4<URI> & Alt4<URI> & 
   fromTask: rightTask,
   throwError: left
 }
-
-/**
- * Like `stateReaderTaskEither` but `ap` is sequential
- * @since 2.0.0
- */
-export const stateReaderTaskEitherSeq: typeof stateReaderTaskEither =
-  /*#__PURE__*/
-  ((): typeof stateReaderTaskEither => {
-    return {
-      ...stateReaderTaskEither,
-      ap: (fa) => (fab) =>
-        pipe(
-          fab,
-          chain((f) => pipe(fa, map(f)))
-        )
-    }
-  })()

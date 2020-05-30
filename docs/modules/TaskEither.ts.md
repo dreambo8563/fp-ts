@@ -59,6 +59,7 @@ Added in v2.0.0
 - [mapLeft](#mapleft)
 - [monadIOTaskEither](#monadiotaskeither)
 - [monadTaskEither](#monadtaskeither)
+- [monadTaskEitherSeq](#monadtaskeitherseq)
 - [monadTaskTaskEither](#monadtasktaskeither)
 - [monadThrowTaskEither](#monadthrowtaskeither)
 - [orElse](#orelse)
@@ -66,7 +67,6 @@ Added in v2.0.0
 - [rightIO](#rightio)
 - [rightTask](#righttask)
 - [swap](#swap)
-- [taskEitherSeq](#taskeitherseq)
 - [taskify](#taskify)
 - [tryCatch](#trycatch)
 - [tryCatchK](#trycatchk)
@@ -547,6 +547,22 @@ export declare const monadTaskEither: Monad2<'TaskEither'>
 
 Added in v3.0.0
 
+# monadTaskEitherSeq
+
+TODO
+
+**Signature**
+
+```ts
+export declare const monadTaskEitherSeq: Monad2<'TaskEither'> &
+  Bifunctor2<'TaskEither'> &
+  Alt2<'TaskEither'> &
+  MonadTask2<'TaskEither'> &
+  MonadThrow2<'TaskEither'>
+```
+
+Added in v2.0.0
+
 # monadTaskTaskEither
 
 **Signature**
@@ -613,22 +629,6 @@ Added in v2.0.0
 
 ```ts
 export declare const swap: <E, A>(ma: TaskEither<E, A>) => TaskEither<A, E>
-```
-
-Added in v2.0.0
-
-# taskEitherSeq
-
-Like `TaskEither` but `ap` is sequential
-
-**Signature**
-
-```ts
-export declare const taskEitherSeq: Monad2<'TaskEither'> &
-  Bifunctor2<'TaskEither'> &
-  Alt2<'TaskEither'> &
-  MonadTask2<'TaskEither'> &
-  MonadThrow2<'TaskEither'>
 ```
 
 Added in v2.0.0

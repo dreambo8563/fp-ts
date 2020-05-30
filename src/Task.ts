@@ -197,11 +197,10 @@ export const task: Monad1<URI> & MonadTask1<URI> = {
 }
 
 /**
- * Like `Task` but `ap` is sequential
- *
+ * TODO
  * @since 2.0.0
  */
-export const taskSeq: typeof task =
+export const monadTaskSeq: typeof task =
   /*#__PURE__*/
   ((): typeof task => {
     return {

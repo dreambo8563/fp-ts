@@ -162,7 +162,7 @@ describe('StateReaderTaskEither', () => {
     const len = (s: string): number => s.length
     const mab = _.right(len)
     const ma = _.right('aaa')
-    const e = await RTE.run(_.evalState(pipe(mab, _.stateReaderTaskEitherSeq.ap(ma)), {}), {})
+    const e = await RTE.run(_.evalState(pipe(mab, _.monadReaderTaskEitherSeq.ap(ma)), {}), {})
     assert.deepStrictEqual(e, E.right(3))
   })
 

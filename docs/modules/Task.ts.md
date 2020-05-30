@@ -32,10 +32,10 @@ Added in v2.0.0
 - [getRaceMonoid](#getracemonoid)
 - [getSemigroup](#getsemigroup)
 - [map](#map)
+- [monadTaskSeq](#monadtaskseq)
 - [never](#never)
 - [of](#of)
 - [task](#task)
-- [taskSeq](#taskseq)
 
 ---
 
@@ -213,6 +213,18 @@ export declare const map: <A, B>(f: (a: A) => B) => (fa: Task<A>) => Task<B>
 
 Added in v2.0.0
 
+# monadTaskSeq
+
+TODO
+
+**Signature**
+
+```ts
+export declare const monadTaskSeq: Monad1<'Task'> & MonadTask1<'Task'>
+```
+
+Added in v2.0.0
+
 # never
 
 **Signature**
@@ -239,18 +251,6 @@ Added in v2.0.0
 
 ```ts
 export declare const task: Monad1<'Task'> & MonadTask1<'Task'>
-```
-
-Added in v2.0.0
-
-# taskSeq
-
-Like `Task` but `ap` is sequential
-
-**Signature**
-
-```ts
-export declare const taskSeq: Monad1<'Task'> & MonadTask1<'Task'>
 ```
 
 Added in v2.0.0
