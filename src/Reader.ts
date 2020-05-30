@@ -9,6 +9,10 @@ import { Monoid } from './Monoid'
 import { Profunctor2 } from './Profunctor'
 import { getReaderM } from './ReaderT'
 import { Semigroup } from './Semigroup'
+import { Functor2 } from './Functor'
+import { Apply2 } from './Apply'
+import { Applicative2 } from './Applicative'
+import { Semigroupoid2 } from './Semigroupoid'
 
 const T = /*#__PURE__*/ getReaderM(monadIdentity)
 
@@ -82,13 +86,34 @@ export function getMonoid<R, A>(M: Monoid<A>): Monoid<Reader<R, A>> {
 export const of: <R, A>(a: A) => Reader<R, A> = T.of
 
 // -------------------------------------------------------------------------------------
-// pipeables
+// instances
 // -------------------------------------------------------------------------------------
 
 /**
  * @since 2.0.0
  */
+export const map: <A, B>(f: (a: A) => B) => <R>(fa: Reader<R, A>) => Reader<R, B> = T.map
+
+/**
+ * @since 3.0.0
+ */
+export const functorReader: Functor2<URI> = {
+  URI,
+  map
+}
+
+/**
+ * @since 2.0.0
+ */
 export const ap: <R, A>(fa: Reader<R, A>) => <B>(fab: Reader<R, (a: A) => B>) => Reader<R, B> = T.ap
+
+/**
+ * @since 3.0.0
+ */
+export const applyReader: Apply2<URI> = {
+  ...functorReader,
+  ap
+}
 
 /**
  * @since 2.0.0
@@ -111,9 +136,25 @@ export const apSecond = <R, B>(fb: Reader<R, B>) => <A>(fa: Reader<R, A>): Reade
   )
 
 /**
+ * @since 3.0.0
+ */
+export const applicativeReader: Applicative2<URI> = {
+  ...applyReader,
+  of
+}
+
+/**
  * @since 2.0.0
  */
 export const chain: <A, R, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) => Reader<R, B> = T.chain
+
+/**
+ * @since 3.0.0
+ */
+export const monadReader: Monad2<URI> = {
+  ...applicativeReader,
+  chain
+}
 
 /**
  * @since 2.0.0
@@ -139,7 +180,17 @@ export const flatten: <R, A>(mma: Reader<R, Reader<R, A>>) => Reader<R, A> = cha
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <R>(fa: Reader<R, A>) => Reader<R, B> = T.map
+export const promap: <D, E, A, B>(f: (d: D) => E, g: (a: A) => B) => (fbc: Reader<E, A>) => Reader<D, B> = (f, g) => (
+  fea
+) => (a) => g(fea(f(a)))
+
+/**
+ * @since 3.0.0
+ */
+export const profunctorReader: Profunctor2<URI> = {
+  ...functorReader,
+  promap
+}
 
 /**
  * @since 2.0.0
@@ -148,37 +199,17 @@ export const pipe: <B, C>(fbc: Reader<B, C>) => <A>(fab: Reader<A, B>) => Reader
   fbc(fab(a))
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const promap: <D, E, A, B>(f: (d: D) => E, g: (a: A) => B) => (fbc: Reader<E, A>) => Reader<D, B> = (f, g) => (
-  fea
-) => (a) => g(fea(f(a)))
-
-// -------------------------------------------------------------------------------------
-// instances
-// -------------------------------------------------------------------------------------
-
-/**
- * @internal
- */
-export const monadReader: Monad2<URI> = {
+export const semigroupoidReader: Semigroupoid2<URI> = {
   URI,
-  map,
-  of,
-  ap,
-  chain
+  pipe
 }
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const reader: Monad2<URI> & Profunctor2<URI> & Category2<URI> = {
-  URI,
-  map,
-  of,
-  ap,
-  chain,
-  promap,
-  pipe,
+export const categoryReader: Category2<URI> = {
+  ...semigroupoidReader,
   id: () => F.identity
 }

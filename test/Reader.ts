@@ -78,7 +78,7 @@ describe('Reader', () => {
   })
 
   it('id', () => {
-    const x = _.reader.id<number>()
+    const x = _.categoryReader.id<number>()
     assert.deepStrictEqual(x(1), 1)
   })
 

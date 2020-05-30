@@ -18,20 +18,26 @@ Added in v2.0.0
 - [ap](#ap)
 - [apFirst](#apfirst)
 - [apSecond](#apsecond)
+- [applicativeReader](#applicativereader)
+- [applyReader](#applyreader)
 - [ask](#ask)
 - [asks](#asks)
+- [categoryReader](#categoryreader)
 - [chain](#chain)
 - [chainFirst](#chainfirst)
 - [chainW](#chainw)
 - [flatten](#flatten)
+- [functorReader](#functorreader)
 - [getMonoid](#getmonoid)
 - [getSemigroup](#getsemigroup)
 - [local](#local)
 - [map](#map)
+- [monadReader](#monadreader)
 - [of](#of)
 - [pipe](#pipe)
+- [profunctorReader](#profunctorreader)
 - [promap](#promap)
-- [reader](#reader)
+- [semigroupoidReader](#semigroupoidreader)
 
 ---
 
@@ -97,6 +103,26 @@ export declare const apSecond: <R, B>(fb: Reader<R, B>) => <A>(fa: Reader<R, A>)
 
 Added in v2.0.0
 
+# applicativeReader
+
+**Signature**
+
+```ts
+export declare const applicativeReader: Applicative2<'Reader'>
+```
+
+Added in v3.0.0
+
+# applyReader
+
+**Signature**
+
+```ts
+export declare const applyReader: Apply2<'Reader'>
+```
+
+Added in v3.0.0
+
 # ask
 
 Reads the current context
@@ -120,6 +146,16 @@ export declare const asks: <R, A>(f: (r: R) => A) => Reader<R, A>
 ```
 
 Added in v2.0.0
+
+# categoryReader
+
+**Signature**
+
+```ts
+export declare const categoryReader: Category2<'Reader'>
+```
+
+Added in v3.0.0
 
 # chain
 
@@ -160,6 +196,16 @@ export declare const flatten: <R, A>(mma: Reader<R, Reader<R, A>>) => Reader<R, 
 ```
 
 Added in v2.0.0
+
+# functorReader
+
+**Signature**
+
+```ts
+export declare const functorReader: Functor2<'Reader'>
+```
+
+Added in v3.0.0
 
 # getMonoid
 
@@ -204,6 +250,16 @@ export declare const map: <A, B>(f: (a: A) => B) => <R>(fa: Reader<R, A>) => Rea
 
 Added in v2.0.0
 
+# monadReader
+
+**Signature**
+
+```ts
+export declare const monadReader: Monad2<'Reader'>
+```
+
+Added in v3.0.0
+
 # of
 
 **Signature**
@@ -224,6 +280,16 @@ export declare const pipe: <B, C>(fbc: Reader<B, C>) => <A>(fab: Reader<A, B>) =
 
 Added in v2.0.0
 
+# profunctorReader
+
+**Signature**
+
+```ts
+export declare const profunctorReader: Profunctor2<'Reader'>
+```
+
+Added in v3.0.0
+
 # promap
 
 **Signature**
@@ -234,12 +300,12 @@ export declare const promap: <D, E, A, B>(f: (d: D) => E, g: (a: A) => B) => (fb
 
 Added in v2.0.0
 
-# reader
+# semigroupoidReader
 
 **Signature**
 
 ```ts
-export declare const reader: Monad2<'Reader'> & Profunctor2<'Reader'> & Category2<'Reader'>
+export declare const semigroupoidReader: Semigroupoid2<'Reader'>
 ```
 
-Added in v2.0.0
+Added in v3.0.0
