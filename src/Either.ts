@@ -32,17 +32,19 @@
  * @since 2.0.0
  */
 
-import { Alt2, Alt2C } from './Alt'
-import { Applicative, Applicative2 } from './Applicative'
+import { Alt2 } from './Alt'
+import { Applicative, Applicative2, Applicative2C } from './Applicative'
+import { Apply2 } from './Apply'
 import { Bifunctor2 } from './Bifunctor'
 import { Separated } from './Compactable'
 import { Eq } from './Eq'
 import { Extend2 } from './Extend'
 import { Foldable2 } from './Foldable'
-import { Lazy, Predicate, identity, Refinement, pipe } from './function'
+import { identity, Lazy, pipe, Predicate, Refinement } from './function'
+import { Functor2 } from './Functor'
 import { HKT } from './HKT'
-import { Monad2, Monad2C } from './Monad'
-import { MonadThrow2, MonadThrow2C } from './MonadThrow'
+import { Monad2 } from './Monad'
+import { MonadThrow2 } from './MonadThrow'
 import { Monoid } from './Monoid'
 import { Option } from './Option'
 import { Semigroup } from './Semigroup'
@@ -478,17 +480,9 @@ export function getWitherable<E>(M: Monoid<E>): Witherable2C<URI, E> {
 /**
  * @since 2.0.0
  */
-export function getValidation<E>(
-  S: Semigroup<E>
-): Monad2C<URI, E> &
-  Foldable2<URI> &
-  Traversable2<URI> &
-  Bifunctor2<URI> &
-  Alt2C<URI, E> &
-  Extend2<URI> &
-  MonadThrow2C<URI, E> {
+export function getValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> {
   return {
-    ...either,
+    ...applicativeEither,
     _E: undefined as any,
     ap: (ma) => (mab) =>
       isLeft(mab)
@@ -497,14 +491,7 @@ export function getValidation<E>(
           : mab
         : isLeft(ma)
         ? ma
-        : right(mab.right(ma.right)),
-    alt: (that) => (fa) => {
-      if (isRight(fa)) {
-        return fa
-      }
-      const fy = that()
-      return isLeft(fy) ? left(S.concat(fa.left, fy.left)) : fy
-    }
+        : right(mab.right(ma.right))
   }
 }
 
@@ -692,17 +679,49 @@ export const filterOrElse: {
 // -------------------------------------------------------------------------------------
 
 /**
- * @internal
+ * @since 3.0.0
  */
-export const applicativeEither: Applicative2<URI> = {
+export const functorEither: Functor2<URI> = {
   URI,
-  map,
-  of: right,
+  map
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applyEither: Apply2<URI> = {
+  ...functorEither,
   ap
 }
 
 /**
- * @internal
+ * @since 3.0.0
+ */
+export const applicativeEither: Applicative2<URI> = {
+  ...applyEither,
+  of: right
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadEither: Monad2<URI> = {
+  ...applicativeEither,
+  chain
+}
+
+/**
+ * @since 3.0.0
+ */
+export const foldableEither: Foldable2<URI> = {
+  URI,
+  reduce,
+  foldMap,
+  reduceRight
+}
+
+/**
+ * @since 3.0.0
  */
 export const bifunctorEither: Bifunctor2<URI> = {
   URI,
@@ -711,28 +730,35 @@ export const bifunctorEither: Bifunctor2<URI> = {
 }
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const either: Monad2<URI> &
-  Foldable2<URI> &
-  Traversable2<URI> &
-  Bifunctor2<URI> &
-  Alt2<URI> &
-  Extend2<URI> &
-  MonadThrow2<URI> = {
-  URI,
-  map,
-  of: right,
-  ap,
-  chain,
-  reduce,
-  foldMap,
-  reduceRight,
+export const traversableEither: Traversable2<URI> = {
+  ...functorEither,
+  ...foldableEither,
   traverse,
-  sequence,
-  bimap,
-  mapLeft,
-  alt,
-  extend,
+  sequence
+}
+
+/**
+ * @since 3.0.0
+ */
+export const altEither: Alt2<URI> = {
+  ...functorEither,
+  alt
+}
+
+/**
+ * @since 3.0.0
+ */
+export const extendEither: Extend2<URI> = {
+  ...functorEither,
+  extend
+}
+
+/**
+ * @since 3.0.0
+ */
+export const nonadThrowEither: MonadThrow2<URI> = {
+  ...monadEither,
   throwError: left
 }

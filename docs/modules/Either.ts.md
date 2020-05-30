@@ -48,25 +48,31 @@ Added in v2.0.0
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
 - [alt](#alt)
+- [altEither](#alteither)
 - [ap](#ap)
 - [apFirst](#apfirst)
 - [apSecond](#apsecond)
+- [applicativeEither](#applicativeeither)
+- [applyEither](#applyeither)
+- [bifunctorEither](#bifunctoreither)
 - [bimap](#bimap)
 - [chain](#chain)
 - [chainFirst](#chainfirst)
 - [chainW](#chainw)
 - [duplicate](#duplicate)
-- [either](#either)
 - [elem](#elem)
 - [exists](#exists)
 - [extend](#extend)
+- [extendEither](#extendeither)
 - [filterOrElse](#filterorelse)
 - [flatten](#flatten)
 - [fold](#fold)
 - [foldMap](#foldmap)
+- [foldableEither](#foldableeither)
 - [fromNullable](#fromnullable)
 - [fromOption](#fromoption)
 - [fromPredicate](#frompredicate)
+- [functorEither](#functoreither)
 - [getApplyMonoid](#getapplymonoid)
 - [getApplySemigroup](#getapplysemigroup)
 - [getEq](#geteq)
@@ -83,6 +89,8 @@ Added in v2.0.0
 - [left](#left)
 - [map](#map)
 - [mapLeft](#mapleft)
+- [monadEither](#monadeither)
+- [nonadThrowEither](#nonadthroweither)
 - [orElse](#orelse)
 - [parseJSON](#parsejson)
 - [reduce](#reduce)
@@ -92,6 +100,7 @@ Added in v2.0.0
 - [stringifyJSON](#stringifyjson)
 - [swap](#swap)
 - [toError](#toerror)
+- [traversableEither](#traversableeither)
 - [traverse](#traverse)
 - [tryCatch](#trycatch)
 
@@ -163,6 +172,16 @@ export declare const alt: <E, A>(that: () => Either<E, A>) => (fa: Either<E, A>)
 
 Added in v2.0.0
 
+# altEither
+
+**Signature**
+
+```ts
+export declare const altEither: Alt2<'Either'>
+```
+
+Added in v3.0.0
+
 # ap
 
 **Signature**
@@ -192,6 +211,36 @@ export declare const apSecond: <E, B>(fb: Either<E, B>) => <A>(fa: Either<E, A>)
 ```
 
 Added in v2.0.0
+
+# applicativeEither
+
+**Signature**
+
+```ts
+export declare const applicativeEither: Applicative2<'Either'>
+```
+
+Added in v3.0.0
+
+# applyEither
+
+**Signature**
+
+```ts
+export declare const applyEither: Apply2<'Either'>
+```
+
+Added in v3.0.0
+
+# bifunctorEither
+
+**Signature**
+
+```ts
+export declare const bifunctorEither: Bifunctor2<'Either'>
+```
+
+Added in v3.0.0
 
 # bimap
 
@@ -243,22 +292,6 @@ export declare const duplicate: <E, A>(ma: Either<E, A>) => Either<E, Either<E, 
 
 Added in v2.0.0
 
-# either
-
-**Signature**
-
-```ts
-export declare const either: Monad2<'Either'> &
-  Foldable2<'Either'> &
-  Traversable2<'Either'> &
-  Bifunctor2<'Either'> &
-  Alt2<'Either'> &
-  Extend2<'Either'> &
-  MonadThrow2<'Either'>
-```
-
-Added in v2.0.0
-
 # elem
 
 **Signature**
@@ -302,6 +335,16 @@ export declare const extend: <E, A, B>(f: (wa: Either<E, A>) => B) => (wa: Eithe
 ```
 
 Added in v2.0.0
+
+# extendEither
+
+**Signature**
+
+```ts
+export declare const extendEither: Extend2<'Either'>
+```
+
+Added in v3.0.0
 
 # filterOrElse
 
@@ -367,6 +410,16 @@ export declare const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => <E>(fa
 
 Added in v2.0.0
 
+# foldableEither
+
+**Signature**
+
+```ts
+export declare const foldableEither: Foldable2<'Either'>
+```
+
+Added in v3.0.0
+
 # fromNullable
 
 Takes a default and a nullable value, if the value is not nully, turn it into a `Right`, if the value is nully use
@@ -413,6 +466,16 @@ export declare const fromPredicate: {
 ```
 
 Added in v2.0.0
+
+# functorEither
+
+**Signature**
+
+```ts
+export declare const functorEither: Functor2<'Either'>
+```
+
+Added in v3.0.0
 
 # getApplyMonoid
 
@@ -521,15 +584,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function getValidation<E>(
-  S: Semigroup<E>
-): Monad2C<URI, E> &
-  Foldable2<URI> &
-  Traversable2<URI> &
-  Bifunctor2<URI> &
-  Alt2C<URI, E> &
-  Extend2<URI> &
-  MonadThrow2C<URI, E>
+export declare function getValidation<E>(S: Semigroup<E>): Applicative2C<URI, E>
 ```
 
 Added in v2.0.0
@@ -622,6 +677,26 @@ export declare const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: Either<E, A>) =>
 ```
 
 Added in v2.0.0
+
+# monadEither
+
+**Signature**
+
+```ts
+export declare const monadEither: Monad2<'Either'>
+```
+
+Added in v3.0.0
+
+# nonadThrowEither
+
+**Signature**
+
+```ts
+export declare const nonadThrowEither: MonadThrow2<'Either'>
+```
+
+Added in v3.0.0
 
 # orElse
 
@@ -748,6 +823,16 @@ export declare function toError(e: unknown): Error
 ```
 
 Added in v2.0.0
+
+# traversableEither
+
+**Signature**
+
+```ts
+export declare const traversableEither: Traversable2<'Either'>
+```
+
+Added in v3.0.0
 
 # traverse
 

@@ -168,10 +168,10 @@ function getRecordConstructor(keys: ReadonlyArray<string>) {
  * Like `Apply.sequenceT` but works with structs instead of tuples.
  *
  * @example
- * import { either, right, left } from 'fp-ts/lib/Either'
+ * import { applyEither, right, left } from 'fp-ts/lib/Either'
  * import { sequenceS } from 'fp-ts/lib/Apply'
  *
- * const ado = sequenceS(either)
+ * const ado = sequenceS(applyEither)
  *
  * assert.deepStrictEqual(
  *   ado({

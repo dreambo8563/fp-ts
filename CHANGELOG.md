@@ -28,13 +28,15 @@ high state of flux, you're at risk of it changing without notice.
     - rename `eqYear` to `eqGetFullYear` (@gcanti)
   - `Either`
     - make `fromNullable` lazy, closes #918 (@gcanti)
+    - `getValidation` now returns an instance of `Applicative2C` (@gcanti)
+    - remove the `either` mega instance in favour of split instances (@gcanti)
   - `Eq`
     - move `eqDate` to `Date` module (@gcanti)
   - `Foldable`
     - remove `traverse_` (@gcanti)
     - rename `foldM` to `reduceM` (@gcanti)
   - `Option`
-    - remove `option` instance (@gcanti)
+    - remove the `option` mega instance in favour of split instances (@gcanti)
   - `Ord`
     - move `ordDate` to `Date` module (@gcanti)
   - `ReadonlyTuple`

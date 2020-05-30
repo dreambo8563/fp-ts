@@ -43,7 +43,7 @@ declare const sequenceS2: E.Either<string, string>
 declare const sequenceS3: E.Either<string, boolean>
 declare const sequenceS4: E.Either<boolean, void>
 
-const sequenceSf1 = _.sequenceS(E.either)
+const sequenceSf1 = _.sequenceS(E.applyEither)
 
 // $ExpectError
 sequenceSf1({})
@@ -88,7 +88,7 @@ export function factoryT<F extends URIS>(
   )
 }
 
-const sequenceTf1 = _.sequenceT(E.either)
+const sequenceTf1 = _.sequenceT(E.applyEither)
 
 // $ExpectError
 sequenceTf1([])
