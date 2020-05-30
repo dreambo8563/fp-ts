@@ -7,6 +7,9 @@ import { monadIdentity } from './Identity'
 import { Monad2 } from './Monad'
 import { getStateM } from './StateT'
 import { identity, pipe } from './function'
+import { Functor2 } from './Functor'
+import { Apply2 } from './Apply'
+import { Applicative2 } from './Applicative'
 
 const T = /*#__PURE__*/ getStateM(monadIdentity)
 
@@ -142,12 +145,33 @@ export const map: <A, B>(f: (a: A) => B) => <E>(fa: State<E, A>) => State<E, B> 
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const state: Monad2<URI> = {
+export const functorState: Functor2<URI> = {
   URI,
-  map,
-  of,
-  ap,
+  map
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applyState: Apply2<URI> = {
+  ...functorState,
+  ap
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applicativeState: Applicative2<URI> = {
+  ...applyState,
+  of
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadState: Monad2<URI> = {
+  ...applicativeState,
   chain
 }

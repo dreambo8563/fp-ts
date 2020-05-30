@@ -20,18 +20,21 @@ Added in v2.0.0
 - [ap](#ap)
 - [apFirst](#apfirst)
 - [apSecond](#apsecond)
+- [applicativeState](#applicativestate)
+- [applyState](#applystate)
 - [chain](#chain)
 - [chainFirst](#chainfirst)
 - [evalState](#evalstate)
 - [execState](#execstate)
 - [flatten](#flatten)
+- [functorState](#functorstate)
 - [get](#get)
 - [gets](#gets)
 - [map](#map)
 - [modify](#modify)
+- [monadState](#monadstate)
 - [of](#of)
 - [put](#put)
-- [state](#state)
 
 ---
 
@@ -97,6 +100,26 @@ export declare const apSecond: <E, B>(fb: State<E, B>) => <A>(fa: State<E, A>) =
 
 Added in v2.0.0
 
+# applicativeState
+
+**Signature**
+
+```ts
+export declare const applicativeState: Applicative2<'State'>
+```
+
+Added in v3.0.0
+
+# applyState
+
+**Signature**
+
+```ts
+export declare const applyState: Apply2<'State'>
+```
+
+Added in v3.0.0
+
 # chain
 
 **Signature**
@@ -151,6 +174,16 @@ export declare const flatten: <E, A>(mma: State<E, State<E, A>>) => State<E, A>
 
 Added in v2.0.0
 
+# functorState
+
+**Signature**
+
+```ts
+export declare const functorState: Functor2<'State'>
+```
+
+Added in v3.0.0
+
 # get
 
 Get the current state
@@ -197,6 +230,16 @@ export declare const modify: <S>(f: (s: S) => S) => State<S, void>
 
 Added in v2.0.0
 
+# monadState
+
+**Signature**
+
+```ts
+export declare const monadState: Monad2<'State'>
+```
+
+Added in v3.0.0
+
 # of
 
 **Signature**
@@ -215,16 +258,6 @@ Set the state
 
 ```ts
 export declare const put: <S>(s: S) => State<S, void>
-```
-
-Added in v2.0.0
-
-# state
-
-**Signature**
-
-```ts
-export declare const state: Monad2<'State'>
 ```
 
 Added in v2.0.0
