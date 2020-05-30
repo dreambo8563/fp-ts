@@ -24,7 +24,7 @@ Added in v2.0.0
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
 - [contramap](#contramap)
-- [eq](#eq)
+- [contravariantEq](#contravarianteq)
 - [eqBoolean](#eqboolean)
 - [eqNumber](#eqnumber)
 - [eqStrict](#eqstrict)
@@ -78,15 +78,15 @@ export declare const contramap: <A, B>(f: (b: B) => A) => (fa: Eq<A>) => Eq<B>
 
 Added in v2.0.0
 
-# eq
+# contravariantEq
 
 **Signature**
 
 ```ts
-export declare const eq: Contravariant1<'Eq'>
+export declare const contravariantEq: Contravariant1<'Eq'>
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # eqBoolean
 

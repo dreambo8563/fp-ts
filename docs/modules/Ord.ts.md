@@ -26,6 +26,7 @@ Added in v2.0.0
 - [between](#between)
 - [clamp](#clamp)
 - [contramap](#contramap)
+- [contravariantOrd](#contravariantord)
 - [fromCompare](#fromcompare)
 - [geq](#geq)
 - [getDualOrd](#getdualord)
@@ -36,7 +37,6 @@ Added in v2.0.0
 - [lt](#lt)
 - [max](#max)
 - [min](#min)
-- [ord](#ord)
 - [ordBoolean](#ordboolean)
 - [ordNumber](#ordnumber)
 - [ordString](#ordstring)
@@ -105,6 +105,16 @@ Added in v2.0.0
 
 ```ts
 export declare const contramap: <A, B>(f: (b: B) => A) => (fa: Ord<A>) => Ord<B>
+```
+
+Added in v2.0.0
+
+# contravariantOrd
+
+**Signature**
+
+```ts
+export declare const contravariantOrd: Contravariant1<'Ord'>
 ```
 
 Added in v2.0.0
@@ -295,16 +305,6 @@ Take the minimum of two values. If they are considered equal, the first argument
 
 ```ts
 export declare function min<A>(O: Ord<A>): (x: A, y: A) => A
-```
-
-Added in v2.0.0
-
-# ord
-
-**Signature**
-
-```ts
-export declare const ord: Contravariant1<'Ord'>
 ```
 
 Added in v2.0.0

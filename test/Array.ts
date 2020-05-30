@@ -4,8 +4,8 @@ import * as _ from '../src/Array'
 import * as E from '../src/Either'
 import * as M from '../src/Monoid'
 import * as O from '../src/Option'
-import { ord, ordNumber, ordString } from '../src/Ord'
-import { eq, eqBoolean, eqNumber, eqString, Eq } from '../src/Eq'
+import { contravariantOrd, ordNumber, ordString } from '../src/Ord'
+import { contravariantEq, eqBoolean, eqNumber, eqString, Eq } from '../src/Eq'
 import { identity, tuple, Predicate, pipe } from '../src/function'
 import * as I from '../src/Identity'
 import * as C from '../src/Const'
@@ -531,7 +531,7 @@ describe('Array', () => {
 
     const eqA = pipe(
       ordNumber,
-      eq.contramap((f: A) => f.b)
+      contravariantEq.contramap((f: A) => f.b)
     )
     const arrA: A = { a: 'a', b: 1 }
     const arrB: A = { a: 'b', b: 1 }
@@ -566,11 +566,11 @@ describe('Array', () => {
     }
     const byName = pipe(
       ordString,
-      ord.contramap((p: Person) => p.name)
+      contravariantOrd.contramap((p: Person) => p.name)
     )
     const byAge = pipe(
       ordNumber,
-      ord.contramap((p: Person) => p.age)
+      contravariantOrd.contramap((p: Person) => p.age)
     )
     const sortByNameByAge = _.sortBy([byName, byAge])
     const persons = [

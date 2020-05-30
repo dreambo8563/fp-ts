@@ -1,5 +1,5 @@
 import * as assert from 'assert'
-import { eq, Eq, eqNumber } from '../src/Eq'
+import { contramap, Eq, eqNumber } from '../src/Eq'
 import { identity, pipe } from '../src/function'
 import * as I from '../src/Identity'
 import { monoidString } from '../src/Monoid'
@@ -177,7 +177,7 @@ describe('Tree', () => {
     }
     const S: Eq<User> = pipe(
       eqNumber,
-      eq.contramap((user: User) => user.id)
+      contramap((user: User) => user.id)
     )
     const users = _.make({ id: 1 }, [_.make({ id: 1 }, [_.make({ id: 3 }), _.make({ id: 4 })]), _.make({ id: 2 })])
     assert.deepStrictEqual(_.elem(S)({ id: 1 }, users), true)

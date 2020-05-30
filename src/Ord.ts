@@ -14,12 +14,6 @@ import { Eq } from './Eq'
 import { Monoid } from './Monoid'
 import { monoidOrdering, Ordering } from './Ordering'
 
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly Ord: Ord<A>
-  }
-}
-
 /**
  * @since 2.0.0
  */
@@ -29,6 +23,12 @@ export const URI = 'Ord'
  * @since 2.0.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind<A> {
+    readonly [URI]: Ord<A>
+  }
+}
 
 /**
  * @since 2.0.0
@@ -264,7 +264,7 @@ export function getDualOrd<A>(O: Ord<A>): Ord<A> {
 }
 
 // -------------------------------------------------------------------------------------
-// pipeables
+// instances
 // -------------------------------------------------------------------------------------
 
 /**
@@ -273,14 +273,10 @@ export function getDualOrd<A>(O: Ord<A>): Ord<A> {
 export const contramap: <A, B>(f: (b: B) => A) => (fa: Ord<A>) => Ord<B> = (f) => (fa) =>
   fromCompare((x, y) => fa.compare(f(x), f(y)))
 
-// -------------------------------------------------------------------------------------
-// instances
-// -------------------------------------------------------------------------------------
-
 /**
  * @since 2.0.0
  */
-export const ord: Contravariant1<URI> = {
+export const contravariantOrd: Contravariant1<URI> = {
   URI,
   contramap
 }

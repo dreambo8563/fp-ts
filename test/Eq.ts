@@ -4,16 +4,18 @@ import { fold } from '../src/Monoid'
 import { pipe } from '../src/function'
 
 describe('Eq', () => {
-  describe('pipeables', () => {
-    it('contramap', () => {
-      const S = pipe(
-        _.eqString,
-        _.contramap((p: Person) => p.name)
-      )
-      assert.deepStrictEqual(S.equals({ name: 'a', age: 1 }, { name: 'a', age: 2 }), true)
-      assert.deepStrictEqual(S.equals({ name: 'a', age: 1 }, { name: 'a', age: 1 }), true)
-      assert.deepStrictEqual(S.equals({ name: 'a', age: 1 }, { name: 'b', age: 1 }), false)
-      assert.deepStrictEqual(S.equals({ name: 'a', age: 1 }, { name: 'b', age: 2 }), false)
+  describe('instances', () => {
+    describe('Contravariant', () => {
+      it('contramap', () => {
+        const S = pipe(
+          _.eqString,
+          _.contramap((p: Person) => p.name)
+        )
+        assert.deepStrictEqual(S.equals({ name: 'a', age: 1 }, { name: 'a', age: 2 }), true)
+        assert.deepStrictEqual(S.equals({ name: 'a', age: 1 }, { name: 'a', age: 1 }), true)
+        assert.deepStrictEqual(S.equals({ name: 'a', age: 1 }, { name: 'b', age: 1 }), false)
+        assert.deepStrictEqual(S.equals({ name: 'a', age: 1 }, { name: 'b', age: 2 }), false)
+      })
     })
   })
 

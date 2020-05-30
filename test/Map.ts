@@ -1,15 +1,15 @@
 import * as assert from 'assert'
-import * as M from '../src/Map'
-import { semigroupSum, getStructSemigroup, getFirstSemigroup, getLastSemigroup } from '../src/Semigroup'
-import { monoidString } from '../src/Monoid'
-import { Refinement, identity, pipe } from '../src/function'
-import * as O from '../src/Option'
-import { Eq, eqNumber, fromEquals } from '../src/Eq'
 import * as A from '../src/Array'
 import { Either, left, right } from '../src/Either'
+import { Eq, eqNumber, fromEquals } from '../src/Eq'
+import { identity, pipe, Refinement } from '../src/function'
 import * as I from '../src/Identity'
-import { ord, ordString, fromCompare, ordNumber } from '../src/Ord'
-import { showString, getStructShow, Show } from '../src/Show'
+import * as M from '../src/Map'
+import { monoidString } from '../src/Monoid'
+import * as O from '../src/Option'
+import { contramap, fromCompare, ordNumber, ordString } from '../src/Ord'
+import { getFirstSemigroup, getLastSemigroup, getStructSemigroup, semigroupSum } from '../src/Semigroup'
+import { getStructShow, Show, showString } from '../src/Show'
 
 interface User {
   readonly id: string
@@ -17,7 +17,7 @@ interface User {
 
 const ordUser = pipe(
   ordString,
-  ord.contramap((u: User) => u.id)
+  contramap((u: User) => u.id)
 )
 
 const eqUser: Eq<User> = { equals: ordUser.equals }

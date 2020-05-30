@@ -6,7 +6,7 @@ import { identity, pipe, Refinement } from '../src/function'
 import * as I from '../src/Identity'
 import { monoidString } from '../src/Monoid'
 import * as O from '../src/Option'
-import { fromCompare, ord, ordNumber, ordString } from '../src/Ord'
+import { contramap, fromCompare, ordNumber, ordString } from '../src/Ord'
 import * as _ from '../src/ReadonlyMap'
 import { getFirstSemigroup, getLastSemigroup, getStructSemigroup, semigroupSum } from '../src/Semigroup'
 import { getStructShow, Show, showString } from '../src/Show'
@@ -17,7 +17,7 @@ interface User {
 
 const ordUser = pipe(
   ordString,
-  ord.contramap((u: User) => u.id)
+  contramap((u: User) => u.id)
 )
 
 const eqUser: Eq<User> = { equals: ordUser.equals }
