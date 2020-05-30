@@ -2,15 +2,18 @@
  * @since 2.0.0
  */
 import { Alt3, Alt3C } from './Alt'
+import { Applicative3, Applicative3C } from './Applicative'
+import { Apply3 } from './Apply'
 import { Bifunctor3 } from './Bifunctor'
 import * as E from './Either'
 import { getEitherM } from './EitherT'
-import { identity, Predicate, Refinement, pipe } from './function'
-import { Monad3, Monad3C } from './Monad'
-import { MonadThrow3, MonadThrow3C } from './MonadThrow'
+import { identity, pipe, Predicate, Refinement } from './function'
+import { Functor3 } from './Functor'
+import { Monad3 } from './Monad'
+import { MonadThrow3 } from './MonadThrow'
 import { Monoid } from './Monoid'
 import { Option } from './Option'
-import { getSemigroup as getReaderSemigroup, Reader, monadReader } from './Reader'
+import { getSemigroup as getReaderSemigroup, monadReader, Reader } from './Reader'
 import { Semigroup } from './Semigroup'
 import { getValidationM } from './ValidationT'
 
@@ -146,13 +149,11 @@ export function local<Q, R>(f: (f: Q) => R): <E, A>(ma: ReaderEither<R, E, A>) =
 /**
  * @since 2.3.0
  */
-export function getReaderValidation<E>(
-  S: Semigroup<E>
-): Monad3C<URI, E> & Bifunctor3<URI> & Alt3C<URI, E> & MonadThrow3C<URI, E> {
+export function getReaderValidation<E>(S: Semigroup<E>): Applicative3C<URI, E> & Alt3C<URI, E> {
   const T = getValidationM(S, monadReader)
   return {
+    URI,
     _E: undefined as any,
-    ...readerEither,
     ...T
   }
 }
@@ -266,11 +267,6 @@ export const flatten: <R, E, A>(mma: ReaderEither<R, E, ReaderEither<R, E, A>>) 
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderEither<R, E, A>) => ReaderEither<R, E, B> = T.map
-
-/**
- * @since 2.0.0
- */
 export const mapLeft: <E, G>(f: (e: E) => G) => <R, A>(fa: ReaderEither<R, E, A>) => ReaderEither<R, G, A> = T.mapLeft
 
 /**
@@ -314,14 +310,61 @@ export const filterOrElse: {
 /**
  * @since 2.0.0
  */
-export const readerEither: Monad3<URI> & Bifunctor3<URI> & Alt3<URI> & MonadThrow3<URI> = {
+export const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderEither<R, E, A>) => ReaderEither<R, E, B> = T.map
+
+/**
+ * @since 3.0.0
+ */
+export const functorReaderTask: Functor3<URI> = {
   URI,
-  bimap: T.bimap,
-  mapLeft: T.mapLeft,
-  map,
-  of: right,
-  ap,
-  chain,
-  alt: T.alt,
+  map
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applyReaderTask: Apply3<URI> = {
+  ...functorReaderTask,
+  ap
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applicativeReaderTask: Applicative3<URI> = {
+  ...applyReaderTask,
+  of: right
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadReaderTask: Monad3<URI> = {
+  ...applicativeReaderTask,
+  chain
+}
+
+/**
+ * @since 3.0.0
+ */
+export const bifunctorReaderTask: Bifunctor3<URI> = {
+  URI,
+  bimap,
+  mapLeft
+}
+
+/**
+ * @since 3.0.0
+ */
+export const altReaderTask: Alt3<URI> = {
+  ...functorReaderTask,
+  alt
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadThrowReaderTask: MonadThrow3<URI> = {
+  ...monadReaderTask,
   throwError: left
 }

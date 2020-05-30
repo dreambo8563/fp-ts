@@ -16,11 +16,15 @@ Added in v2.0.0
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
 - [alt](#alt)
+- [altReaderTask](#altreadertask)
 - [ap](#ap)
 - [apFirst](#apfirst)
 - [apSecond](#apsecond)
+- [applicativeReaderTask](#applicativereadertask)
+- [applyReaderTask](#applyreadertask)
 - [ask](#ask)
 - [asks](#asks)
+- [bifunctorReaderTask](#bifunctorreadertask)
 - [bimap](#bimap)
 - [chain](#chain)
 - [chainEitherK](#chaineitherk)
@@ -34,6 +38,7 @@ Added in v2.0.0
 - [fromEitherK](#fromeitherk)
 - [fromOption](#fromoption)
 - [fromPredicate](#frompredicate)
+- [functorReaderTask](#functorreadertask)
 - [getApplyMonoid](#getapplymonoid)
 - [getApplySemigroup](#getapplysemigroup)
 - [getOrElse](#getorelse)
@@ -45,8 +50,9 @@ Added in v2.0.0
 - [local](#local)
 - [map](#map)
 - [mapLeft](#mapleft)
+- [monadReaderTask](#monadreadertask)
+- [monadThrowReaderTask](#monadthrowreadertask)
 - [orElse](#orelse)
-- [readerEither](#readereither)
 - [right](#right)
 - [rightReader](#rightreader)
 - [swap](#swap)
@@ -95,6 +101,16 @@ export declare const alt: <R, E, A>(
 
 Added in v2.0.0
 
+# altReaderTask
+
+**Signature**
+
+```ts
+export declare const altReaderTask: Alt3<'ReaderEither'>
+```
+
+Added in v3.0.0
+
 # ap
 
 **Signature**
@@ -131,6 +147,26 @@ export declare const apSecond: <R, E, B>(
 
 Added in v2.0.0
 
+# applicativeReaderTask
+
+**Signature**
+
+```ts
+export declare const applicativeReaderTask: Applicative3<'ReaderEither'>
+```
+
+Added in v3.0.0
+
+# applyReaderTask
+
+**Signature**
+
+```ts
+export declare const applyReaderTask: Apply3<'ReaderEither'>
+```
+
+Added in v3.0.0
+
 # ask
 
 **Signature**
@@ -150,6 +186,16 @@ export declare function asks<R, E = never, A = never>(f: (r: R) => A): ReaderEit
 ```
 
 Added in v2.0.0
+
+# bifunctorReaderTask
+
+**Signature**
+
+```ts
+export declare const bifunctorReaderTask: Bifunctor3<'ReaderEither'>
+```
+
+Added in v3.0.0
 
 # bimap
 
@@ -307,6 +353,16 @@ export declare const fromPredicate: {
 
 Added in v2.0.0
 
+# functorReaderTask
+
+**Signature**
+
+```ts
+export declare const functorReaderTask: Functor3<'ReaderEither'>
+```
+
+Added in v3.0.0
+
 # getApplyMonoid
 
 **Signature**
@@ -357,9 +413,7 @@ Added in v2.6.0
 **Signature**
 
 ```ts
-export declare function getReaderValidation<E>(
-  S: Semigroup<E>
-): Monad3C<URI, E> & Bifunctor3<URI> & Alt3C<URI, E> & MonadThrow3C<URI, E>
+export declare function getReaderValidation<E>(S: Semigroup<E>): Applicative3C<URI, E> & Alt3C<URI, E>
 ```
 
 Added in v2.3.0
@@ -427,6 +481,26 @@ export declare const mapLeft: <E, G>(f: (e: E) => G) => <R, A>(fa: ReaderEither<
 
 Added in v2.0.0
 
+# monadReaderTask
+
+**Signature**
+
+```ts
+export declare const monadReaderTask: Monad3<'ReaderEither'>
+```
+
+Added in v3.0.0
+
+# monadThrowReaderTask
+
+**Signature**
+
+```ts
+export declare const monadThrowReaderTask: MonadThrow3<'ReaderEither'>
+```
+
+Added in v3.0.0
+
 # orElse
 
 **Signature**
@@ -435,19 +509,6 @@ Added in v2.0.0
 export declare const orElse: <E, R, M, A>(
   onLeft: (e: E) => ReaderEither<R, M, A>
 ) => (ma: ReaderEither<R, E, A>) => ReaderEither<R, M, A>
-```
-
-Added in v2.0.0
-
-# readerEither
-
-**Signature**
-
-```ts
-export declare const readerEither: Monad3<'ReaderEither'> &
-  Bifunctor3<'ReaderEither'> &
-  Alt3<'ReaderEither'> &
-  MonadThrow3<'ReaderEither'>
 ```
 
 Added in v2.0.0
