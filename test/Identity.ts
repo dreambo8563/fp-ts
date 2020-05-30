@@ -7,6 +7,26 @@ import * as O from '../src/Option'
 import { showString } from '../src/Show'
 
 describe('Identity', () => {
+  describe('instances', () => {
+    describe('Traversable', () => {
+      it('traverse', () => {
+        assert.deepStrictEqual(pipe(1, _.traverse(O.applicativeOption)(O.some)), O.some(1))
+        assert.deepStrictEqual(
+          pipe(
+            1,
+            _.traverse(O.applicativeOption)(() => O.none)
+          ),
+          O.none
+        )
+      })
+
+      it('sequence', () => {
+        const sequence = _.sequence(O.applicativeOption)
+        assert.deepStrictEqual(sequence(O.some('a')), O.some('a'))
+      })
+    })
+  })
+
   describe('pipeables', () => {
     it('map', () => {
       const double = (n: number): number => n * 2
@@ -89,23 +109,6 @@ describe('Identity', () => {
     assert.deepStrictEqual(S.equals(_.identity.of(1), _.identity.of(1)), true)
     assert.deepStrictEqual(S.equals(_.identity.of(1), _.identity.of(2)), false)
     assert.deepStrictEqual(S.equals(_.identity.of(2), _.identity.of(1)), false)
-  })
-
-  it('traverse', () => {
-    assert.deepStrictEqual(pipe(_.identity.of(1), _.traverse(O.applicativeOption)(O.some)), O.some(_.identity.of(1)))
-    assert.deepStrictEqual(
-      pipe(
-        _.identity.of(1),
-        _.traverse(O.applicativeOption)(() => O.none)
-      ),
-      O.none
-    )
-  })
-
-  it('sequence', () => {
-    const sequence = _.identity.sequence(O.applicativeOption)
-    const x1 = _.identity.of(O.some('a'))
-    assert.deepStrictEqual(sequence(x1), O.some(_.identity.of('a')))
   })
 
   it('getShow', () => {

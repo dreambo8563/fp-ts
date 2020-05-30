@@ -5,6 +5,22 @@ import * as O from '../src/Option'
 import * as _ from '../src/ReadonlyTuple'
 
 describe('ReadonlyTuple', () => {
+  describe('instances', () => {
+    describe('Traversable', () => {
+      it('traverse', () => {
+        const traverse = _.traverse(O.applicativeOption)((n: number) => (n > 1 ? O.some(n) : O.none))
+        assert.deepStrictEqual(traverse([2, 'a']), O.some([2, 'a']))
+        assert.deepStrictEqual(traverse([1, 'a']), O.none)
+      })
+
+      it('sequence', () => {
+        const sequence = _.sequence(O.applicativeOption)
+        assert.deepStrictEqual(sequence([O.some(2), 'a']), O.some([2, 'a']))
+        assert.deepStrictEqual(sequence([O.none, 'a']), O.none)
+      })
+    })
+  })
+
   describe('pipeables', () => {
     it('pipe', () => {
       assert.deepStrictEqual(pipe([1, 'a'] as const, _.pipe([true, 2])), [true, 'a'])
@@ -88,28 +104,5 @@ describe('ReadonlyTuple', () => {
       ),
       [2, 'ab']
     )
-  })
-
-  it('traverse', () => {
-    assert.deepStrictEqual(
-      pipe(
-        [2, 'a'] as const,
-        _.traverse(O.applicativeOption)((n) => (n >= 2 ? O.some(n) : O.none))
-      ),
-      O.some([2, 'a'])
-    )
-    assert.deepStrictEqual(
-      pipe(
-        [1, 'a'] as const,
-        _.traverse(O.applicativeOption)((n) => (n >= 2 ? O.some(n) : O.none))
-      ),
-      O.none
-    )
-  })
-
-  it('sequence', () => {
-    const sequence = _.readonlyTuple.sequence(O.applicativeOption)
-    assert.deepStrictEqual(sequence([O.some(2), 'a']), O.some([2, 'a']))
-    assert.deepStrictEqual(sequence([O.none, 'a']), O.none)
   })
 })

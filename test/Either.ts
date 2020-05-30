@@ -9,6 +9,25 @@ import { semigroupSum } from '../src/Semigroup'
 import { showString } from '../src/Show'
 
 describe('Either', () => {
+  describe('instances', () => {
+    describe('Traversable', () => {
+      it('traverse', () => {
+        const f = (a: number) => (a > 1 ? O.some(a) : O.none)
+        const traverse = _.traverse(O.applicativeOption)(f)
+        assert.deepStrictEqual(pipe(_.left('a'), traverse), O.some(_.left('a')))
+        assert.deepStrictEqual(pipe(_.right(1), traverse), O.none)
+        assert.deepStrictEqual(pipe(_.right(2), traverse), O.some(_.right(2)))
+      })
+
+      it('sequence', () => {
+        const sequence = _.sequence(O.applicativeOption)
+        assert.deepStrictEqual(pipe(_.right(O.some(1)), sequence), O.some(_.right(1)))
+        assert.deepStrictEqual(pipe(_.left('a'), sequence), O.some(_.left('a')))
+        assert.deepStrictEqual(pipe(_.right(O.none), sequence), O.none)
+      })
+    })
+  })
+
   describe('pipeables', () => {
     it('alt', () => {
       assert.deepStrictEqual(
@@ -347,39 +366,6 @@ describe('Either', () => {
       assert.deepStrictEqual(equals(_.left('foo'), _.left('foo')), true)
       assert.deepStrictEqual(equals(_.left('foo'), _.left('bar')), false)
       assert.deepStrictEqual(equals(_.left('foo'), _.right(1)), false)
-    })
-  })
-
-  describe('Traversable', () => {
-    it('traverse', () => {
-      assert.deepStrictEqual(
-        pipe(
-          _.left('foo'),
-          _.traverse(O.applicativeOption)((a) => (a >= 2 ? O.some(a) : O.none))
-        ),
-        O.some(_.left('foo'))
-      )
-      assert.deepStrictEqual(
-        pipe(
-          _.right(1),
-          _.traverse(O.applicativeOption)((a) => (a >= 2 ? O.some(a) : O.none))
-        ),
-        O.none
-      )
-      assert.deepStrictEqual(
-        pipe(
-          _.right(3),
-          _.traverse(O.applicativeOption)((a) => (a >= 2 ? O.some(a) : O.none))
-        ),
-        O.some(_.right(3))
-      )
-    })
-
-    it('sequence', () => {
-      const sequence = _.either.sequence(O.applicativeOption)
-      assert.deepStrictEqual(sequence(_.right(O.some('a'))), O.some(_.right('a')))
-      assert.deepStrictEqual(sequence(_.left(1)), O.some(_.left(1)))
-      assert.deepStrictEqual(sequence(_.right(O.none)), O.none)
     })
   })
 

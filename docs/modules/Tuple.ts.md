@@ -29,8 +29,10 @@ Added in v2.0.0
 - [pipe](#pipe)
 - [reduce](#reduce)
 - [reduceRight](#reduceright)
+- [sequence](#sequence)
 - [snd](#snd)
 - [swap](#swap)
+- [traverse](#traverse)
 - [tuple](#tuple)
 
 ---
@@ -205,6 +207,16 @@ export declare const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => <E>(fa: 
 
 Added in v2.0.0
 
+# sequence
+
+**Signature**
+
+```ts
+export declare const sequence: Sequence2<'Tuple'>
+```
+
+Added in v3.0.0
+
 # snd
 
 **Signature**
@@ -224,6 +236,16 @@ export declare const swap: <A, S>(sa: [A, S]) => [S, A]
 ```
 
 Added in v2.0.0
+
+# traverse
+
+**Signature**
+
+```ts
+export declare const traverse: Traverse2<'Tuple'>
+```
+
+Added in v3.0.0
 
 # tuple
 

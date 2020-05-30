@@ -11,6 +11,22 @@ import { semigroupString, semigroupSum } from '../src/Semigroup'
 import { showString } from '../src/Show'
 
 describe('O.NonEmptyArray', () => {
+  describe('instances', () => {
+    describe('Traversable', () => {
+      it('traverse', () => {
+        const traverse = _.traverse(O.applicativeOption)((n: number) => (n > 1 ? O.some(n) : O.none))
+        assert.deepStrictEqual(pipe([2, 3, 4], traverse), O.some([2, 3, 4]))
+        assert.deepStrictEqual(pipe([1, 2, 3], traverse), O.none)
+      })
+
+      it('sequence', () => {
+        const sequence = _.sequence(O.applicativeOption)
+        assert.deepStrictEqual(sequence([O.some(1), O.some(2), O.some(3)]), O.some([1, 2, 3]))
+        assert.deepStrictEqual(sequence([O.none, O.some(2), O.some(3)]), O.none)
+      })
+    })
+  })
+
   it('head', () => {
     assert.deepStrictEqual(_.head([1, 2]), 1)
   })
@@ -51,29 +67,6 @@ describe('O.NonEmptyArray', () => {
 
   it('extract', () => {
     assert.deepStrictEqual(_.nonEmptyArray.extract([1, 2, 3]), 1)
-  })
-
-  it('traverse', () => {
-    assert.deepStrictEqual(
-      pipe(
-        [1, 2, 3],
-        _.traverse(O.applicativeOption)((n) => (n >= 0 ? O.some(n) : O.none))
-      ),
-      O.some([1, 2, 3])
-    )
-    assert.deepStrictEqual(
-      pipe(
-        [1, 2, 3],
-        _.traverse(O.applicativeOption)((n) => (n >= 2 ? O.some(n) : O.none))
-      ),
-      O.none
-    )
-  })
-
-  it('sequence', () => {
-    const sequence = _.nonEmptyArray.sequence(O.applicativeOption)
-    assert.deepStrictEqual(sequence([O.some(1), O.some(2), O.some(3)]), O.some([1, 2, 3]))
-    assert.deepStrictEqual(sequence([O.none, O.some(2), O.some(3)]), O.none)
   })
 
   it('min', () => {

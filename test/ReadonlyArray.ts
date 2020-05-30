@@ -14,15 +14,20 @@ import { showString } from '../src/Show'
 
 describe('ReadonlyArray', () => {
   describe('instances', () => {
-    it('traverse', () => {
-      const f = (n: number): O.Option<number> => (n % 2 === 0 ? O.none : O.some(n))
-      assert.deepStrictEqual(O.isNone(_.traverse(O.applicativeOption)(f)([1, 2])), true)
-      assert.deepStrictEqual(_.traverse(O.applicativeOption)(f)([1, 3]), O.some([1, 3]))
-    })
+    describe('Traversable', () => {
+      it('traverse', () => {
+        const traverse = _.traverse(O.applicativeOption)(
+          (n: number): O.Option<number> => (n % 2 === 0 ? O.none : O.some(n))
+        )
+        assert.deepStrictEqual(traverse([1, 2]), O.none)
+        assert.deepStrictEqual(traverse([1, 3]), O.some([1, 3]))
+      })
 
-    it('sequence', () => {
-      assert.deepStrictEqual(_.readonlyArray.sequence(O.applicativeOption)([O.some(1), O.some(3)]), O.some([1, 3]))
-      assert.deepStrictEqual(_.readonlyArray.sequence(O.applicativeOption)([O.some(1), O.none]), O.none)
+      it('sequence', () => {
+        const sequence = _.sequence(O.applicativeOption)
+        assert.deepStrictEqual(sequence([O.some(1), O.some(3)]), O.some([1, 3]))
+        assert.deepStrictEqual(sequence([O.some(1), O.none]), O.none)
+      })
     })
 
     it('unfold', () => {

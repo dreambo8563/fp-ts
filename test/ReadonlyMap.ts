@@ -1,5 +1,5 @@
 import * as assert from 'assert'
-import { array } from '../src/Array'
+import * as A from '../src/Array'
 import { Either, left, right } from '../src/Either'
 import { Eq, eqNumber, fromEquals } from '../src/Eq'
 import { identity, pipe, Refinement } from '../src/function'
@@ -48,24 +48,74 @@ const repo = new Map<Key, Value>([
 ])
 
 describe('ReadonlyMap', () => {
-  describe('pipeables', () => {
-    it('map', () => {
-      const double = (n: number): number => n * 2
-      assert.deepStrictEqual(
-        pipe(
+  describe('instances', () => {
+    describe('Functor', () => {
+      it('functorReadonlyMap', () => {
+        assert.strictEqual(_.functorReadonlyMap.map, _.map)
+      })
+
+      it('map', () => {
+        assert.deepStrictEqual(
+          pipe(
+            new Map<string, number>([
+              ['a', 1],
+              ['b', 2]
+            ]),
+            _.map((n) => n * 2)
+          ),
           new Map<string, number>([
-            ['k1', 1],
-            ['k2', 2]
-          ]),
-          _.map(double)
-        ),
-        new Map<string, number>([
-          ['k1', 2],
-          ['k2', 4]
-        ])
-      )
+            ['a', 2],
+            ['b', 4]
+          ])
+        )
+      })
     })
 
+    describe('getFunctorWithIndex', () => {
+      it('mapWithIndex', () => {
+        assert.strictEqual(_.getFunctorWithIndex().mapWithIndex, _.mapWithIndex)
+
+        assert.deepStrictEqual(
+          pipe(
+            new Map<User, number>([[{ id: 'aa' }, 1]]),
+            _.mapWithIndex((k, a) => a + k.id.length)
+          ),
+          new Map<User, number>([[{ id: 'aa' }, 3]])
+        )
+      })
+    })
+
+    describe('Compactable', () => {
+      it('compactableReadonlyMap', () => {
+        assert.strictEqual(_.compactableReadonlyMap.compact, _.compact)
+        assert.strictEqual(_.compactableReadonlyMap.separate, _.separate)
+      })
+
+      it('compact', () => {
+        const fooBar = new Map<string, O.Option<number>>([
+          ['foo', O.none],
+          ['bar', O.some(123)]
+        ])
+        const bar = new Map<string, number>([['bar', 123]])
+        assert.deepStrictEqual(_.compact(fooBar), bar)
+      })
+
+      it('separate', () => {
+        const fooBar = new Map<string, Either<number, number>>([
+          ['foo', left(123)],
+          ['bar', right(123)]
+        ])
+        const foo = new Map<string, number>([['foo', 123]])
+        const bar = new Map<string, number>([['bar', 123]])
+        assert.deepStrictEqual(_.separate(fooBar), {
+          left: foo,
+          right: bar
+        })
+      })
+    })
+  })
+
+  describe('pipeables', () => {
     it('filter', () => {
       assert.deepStrictEqual(
         pipe(
@@ -377,10 +427,10 @@ describe('ReadonlyMap', () => {
 
   it('toUnfoldable', () => {
     const a1 = new Map<User, number>([[{ id: 'a' }, 1]])
-    const toUnfoldableO = _.toUnfoldable(ordUser, array)
+    const toUnfoldableO = _.toUnfoldable(ordUser, A.array)
     assert.deepStrictEqual(toUnfoldableO(a1), [[{ id: 'a' }, 1]])
 
-    const toUnfoldable = _.toUnfoldable(ordKey, array)
+    const toUnfoldable = _.toUnfoldable(ordKey, A.array)
     assert.deepStrictEqual(
       toUnfoldable(
         new Map([
@@ -714,47 +764,11 @@ describe('ReadonlyMap', () => {
     )
   })
 
-  describe('readonlyMap', () => {
-    describe('compactable', () => {
-      it('compact', () => {
-        const compact = _.readonlyMap.compact
-        const fooBar = new Map<string, O.Option<number>>([
-          ['foo', O.none],
-          ['bar', O.some(123)]
-        ])
-        const bar = new Map<string, number>([['bar', 123]])
-        assert.deepStrictEqual(compact(fooBar), bar)
-      })
-
-      it('separate', () => {
-        const separate = _.readonlyMap.separate
-        const fooBar = new Map<string, Either<number, number>>([
-          ['foo', left(123)],
-          ['bar', right(123)]
-        ])
-        const foo = new Map<string, number>([['foo', 123]])
-        const bar = new Map<string, number>([['bar', 123]])
-        assert.deepStrictEqual(separate(fooBar), {
-          left: foo,
-          right: bar
-        })
-      })
-    })
-  })
-
   describe('getWitherable', () => {
     const W = _.getWitherable(ordUser)
 
     it('mapWithIndex', () => {
-      const aa1 = new Map<User, number>([[{ id: 'aa' }, 1]])
-      const aa3 = new Map<User, number>([[{ id: 'aa' }, 3]])
-      assert.deepStrictEqual(
-        pipe(
-          aa1,
-          W.mapWithIndex((k, a) => a + k.id.length)
-        ),
-        aa3
-      )
+      assert.strictEqual(W.mapWithIndex, _.mapWithIndex)
     })
 
     it('reduce', () => {
@@ -879,17 +893,14 @@ describe('ReadonlyMap', () => {
     })
 
     it('sequence', () => {
-      const optionSequence = W.sequence(O.applicativeOption)
-      const m1 = new Map<User, O.Option<number>>([
-        [{ id: 'k1' }, O.some(1)],
-        [{ id: 'k2' }, O.some(2)]
-      ])
-      const m2 = new Map<User, O.Option<number>>([
-        [{ id: 'k1' }, O.none],
-        [{ id: 'k2' }, O.some(2)]
-      ])
+      const sequence = W.sequence(O.applicativeOption)
       assert.deepStrictEqual(
-        optionSequence(m1),
+        sequence(
+          new Map<User, O.Option<number>>([
+            [{ id: 'k1' }, O.some(1)],
+            [{ id: 'k2' }, O.some(2)]
+          ])
+        ),
         O.some(
           new Map<User, number>([
             [{ id: 'k1' }, 1],
@@ -897,36 +908,48 @@ describe('ReadonlyMap', () => {
           ])
         )
       )
-      assert.deepStrictEqual(optionSequence(m2), O.none)
+      assert.deepStrictEqual(
+        sequence(
+          new Map<User, O.Option<number>>([
+            [{ id: 'k1' }, O.none],
+            [{ id: 'k2' }, O.some(2)]
+          ])
+        ),
+        O.none
+      )
     })
 
     it('traverseWithIndex', () => {
-      const d1 = new Map<User, number>([
-        [{ id: 'k1' }, 1],
-        [{ id: 'k2' }, 2]
-      ])
-      const t1 = pipe(
-        d1,
-        W.traverseWithIndex(O.applicativeOption)(
-          (k, n): O.Option<number> => (!ordUser.equals(k, { id: 'k1' }) ? O.some(n) : O.none)
+      assert.deepStrictEqual(
+        pipe(
+          new Map<User, number>([
+            [{ id: 'a' }, 1],
+            [{ id: 'b' }, 2]
+          ]),
+          W.traverseWithIndex(O.applicativeOption)(
+            (k, n): O.Option<number> => (!ordUser.equals(k, { id: 'a' }) ? O.some(n) : O.none)
+          )
+        ),
+        O.none
+      )
+
+      assert.deepStrictEqual(
+        pipe(
+          new Map<User, number>([
+            [{ id: 'a' }, 1],
+            [{ id: 'b' }, 2]
+          ]),
+          W.traverseWithIndex(O.applicativeOption)(
+            (user, n): O.Option<number> => (!ordUser.equals(user, { id: 'c' }) ? O.some(n) : O.none)
+          )
+        ),
+        O.some(
+          new Map<User, number>([
+            [{ id: 'a' }, 1],
+            [{ id: 'b' }, 2]
+          ])
         )
       )
-      assert.deepStrictEqual(t1, O.none)
-      const d2 = new Map<User, number>([
-        [{ id: 'k1' }, 2],
-        [{ id: 'k2' }, 3]
-      ])
-      const t2 = pipe(
-        d2,
-        W.traverseWithIndex(O.applicativeOption)(
-          (k, n): O.Option<number> => (!ordUser.equals(k, { id: 'k3' }) ? O.some(n) : O.none)
-        )
-      )
-      const expected = new Map<User, number>([
-        [{ id: 'k1' }, 2],
-        [{ id: 'k2' }, 3]
-      ])
-      assert.deepStrictEqual(t2, O.some(expected))
     })
 
     it('wither', () => {
@@ -1029,7 +1052,7 @@ describe('ReadonlyMap', () => {
   it('fromFoldable', () => {
     const a1 = new Map<User, number>([[{ id: 'a' }, 1]])
     const a2 = new Map<User, number>([[{ id: 'a' }, 2]])
-    const fromFoldableS1 = _.fromFoldable(eqUser, getFirstSemigroup<number>(), array)
+    const fromFoldableS1 = _.fromFoldable(eqUser, getFirstSemigroup<number>(), A.array)
     assert.deepStrictEqual(fromFoldableS1([[{ id: 'a' }, 1]]), a1)
     assert.deepStrictEqual(
       fromFoldableS1([
@@ -1038,7 +1061,7 @@ describe('ReadonlyMap', () => {
       ]),
       a1
     )
-    const fromFoldableS2 = _.fromFoldable(eqUser, getLastSemigroup<number>(), array)
+    const fromFoldableS2 = _.fromFoldable(eqUser, getLastSemigroup<number>(), A.array)
     assert.deepStrictEqual(
       fromFoldableS2([
         [{ id: 'a' }, 1],

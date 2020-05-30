@@ -655,8 +655,7 @@ export const ap: Apply1<URI>['ap'] = (fa) => (fab) =>
  * @since 3.0.0
  */
 export const applyOption: Apply1<URI> = {
-  URI,
-  map,
+  ...functorOption,
   ap
 }
 
@@ -689,9 +688,7 @@ export const of: Applicative1<URI>['of'] = some
  * @since 3.0.0
  */
 export const applicativeOption: Applicative1<URI> = {
-  URI,
-  map,
-  ap,
+  ...applyOption,
   of
 }
 
@@ -704,10 +701,7 @@ export const chain: Monad1<URI>['chain'] = (f) => (ma) => (isNone(ma) ? none : f
  * @since 3.0.0
  */
 export const monadOption: Monad1<URI> = {
-  URI,
-  map,
-  ap,
-  of,
+  ...applicativeOption,
   chain
 }
 
@@ -734,11 +728,7 @@ export const flatten: <A>(mma: Option<Option<A>>) => Option<A> = chain(identity)
  * @since 3.0.0
  */
 export const monadThrowOption: MonadThrow1<URI> = {
-  URI,
-  map,
-  ap,
-  of,
-  chain,
+  ...monadOption,
   throwError: () => none
 }
 
@@ -806,10 +796,8 @@ export const partitionMap: Filterable1<URI>['partitionMap'] = (f) => (fa) => sep
  * @since 3.0.0
  */
 export const filterableOption: Filterable1<URI> = {
-  URI,
-  compact,
-  separate,
-  map,
+  ...compactableOption,
+  ...functorOption,
   filter,
   filterMap,
   partition,
@@ -859,11 +847,8 @@ export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F>) =>
  * @since 3.0.0
  */
 export const traversableOption: Traversable1<URI> = {
-  URI,
-  reduce,
-  foldMap,
-  reduceRight,
-  map,
+  ...foldableOption,
+  ...functorOption,
   traverse,
   sequence
 }
@@ -878,8 +863,7 @@ export const alt: <A>(that: () => Option<A>) => (fa: Option<A>) => Option<A> = (
  * @since 3.0.0
  */
 export const altOption: Alt1<URI> = {
-  URI,
-  map,
+  ...functorOption,
   alt
 }
 
@@ -887,11 +871,8 @@ export const altOption: Alt1<URI> = {
  * @since 3.0.0
  */
 export const alternativeOption: O<URI> = {
-  URI,
-  map,
-  ap,
-  of,
-  alt,
+  ...applicativeOption,
+  ...altOption,
   zero: () => none
 }
 
@@ -905,8 +886,7 @@ export const extend: <A, B>(f: (wa: Option<A>) => B) => (wa: Option<A>) => Optio
  * @since 3.0.0
  */
 export const extendOption: Extend1<URI> = {
-  URI,
-  map,
+  ...functorOption,
   extend
 }
 
@@ -952,19 +932,11 @@ export const wilt: Witherable1<URI>['wilt'] = <F>(F: Applicative<F>) => <A, B, C
  * @since 3.0.0
  */
 export const witherableOption: Witherable1<URI> = {
-  URI,
-  compact,
-  separate,
-  reduce,
-  foldMap,
-  reduceRight,
-  map,
-  filter,
-  filterMap,
-  partition,
-  partitionMap,
-  traverse,
-  sequence,
+  ...compactableOption,
+  ...foldableOption,
+  ...functorOption,
+  ...filterableOption,
+  ...traversableOption,
   wither,
   wilt
 }

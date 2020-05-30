@@ -19,14 +19,38 @@ const p = (n: number) => n > 2
 describe('Array', () => {
   const as = [1, 2, 3]
 
-  it('alt', () => {
-    assert.deepStrictEqual(
-      pipe(
-        [1, 2],
-        _.alt(() => [3, 4])
-      ),
-      [1, 2, 3, 4]
-    )
+  describe('instances', () => {
+    describe('Apply', () => {
+      it('ap', () => {
+        const as = pipe([(x: number) => x * 2, (x: number) => x * 3], _.ap([1, 2, 3]))
+        assert.deepStrictEqual(as, [2, 4, 6, 3, 6, 9])
+      })
+    })
+
+    describe('Alt', () => {
+      it('alt', () => {
+        assert.deepStrictEqual(
+          pipe(
+            [1, 2],
+            _.alt(() => [3, 4])
+          ),
+          [1, 2, 3, 4]
+        )
+      })
+    })
+
+    describe('Travserable', () => {
+      it('traverse', () => {
+        const f = (n: number): O.Option<number> => (n % 2 === 0 ? O.none : O.some(n))
+        assert.deepStrictEqual(O.isNone(_.traverse(O.applicativeOption)(f)([1, 2])), true)
+        assert.deepStrictEqual(_.traverse(O.applicativeOption)(f)([1, 3]), O.some([1, 3]))
+      })
+
+      it('sequence', () => {
+        assert.deepStrictEqual(_.sequence(O.applicativeOption)([O.some(1), O.some(3)]), O.some([1, 3]))
+        assert.deepStrictEqual(_.sequence(O.applicativeOption)([O.some(1), O.none]), O.none)
+      })
+    })
   })
 
   it('getMonoid', () => {
@@ -72,22 +96,6 @@ describe('Array', () => {
     assert.deepStrictEqual(O.compare(['b', 'a'], ['a', 'b']), 1, '[b, b], [a, a]')
     assert.deepStrictEqual(O.compare(['b', 'b'], ['b', 'a']), 1, '[b, b], [b, a]')
     assert.deepStrictEqual(O.compare(['b', 'a'], ['b', 'b']), -1, '[b, a], [b, b]')
-  })
-
-  it('ap', () => {
-    const as = pipe([(x: number) => x * 2, (x: number) => x * 3], _.ap([1, 2, 3]))
-    assert.deepStrictEqual(as, [2, 4, 6, 3, 6, 9])
-  })
-
-  it('traverse', () => {
-    const f = (n: number): O.Option<number> => (n % 2 === 0 ? O.none : O.some(n))
-    assert.deepStrictEqual(O.isNone(_.traverse(O.applicativeOption)(f)([1, 2])), true)
-    assert.deepStrictEqual(_.traverse(O.applicativeOption)(f)([1, 3]), O.some([1, 3]))
-  })
-
-  it('sequence', () => {
-    assert.deepStrictEqual(_.array.sequence(O.applicativeOption)([O.some(1), O.some(3)]), O.some([1, 3]))
-    assert.deepStrictEqual(_.array.sequence(O.applicativeOption)([O.some(1), O.none]), O.none)
   })
 
   it('unfold', () => {

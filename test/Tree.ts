@@ -7,6 +7,23 @@ import { showString } from '../src/Show'
 import * as _ from '../src/Tree'
 
 describe('Tree', () => {
+  describe('instances', () => {
+    describe('Traversable', () => {
+      it('traverse', () => {
+        const fa = _.make('a', [_.make('b'), _.make('c')])
+        assert.deepStrictEqual(pipe(fa, _.traverse(I.identity)(identity)), fa)
+      })
+
+      it('sequence', () => {
+        const sequence = _.sequence(I.identity)
+        assert.deepStrictEqual(
+          sequence(_.make('a', [_.make('b'), _.make('c')])),
+          _.make('a', [_.make('b'), _.make('c')])
+        )
+      })
+    })
+  })
+
   it('map', () => {
     const double = (n: number): number => n * 2
     const fa = _.make(1, [_.make(2), _.make(3)])
@@ -83,23 +100,6 @@ describe('Tree', () => {
     const x = _.make('a', [_.make('b'), _.make('c')])
     const f = (a: string, acc: string) => acc + a
     assert.deepStrictEqual(pipe(x, _.reduceRight('', f)), 'cba')
-  })
-
-  it('traverse', () => {
-    const fa = _.make('a', [_.make('b'), _.make('c')])
-    assert.deepStrictEqual(
-      pipe(
-        fa,
-        _.traverse(I.identity)((a) => I.identity.of(a))
-      ),
-      I.identity.of(fa)
-    )
-  })
-
-  it('sequence', () => {
-    const sequence = _.tree.sequence(I.identity)
-    const x1 = _.make(I.identity.of<string>('a'), [_.make(I.identity.of('b')), _.make(I.identity.of('c'))])
-    assert.deepStrictEqual(sequence(x1), I.identity.of(_.make('a', [_.make('b'), _.make('c')])))
   })
 
   it('drawTree', () => {

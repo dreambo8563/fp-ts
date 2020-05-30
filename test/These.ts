@@ -8,6 +8,34 @@ import { showString } from '../src/Show'
 import * as _ from '../src/These'
 
 describe('These', () => {
+  describe('instances', () => {
+    describe('Traversable', () => {
+      it('traverse', () => {
+        const traverse = _.traverse(O.applicativeOption)((n: number) => (n > 1 ? O.some(n) : O.none))
+        assert.deepStrictEqual(pipe(_.left('a'), traverse), O.some(_.left('a')))
+        assert.deepStrictEqual(pipe(_.right(2), traverse), O.some(_.right(2)))
+        assert.deepStrictEqual(pipe(_.right(1), traverse), O.none)
+        assert.deepStrictEqual(pipe(_.both('a', 2), traverse), O.some(_.both('a', 2)))
+        assert.deepStrictEqual(
+          pipe(
+            _.both('a', 1),
+            _.traverse(O.applicativeOption)((n) => (n >= 2 ? O.some(n) : O.none))
+          ),
+          O.none
+        )
+      })
+
+      it('sequence', () => {
+        const sequence = _.sequence(O.applicativeOption)
+        assert.deepStrictEqual(sequence(_.left('a')), O.some(_.left('a')))
+        assert.deepStrictEqual(sequence(_.right(O.some(1))), O.some(_.right(1)))
+        assert.deepStrictEqual(sequence(_.right(O.none)), O.none)
+        assert.deepStrictEqual(sequence(_.both('a', O.some(1))), O.some(_.both('a', 1)))
+        assert.deepStrictEqual(sequence(_.both('a', O.none)), O.none)
+      })
+    })
+  })
+
   describe('pipeables', () => {
     it('map', () => {
       const double = (n: number) => n * 2
@@ -135,58 +163,6 @@ describe('These', () => {
     assert.deepStrictEqual(f(_.left('b')), ['b', 1])
     assert.deepStrictEqual(f(_.right(2)), ['a', 2])
     assert.deepStrictEqual(f(_.both('b', 2)), ['b', 2])
-  })
-
-  it('traverse', () => {
-    assert.deepStrictEqual(
-      pipe(
-        _.left('a'),
-        _.traverse(O.applicativeOption)((n) => (n >= 2 ? O.some(n) : O.none))
-      ),
-      O.some(_.left('a'))
-    )
-    assert.deepStrictEqual(
-      pipe(
-        _.right(2),
-        _.traverse(O.applicativeOption)((n) => (n >= 2 ? O.some(n) : O.none))
-      ),
-      O.some(_.right(2))
-    )
-    assert.deepStrictEqual(
-      pipe(
-        _.right(1),
-        _.traverse(O.applicativeOption)((n) => (n >= 2 ? O.some(n) : O.none))
-      ),
-      O.none
-    )
-    assert.deepStrictEqual(
-      pipe(
-        _.both('a', 2),
-        _.traverse(O.applicativeOption)((n) => (n >= 2 ? O.some(n) : O.none))
-      ),
-      O.some(_.both('a', 2))
-    )
-    assert.deepStrictEqual(
-      pipe(
-        _.both('a', 1),
-        _.traverse(O.applicativeOption)((n) => (n >= 2 ? O.some(n) : O.none))
-      ),
-      O.none
-    )
-  })
-
-  it('sequence', () => {
-    const sequence = _.these.sequence(O.applicativeOption)
-    const x1 = _.left('a')
-    assert.deepStrictEqual(sequence(x1), O.some(_.left('a')))
-    const x2 = _.right(O.some(1))
-    assert.deepStrictEqual(sequence(x2), O.some(_.right(1)))
-    const x3 = _.right(O.none)
-    assert.deepStrictEqual(sequence(x3), O.none)
-    const x4 = _.both('a', O.some(1))
-    assert.deepStrictEqual(sequence(x4), O.some(_.both('a', 1)))
-    const x5 = _.both('a', O.none)
-    assert.deepStrictEqual(sequence(x5), O.none)
   })
 
   it('getLeft', () => {

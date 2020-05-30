@@ -121,6 +121,16 @@ export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => <E>(fa: [A, E]) => B 
  */
 export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => <E>(fa: [A, E]) => B = RT.reduceRight
 
+/**
+ * @since 3.0.0
+ */
+export const traverse: Traversable2<URI>['traverse'] = RT.traverse as any
+
+/**
+ * @since 3.0.0
+ */
+export const sequence: Traversable2<URI>['sequence'] = RT.sequence as any
+
 // -------------------------------------------------------------------------------------
 // instances
 // -------------------------------------------------------------------------------------

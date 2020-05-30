@@ -16,15 +16,20 @@ Added in v2.5.0
 - [URI](#uri)
 - [collect](#collect)
 - [compact](#compact)
+- [compactableReadonlyMap](#compactablereadonlymap)
 - [deleteAt](#deleteat)
 - [elem](#elem)
 - [empty](#empty)
 - [filter](#filter)
 - [filterMap](#filtermap)
+- [filterableReadonlyMap](#filterablereadonlymap)
 - [fromFoldable](#fromfoldable)
 - [fromMap](#frommap)
+- [functorReadonlyMap](#functorreadonlymap)
 - [getEq](#geteq)
 - [getFilterableWithIndex](#getfilterablewithindex)
+- [getFoldableWithIndex](#getfoldablewithindex)
+- [getFunctorWithIndex](#getfunctorwithindex)
 - [getMonoid](#getmonoid)
 - [getShow](#getshow)
 - [getWitherable](#getwitherable)
@@ -41,7 +46,6 @@ Added in v2.5.0
 - [partition](#partition)
 - [partitionMap](#partitionmap)
 - [pop](#pop)
-- [readonlyMap](#readonlymap)
 - [separate](#separate)
 - [singleton](#singleton)
 - [size](#size)
@@ -90,10 +94,20 @@ Added in v2.5.0
 **Signature**
 
 ```ts
-export declare const compact: <K, A>(fa: ReadonlyMap<K, O.Option<A>>) => ReadonlyMap<K, A>
+export declare const compact: <E, A>(fa: ReadonlyMap<E, O.Option<A>>) => ReadonlyMap<E, A>
 ```
 
 Added in v2.5.0
+
+# compactableReadonlyMap
+
+**Signature**
+
+```ts
+export declare const compactableReadonlyMap: Compactable2<'ReadonlyMap'>
+```
+
+Added in v3.0.0
 
 # deleteAt
 
@@ -149,6 +163,16 @@ export declare const filterMap: <A, B>(f: (a: A) => O.Option<B>) => <E>(fa: Read
 
 Added in v2.5.0
 
+# filterableReadonlyMap
+
+**Signature**
+
+```ts
+export declare const filterableReadonlyMap: Filterable2<'ReadonlyMap'>
+```
+
+Added in v2.5.0
+
 # fromFoldable
 
 Create a map from a foldable collection of key/value pairs, using the
@@ -191,6 +215,16 @@ export declare function fromMap<K, A>(m: Map<K, A>): ReadonlyMap<K, A>
 
 Added in v2.5.0
 
+# functorReadonlyMap
+
+**Signature**
+
+```ts
+export declare const functorReadonlyMap: Functor2<'ReadonlyMap'>
+```
+
+Added in v3.0.0
+
 # getEq
 
 **Signature**
@@ -210,6 +244,26 @@ export declare function getFilterableWithIndex<K = never>(): FilterableWithIndex
 ```
 
 Added in v2.5.0
+
+# getFoldableWithIndex
+
+**Signature**
+
+```ts
+export declare function getFoldableWithIndex<K>(O: Ord<K>): FoldableWithIndex2C<URI, K, K>
+```
+
+Added in v3.0.0
+
+# getFunctorWithIndex
+
+**Signature**
+
+```ts
+export declare function getFunctorWithIndex<K = never>(): FunctorWithIndex2C<URI, K, K>
+```
+
+Added in v3.0.0
 
 # getMonoid
 
@@ -321,7 +375,7 @@ Added in v2.5.0
 **Signature**
 
 ```ts
-export declare const map: <A, B>(f: (a: A) => B) => <K>(fa: ReadonlyMap<K, A>) => ReadonlyMap<K, B>
+export declare const map: <A, B>(f: (a: A) => B) => <E>(fa: ReadonlyMap<E, A>) => ReadonlyMap<E, B>
 ```
 
 Added in v2.5.0
@@ -396,24 +450,14 @@ export declare function pop<K>(
 
 Added in v2.5.0
 
-# readonlyMap
-
-**Signature**
-
-```ts
-export declare const readonlyMap: Filterable2<'ReadonlyMap'>
-```
-
-Added in v2.5.0
-
 # separate
 
 **Signature**
 
 ```ts
-export declare const separate: <K, A, B>(
-  fa: ReadonlyMap<K, Either<A, B>>
-) => Separated<ReadonlyMap<K, A>, ReadonlyMap<K, B>>
+export declare const separate: <E, A, B>(
+  fa: ReadonlyMap<E, Either<A, B>>
+) => Separated<ReadonlyMap<E, A>, ReadonlyMap<E, B>>
 ```
 
 Added in v2.5.0

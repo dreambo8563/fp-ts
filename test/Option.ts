@@ -1,5 +1,5 @@
 import * as assert from 'assert'
-import { array } from '../src/Array'
+import * as A from '../src/Array'
 import { left, right } from '../src/Either'
 import { eqNumber } from '../src/Eq'
 import { identity, pipe } from '../src/function'
@@ -13,13 +13,47 @@ import { showString } from '../src/Show'
 const p = (n: number): boolean => n > 2
 
 describe('Option', () => {
-  describe('pipeables', () => {
-    it('map', () => {
-      const double = (n: number) => n * 2
-      assert.deepStrictEqual(pipe(_.some(2), _.map(double)), _.some(4))
-      assert.deepStrictEqual(pipe(_.none, _.map(double)), _.none)
+  describe('instances', () => {
+    describe('Functor', () => {
+      it('functorOption', () => {
+        assert.strictEqual(_.functorOption.map, _.map)
+      })
+
+      it('map', () => {
+        const double = (n: number) => n * 2
+        assert.deepStrictEqual(pipe(_.some(2), _.map(double)), _.some(4))
+        assert.deepStrictEqual(pipe(_.none, _.map(double)), _.none)
+      })
     })
 
+    describe('Traversable', () => {
+      it('traverse', () => {
+        assert.deepStrictEqual(
+          pipe(
+            _.some('a'),
+            _.traverse(A.array)(() => A.empty)
+          ),
+          []
+        )
+        assert.deepStrictEqual(
+          pipe(
+            _.some('a'),
+            _.traverse(A.array)((s) => [s.length])
+          ),
+          [_.some(1)]
+        )
+        assert.deepStrictEqual(pipe(_.none, _.traverse(A.array)(A.of)), [_.none])
+      })
+
+      it('sequence', () => {
+        const sequence = _.sequence(A.array)
+        assert.deepStrictEqual(sequence(_.some([1, 2])), [_.some(1), _.some(2)])
+        assert.deepStrictEqual(sequence(_.none), [_.none])
+      })
+    })
+  })
+
+  describe('pipeables', () => {
     it('ap', () => {
       const double = (n: number) => n * 2
       assert.deepStrictEqual(pipe(_.some(double), _.ap(_.some(2))), _.some(4))
@@ -302,37 +336,6 @@ describe('Option', () => {
     const parseDirection = _.fromPredicate((s: string): s is Direction => s === 'asc' || s === 'desc')
     assert.deepStrictEqual(parseDirection('asc'), _.some('asc'))
     assert.deepStrictEqual(parseDirection('foo'), _.none)
-  })
-
-  describe('Traversable', () => {
-    it('traverse', () => {
-      assert.deepStrictEqual(
-        pipe(
-          _.some('hello'),
-          _.traverse(array)(() => [])
-        ),
-        []
-      )
-      assert.deepStrictEqual(
-        pipe(
-          _.some('hello'),
-          _.traverse(array)((s) => [s.length])
-        ),
-        [_.some(5)]
-      )
-      assert.deepStrictEqual(
-        pipe(
-          _.none,
-          _.traverse(array)((s) => [s])
-        ),
-        [_.none]
-      )
-    })
-
-    it('sequence', () => {
-      assert.deepStrictEqual(_.sequence(array)(_.some([1, 2])), [_.some(1), _.some(2)])
-      assert.deepStrictEqual(_.sequence(array)(_.none), [_.none])
-    })
   })
 
   it('getApplySemigroup', () => {
