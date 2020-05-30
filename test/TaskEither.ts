@@ -3,7 +3,7 @@ import * as A from '../src/Array'
 import * as E from '../src/Either'
 import { pipe } from '../src/function'
 import * as IO from '../src/IO'
-import { ioEither } from '../src/IOEither'
+import * as IE from '../src/IOEither'
 import { monoidString } from '../src/Monoid'
 import { none, some } from '../src/Option'
 import { getMonoid } from '../src/ReadonlyArray'
@@ -444,7 +444,7 @@ describe('TaskEither', () => {
   })
 
   it('chainIOEitherK', async () => {
-    const f = (s: string) => ioEither.of(s.length)
+    const f = (s: string) => IE.right(s.length)
     const x = await pipe(_.right('a'), _.chainIOEitherK(f))()
     assert.deepStrictEqual(x, E.right(1))
   })

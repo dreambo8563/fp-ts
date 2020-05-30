@@ -497,8 +497,8 @@ describe('Either', () => {
     })
   })
 
-  describe('Validation', () => {
-    it('getValidation', () => {
+  describe('getValidation', () => {
+    it('ap', () => {
       const M = _.getValidation(monoidString)
       assert.deepStrictEqual(M.of(1), _.right(1))
       const double = (n: number) => n * 2
@@ -508,15 +508,40 @@ describe('Either', () => {
       assert.deepStrictEqual(pipe(_.left('foo'), M.ap(_.left('bar'))), _.left('foobar'))
     })
 
-    it('getValidationMonoid', () => {
-      const M = _.getValidationMonoid(monoidString, monoidSum)
-      assert.deepStrictEqual(M.concat(_.right(1), _.right(2)), _.right(3))
-      assert.deepStrictEqual(M.concat(_.right(1), _.left('foo')), _.left('foo'))
-      assert.deepStrictEqual(M.concat(_.left('foo'), _.right(1)), _.left('foo'))
-      assert.deepStrictEqual(M.concat(_.left('foo'), _.left('bar')), _.left('foobar'))
-      assert.deepStrictEqual(M.concat(_.right(1), M.empty), _.right(1))
-      assert.deepStrictEqual(M.concat(M.empty, _.right(1)), _.right(1))
+    it('alt', () => {
+      const M = _.getValidation(monoidString)
+      assert.deepStrictEqual(
+        pipe(
+          _.left('a'),
+          M.alt(() => _.right(1))
+        ),
+        _.right(1)
+      )
+      assert.deepStrictEqual(
+        pipe(
+          _.right(1),
+          M.alt(() => _.left('a'))
+        ),
+        _.right(1)
+      )
+      assert.deepStrictEqual(
+        pipe(
+          _.left('a'),
+          M.alt(() => _.left('b'))
+        ),
+        _.left('ab')
+      )
     })
+  })
+
+  it('getValidationMonoid', () => {
+    const M = _.getValidationMonoid(monoidString, monoidSum)
+    assert.deepStrictEqual(M.concat(_.right(1), _.right(2)), _.right(3))
+    assert.deepStrictEqual(M.concat(_.right(1), _.left('foo')), _.left('foo'))
+    assert.deepStrictEqual(M.concat(_.left('foo'), _.right(1)), _.left('foo'))
+    assert.deepStrictEqual(M.concat(_.left('foo'), _.left('bar')), _.left('foobar'))
+    assert.deepStrictEqual(M.concat(_.right(1), M.empty), _.right(1))
+    assert.deepStrictEqual(M.concat(M.empty, _.right(1)), _.right(1))
   })
 
   it('fromOption', () => {

@@ -32,7 +32,7 @@
  * @since 2.0.0
  */
 
-import { Alt2 } from './Alt'
+import { Alt2, Alt2C } from './Alt'
 import { Applicative, Applicative2, Applicative2C } from './Applicative'
 import { Apply2 } from './Apply'
 import { Bifunctor2 } from './Bifunctor'
@@ -478,9 +478,9 @@ export function getWitherable<E>(M: Monoid<E>): Witherable2C<URI, E> {
 }
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export function getValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> {
+export function getValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E> {
   return {
     ...applicativeEither,
     _E: undefined as any,
@@ -491,7 +491,14 @@ export function getValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> {
           : mab
         : isLeft(ma)
         ? ma
-        : right(mab.right(ma.right))
+        : right(mab.right(ma.right)),
+    alt: (that) => (fa) => {
+      if (isRight(fa)) {
+        return fa
+      }
+      const fy = that()
+      return isLeft(fy) ? left(S.concat(fa.left, fy.left)) : fy
+    }
   }
 }
 

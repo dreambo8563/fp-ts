@@ -5,15 +5,18 @@
  * @since 2.0.0
  */
 import { Alt2, Alt2C } from './Alt'
+import { Applicative2, Applicative2C } from './Applicative'
+import { Apply2 } from './Apply'
 import { Bifunctor2 } from './Bifunctor'
 import * as E from './Either'
 import { getEitherM } from './EitherT'
 import { Filterable2C, getFilterableComposition } from './Filterable'
-import { identity, Lazy, Predicate, Refinement, pipe } from './function'
+import { identity, Lazy, pipe, Predicate, Refinement } from './function'
+import { Functor2 } from './Functor'
 import { getSemigroup as getIOSemigroup, IO, monadIO } from './IO'
-import { Monad2, Monad2C } from './Monad'
-import { MonadIO2, MonadIO2C } from './MonadIO'
-import { MonadThrow2, MonadThrow2C } from './MonadThrow'
+import { Monad2 } from './Monad'
+import { MonadIO2 } from './MonadIO'
+import { MonadThrow2 } from './MonadThrow'
 import { Monoid } from './Monoid'
 import { Option } from './Option'
 import { Semigroup } from './Semigroup'
@@ -159,15 +162,13 @@ export function bracket<E, A, B>(
 }
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export function getIOValidation<E>(
-  S: Semigroup<E>
-): Monad2C<URI, E> & Bifunctor2<URI> & Alt2C<URI, E> & MonadIO2C<URI, E> & MonadThrow2C<URI, E> {
+export function getIOValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E> {
   const T = getValidationM(S, monadIO)
   return {
+    URI,
     _E: undefined as any,
-    ...ioEither,
     ...T
   }
 }
@@ -208,12 +209,64 @@ export function chainEitherK<E, A, B>(f: (a: A) => Either<E, B>): (ma: IOEither<
 /**
  * @since 2.0.0
  */
-export const alt: <E, A>(that: () => IOEither<E, A>) => (fa: IOEither<E, A>) => IOEither<E, A> = T.alt
+export const fromOption: <E>(onNone: () => E) => <A>(ma: Option<A>) => IOEither<E, A> = (onNone) => (ma) =>
+  ma._tag === 'None' ? left(onNone()) : right(ma.value)
+
+/**
+ * @since 2.0.0
+ */
+export const fromPredicate: {
+  <E, A, B extends A>(refinement: Refinement<A, B>, onFalse: (a: A) => E): (a: A) => IOEither<E, B>
+  <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E): (a: A) => IOEither<E, A>
+} = <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E) => (a: A) => (predicate(a) ? right(a) : left(onFalse(a)))
+
+/**
+ * @since 2.0.0
+ */
+export const filterOrElse: {
+  <E, A, B extends A>(refinement: Refinement<A, B>, onFalse: (a: A) => E): (ma: IOEither<E, A>) => IOEither<E, B>
+  <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E): (ma: IOEither<E, A>) => IOEither<E, A>
+} = <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E) => (ma: IOEither<E, A>) =>
+  pipe(
+    ma,
+    chain((a) => (predicate(a) ? right(a) : left(onFalse(a))))
+  )
+
+/**
+ * @since 2.0.0
+ */
+export const fromEither: <E, A>(ma: E.Either<E, A>) => IOEither<E, A> = (ma) =>
+  ma._tag === 'Left' ? left(ma.left) : right(ma.right)
+
+// -------------------------------------------------------------------------------------
+// instances
+// -------------------------------------------------------------------------------------
+
+/**
+ * @since 2.0.0
+ */
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: IOEither<E, A>) => IOEither<E, B> = T.map
+
+/**
+ * @since 3.0.0
+ */
+export const functorIOEither: Functor2<URI> = {
+  URI,
+  map
+}
 
 /**
  * @since 2.0.0
  */
 export const ap: <E, A>(fa: IOEither<E, A>) => <B>(fab: IOEither<E, (a: A) => B>) => IOEither<E, B> = T.ap
+
+/**
+ * @since 3.0.0
+ */
+export const applyIOEither: Apply2<URI> = {
+  ...functorIOEither,
+  ap
+}
 
 /**
  * @since 2.0.0
@@ -236,9 +289,30 @@ export const apSecond = <E, B>(fb: IOEither<E, B>) => <A>(fa: IOEither<E, A>): I
   )
 
 /**
+ * @since 3.0.0
+ */
+export const of: <E = never, A = never>(a: A) => IOEither<E, A> = right
+
+/**
+ * @since 3.0.0
+ */
+export const applicativeIOEither: Applicative2<URI> = {
+  ...applyIOEither,
+  of
+}
+
+/**
  * @since 2.0.0
  */
 export const chain: <E, A, B>(f: (a: A) => IOEither<E, B>) => (ma: IOEither<E, A>) => IOEither<E, B> = T.chain
+
+/**
+ * @since 3.0.0
+ */
+export const monadIOEither: Monad2<URI> = {
+  ...applicativeIOEither,
+  chain
+}
 
 /**
  * @since 2.0.0
@@ -278,61 +352,42 @@ export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: IOEithe
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: IOEither<E, A>) => IOEither<E, B> = T.map
-
-/**
- * @since 2.0.0
- */
 export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: IOEither<E, A>) => IOEither<G, A> = T.mapLeft
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const fromOption: <E>(onNone: () => E) => <A>(ma: Option<A>) => IOEither<E, A> = (onNone) => (ma) =>
-  ma._tag === 'None' ? left(onNone()) : right(ma.value)
-
-/**
- * @since 2.0.0
- */
-export const fromPredicate: {
-  <E, A, B extends A>(refinement: Refinement<A, B>, onFalse: (a: A) => E): (a: A) => IOEither<E, B>
-  <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E): (a: A) => IOEither<E, A>
-} = <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E) => (a: A) => (predicate(a) ? right(a) : left(onFalse(a)))
-
-/**
- * @since 2.0.0
- */
-export const filterOrElse: {
-  <E, A, B extends A>(refinement: Refinement<A, B>, onFalse: (a: A) => E): (ma: IOEither<E, A>) => IOEither<E, B>
-  <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E): (ma: IOEither<E, A>) => IOEither<E, A>
-} = <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E) => (ma: IOEither<E, A>) =>
-  pipe(
-    ma,
-    chain((a) => (predicate(a) ? right(a) : left(onFalse(a))))
-  )
-
-/**
- * @since 2.0.0
- */
-export const fromEither: <E, A>(ma: E.Either<E, A>) => IOEither<E, A> = (ma) =>
-  ma._tag === 'Left' ? left(ma.left) : right(ma.right)
-
-// -------------------------------------------------------------------------------------
-// instances
-// -------------------------------------------------------------------------------------
-
-/**
- * @since 2.0.0
- */
-export const ioEither: Monad2<URI> & Bifunctor2<URI> & Alt2<URI> & MonadIO2<URI> & MonadThrow2<URI> = {
+export const bifunctorIOEither: Bifunctor2<URI> = {
   URI,
-  bimap: T.bimap,
-  mapLeft: T.mapLeft,
-  map,
-  of: right,
-  ap,
-  chain,
-  alt,
-  fromIO: rightIO,
+  bimap,
+  mapLeft
+}
+
+/**
+ * @since 2.0.0
+ */
+export const alt: <E, A>(that: () => IOEither<E, A>) => (fa: IOEither<E, A>) => IOEither<E, A> = T.alt
+
+/**
+ * @since 3.0.0
+ */
+export const altIOEither: Alt2<URI> = {
+  ...functorIOEither,
+  alt
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadIOIOEither: MonadIO2<URI> = {
+  ...monadIOEither,
+  fromIO: rightIO
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadThrowIOEither: MonadThrow2<URI> = {
+  ...monadIOEither,
   throwError: left
 }

@@ -584,10 +584,10 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function getValidation<E>(S: Semigroup<E>): Applicative2C<URI, E>
+export declare function getValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E>
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # getValidationMonoid
 

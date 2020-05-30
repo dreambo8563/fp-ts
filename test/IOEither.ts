@@ -171,28 +171,52 @@ describe('IOEither', () => {
 
   it('fold', () => {
     assert.deepStrictEqual(
-      _.fold(
-        () => IO.of('left'),
-        () => IO.of('right')
-      )(_.ioEither.of(1))(),
+      pipe(
+        _.right(1),
+        _.fold(
+          () => IO.of('left'),
+          () => IO.of('right')
+        )
+      )(),
       'right'
     )
     assert.deepStrictEqual(
-      _.fold(
-        () => IO.of('left'),
-        () => IO.of('right')
-      )(_.left(1))(),
+      pipe(
+        _.left(1),
+        _.fold(
+          () => IO.of('left'),
+          () => IO.of('right')
+        )
+      )(),
       'left'
     )
   })
 
   it('getOrElse', () => {
-    assert.deepStrictEqual(_.getOrElse(() => IO.of(2))(_.ioEither.of(1))(), 1)
-    assert.deepStrictEqual(_.getOrElse(() => IO.of(2))(_.left(1))(), 2)
+    assert.deepStrictEqual(
+      pipe(
+        _.right(1),
+        _.getOrElse(() => IO.of(2))
+      )(),
+      1
+    )
+    assert.deepStrictEqual(
+      pipe(
+        _.left(1),
+        _.getOrElse(() => IO.of(2))
+      )(),
+      2
+    )
   })
 
   it('orElse', () => {
-    assert.deepStrictEqual(_.orElse(() => _.ioEither.of(2))(_.ioEither.of(1))(), E.right(1))
+    assert.deepStrictEqual(
+      pipe(
+        _.right(1),
+        _.orElse(() => _.right(2))
+      )(),
+      E.right(1)
+    )
   })
 
   it('tryCatch', () => {
@@ -301,24 +325,6 @@ describe('IOEither', () => {
       assert.deepStrictEqual(e1, E.left('ab'))
     })
 
-    it('chain', () => {
-      const e1 = pipe(
-        _.right(3),
-        IV.chain((a) => (a > 2 ? _.right(a) : _.left('b')))
-      )()
-      assert.deepStrictEqual(e1, E.right(3))
-      const e2 = pipe(
-        _.right(1),
-        IV.chain((a) => (a > 2 ? _.right(a) : _.left('b')))
-      )()
-      assert.deepStrictEqual(e2, E.left('b'))
-      const e3 = pipe(
-        _.left('a'),
-        IV.chain((a) => (a > 2 ? _.right(a) : _.left('b')))
-      )()
-      assert.deepStrictEqual(e3, E.left('a'))
-    })
-
     it('alt', () => {
       const e1 = pipe(
         _.right(1),
@@ -344,10 +350,7 @@ describe('IOEither', () => {
   })
 
   describe('getFilterable', () => {
-    const F_ = {
-      ..._.ioEither,
-      ..._.getFilterable(getMonoid<string>())
-    }
+    const F_ = _.getFilterable(getMonoid<string>())
 
     it('filter', async () => {
       const r1 = pipe(

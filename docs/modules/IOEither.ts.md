@@ -19,9 +19,13 @@ Added in v2.0.0
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
 - [alt](#alt)
+- [altIOEither](#altioeither)
 - [ap](#ap)
 - [apFirst](#apfirst)
 - [apSecond](#apsecond)
+- [applicativeIOEither](#applicativeioeither)
+- [applyIOEither](#applyioeither)
+- [bifunctorIOEither](#bifunctorioeither)
 - [bimap](#bimap)
 - [bracket](#bracket)
 - [chain](#chain)
@@ -36,6 +40,7 @@ Added in v2.0.0
 - [fromEitherK](#fromeitherk)
 - [fromOption](#fromoption)
 - [fromPredicate](#frompredicate)
+- [functorIOEither](#functorioeither)
 - [getApplyMonoid](#getapplymonoid)
 - [getApplySemigroup](#getapplysemigroup)
 - [getFilterable](#getfilterable)
@@ -43,11 +48,14 @@ Added in v2.0.0
 - [getOrElse](#getorelse)
 - [getOrElseW](#getorelsew)
 - [getSemigroup](#getsemigroup)
-- [ioEither](#ioeither)
 - [left](#left)
 - [leftIO](#leftio)
 - [map](#map)
 - [mapLeft](#mapleft)
+- [monadIOEither](#monadioeither)
+- [monadIOIOEither](#monadioioeither)
+- [monadThrowIOEither](#monadthrowioeither)
+- [of](#of)
 - [orElse](#orelse)
 - [right](#right)
 - [rightIO](#rightio)
@@ -96,6 +104,16 @@ export declare const alt: <E, A>(that: () => IOEither<E, A>) => (fa: IOEither<E,
 
 Added in v2.0.0
 
+# altIOEither
+
+**Signature**
+
+```ts
+export declare const altIOEither: Alt2<'IOEither'>
+```
+
+Added in v3.0.0
+
 # ap
 
 **Signature**
@@ -125,6 +143,36 @@ export declare const apSecond: <E, B>(fb: IOEither<E, B>) => <A>(fa: IOEither<E,
 ```
 
 Added in v2.0.0
+
+# applicativeIOEither
+
+**Signature**
+
+```ts
+export declare const applicativeIOEither: Applicative2<'IOEither'>
+```
+
+Added in v3.0.0
+
+# applyIOEither
+
+**Signature**
+
+```ts
+export declare const applyIOEither: Apply2<'IOEither'>
+```
+
+Added in v3.0.0
+
+# bifunctorIOEither
+
+**Signature**
+
+```ts
+export declare const bifunctorIOEither: Bifunctor2<'IOEither'>
+```
+
+Added in v3.0.0
 
 # bimap
 
@@ -285,6 +333,16 @@ export declare const fromPredicate: {
 
 Added in v2.0.0
 
+# functorIOEither
+
+**Signature**
+
+```ts
+export declare const functorIOEither: Functor2<'IOEither'>
+```
+
+Added in v3.0.0
+
 # getApplyMonoid
 
 **Signature**
@@ -323,12 +381,10 @@ Added in v2.1.0
 **Signature**
 
 ```ts
-export declare function getIOValidation<E>(
-  S: Semigroup<E>
-): Monad2C<URI, E> & Bifunctor2<URI> & Alt2C<URI, E> & MonadIO2C<URI, E> & MonadThrow2C<URI, E>
+export declare function getIOValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E>
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # getOrElse
 
@@ -359,20 +415,6 @@ appended using the provided `Semigroup`
 
 ```ts
 export declare function getSemigroup<E, A>(S: Semigroup<A>): Semigroup<IOEither<E, A>>
-```
-
-Added in v2.0.0
-
-# ioEither
-
-**Signature**
-
-```ts
-export declare const ioEither: Monad2<'IOEither'> &
-  Bifunctor2<'IOEither'> &
-  Alt2<'IOEither'> &
-  MonadIO2<'IOEither'> &
-  MonadThrow2<'IOEither'>
 ```
 
 Added in v2.0.0
@@ -416,6 +458,46 @@ export declare const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: IOEither<E, A>) 
 ```
 
 Added in v2.0.0
+
+# monadIOEither
+
+**Signature**
+
+```ts
+export declare const monadIOEither: Monad2<'IOEither'>
+```
+
+Added in v3.0.0
+
+# monadIOIOEither
+
+**Signature**
+
+```ts
+export declare const monadIOIOEither: MonadIO2<'IOEither'>
+```
+
+Added in v3.0.0
+
+# monadThrowIOEither
+
+**Signature**
+
+```ts
+export declare const monadThrowIOEither: MonadThrow2<'IOEither'>
+```
+
+Added in v3.0.0
+
+# of
+
+**Signature**
+
+```ts
+export declare const of: <E = never, A = never>(a: A) => IOEither<E, A>
+```
+
+Added in v3.0.0
 
 # orElse
 
