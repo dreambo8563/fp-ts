@@ -1479,21 +1479,26 @@ const traverseWithIndex_ = <F>(F: Applicative<F>) => <A, B>(f: (i: number, a: A)
   )
 }
 
-const wither_ = <F>(
+/**
+ * @since 3.0.0
+ */
+export const wither: Witherable1<URI>['wither'] = <F>(
   F: Applicative<F>
-): (<A, B>(ta: ReadonlyArray<A>, f: (a: A) => HKT<F, Option<B>>) => HKT<F, ReadonlyArray<B>>) => {
+): (<A, B>(f: (a: A) => HKT<F, Option<B>>) => (ta: ReadonlyArray<A>) => HKT<F, ReadonlyArray<B>>) => {
   const traverseF = traverse(F)
-  return (wa, f) => pipe(wa, traverseF(f), F.map(compact))
+  return (f) => (wa) => pipe(wa, traverseF(f), F.map(compact))
 }
 
-const wilt_ = <F>(
+/**
+ * @since 3.0.0
+ */
+export const wilt: Witherable1<URI>['wilt'] = <F>(
   F: Applicative<F>
 ): (<A, B, C>(
-  wa: ReadonlyArray<A>,
   f: (a: A) => HKT<F, Either<B, C>>
-) => HKT<F, Separated<ReadonlyArray<B>, ReadonlyArray<C>>>) => {
+) => (wa: ReadonlyArray<A>) => HKT<F, Separated<ReadonlyArray<B>, ReadonlyArray<C>>>) => {
   const traverseF = traverse(F)
-  return (wa, f) => pipe(wa, traverseF(f), F.map(separate))
+  return (f) => (wa) => pipe(wa, traverseF(f), F.map(separate))
 }
 
 /**
@@ -1787,6 +1792,6 @@ export const readonlyArray: Monad1<URI> &
   reduceRightWithIndex,
   traverseWithIndex: traverseWithIndex_,
   extend,
-  wither: wither_,
-  wilt: wilt_
+  wither,
+  wilt
 }

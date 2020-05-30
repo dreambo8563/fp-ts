@@ -629,101 +629,6 @@ export function getMonoid<A>(S: Semigroup<A>): Monoid<Option<A>> {
 const defaultSeparate = { left: none, right: none }
 
 // -------------------------------------------------------------------------------------
-// pipeables
-// -------------------------------------------------------------------------------------
-
-/**
- * @since 3.0.0
- */
-export const traverse: Traversable1<URI>['traverse'] = <F>(F: Applicative<F>) => <A, B>(f: (a: A) => HKT<F, B>) => (
-  ta: Option<A>
-): HKT<F, Option<B>> => (isNone(ta) ? F.of(none) : pipe(f(ta.value), F.map(some)))
-
-/**
- * @since 3.0.0
- */
-export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F>) => <A>(
-  ta: Option<HKT<F, A>>
-): HKT<F, Option<A>> => (isNone(ta) ? F.of(none) : pipe(ta.value, F.map(some)))
-
-const wither_ = <F>(F: Applicative<F>) => <A, B>(fa: Option<A>, f: (a: A) => HKT<F, Option<B>>): HKT<F, Option<B>> =>
-  isNone(fa) ? F.of(none) : f(fa.value)
-
-const wilt_ = <F>(F: Applicative<F>) => <A, B, C>(
-  fa: Option<A>,
-  f: (a: A) => HKT<F, Either<B, C>>
-): HKT<F, Separated<Option<B>, Option<C>>> => {
-  const o = pipe(
-    fa,
-    map((a) =>
-      pipe(
-        f(a),
-        F.map((e) => ({
-          left: getLeft(e),
-          right: getRight(e)
-        }))
-      )
-    )
-  )
-  return isNone(o)
-    ? F.of({
-        left: none,
-        right: none
-      })
-    : o.value
-}
-
-/**
- * @since 2.0.0
- */
-export const apFirst: <B>(fb: Option<B>) => <A>(fa: Option<A>) => Option<A> = (fb) => (fa) =>
-  pipe(
-    fa,
-    map((a) => () => a),
-    ap(fb)
-  )
-
-/**
- * @since 2.0.0
- */
-export const apSecond = <B>(fb: Option<B>) => <A>(fa: Option<A>): Option<B> =>
-  pipe(
-    fa,
-    map(() => (b: B) => b),
-    ap(fb)
-  )
-
-/**
- * @since 2.0.0
- */
-export const chainFirst: <A, B>(f: (a: A) => Option<B>) => (ma: Option<A>) => Option<A> = (f) => (ma) =>
-  pipe(
-    ma,
-    chain((a) =>
-      pipe(
-        f(a),
-        map(() => a)
-      )
-    )
-  )
-
-/**
- * @since 2.0.0
- */
-export const extend: <A, B>(f: (wa: Option<A>) => B) => (wa: Option<A>) => Option<B> = (f) => (wa) =>
-  isNone(wa) ? none : some(f(wa))
-
-/**
- * @since 2.0.0
- */
-export const duplicate: <A>(ma: Option<A>) => Option<Option<A>> = extend(identity)
-
-/**
- * @since 2.0.0
- */
-export const fromEither: <E, A>(ma: Either<E, A>) => Option<A> = (ma) => (ma._tag === 'Left' ? none : some(ma.right))
-
-// -------------------------------------------------------------------------------------
 // instances
 // -------------------------------------------------------------------------------------
 
@@ -756,6 +661,26 @@ export const applyOption: Apply1<URI> = {
 }
 
 /**
+ * @since 2.0.0
+ */
+export const apFirst: <B>(fb: Option<B>) => <A>(fa: Option<A>) => Option<A> = (fb) => (fa) =>
+  pipe(
+    fa,
+    map((a) => () => a),
+    ap(fb)
+  )
+
+/**
+ * @since 2.0.0
+ */
+export const apSecond = <B>(fb: Option<B>) => <A>(fa: Option<A>): Option<B> =>
+  pipe(
+    fa,
+    map(() => (b: B) => b),
+    ap(fb)
+  )
+
+/**
  * @since 3.0.0
  */
 export const of: Applicative1<URI>['of'] = some
@@ -776,11 +701,6 @@ export const applicativeOption: Applicative1<URI> = {
 export const chain: Monad1<URI>['chain'] = (f) => (ma) => (isNone(ma) ? none : f(ma.value))
 
 /**
- * @since 2.0.0
- */
-export const flatten: <A>(mma: Option<Option<A>>) => Option<A> = chain(identity)
-
-/**
  * @since 3.0.0
  */
 export const monadOption: Monad1<URI> = {
@@ -790,6 +710,25 @@ export const monadOption: Monad1<URI> = {
   of,
   chain
 }
+
+/**
+ * @since 2.0.0
+ */
+export const chainFirst: <A, B>(f: (a: A) => Option<B>) => (ma: Option<A>) => Option<A> = (f) => (ma) =>
+  pipe(
+    ma,
+    chain((a) =>
+      pipe(
+        f(a),
+        map(() => a)
+      )
+    )
+  )
+
+/**
+ * @since 2.0.0
+ */
+export const flatten: <A>(mma: Option<Option<A>>) => Option<A> = chain(identity)
 
 /**
  * @since 3.0.0
@@ -802,6 +741,11 @@ export const monadThrowOption: MonadThrow1<URI> = {
   chain,
   throwError: () => none
 }
+
+/**
+ * @since 2.0.0
+ */
+export const fromEither: <E, A>(ma: Either<E, A>) => Option<A> = (ma) => (ma._tag === 'Left' ? none : some(ma.right))
 
 /**
  * @since 2.0.0
@@ -900,6 +844,20 @@ export const foldableOption: Foldable1<URI> = {
 /**
  * @since 3.0.0
  */
+export const traverse: Traversable1<URI>['traverse'] = <F>(F: Applicative<F>) => <A, B>(f: (a: A) => HKT<F, B>) => (
+  ta: Option<A>
+): HKT<F, Option<B>> => (isNone(ta) ? F.of(none) : pipe(f(ta.value), F.map(some)))
+
+/**
+ * @since 3.0.0
+ */
+export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F>) => <A>(
+  ta: Option<HKT<F, A>>
+): HKT<F, Option<A>> => (isNone(ta) ? F.of(none) : pipe(ta.value, F.map(some)))
+
+/**
+ * @since 3.0.0
+ */
 export const traversableOption: Traversable1<URI> = {
   URI,
   reduce,
@@ -938,12 +896,56 @@ export const alternativeOption: O<URI> = {
 }
 
 /**
+ * @since 2.0.0
+ */
+export const extend: <A, B>(f: (wa: Option<A>) => B) => (wa: Option<A>) => Option<B> = (f) => (wa) =>
+  isNone(wa) ? none : some(f(wa))
+
+/**
  * @since 3.0.0
  */
 export const extendOption: Extend1<URI> = {
   URI,
   map,
   extend
+}
+
+/**
+ * @since 2.0.0
+ */
+export const duplicate: <A>(ma: Option<A>) => Option<Option<A>> = extend(identity)
+
+/**
+ * @since 3.0.0
+ */
+export const wither: Witherable1<URI>['wither'] = <F>(F: Applicative<F>) => <A, B>(f: (a: A) => HKT<F, Option<B>>) => (
+  fa: Option<A>
+): HKT<F, Option<B>> => (isNone(fa) ? F.of(none) : f(fa.value))
+
+/**
+ * @since 3.0.0
+ */
+export const wilt: Witherable1<URI>['wilt'] = <F>(F: Applicative<F>) => <A, B, C>(
+  f: (a: A) => HKT<F, Either<B, C>>
+) => (fa: Option<A>): HKT<F, Separated<Option<B>, Option<C>>> => {
+  const o = pipe(
+    fa,
+    map((a) =>
+      pipe(
+        f(a),
+        F.map((e) => ({
+          left: getLeft(e),
+          right: getRight(e)
+        }))
+      )
+    )
+  )
+  return isNone(o)
+    ? F.of({
+        left: none,
+        right: none
+      })
+    : o.value
 }
 
 /**
@@ -963,6 +965,6 @@ export const witherableOption: Witherable1<URI> = {
   partitionMap,
   traverse,
   sequence,
-  wither: wither_,
-  wilt: wilt_
+  wither,
+  wilt
 }

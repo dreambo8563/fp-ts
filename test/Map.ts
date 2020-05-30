@@ -916,10 +916,9 @@ describe('Map', () => {
         [{ id: 'b' }, 3]
       ])
       const b4 = new Map<User, number>([[{ id: 'b' }, 4]])
-      const witherIdentity = W.wither(I.identity)
       const f = (n: number) => I.identity.of(p(n) ? O.some(n + 1) : O.none)
-      assert.deepStrictEqual(witherIdentity(emptyMap, f), I.identity.of(emptyMap))
-      assert.deepStrictEqual(witherIdentity(a1b3, f), I.identity.of(b4))
+      assert.deepStrictEqual(pipe(emptyMap, W.wither(I.identity)(f)), I.identity.of(emptyMap))
+      assert.deepStrictEqual(pipe(a1b3, W.wither(I.identity)(f)), I.identity.of(b4))
     })
 
     it('wilt', () => {
@@ -930,10 +929,9 @@ describe('Map', () => {
       ])
       const a0 = new Map<User, number>([[{ id: 'a' }, 0]])
       const b4 = new Map<User, number>([[{ id: 'b' }, 4]])
-      const wiltIdentity = W.wilt(I.identity)
       const f = (n: number) => I.identity.of(p(n) ? right(n + 1) : left(n - 1))
-      assert.deepStrictEqual(wiltIdentity(emptyMap, f), I.identity.of({ left: emptyMap, right: emptyMap }))
-      assert.deepStrictEqual(wiltIdentity(a1b3, f), I.identity.of({ left: a0, right: b4 }))
+      assert.deepStrictEqual(pipe(emptyMap, W.wilt(I.identity)(f)), I.identity.of({ left: emptyMap, right: emptyMap }))
+      assert.deepStrictEqual(pipe(a1b3, W.wilt(I.identity)(f)), I.identity.of({ left: a0, right: b4 }))
     })
   })
 

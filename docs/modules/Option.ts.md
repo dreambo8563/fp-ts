@@ -105,6 +105,8 @@ Added in v2.0.0
 - [traversableOption](#traversableoption)
 - [traverse](#traverse)
 - [tryCatch](#trycatch)
+- [wilt](#wilt)
+- [wither](#wither)
 - [witherableOption](#witherableoption)
 
 ---
@@ -1150,6 +1152,26 @@ assert.deepStrictEqual(
 ```
 
 Added in v2.0.0
+
+# wilt
+
+**Signature**
+
+```ts
+export declare const wilt: Wilt1<'Option'>
+```
+
+Added in v3.0.0
+
+# wither
+
+**Signature**
+
+```ts
+export declare const wither: Wither1<'Option'>
+```
+
+Added in v3.0.0
 
 # witherableOption
 

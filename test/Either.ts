@@ -451,31 +451,29 @@ describe('Either', () => {
 
     it('wither', () => {
       const f = (n: number) => I.identity.of(p(n) ? O.some(n + 1) : O.none)
-      const witherIdentity = W.wither(I.identity)
-      assert.deepStrictEqual(witherIdentity(_.left('foo'), f), I.identity.of(_.left('foo')))
-      assert.deepStrictEqual(witherIdentity(_.right(1), f), I.identity.of(_.left(monoidString.empty)))
-      assert.deepStrictEqual(witherIdentity(_.right(3), f), I.identity.of(_.right(4)))
+      assert.deepStrictEqual(pipe(_.left('foo'), W.wither(I.identity)(f)), I.identity.of(_.left('foo')))
+      assert.deepStrictEqual(pipe(_.right(1), W.wither(I.identity)(f)), I.identity.of(_.left(monoidString.empty)))
+      assert.deepStrictEqual(pipe(_.right(3), W.wither(I.identity)(f)), I.identity.of(_.right(4)))
     })
 
     it('wilt', () => {
-      const wiltIdentity = W.wilt(I.identity)
       const f = (n: number) => I.identity.of(p(n) ? _.right(n + 1) : _.left(n - 1))
       assert.deepStrictEqual(
-        wiltIdentity(_.left('foo'), f),
+        pipe(_.left('foo'), W.wilt(I.identity)(f)),
         I.identity.of({
           left: _.left('foo'),
           right: _.left('foo')
         })
       )
       assert.deepStrictEqual(
-        wiltIdentity(_.right(1), f),
+        pipe(_.right(1), W.wilt(I.identity)(f)),
         I.identity.of({
           left: _.right(0),
           right: _.left(monoidString.empty)
         })
       )
       assert.deepStrictEqual(
-        wiltIdentity(_.right(3), f),
+        pipe(_.right(3), W.wilt(I.identity)(f)),
         I.identity.of({
           left: _.left(monoidString.empty),
           right: _.right(4)
