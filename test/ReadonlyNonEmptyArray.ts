@@ -1,6 +1,5 @@
 import * as assert from 'assert'
 import * as C from '../src/Const'
-import * as E from '../src/Either'
 import { eqNumber } from '../src/Eq'
 import { pipe } from '../src/function'
 import * as I from '../src/Identity'
@@ -50,20 +49,6 @@ describe('ReadonlyNonEmptyArray', () => {
         assert.deepStrictEqual(pipe(['a', 'bb'], _.mapWithIndex(f)), traverseWithIndex(['a', 'bb']))
       })
     })
-
-    describe('Witherable', () => {
-      const p = (n: number) => n > 2
-
-      it('wither', () => {
-        const wither = _.wither(I.identity)((n: number) => (p(n) ? O.some(n + 1) : O.none))
-        assert.deepStrictEqual(wither([1, 3]), [4])
-      })
-
-      it('wilt', () => {
-        const wilt = _.wilt(I.identity)((n: number) => (p(n) ? E.right(n + 1) : E.left(n - 1)))
-        assert.deepStrictEqual(wilt([1, 3]), { left: [0], right: [4] })
-      })
-    })
   })
 
   it('head', () => {
@@ -85,7 +70,7 @@ describe('ReadonlyNonEmptyArray', () => {
   })
 
   it('of', () => {
-    assert.deepStrictEqual(_.readonlyNonEmptyArray.of(1), [1])
+    assert.deepStrictEqual(_.of(1), [1])
   })
 
   it('ap', () => {
@@ -104,7 +89,7 @@ describe('ReadonlyNonEmptyArray', () => {
   })
 
   it('extract', () => {
-    assert.deepStrictEqual(_.readonlyNonEmptyArray.extract([1, 2, 3]), 1)
+    assert.deepStrictEqual(_.extract([1, 2, 3]), 1)
   })
 
   it('min', () => {
@@ -312,18 +297,14 @@ describe('ReadonlyNonEmptyArray', () => {
     assert.deepStrictEqual(
       pipe(
         ['a', 'bb'],
-        _.readonlyNonEmptyArray.traverseWithIndex(O.applicativeOption)((i, s: string) =>
-          s.length >= 1 ? O.some(s + i) : O.none
-        )
+        _.traverseWithIndex(O.applicativeOption)((i, s: string) => (s.length >= 1 ? O.some(s + i) : O.none))
       ),
       O.some(['a0', 'bb1'])
     )
     assert.deepStrictEqual(
       pipe(
         ['a', 'bb'],
-        _.readonlyNonEmptyArray.traverseWithIndex(O.applicativeOption)((i, s: string) =>
-          s.length > 1 ? O.some(s + i) : O.none
-        )
+        _.traverseWithIndex(O.applicativeOption)((i, s: string) => (s.length > 1 ? O.some(s + i) : O.none))
       ),
       O.none
     )
@@ -334,7 +315,7 @@ describe('ReadonlyNonEmptyArray', () => {
       pipe(['a', 'bb'], _.foldMapWithIndex(M.monoidString)(f)),
       pipe(
         ['a', 'bb'],
-        _.readonlyNonEmptyArray.traverseWithIndex(C.getApplicative(M.monoidString))((i, a: string) => C.make(f(i, a)))
+        _.traverseWithIndex(C.getApplicative(M.monoidString))((i, a: string) => C.make(f(i, a)))
       )
     )
 
@@ -343,7 +324,7 @@ describe('ReadonlyNonEmptyArray', () => {
       pipe(['a', 'bb'], _.mapWithIndex(f)),
       pipe(
         ['a', 'bb'],
-        _.readonlyNonEmptyArray.traverseWithIndex(I.identity)((i, a: string) => I.identity.of(f(i, a)))
+        _.traverseWithIndex(I.identity)((i, a: string) => I.identity.of(f(i, a)))
       )
     )
   })

@@ -2,7 +2,7 @@
  * @since 2.5.0
  */
 import { Alternative1 } from './Alternative'
-import { Applicative } from './Applicative'
+import { Applicative, Applicative1 } from './Applicative'
 import { Compactable1, Separated } from './Compactable'
 import { Either } from './Either'
 import { Eq } from './Eq'
@@ -28,6 +28,10 @@ import { Traversable1 } from './Traversable'
 import { TraversableWithIndex1 } from './TraversableWithIndex'
 import { Unfoldable1 } from './Unfoldable'
 import { Witherable1 } from './Witherable'
+import { Functor1 } from './Functor'
+import { Apply1 } from './Apply'
+import { Foldable1 } from './Foldable'
+import { Alt1 } from './Alt'
 
 declare module './HKT' {
   interface URItoKind<A> {
@@ -1419,23 +1423,6 @@ const filterWithIndex_ = <A>(
   return fa.filter((a, i) => predicateWithIndex(i, a))
 }
 
-const unfold_ = <A, B>(b: B, f: (b: B) => Option<readonly [A, B]>): ReadonlyArray<A> => {
-  // tslint:disable-next-line: readonly-array
-  const ret: Array<A> = []
-  let bb: B = b
-  while (true) {
-    const mt = f(bb)
-    if (isSome(mt)) {
-      const [a, b] = mt.value
-      ret.push(a)
-      bb = b
-    } else {
-      break
-    }
-  }
-  return ret
-}
-
 /**
  * @since 3.0.0
  */
@@ -1752,47 +1739,177 @@ export const reduceRightWithIndex: <A, B>(b: B, f: (i: number, a: A, b: B) => B)
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 2.5.0
+ * @since 3.0.0
  */
-export const readonlyArray: Monad1<URI> &
-  Unfoldable1<URI> &
-  TraversableWithIndex1<URI, number> &
-  Alternative1<URI> &
-  Extend1<URI> &
-  Compactable1<URI> &
-  FilterableWithIndex1<URI, number> &
-  Witherable1<URI> &
-  FunctorWithIndex1<URI, number> &
-  FoldableWithIndex1<URI, number> = {
+export const functorReadonlyArray: Functor1<URI> = {
+  URI,
+  map
+}
+
+/**
+ * @since 3.0.0
+ */
+export const functorWithIndexReadonlyArray: FunctorWithIndex1<URI, number> = {
+  ...functorReadonlyArray,
+  mapWithIndex
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applyReadonlyArray: Apply1<URI> = {
+  ...functorReadonlyArray,
+  ap
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applicativeReadonlyArray: Applicative1<URI> = {
+  ...applyReadonlyArray,
+  of
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadReadonlyArray: Monad1<URI> = {
+  ...applicativeReadonlyArray,
+  chain
+}
+
+/**
+ * @since 3.0.0
+ */
+export const unfold = <A, B>(b: B, f: (b: B) => Option<readonly [A, B]>): ReadonlyArray<A> => {
+  // tslint:disable-next-line: readonly-array
+  const ret: Array<A> = []
+  let bb: B = b
+  while (true) {
+    const mt = f(bb)
+    if (isSome(mt)) {
+      const [a, b] = mt.value
+      ret.push(a)
+      bb = b
+    } else {
+      break
+    }
+  }
+  return ret
+}
+
+/**
+ * @since 3.0.0
+ */
+export const unfoldableReadonlyArray: Unfoldable1<URI> = {
+  URI,
+  unfold
+}
+
+/**
+ * @since 3.0.0
+ */
+export const compactableReadonlyArray: Compactable1<URI> = {
   URI,
   compact,
-  separate,
-  map,
-  ap,
-  of,
-  chain,
+  separate
+}
+
+/**
+ * @since 3.0.0
+ */
+export const filterableReadonlyArray: Filterable1<URI> = {
+  ...compactableReadonlyArray,
+  ...functorReadonlyArray,
   filter,
   filterMap,
   partition,
-  partitionMap,
-  mapWithIndex,
+  partitionMap
+}
+
+/**
+ * @since 3.0.0
+ */
+export const filterableWithIndexReadonlyArray: FilterableWithIndex1<URI, number> = {
+  ...filterableReadonlyArray,
+  ...functorWithIndexReadonlyArray,
   partitionMapWithIndex,
   partitionWithIndex: partitionWithIndex_,
   filterMapWithIndex: filterMapWithIndex_,
-  filterWithIndex,
-  alt,
-  zero: zero_,
-  unfold: unfold_,
+  filterWithIndex
+}
+
+/**
+ * @since 3.0.0
+ */
+export const foldableReadonlyArray: Foldable1<URI> = {
+  URI,
   reduce,
   foldMap,
-  reduceRight,
-  traverse,
-  sequence,
+  reduceRight
+}
+
+/**
+ * @since 3.0.0
+ */
+export const foldableWithIndexReadonlyArray: FoldableWithIndex1<URI, number> = {
+  ...foldableReadonlyArray,
   reduceWithIndex,
   foldMapWithIndex,
-  reduceRightWithIndex,
-  traverseWithIndex,
-  extend,
+  reduceRightWithIndex
+}
+
+/**
+ * @since 3.0.0
+ */
+export const altReadonlyArray: Alt1<URI> = {
+  ...functorReadonlyArray,
+  alt
+}
+
+/**
+ * @since 3.0.0
+ */
+export const alternativeReadonlyArray: Alternative1<URI> = {
+  ...applicativeReadonlyArray,
+  ...altReadonlyArray,
+  zero: zero_
+}
+
+/**
+ * @since 3.0.0
+ */
+export const traversableReadonlyArray: Traversable1<URI> = {
+  ...functorReadonlyArray,
+  ...foldableReadonlyArray,
+  traverse,
+  sequence
+}
+
+/**
+ * @since 3.0.0
+ */
+export const traversableWithIndexReadonlyArray: TraversableWithIndex1<URI, number> = {
+  ...functorWithIndexReadonlyArray,
+  ...foldableWithIndexReadonlyArray,
+  ...traversableReadonlyArray,
+  traverseWithIndex
+}
+
+/**
+ * @since 3.0.0
+ */
+export const extendReadonlyArray: Extend1<URI> = {
+  ...functorReadonlyArray,
+  extend
+}
+
+/**
+ * @since 3.0.0
+ */
+export const witherableReadonlyArray: Witherable1<URI> = {
+  ...filterableReadonlyArray,
+  ...traversableReadonlyArray,
   wither,
   wilt
 }

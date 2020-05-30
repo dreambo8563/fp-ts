@@ -31,22 +31,22 @@ describe('Option', () => {
         assert.deepStrictEqual(
           pipe(
             _.some('a'),
-            _.traverse(A.array)(() => A.empty)
+            _.traverse(A.applicativeArray)(() => A.empty)
           ),
           []
         )
         assert.deepStrictEqual(
           pipe(
             _.some('a'),
-            _.traverse(A.array)((s) => [s.length])
+            _.traverse(A.applicativeArray)((s) => [s.length])
           ),
           [_.some(1)]
         )
-        assert.deepStrictEqual(pipe(_.none, _.traverse(A.array)(A.of)), [_.none])
+        assert.deepStrictEqual(pipe(_.none, _.traverse(A.applicativeArray)(A.of)), [_.none])
       })
 
       it('sequence', () => {
-        const sequence = _.sequence(A.array)
+        const sequence = _.sequence(A.applicativeArray)
         assert.deepStrictEqual(sequence(_.some([1, 2])), [_.some(1), _.some(2)])
         assert.deepStrictEqual(sequence(_.none), [_.none])
       })

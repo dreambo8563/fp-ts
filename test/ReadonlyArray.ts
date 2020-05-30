@@ -69,7 +69,7 @@ describe('ReadonlyArray', () => {
     })
 
     it('unfold', () => {
-      const as = _.readonlyArray.unfold(5, (n) => (n > 0 ? O.some([n, n - 1]) : O.none))
+      const as = _.unfold(5, (n) => (n > 0 ? O.some([n, n - 1]) : O.none))
       assert.deepStrictEqual(as, [5, 4, 3, 2, 1])
     })
 
@@ -899,14 +899,14 @@ describe('ReadonlyArray', () => {
     assert.deepStrictEqual(
       pipe(
         ta,
-        _.readonlyArray.traverseWithIndex(O.applicativeOption)((i, s) => (s.length >= 1 ? O.some(s + i) : O.none))
+        _.traverseWithIndex(O.applicativeOption)((i, s) => (s.length >= 1 ? O.some(s + i) : O.none))
       ),
       O.some(['a0', 'bb1'])
     )
     assert.deepStrictEqual(
       pipe(
         ta,
-        _.readonlyArray.traverseWithIndex(O.applicativeOption)((i, s) => (s.length > 1 ? O.some(s + i) : O.none))
+        _.traverseWithIndex(O.applicativeOption)((i, s) => (s.length > 1 ? O.some(s + i) : O.none))
       ),
       O.none
     )
@@ -917,7 +917,7 @@ describe('ReadonlyArray', () => {
       pipe(ta, _.foldMapWithIndex(M.monoidString)(f)),
       pipe(
         ta,
-        _.readonlyArray.traverseWithIndex(C.getApplicative(M.monoidString))((i, a) => C.make(f(i, a)))
+        _.traverseWithIndex(C.getApplicative(M.monoidString))((i, a) => C.make(f(i, a)))
       )
     )
 
@@ -926,7 +926,7 @@ describe('ReadonlyArray', () => {
       pipe(ta, _.mapWithIndex(f)),
       pipe(
         ta,
-        _.readonlyArray.traverseWithIndex(I.identity)((i, a) => I.identity.of(f(i, a)))
+        _.traverseWithIndex(I.identity)((i, a) => I.identity.of(f(i, a)))
       )
     )
   })

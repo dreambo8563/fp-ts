@@ -158,8 +158,8 @@ R.filterWithIndex((_k: 'a' | 'b', n: number) => n > 2)(r1) // $ExpectType Record
 declare const arr1: Array<[string, number]>
 declare const arr2: Array<['a' | 'b', number]>
 
-R.fromFoldable(getFirstSemigroup<number>(), A.array)(arr1) // $ExpectType Record<string, number>
-R.fromFoldable(getFirstSemigroup<number>(), A.array)(arr2) // $ExpectType Record<"a" | "b", number>
+R.fromFoldable(getFirstSemigroup<number>(), A.foldableArray)(arr1) // $ExpectType Record<string, number>
+R.fromFoldable(getFirstSemigroup<number>(), A.foldableArray)(arr2) // $ExpectType Record<"a" | "b", number>
 
 type Keys = 'key1' | 'key2'
 R.getMonoid(semigroupSum) // $ExpectType Monoid<Record<string, number>>
@@ -168,8 +168,8 @@ R.getMonoid<Keys, number>(semigroupSum) // $ExpectType Monoid<Record<Keys, numbe
 R.getEq<Keys, number>(eqNumber) // $ExpectType Eq<Record<Keys, number>>
 R.getEq(eqNumber) // $ExpectType Eq<Record<string, number>>
 
-R.toUnfoldable(A.array)({ a: 1 }) // $ExpectType ["a", number][]
-R.toUnfoldable(A.array)({ a: 1, b: 2 }) // $ExpectType ["a" | "b", number][]
+R.toUnfoldable(A.unfoldableArray)({ a: 1 }) // $ExpectType ["a", number][]
+R.toUnfoldable(A.unfoldableArray)({ a: 1, b: 2 }) // $ExpectType ["a" | "b", number][]
 
 declare const fromFoldableF1: Foldable<'Test'>
 declare const fromFoldableInput1: HKT<'Test', ['a' | 'b', number]>

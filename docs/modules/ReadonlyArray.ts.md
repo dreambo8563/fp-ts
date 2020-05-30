@@ -16,14 +16,19 @@ Added in v2.5.0
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
 - [alt](#alt)
+- [altReadonlyArray](#altreadonlyarray)
+- [alternativeReadonlyArray](#alternativereadonlyarray)
 - [ap](#ap)
 - [apFirst](#apfirst)
 - [apSecond](#apsecond)
+- [applicativeReadonlyArray](#applicativereadonlyarray)
+- [applyReadonlyArray](#applyreadonlyarray)
 - [chain](#chain)
 - [chainFirst](#chainfirst)
 - [chop](#chop)
 - [chunksOf](#chunksof)
 - [compact](#compact)
+- [compactableReadonlyArray](#compactablereadonlyarray)
 - [comprehension](#comprehension)
 - [cons](#cons)
 - [deleteAt](#deleteat)
@@ -35,10 +40,13 @@ Added in v2.5.0
 - [elem](#elem)
 - [empty](#empty)
 - [extend](#extend)
+- [extendReadonlyArray](#extendreadonlyarray)
 - [filter](#filter)
 - [filterMap](#filtermap)
 - [filterMapWithIndex](#filtermapwithindex)
 - [filterWithIndex](#filterwithindex)
+- [filterableReadonlyArray](#filterablereadonlyarray)
+- [filterableWithIndexReadonlyArray](#filterablewithindexreadonlyarray)
 - [findFirst](#findfirst)
 - [findFirstMap](#findfirstmap)
 - [findIndex](#findindex)
@@ -50,7 +58,11 @@ Added in v2.5.0
 - [foldMap](#foldmap)
 - [foldMapWithIndex](#foldmapwithindex)
 - [foldRight](#foldright)
+- [foldableReadonlyArray](#foldablereadonlyarray)
+- [foldableWithIndexReadonlyArray](#foldablewithindexreadonlyarray)
 - [fromArray](#fromarray)
+- [functorReadonlyArray](#functorreadonlyarray)
+- [functorWithIndexReadonlyArray](#functorwithindexreadonlyarray)
 - [getEq](#geteq)
 - [getMonoid](#getmonoid)
 - [getOrd](#getord)
@@ -69,13 +81,13 @@ Added in v2.5.0
 - [map](#map)
 - [mapWithIndex](#mapwithindex)
 - [modifyAt](#modifyat)
+- [monadReadonlyArray](#monadreadonlyarray)
 - [of](#of)
 - [partition](#partition)
 - [partitionMap](#partitionmap)
 - [partitionMapWithIndex](#partitionmapwithindex)
 - [partitionWithIndex](#partitionwithindex)
 - [range](#range)
-- [readonlyArray](#readonlyarray)
 - [reduce](#reduce)
 - [reduceRight](#reduceright)
 - [reduceRightWithIndex](#reducerightwithindex)
@@ -98,8 +110,12 @@ Added in v2.5.0
 - [takeLeftWhile](#takeleftwhile)
 - [takeRight](#takeright)
 - [toArray](#toarray)
+- [traversableReadonlyArray](#traversablereadonlyarray)
+- [traversableWithIndexReadonlyArray](#traversablewithindexreadonlyarray)
 - [traverse](#traverse)
 - [traverseWithIndex](#traversewithindex)
+- [unfold](#unfold)
+- [unfoldableReadonlyArray](#unfoldablereadonlyarray)
 - [union](#union)
 - [uniq](#uniq)
 - [unsafeDeleteAt](#unsafedeleteat)
@@ -109,6 +125,7 @@ Added in v2.5.0
 - [updateAt](#updateat)
 - [wilt](#wilt)
 - [wither](#wither)
+- [witherableReadonlyArray](#witherablereadonlyarray)
 - [zip](#zip)
 - [zipWith](#zipwith)
 
@@ -157,6 +174,26 @@ export declare const alt: <A>(that: () => readonly A[]) => (fa: readonly A[]) =>
 
 Added in v2.5.0
 
+# altReadonlyArray
+
+**Signature**
+
+```ts
+export declare const altReadonlyArray: Alt1<'ReadonlyArray'>
+```
+
+Added in v3.0.0
+
+# alternativeReadonlyArray
+
+**Signature**
+
+```ts
+export declare const alternativeReadonlyArray: Alternative1<'ReadonlyArray'>
+```
+
+Added in v3.0.0
+
 # ap
 
 **Signature**
@@ -186,6 +223,26 @@ export declare const apSecond: <B>(fb: readonly B[]) => <A>(fa: readonly A[]) =>
 ```
 
 Added in v2.5.0
+
+# applicativeReadonlyArray
+
+**Signature**
+
+```ts
+export declare const applicativeReadonlyArray: Applicative1<'ReadonlyArray'>
+```
+
+Added in v3.0.0
+
+# applyReadonlyArray
+
+**Signature**
+
+```ts
+export declare const applyReadonlyArray: Apply1<'ReadonlyArray'>
+```
+
+Added in v3.0.0
 
 # chain
 
@@ -275,6 +332,16 @@ export declare const compact: <A>(fa: readonly Option<A>[]) => readonly A[]
 ```
 
 Added in v2.5.0
+
+# compactableReadonlyArray
+
+**Signature**
+
+```ts
+export declare const compactableReadonlyArray: Compactable1<'ReadonlyArray'>
+```
+
+Added in v3.0.0
 
 # comprehension
 
@@ -520,6 +587,16 @@ export declare const extend: <A, B>(f: (fa: readonly A[]) => B) => (wa: readonly
 
 Added in v2.5.0
 
+# extendReadonlyArray
+
+**Signature**
+
+```ts
+export declare const extendReadonlyArray: Extend1<'ReadonlyArray'>
+```
+
+Added in v3.0.0
+
 # filter
 
 **Signature**
@@ -562,6 +639,26 @@ export declare const filterWithIndex: {
 ```
 
 Added in v2.5.0
+
+# filterableReadonlyArray
+
+**Signature**
+
+```ts
+export declare const filterableReadonlyArray: Filterable1<'ReadonlyArray'>
+```
+
+Added in v3.0.0
+
+# filterableWithIndexReadonlyArray
+
+**Signature**
+
+```ts
+export declare const filterableWithIndexReadonlyArray: FilterableWithIndex1<'ReadonlyArray', number>
+```
+
+Added in v3.0.0
 
 # findFirst
 
@@ -811,6 +908,26 @@ export declare function foldRight<A, B>(
 
 Added in v2.5.0
 
+# foldableReadonlyArray
+
+**Signature**
+
+```ts
+export declare const foldableReadonlyArray: Foldable1<'ReadonlyArray'>
+```
+
+Added in v3.0.0
+
+# foldableWithIndexReadonlyArray
+
+**Signature**
+
+```ts
+export declare const foldableWithIndexReadonlyArray: FoldableWithIndex1<'ReadonlyArray', number>
+```
+
+Added in v3.0.0
+
 # fromArray
 
 **Signature**
@@ -820,6 +937,26 @@ export declare function fromArray<A>(as: Array<A>): ReadonlyArray<A>
 ```
 
 Added in v2.5.0
+
+# functorReadonlyArray
+
+**Signature**
+
+```ts
+export declare const functorReadonlyArray: Functor1<'ReadonlyArray'>
+```
+
+Added in v3.0.0
+
+# functorWithIndexReadonlyArray
+
+**Signature**
+
+```ts
+export declare const functorWithIndexReadonlyArray: FunctorWithIndex1<'ReadonlyArray', number>
+```
+
+Added in v3.0.0
 
 # getEq
 
@@ -1165,6 +1302,16 @@ assert.deepStrictEqual(modifyAt(1, double)([]), none)
 
 Added in v2.5.0
 
+# monadReadonlyArray
+
+**Signature**
+
+```ts
+export declare const monadReadonlyArray: Monad1<'ReadonlyArray'>
+```
+
+Added in v3.0.0
+
 # of
 
 **Signature**
@@ -1240,25 +1387,6 @@ export declare function range(start: number, end: number): ReadonlyArray<number>
 import { range } from 'fp-ts/lib/ReadonlyArray'
 
 assert.deepStrictEqual(range(1, 5), [1, 2, 3, 4, 5])
-```
-
-Added in v2.5.0
-
-# readonlyArray
-
-**Signature**
-
-```ts
-export declare const readonlyArray: Monad1<'ReadonlyArray'> &
-  Unfoldable1<'ReadonlyArray'> &
-  TraversableWithIndex1<'ReadonlyArray', number> &
-  Alternative1<'ReadonlyArray'> &
-  Extend1<'ReadonlyArray'> &
-  Compactable1<'ReadonlyArray'> &
-  FilterableWithIndex1<'ReadonlyArray', number> &
-  Witherable1<'ReadonlyArray'> &
-  FunctorWithIndex1<'ReadonlyArray', number> &
-  FoldableWithIndex1<'ReadonlyArray', number>
 ```
 
 Added in v2.5.0
@@ -1676,6 +1804,26 @@ export declare function toArray<A>(ras: ReadonlyArray<A>): Array<A>
 
 Added in v2.5.0
 
+# traversableReadonlyArray
+
+**Signature**
+
+```ts
+export declare const traversableReadonlyArray: Traversable1<'ReadonlyArray'>
+```
+
+Added in v3.0.0
+
+# traversableWithIndexReadonlyArray
+
+**Signature**
+
+```ts
+export declare const traversableWithIndexReadonlyArray: TraversableWithIndex1<'ReadonlyArray', number>
+```
+
+Added in v3.0.0
+
 # traverse
 
 **Signature**
@@ -1692,6 +1840,26 @@ Added in v3.0.0
 
 ```ts
 export declare const traverseWithIndex: TraverseWithIndex1<'ReadonlyArray', number>
+```
+
+Added in v3.0.0
+
+# unfold
+
+**Signature**
+
+```ts
+export declare const unfold: <A, B>(b: B, f: (b: B) => Option<readonly [A, B]>) => readonly A[]
+```
+
+Added in v3.0.0
+
+# unfoldableReadonlyArray
+
+**Signature**
+
+```ts
+export declare const unfoldableReadonlyArray: Unfoldable1<'ReadonlyArray'>
 ```
 
 Added in v3.0.0
@@ -1836,6 +2004,16 @@ Added in v3.0.0
 
 ```ts
 export declare const wither: Wither1<'ReadonlyArray'>
+```
+
+Added in v3.0.0
+
+# witherableReadonlyArray
+
+**Signature**
+
+```ts
+export declare const witherableReadonlyArray: Witherable1<'ReadonlyArray'>
 ```
 
 Added in v3.0.0

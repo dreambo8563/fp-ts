@@ -22,6 +22,8 @@ high state of flux, you're at risk of it changing without notice.
   - remove `Choice` module (@gcanti)
   - remove `Strong` module (@gcanti)
   - remove deprecated APIs (@gcanti)
+  - `Array`
+    - remove the `array` mega instance in favour of split instances (@gcanti)
   - `Date`
     - rename `eqDate` to `eqGetDate` (@gcanti)
     - rename `eqMonth` to `eqGetMonth` (@gcanti)
@@ -35,10 +37,16 @@ high state of flux, you're at risk of it changing without notice.
   - `Foldable`
     - remove `traverse_` (@gcanti)
     - rename `foldM` to `reduceM` (@gcanti)
+  - `NonEmptyArray`
+    - remove the `nonEmptyArray` mega instance in favour of split instances (@gcanti)
   - `Option`
     - remove the `option` mega instance in favour of split instances (@gcanti)
   - `Ord`
     - move `ordDate` to `Date` module (@gcanti)
+  - `ReadonlyArray`
+    - remove the `readonlyArray` mega instance in favour of split instances (@gcanti)
+  - `ReadonlyNonEmptyArray`
+    - remove the `readonlyNonEmptyArray` mega instance in favour of split instances (@gcanti)
   - `ReadonlyTuple`
     - remove `getChainRec` function (@gcanti)
   - `Semigroupoid`

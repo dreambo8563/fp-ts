@@ -22,6 +22,11 @@ import { TraversableWithIndex1 } from './TraversableWithIndex'
 import { Unfoldable1 } from './Unfoldable'
 import { Witherable1 } from './Witherable'
 import { Traversable1 } from './Traversable'
+import { Functor1 } from './Functor'
+import { Apply1 } from './Apply'
+import { Applicative1 } from './Applicative'
+import { Filterable1 } from './Filterable'
+import { Alt1 } from './Alt'
 
 /* tslint:disable:readonly-array */
 
@@ -1100,23 +1105,91 @@ export const wilt: Witherable1<URI>['wilt'] = RA.wilt as any
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const array: Monad1<URI> &
-  Foldable1<URI> &
-  Unfoldable1<URI> &
-  TraversableWithIndex1<URI, number> &
-  Alternative1<URI> &
-  Extend1<URI> &
-  Compactable1<URI> &
-  FilterableWithIndex1<URI, number> &
-  Witherable1<URI> &
-  FunctorWithIndex1<URI, number> &
-  FoldableWithIndex1<URI, number> =
-  /*#__PURE__*/
-  (() => {
-    return {
-      ...(RA.readonlyArray as any),
-      URI
-    }
-  })()
+export const functorArray: Functor1<URI> = RA.functorReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const functorWithIndexArray: FunctorWithIndex1<URI, number> = RA.functorWithIndexReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const applyArray: Apply1<URI> = RA.applyReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const applicativeArray: Applicative1<URI> = RA.applicativeReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const monadArray: Monad1<URI> = RA.monadReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const unfold: <A, B>(b: B, f: (b: B) => Option<readonly [A, B]>) => ReadonlyArray<A> = RA.unfold as any
+
+/**
+ * @since 3.0.0
+ */
+export const unfoldableArray: Unfoldable1<URI> = RA.unfoldableReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const compactableArray: Compactable1<URI> = RA.compactableReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const filterableArray: Filterable1<URI> = RA.filterableReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const filterableWithIndexArray: FilterableWithIndex1<URI, number> = RA.filterableWithIndexReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const foldableArray: Foldable1<URI> = RA.foldableReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const foldableWithIndexArray: FoldableWithIndex1<URI, number> = RA.foldableWithIndexReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const altArray: Alt1<URI> = RA.altReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const alternativeArray: Alternative1<URI> = RA.alternativeReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const traversableArray: Traversable1<URI> = RA.traversableReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const traversableWithIndexArray: TraversableWithIndex1<URI, number> = RA.traversableWithIndexReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const extendArray: Extend1<URI> = RA.extendReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const witherableArray: Witherable1<URI> = RA.witherableReadonlyArray as any

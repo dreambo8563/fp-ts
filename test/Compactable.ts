@@ -1,12 +1,12 @@
 import * as assert from 'assert'
-import { array } from '../src/Array'
-import { getCompactableComposition } from '../src/Compactable'
+import * as A from '../src/Array'
+import * as _ from '../src/Compactable'
 import { none, some } from '../src/Option'
 import { left, right } from '../src/Either'
 
 describe('Compactable', () => {
   it('getCompactableComposition', () => {
-    const C = getCompactableComposition(array, array)
+    const C = _.getCompactableComposition(A.functorArray, { ...A.compactableArray, ...A.functorArray })
     assert.deepStrictEqual(
       C.compact([
         [some(1), none],

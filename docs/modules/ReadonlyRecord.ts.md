@@ -307,7 +307,7 @@ export declare function fromFoldableMap<F, B>(
 
 ```ts
 import { getLastSemigroup } from 'fp-ts/lib/Semigroup'
-import { readonlyArray, zip } from 'fp-ts/lib/ReadonlyArray'
+import { foldableReadonlyArray, zip } from 'fp-ts/lib/ReadonlyArray'
 import { identity } from 'fp-ts/lib/function'
 import { ReadonlyRecord, fromFoldableMap } from 'fp-ts/lib/ReadonlyRecord'
 
@@ -315,7 +315,7 @@ import { ReadonlyRecord, fromFoldableMap } from 'fp-ts/lib/ReadonlyRecord'
 export const zipObject = <K extends string, A>(
   keys: ReadonlyArray<K>,
   values: ReadonlyArray<A>
-): ReadonlyRecord<K, A> => fromFoldableMap(getLastSemigroup<A>(), readonlyArray)(zip(keys, values), identity)
+): ReadonlyRecord<K, A> => fromFoldableMap(getLastSemigroup<A>(), foldableReadonlyArray)(zip(keys, values), identity)
 
 assert.deepStrictEqual(zipObject(['a', 'b'], [1, 2, 3]), { a: 1, b: 2 })
 
@@ -332,7 +332,7 @@ const users: ReadonlyArray<User> = [
 ]
 
 assert.deepStrictEqual(
-  fromFoldableMap(getLastSemigroup<User>(), readonlyArray)(users, (user) => [user.id, user]),
+  fromFoldableMap(getLastSemigroup<User>(), foldableReadonlyArray)(users, (user) => [user.id, user]),
   {
     id1: { id: 'id1', name: 'name3' },
     id2: { id: 'id2', name: 'name2' },

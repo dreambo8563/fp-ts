@@ -1,13 +1,13 @@
 import * as assert from 'assert'
-import { array } from '../src/Array'
-import { getFilterableComposition } from '../src/Filterable'
+import * as A from '../src/Array'
+import * as _ from '../src/Filterable'
 import { some, none } from '../src/Option'
 import { right, left } from '../src/Either'
 import { pipe } from '../src/function'
 
 describe('Filterable', () => {
   it('getFilterableComposition', () => {
-    const F = getFilterableComposition(array, array)
+    const F = _.getFilterableComposition(A.functorArray, A.filterableArray)
     assert.deepStrictEqual(
       pipe(
         [

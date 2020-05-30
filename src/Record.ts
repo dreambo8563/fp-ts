@@ -412,13 +412,13 @@ export function fromFoldable<F, A>(M: Magma<A>, F: Foldable<F>): (fka: HKT<F, [s
  *
  * @example
  * import { getLastSemigroup } from 'fp-ts/lib/Semigroup'
- * import { array, zip } from 'fp-ts/lib/Array'
+ * import { foldableArray, zip } from 'fp-ts/lib/Array'
  * import { identity } from 'fp-ts/lib/function'
  * import { fromFoldableMap } from 'fp-ts/lib/Record'
  *
  * // like lodash `zipObject` or ramda `zipObj`
  * export const zipObject = <K extends string, A>(keys: Array<K>, values: Array<A>): Record<K, A> =>
- *   fromFoldableMap(getLastSemigroup<A>(), array)(zip(keys, values), identity)
+ *   fromFoldableMap(getLastSemigroup<A>(), foldableArray)(zip(keys, values), identity)
  *
  * assert.deepStrictEqual(zipObject(['a', 'b'], [1, 2, 3]), { a: 1, b: 2 })
  *
@@ -434,7 +434,7 @@ export function fromFoldable<F, A>(M: Magma<A>, F: Foldable<F>): (fka: HKT<F, [s
  *   { id: 'id1', name: 'name3' }
  * ]
  *
- * assert.deepStrictEqual(fromFoldableMap(getLastSemigroup<User>(), array)(users, user => [user.id, user]), {
+ * assert.deepStrictEqual(fromFoldableMap(getLastSemigroup<User>(), foldableArray)(users, user => [user.id, user]), {
  *   id1: { id: 'id1', name: 'name3' },
  *   id2: { id: 'id2', name: 'name2' }
  * })

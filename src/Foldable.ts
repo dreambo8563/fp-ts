@@ -155,12 +155,12 @@ export interface FoldableComposition22C<F extends URIS2, G extends URIS2, E> {
  *
  * @example
  * import { getFoldableComposition } from 'fp-ts/lib/Foldable'
- * import { array } from 'fp-ts/lib/Array'
+ * import { foldableArray } from 'fp-ts/lib/Array'
  * import { foldableOption, some, none } from 'fp-ts/lib/Option'
  * import { monoidString } from 'fp-ts/lib/Monoid'
  * import { pipe } from 'fp-ts/lib/function'
  *
- * const F = getFoldableComposition(array, foldableOption)
+ * const F = getFoldableComposition(foldableArray, foldableOption)
  * assert.strictEqual(pipe([some('a'), some('b'), some('c')], F.reduce('', monoidString.concat)), 'abc')
  * assert.strictEqual(pipe([some('a'), none, some('c')], F.reduce('', monoidString.concat)), 'ac')
  *

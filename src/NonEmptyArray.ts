@@ -4,10 +4,15 @@
  * @since 2.0.0
  */
 import { Alt1 } from './Alt'
+import { Applicative1 } from './Applicative'
+import { Apply1 } from './Apply'
 import { Comonad1 } from './Comonad'
 import { Eq } from './Eq'
+import { Extend1 } from './Extend'
+import { Foldable1 } from './Foldable'
 import { FoldableWithIndex1 } from './FoldableWithIndex'
 import { Predicate, Refinement } from './function'
+import { Functor1 } from './Functor'
 import { FunctorWithIndex1 } from './FunctorWithIndex'
 import { Monad1 } from './Monad'
 import { Option } from './Option'
@@ -15,9 +20,8 @@ import { Ord } from './Ord'
 import * as RNEA from './ReadonlyNonEmptyArray'
 import { Semigroup } from './Semigroup'
 import { Show } from './Show'
-import { TraversableWithIndex1 } from './TraversableWithIndex'
 import { Traversable1 } from './Traversable'
-import { Witherable1 } from './Witherable'
+import { TraversableWithIndex1 } from './TraversableWithIndex'
 
 /* tslint:disable:readonly-array */
 
@@ -413,33 +417,80 @@ export const sequence: Traversable1<URI>['sequence'] = RNEA.sequence as any
  */
 export const traverseWithIndex: TraversableWithIndex1<URI, number>['traverseWithIndex'] = RNEA.traverseWithIndex as any
 
-/**
- * @since 3.0.0
- */
-export const wither: Witherable1<URI>['wither'] = RNEA.wither as any
-
-/**re
- * @since 3.0.0
- */
-export const wilt: Witherable1<URI>['wilt'] = RNEA.wilt as any
-
 // -------------------------------------------------------------------------------------
 // instances
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const nonEmptyArray: Monad1<URI> &
-  Comonad1<URI> &
-  TraversableWithIndex1<URI, number> &
-  FunctorWithIndex1<URI, number> &
-  FoldableWithIndex1<URI, number> &
-  Alt1<URI> =
-  /*#__PURE__*/
-  (() => {
-    return {
-      ...(RNEA.readonlyNonEmptyArray as any),
-      URI
-    }
-  })()
+export const functorNonEmptyArray: Functor1<URI> = RNEA.functorReadonlyNonEmptyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const functorWithIndexNonEmptyArray: FunctorWithIndex1<
+  URI,
+  number
+> = RNEA.functorWithIndexReadonlyNonEmptyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const applyNonEmptyArray: Apply1<URI> = RNEA.applyReadonlyNonEmptyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const applicativeNonEmptyArray: Applicative1<URI> = RNEA.applicativeReadonlyNonEmptyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const monadNonEmptyArray: Monad1<URI> = RNEA.monadReadonlyNonEmptyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const foldableNonEmptyArray: Foldable1<URI> = RNEA.foldableReadonlyNonEmptyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const foldableWithIndexNonEmptyArray: FoldableWithIndex1<
+  URI,
+  number
+> = RNEA.foldableWithIndexReadonlyNonEmptyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const altNonEmptyArray: Alt1<URI> = RNEA.altReadonlyNonEmptyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const traversableNonEmptyArray: Traversable1<URI> = RNEA.traversableReadonlyNonEmptyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const traversableWithIndexNonEmptyArray: TraversableWithIndex1<
+  URI,
+  number
+> = RNEA.traversableWithIndexReadonlyNonEmptyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const extendNonEmptyArray: Extend1<URI> = RNEA.extendReadonlyNonEmptyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const extract: <A>(wa: NonEmptyArray<A>) => A = RNEA.extract
+
+/**
+ * @since 3.0.0
+ */
+export const comonadNonEmptyArray: Comonad1<URI> = RNEA.comonadReadonlyNonEmptyArray as any

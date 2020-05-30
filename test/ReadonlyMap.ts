@@ -427,10 +427,10 @@ describe('ReadonlyMap', () => {
 
   it('toUnfoldable', () => {
     const a1 = new Map<User, number>([[{ id: 'a' }, 1]])
-    const toUnfoldableO = _.toUnfoldable(ordUser, A.array)
+    const toUnfoldableO = _.toUnfoldable(ordUser, A.unfoldableArray)
     assert.deepStrictEqual(toUnfoldableO(a1), [[{ id: 'a' }, 1]])
 
-    const toUnfoldable = _.toUnfoldable(ordKey, A.array)
+    const toUnfoldable = _.toUnfoldable(ordKey, A.unfoldableArray)
     assert.deepStrictEqual(
       toUnfoldable(
         new Map([
@@ -1052,7 +1052,7 @@ describe('ReadonlyMap', () => {
   it('fromFoldable', () => {
     const a1 = new Map<User, number>([[{ id: 'a' }, 1]])
     const a2 = new Map<User, number>([[{ id: 'a' }, 2]])
-    const fromFoldableS1 = _.fromFoldable(eqUser, getFirstSemigroup<number>(), A.array)
+    const fromFoldableS1 = _.fromFoldable(eqUser, getFirstSemigroup<number>(), A.foldableArray)
     assert.deepStrictEqual(fromFoldableS1([[{ id: 'a' }, 1]]), a1)
     assert.deepStrictEqual(
       fromFoldableS1([
@@ -1061,7 +1061,7 @@ describe('ReadonlyMap', () => {
       ]),
       a1
     )
-    const fromFoldableS2 = _.fromFoldable(eqUser, getLastSemigroup<number>(), A.array)
+    const fromFoldableS2 = _.fromFoldable(eqUser, getLastSemigroup<number>(), A.foldableArray)
     assert.deepStrictEqual(
       fromFoldableS2([
         [{ id: 'a' }, 1],

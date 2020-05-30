@@ -137,7 +137,7 @@ describe('Array', () => {
   })
 
   it('unfold', () => {
-    const as = _.array.unfold(5, (n) => (n > 0 ? O.some([n, n - 1]) : O.none))
+    const as = _.unfold(5, (n) => (n > 0 ? O.some([n, n - 1]) : O.none))
     assert.deepStrictEqual(as, [5, 4, 3, 2, 1])
   })
 
@@ -597,14 +597,14 @@ describe('Array', () => {
   })
 
   it('compact', () => {
-    assert.deepStrictEqual(_.array.compact([]), [])
-    assert.deepStrictEqual(_.array.compact([O.some(1), O.some(2), O.some(3)]), [1, 2, 3])
-    assert.deepStrictEqual(_.array.compact([O.some(1), O.none, O.some(3)]), [1, 3])
+    assert.deepStrictEqual(_.compact([]), [])
+    assert.deepStrictEqual(_.compact([O.some(1), O.some(2), O.some(3)]), [1, 2, 3])
+    assert.deepStrictEqual(_.compact([O.some(1), O.none, O.some(3)]), [1, 3])
   })
 
   it('separate', () => {
-    assert.deepStrictEqual(_.array.separate([]), { left: [], right: [] })
-    assert.deepStrictEqual(_.array.separate([E.left(123), E.right('123')]), { left: [123], right: ['123'] })
+    assert.deepStrictEqual(_.separate([]), { left: [], right: [] })
+    assert.deepStrictEqual(_.separate([E.left(123), E.right('123')]), { left: [123], right: ['123'] })
   })
 
   it('filter', () => {

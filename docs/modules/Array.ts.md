@@ -15,15 +15,19 @@ Added in v2.0.0
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
 - [alt](#alt)
+- [altArray](#altarray)
+- [alternativeArray](#alternativearray)
 - [ap](#ap)
 - [apFirst](#apfirst)
 - [apSecond](#apsecond)
-- [array](#array)
+- [applicativeArray](#applicativearray)
+- [applyArray](#applyarray)
 - [chain](#chain)
 - [chainFirst](#chainfirst)
 - [chop](#chop)
 - [chunksOf](#chunksof)
 - [compact](#compact)
+- [compactableArray](#compactablearray)
 - [comprehension](#comprehension)
 - [cons](#cons)
 - [copy](#copy)
@@ -36,10 +40,13 @@ Added in v2.0.0
 - [elem](#elem)
 - [empty](#empty)
 - [extend](#extend)
+- [extendArray](#extendarray)
 - [filter](#filter)
 - [filterMap](#filtermap)
 - [filterMapWithIndex](#filtermapwithindex)
 - [filterWithIndex](#filterwithindex)
+- [filterableArray](#filterablearray)
+- [filterableWithIndexArray](#filterablewithindexarray)
 - [findFirst](#findfirst)
 - [findFirstMap](#findfirstmap)
 - [findIndex](#findindex)
@@ -51,6 +58,10 @@ Added in v2.0.0
 - [foldMap](#foldmap)
 - [foldMapWithIndex](#foldmapwithindex)
 - [foldRight](#foldright)
+- [foldableArray](#foldablearray)
+- [foldableWithIndexArray](#foldablewithindexarray)
+- [functorArray](#functorarray)
+- [functorWithIndexArray](#functorwithindexarray)
 - [getEq](#geteq)
 - [getMonoid](#getmonoid)
 - [getOrd](#getord)
@@ -69,6 +80,7 @@ Added in v2.0.0
 - [map](#map)
 - [mapWithIndex](#mapwithindex)
 - [modifyAt](#modifyat)
+- [monadArray](#monadarray)
 - [of](#of)
 - [partition](#partition)
 - [partitionMap](#partitionmap)
@@ -96,8 +108,12 @@ Added in v2.0.0
 - [takeLeft](#takeleft)
 - [takeLeftWhile](#takeleftwhile)
 - [takeRight](#takeright)
+- [traversableArray](#traversablearray)
+- [traversableWithIndexArray](#traversablewithindexarray)
 - [traverse](#traverse)
 - [traverseWithIndex](#traversewithindex)
+- [unfold](#unfold)
+- [unfoldableArray](#unfoldablearray)
 - [union](#union)
 - [uniq](#uniq)
 - [unsafeDeleteAt](#unsafedeleteat)
@@ -107,6 +123,7 @@ Added in v2.0.0
 - [updateAt](#updateat)
 - [wilt](#wilt)
 - [wither](#wither)
+- [witherableArray](#witherablearray)
 - [zip](#zip)
 - [zipWith](#zipwith)
 
@@ -142,6 +159,26 @@ export declare const alt: <A>(that: () => A[]) => (fa: A[]) => A[]
 
 Added in v2.0.0
 
+# altArray
+
+**Signature**
+
+```ts
+export declare const altArray: Alt1<'Array'>
+```
+
+Added in v3.0.0
+
+# alternativeArray
+
+**Signature**
+
+```ts
+export declare const alternativeArray: Alternative1<'Array'>
+```
+
+Added in v3.0.0
+
 # ap
 
 **Signature**
@@ -172,25 +209,25 @@ export declare const apSecond: <B>(fb: B[]) => <A>(fa: A[]) => B[]
 
 Added in v2.0.0
 
-# array
+# applicativeArray
 
 **Signature**
 
 ```ts
-export declare const array: Monad1<'Array'> &
-  Foldable1<'Array'> &
-  Unfoldable1<'Array'> &
-  TraversableWithIndex1<'Array', number> &
-  Alternative1<'Array'> &
-  Extend1<'Array'> &
-  Compactable1<'Array'> &
-  FilterableWithIndex1<'Array', number> &
-  Witherable1<'Array'> &
-  FunctorWithIndex1<'Array', number> &
-  FoldableWithIndex1<'Array', number>
+export declare const applicativeArray: Applicative1<'Array'>
 ```
 
-Added in v2.0.0
+Added in v3.0.0
+
+# applyArray
+
+**Signature**
+
+```ts
+export declare const applyArray: Apply1<'Array'>
+```
+
+Added in v3.0.0
 
 # chain
 
@@ -278,6 +315,16 @@ export declare const compact: <A>(fa: Option<A>[]) => A[]
 ```
 
 Added in v2.0.0
+
+# compactableArray
+
+**Signature**
+
+```ts
+export declare const compactableArray: Compactable1<'Array'>
+```
+
+Added in v3.0.0
 
 # comprehension
 
@@ -525,6 +572,16 @@ export declare const extend: <A, B>(f: (fa: A[]) => B) => (wa: A[]) => B[]
 
 Added in v2.0.0
 
+# extendArray
+
+**Signature**
+
+```ts
+export declare const extendArray: Extend1<'Array'>
+```
+
+Added in v3.0.0
+
 # filter
 
 **Signature**
@@ -570,6 +627,26 @@ export declare const filterWithIndex: {
 ```
 
 Added in v2.0.0
+
+# filterableArray
+
+**Signature**
+
+```ts
+export declare const filterableArray: Filterable1<'Array'>
+```
+
+Added in v3.0.0
+
+# filterableWithIndexArray
+
+**Signature**
+
+```ts
+export declare const filterableWithIndexArray: FilterableWithIndex1<'Array', number>
+```
+
+Added in v3.0.0
 
 # findFirst
 
@@ -812,6 +889,46 @@ export declare const foldRight: <A, B>(onNil: () => B, onCons: (init: A[], last:
 ```
 
 Added in v2.0.0
+
+# foldableArray
+
+**Signature**
+
+```ts
+export declare const foldableArray: Foldable1<'Array'>
+```
+
+Added in v3.0.0
+
+# foldableWithIndexArray
+
+**Signature**
+
+```ts
+export declare const foldableWithIndexArray: FoldableWithIndex1<'Array', number>
+```
+
+Added in v3.0.0
+
+# functorArray
+
+**Signature**
+
+```ts
+export declare const functorArray: Functor1<'Array'>
+```
+
+Added in v3.0.0
+
+# functorWithIndexArray
+
+**Signature**
+
+```ts
+export declare const functorWithIndexArray: FunctorWithIndex1<'Array', number>
+```
+
+Added in v3.0.0
 
 # getEq
 
@@ -1156,6 +1273,16 @@ assert.deepStrictEqual(modifyAt(1, double)([]), none)
 ```
 
 Added in v2.0.0
+
+# monadArray
+
+**Signature**
+
+```ts
+export declare const monadArray: Monad1<'Array'>
+```
+
+Added in v3.0.0
 
 # of
 
@@ -1638,6 +1765,26 @@ assert.deepStrictEqual(takeRight(2)([1, 2, 3, 4, 5]), [4, 5])
 
 Added in v2.0.0
 
+# traversableArray
+
+**Signature**
+
+```ts
+export declare const traversableArray: Traversable1<'Array'>
+```
+
+Added in v3.0.0
+
+# traversableWithIndexArray
+
+**Signature**
+
+```ts
+export declare const traversableWithIndexArray: TraversableWithIndex1<'Array', number>
+```
+
+Added in v3.0.0
+
 # traverse
 
 **Signature**
@@ -1654,6 +1801,26 @@ Added in v3.0.0
 
 ```ts
 export declare const traverseWithIndex: TraverseWithIndex1<'Array', number>
+```
+
+Added in v3.0.0
+
+# unfold
+
+**Signature**
+
+```ts
+export declare const unfold: <A, B>(b: B, f: (b: B) => Option<readonly [A, B]>) => readonly A[]
+```
+
+Added in v3.0.0
+
+# unfoldableArray
+
+**Signature**
+
+```ts
+export declare const unfoldableArray: Unfoldable1<'Array'>
 ```
 
 Added in v3.0.0
@@ -1798,6 +1965,16 @@ Added in v3.0.0
 
 ```ts
 export declare const wither: Wither1<'Array'>
+```
+
+Added in v3.0.0
+
+# witherableArray
+
+**Signature**
+
+```ts
+export declare const witherableArray: Witherable1<'Array'>
 ```
 
 Added in v3.0.0

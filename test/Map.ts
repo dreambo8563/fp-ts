@@ -5,7 +5,7 @@ import { monoidString } from '../src/Monoid'
 import { Refinement, identity, pipe } from '../src/function'
 import * as O from '../src/Option'
 import { Eq, eqNumber, fromEquals } from '../src/Eq'
-import { array } from '../src/Array'
+import * as A from '../src/Array'
 import { Either, left, right } from '../src/Either'
 import * as I from '../src/Identity'
 import { ord, ordString, fromCompare, ordNumber } from '../src/Ord'
@@ -283,10 +283,10 @@ describe('Map', () => {
 
   it('toUnfoldable', () => {
     const a1 = new Map<User, number>([[{ id: 'a' }, 1]])
-    const toUnfoldableO = M.toUnfoldable(ordUser, array)
+    const toUnfoldableO = M.toUnfoldable(ordUser, A.unfoldableArray)
     assert.deepStrictEqual(toUnfoldableO(a1), [[{ id: 'a' }, 1]])
 
-    const toUnfoldable = M.toUnfoldable(ordKey, array)
+    const toUnfoldable = M.toUnfoldable(ordKey, A.unfoldableArray)
     assert.deepStrictEqual(
       toUnfoldable(
         new Map([
@@ -1009,7 +1009,7 @@ describe('Map', () => {
   it('fromFoldable', () => {
     const a1 = new Map<User, number>([[{ id: 'a' }, 1]])
     const a2 = new Map<User, number>([[{ id: 'a' }, 2]])
-    const fromFoldableS1 = M.fromFoldable(eqUser, getFirstSemigroup<number>(), array)
+    const fromFoldableS1 = M.fromFoldable(eqUser, getFirstSemigroup<number>(), A.foldableArray)
     assert.deepStrictEqual(fromFoldableS1([[{ id: 'a' }, 1]]), a1)
     assert.deepStrictEqual(
       fromFoldableS1([
@@ -1018,7 +1018,7 @@ describe('Map', () => {
       ]),
       a1
     )
-    const fromFoldableS2 = M.fromFoldable(eqUser, getLastSemigroup<number>(), array)
+    const fromFoldableS2 = M.fromFoldable(eqUser, getLastSemigroup<number>(), A.foldableArray)
     assert.deepStrictEqual(
       fromFoldableS2([
         [{ id: 'a' }, 1],

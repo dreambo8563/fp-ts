@@ -1,5 +1,5 @@
 import * as assert from 'assert'
-import { array } from '../src/Array'
+import * as A from '../src/Array'
 import * as E from '../src/Either'
 import { pipe } from '../src/function'
 import { io } from '../src/IO'
@@ -309,7 +309,7 @@ describe('TaskEither', () => {
       append('start 2'),
       _.chain(() => append('end 2'))
     )
-    const sequenceParallel = array.sequence(_.taskEither)
+    const sequenceParallel = A.sequence(_.taskEither)
     const x = await sequenceParallel([t1, t2])()
     assert.deepStrictEqual(x, E.right([3, 4]))
     assert.deepStrictEqual(log, ['start 1', 'start 2', 'end 1', 'end 2'])
@@ -328,7 +328,7 @@ describe('TaskEither', () => {
       append('start 2'),
       _.chain(() => append('end 2'))
     )
-    const sequenceSeries = array.sequence(_.taskEitherSeq)
+    const sequenceSeries = A.sequence(_.taskEitherSeq)
     const x = await sequenceSeries([t1, t2])()
     assert.deepStrictEqual(x, E.right([2, 4]))
     assert.deepStrictEqual(log, ['start 1', 'end 1', 'start 2', 'end 2'])

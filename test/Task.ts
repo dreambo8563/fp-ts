@@ -1,5 +1,5 @@
 import * as assert from 'assert'
-import { array } from '../src/Array'
+import * as A from '../src/Array'
 import * as I from '../src/IO'
 import { monoidString } from '../src/Monoid'
 import { pipe } from '../src/function'
@@ -112,7 +112,7 @@ describe('Task', () => {
       append('start 2'),
       _.chain(() => append('end 2'))
     )
-    const sequenceSeries = array.sequence(_.taskSeq)
+    const sequenceSeries = A.sequence(_.taskSeq)
     const x = await sequenceSeries([t1, t2])()
     assert.deepStrictEqual(x, [2, 4])
     assert.deepStrictEqual(log, ['start 1', 'end 1', 'start 2', 'end 2'])

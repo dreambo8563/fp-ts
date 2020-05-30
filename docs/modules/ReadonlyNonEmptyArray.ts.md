@@ -18,23 +18,33 @@ Added in v2.5.0
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
 - [alt](#alt)
+- [altReadonlyNonEmptyArray](#altreadonlynonemptyarray)
 - [ap](#ap)
 - [apFirst](#apfirst)
 - [apSecond](#apsecond)
+- [applicativeReadonlyNonEmptyArray](#applicativereadonlynonemptyarray)
+- [applyReadonlyNonEmptyArray](#applyreadonlynonemptyarray)
 - [chain](#chain)
 - [chainFirst](#chainfirst)
+- [comonadReadonlyNonEmptyArray](#comonadreadonlynonemptyarray)
 - [concat](#concat)
 - [cons](#cons)
 - [duplicate](#duplicate)
 - [extend](#extend)
+- [extendReadonlyNonEmptyArray](#extendreadonlynonemptyarray)
+- [extract](#extract)
 - [filter](#filter)
 - [filterWithIndex](#filterwithindex)
 - [flatten](#flatten)
 - [fold](#fold)
 - [foldMap](#foldmap)
 - [foldMapWithIndex](#foldmapwithindex)
+- [foldableReadonlyNonEmptyArray](#foldablereadonlynonemptyarray)
+- [foldableWithIndexReadonlyNonEmptyArray](#foldablewithindexreadonlynonemptyarray)
 - [fromArray](#fromarray)
 - [fromReadonlyArray](#fromreadonlyarray)
+- [functorReadonlyNonEmptyArray](#functorreadonlynonemptyarray)
+- [functorWithIndexReadonlyNonEmptyArray](#functorwithindexreadonlynonemptyarray)
 - [getEq](#geteq)
 - [getSemigroup](#getsemigroup)
 - [getShow](#getshow)
@@ -50,8 +60,8 @@ Added in v2.5.0
 - [max](#max)
 - [min](#min)
 - [modifyAt](#modifyat)
+- [monadReadonlyNonEmptyArray](#monadreadonlynonemptyarray)
 - [of](#of)
-- [readonlyNonEmptyArray](#readonlynonemptyarray)
 - [reduce](#reduce)
 - [reduceRight](#reduceright)
 - [reduceRightWithIndex](#reducerightwithindex)
@@ -61,12 +71,12 @@ Added in v2.5.0
 - [snoc](#snoc)
 - [sort](#sort)
 - [tail](#tail)
+- [traversableReadonlyNonEmptyArray](#traversablereadonlynonemptyarray)
+- [traversableWithIndexReadonlyNonEmptyArray](#traversablewithindexreadonlynonemptyarray)
 - [traverse](#traverse)
 - [traverseWithIndex](#traversewithindex)
 - [unzip](#unzip)
 - [updateAt](#updateat)
-- [wilt](#wilt)
-- [wither](#wither)
 - [zip](#zip)
 - [zipWith](#zipwith)
 
@@ -116,6 +126,16 @@ export declare const alt: <A>(
 
 Added in v2.6.2
 
+# altReadonlyNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const altReadonlyNonEmptyArray: Alt1<'ReadonlyNonEmptyArray'>
+```
+
+Added in v3.0.0
+
 # ap
 
 **Signature**
@@ -152,6 +172,26 @@ export declare const apSecond: <B>(
 
 Added in v2.5.0
 
+# applicativeReadonlyNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const applicativeReadonlyNonEmptyArray: Applicative1<'ReadonlyNonEmptyArray'>
+```
+
+Added in v3.0.0
+
+# applyReadonlyNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const applyReadonlyNonEmptyArray: Apply1<'ReadonlyNonEmptyArray'>
+```
+
+Added in v3.0.0
+
 # chain
 
 **Signature**
@@ -175,6 +215,16 @@ export declare const chainFirst: <A, B>(
 ```
 
 Added in v2.5.0
+
+# comonadReadonlyNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const comonadReadonlyNonEmptyArray: Comonad1<'ReadonlyNonEmptyArray'>
+```
+
+Added in v3.0.0
 
 # concat
 
@@ -228,6 +278,26 @@ export declare const extend: <A, B>(
 ```
 
 Added in v2.5.0
+
+# extendReadonlyNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const extendReadonlyNonEmptyArray: Extend1<'ReadonlyNonEmptyArray'>
+```
+
+Added in v3.0.0
+
+# extract
+
+**Signature**
+
+```ts
+export declare const extract: <A>(wa: ReadonlyNonEmptyArray<A>) => A
+```
+
+Added in v3.0.0
 
 # filter
 
@@ -298,6 +368,26 @@ export declare const foldMapWithIndex: <S>(
 
 Added in v2.5.0
 
+# foldableReadonlyNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const foldableReadonlyNonEmptyArray: Foldable1<'ReadonlyNonEmptyArray'>
+```
+
+Added in v3.0.0
+
+# foldableWithIndexReadonlyNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const foldableWithIndexReadonlyNonEmptyArray: FoldableWithIndex1<'ReadonlyNonEmptyArray', number>
+```
+
+Added in v3.0.0
+
 # fromArray
 
 **Signature**
@@ -319,6 +409,26 @@ export declare function fromReadonlyArray<A>(as: ReadonlyArray<A>): Option<Reado
 ```
 
 Added in v2.5.0
+
+# functorReadonlyNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const functorReadonlyNonEmptyArray: Functor1<'ReadonlyNonEmptyArray'>
+```
+
+Added in v3.0.0
+
+# functorWithIndexReadonlyNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const functorWithIndexReadonlyNonEmptyArray: FunctorWithIndex1<'ReadonlyNonEmptyArray', number>
+```
+
+Added in v3.0.0
 
 # getEq
 
@@ -545,27 +655,22 @@ export declare function modifyAt<A>(
 
 Added in v2.5.0
 
+# monadReadonlyNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const monadReadonlyNonEmptyArray: Monad1<'ReadonlyNonEmptyArray'>
+```
+
+Added in v3.0.0
+
 # of
 
 **Signature**
 
 ```ts
 export declare const of: <A>(a: A) => ReadonlyNonEmptyArray<A>
-```
-
-Added in v2.5.0
-
-# readonlyNonEmptyArray
-
-**Signature**
-
-```ts
-export declare const readonlyNonEmptyArray: Monad1<'ReadonlyNonEmptyArray'> &
-  Comonad1<'ReadonlyNonEmptyArray'> &
-  TraversableWithIndex1<'ReadonlyNonEmptyArray', number> &
-  FunctorWithIndex1<'ReadonlyNonEmptyArray', number> &
-  FoldableWithIndex1<'ReadonlyNonEmptyArray', number> &
-  Alt1<'ReadonlyNonEmptyArray'>
 ```
 
 Added in v2.5.0
@@ -676,6 +781,26 @@ export declare function tail<A>(nea: ReadonlyNonEmptyArray<A>): ReadonlyArray<A>
 
 Added in v2.5.0
 
+# traversableReadonlyNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const traversableReadonlyNonEmptyArray: Traversable1<'ReadonlyNonEmptyArray'>
+```
+
+Added in v3.0.0
+
+# traversableWithIndexReadonlyNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const traversableWithIndexReadonlyNonEmptyArray: TraversableWithIndex1<'ReadonlyNonEmptyArray', number>
+```
+
+Added in v3.0.0
+
 # traverse
 
 **Signature**
@@ -720,26 +845,6 @@ export declare function updateAt<A>(
 ```
 
 Added in v2.5.0
-
-# wilt
-
-**Signature**
-
-```ts
-export declare const wilt: Wilt1<'ReadonlyNonEmptyArray'>
-```
-
-Added in v3.0.0
-
-# wither
-
-**Signature**
-
-```ts
-export declare const wither: Wither1<'ReadonlyNonEmptyArray'>
-```
-
-Added in v3.0.0
 
 # zip
 

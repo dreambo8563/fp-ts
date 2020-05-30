@@ -18,23 +18,33 @@ Added in v2.0.0
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
 - [alt](#alt)
+- [altNonEmptyArray](#altnonemptyarray)
 - [ap](#ap)
 - [apFirst](#apfirst)
 - [apSecond](#apsecond)
+- [applicativeNonEmptyArray](#applicativenonemptyarray)
+- [applyNonEmptyArray](#applynonemptyarray)
 - [chain](#chain)
 - [chainFirst](#chainfirst)
+- [comonadNonEmptyArray](#comonadnonemptyarray)
 - [concat](#concat)
 - [cons](#cons)
 - [copy](#copy)
 - [duplicate](#duplicate)
 - [extend](#extend)
+- [extendNonEmptyArray](#extendnonemptyarray)
+- [extract](#extract)
 - [filter](#filter)
 - [filterWithIndex](#filterwithindex)
 - [flatten](#flatten)
 - [fold](#fold)
 - [foldMap](#foldmap)
 - [foldMapWithIndex](#foldmapwithindex)
+- [foldableNonEmptyArray](#foldablenonemptyarray)
+- [foldableWithIndexNonEmptyArray](#foldablewithindexnonemptyarray)
 - [fromArray](#fromarray)
+- [functorNonEmptyArray](#functornonemptyarray)
+- [functorWithIndexNonEmptyArray](#functorwithindexnonemptyarray)
 - [getEq](#geteq)
 - [getSemigroup](#getsemigroup)
 - [getShow](#getshow)
@@ -50,7 +60,7 @@ Added in v2.0.0
 - [max](#max)
 - [min](#min)
 - [modifyAt](#modifyat)
-- [nonEmptyArray](#nonemptyarray)
+- [monadNonEmptyArray](#monadnonemptyarray)
 - [of](#of)
 - [reduce](#reduce)
 - [reduceRight](#reduceright)
@@ -61,12 +71,12 @@ Added in v2.0.0
 - [snoc](#snoc)
 - [sort](#sort)
 - [tail](#tail)
+- [traversableNonEmptyArray](#traversablenonemptyarray)
+- [traversableWithIndexNonEmptyArray](#traversablewithindexnonemptyarray)
 - [traverse](#traverse)
 - [traverseWithIndex](#traversewithindex)
 - [unzip](#unzip)
 - [updateAt](#updateat)
-- [wilt](#wilt)
-- [wither](#wither)
 - [zip](#zip)
 - [zipWith](#zipwith)
 
@@ -114,6 +124,16 @@ export declare const alt: <A>(that: () => NonEmptyArray<A>) => (fa: NonEmptyArra
 
 Added in v2.6.2
 
+# altNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const altNonEmptyArray: Alt1<'NonEmptyArray'>
+```
+
+Added in v3.0.0
+
 # ap
 
 **Signature**
@@ -144,6 +164,26 @@ export declare const apSecond: <B>(fb: NonEmptyArray<B>) => <A>(fa: NonEmptyArra
 
 Added in v2.0.0
 
+# applicativeNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const applicativeNonEmptyArray: Applicative1<'NonEmptyArray'>
+```
+
+Added in v3.0.0
+
+# applyNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const applyNonEmptyArray: Apply1<'NonEmptyArray'>
+```
+
+Added in v3.0.0
+
 # chain
 
 **Signature**
@@ -163,6 +203,16 @@ export declare const chainFirst: <A, B>(f: (a: A) => NonEmptyArray<B>) => (ma: N
 ```
 
 Added in v2.0.0
+
+# comonadNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const comonadNonEmptyArray: Comonad1<'NonEmptyArray'>
+```
+
+Added in v3.0.0
 
 # concat
 
@@ -224,6 +274,26 @@ export declare const extend: <A, B>(f: (fa: NonEmptyArray<A>) => B) => (ma: NonE
 ```
 
 Added in v2.0.0
+
+# extendNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const extendNonEmptyArray: Extend1<'NonEmptyArray'>
+```
+
+Added in v3.0.0
+
+# extract
+
+**Signature**
+
+```ts
+export declare const extract: <A>(wa: NonEmptyArray<A>) => A
+```
+
+Added in v3.0.0
 
 # filter
 
@@ -292,6 +362,26 @@ export declare const foldMapWithIndex: <S>(
 
 Added in v2.0.0
 
+# foldableNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const foldableNonEmptyArray: Foldable1<'NonEmptyArray'>
+```
+
+Added in v3.0.0
+
+# foldableWithIndexNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const foldableWithIndexNonEmptyArray: FoldableWithIndex1<'NonEmptyArray', number>
+```
+
+Added in v3.0.0
+
 # fromArray
 
 Builds a `NonEmptyArray` from an `Array` returning `none` if `as` is an empty array
@@ -303,6 +393,26 @@ export declare const fromArray: <A>(as: A[]) => Option<NonEmptyArray<A>>
 ```
 
 Added in v2.0.0
+
+# functorNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const functorNonEmptyArray: Functor1<'NonEmptyArray'>
+```
+
+Added in v3.0.0
+
+# functorWithIndexNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const functorWithIndexNonEmptyArray: FunctorWithIndex1<'NonEmptyArray', number>
+```
+
+Added in v3.0.0
 
 # getEq
 
@@ -519,20 +629,15 @@ export declare const modifyAt: <A>(i: number, f: (a: A) => A) => (nea: NonEmptyA
 
 Added in v2.0.0
 
-# nonEmptyArray
+# monadNonEmptyArray
 
 **Signature**
 
 ```ts
-export declare const nonEmptyArray: Monad1<'NonEmptyArray'> &
-  Comonad1<'NonEmptyArray'> &
-  TraversableWithIndex1<'NonEmptyArray', number> &
-  FunctorWithIndex1<'NonEmptyArray', number> &
-  FoldableWithIndex1<'NonEmptyArray', number> &
-  Alt1<'NonEmptyArray'>
+export declare const monadNonEmptyArray: Monad1<'NonEmptyArray'>
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # of
 
@@ -644,6 +749,26 @@ export declare const tail: <A>(nea: NonEmptyArray<A>) => A[]
 
 Added in v2.0.0
 
+# traversableNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const traversableNonEmptyArray: Traversable1<'NonEmptyArray'>
+```
+
+Added in v3.0.0
+
+# traversableWithIndexNonEmptyArray
+
+**Signature**
+
+```ts
+export declare const traversableWithIndexNonEmptyArray: TraversableWithIndex1<'NonEmptyArray', number>
+```
+
+Added in v3.0.0
+
 # traverse
 
 **Signature**
@@ -683,28 +808,6 @@ export declare const updateAt: <A>(i: number, a: A) => (nea: NonEmptyArray<A>) =
 ```
 
 Added in v2.0.0
-
-# wilt
-
-re
-
-**Signature**
-
-```ts
-export declare const wilt: Wilt1<'NonEmptyArray'>
-```
-
-Added in v3.0.0
-
-# wither
-
-**Signature**
-
-```ts
-export declare const wither: Wither1<'NonEmptyArray'>
-```
-
-Added in v3.0.0
 
 # zip
 

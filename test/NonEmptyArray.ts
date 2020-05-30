@@ -1,6 +1,5 @@
 import * as assert from 'assert'
 import * as C from '../src/Const'
-import * as E from '../src/Either'
 import { eqNumber } from '../src/Eq'
 import { identity, pipe } from '../src/function'
 import * as I from '../src/Identity'
@@ -50,20 +49,6 @@ describe('O.NonEmptyArray', () => {
         assert.deepStrictEqual(pipe(['a', 'bb'], _.mapWithIndex(f)), traverseWithIndex(['a', 'bb']))
       })
     })
-
-    describe('Witherable', () => {
-      const p = (n: number) => n > 2
-
-      it('wither', () => {
-        const wither = _.wither(I.identity)((n: number) => (p(n) ? O.some(n + 1) : O.none))
-        assert.deepStrictEqual(wither([1, 3]), [4])
-      })
-
-      it('wilt', () => {
-        const wilt = _.wilt(I.identity)((n: number) => (p(n) ? E.right(n + 1) : E.left(n - 1)))
-        assert.deepStrictEqual(wilt([1, 3]), { left: [0], right: [4] })
-      })
-    })
   })
 
   it('head', () => {
@@ -105,7 +90,7 @@ describe('O.NonEmptyArray', () => {
   })
 
   it('extract', () => {
-    assert.deepStrictEqual(_.nonEmptyArray.extract([1, 2, 3]), 1)
+    assert.deepStrictEqual(_.extract([1, 2, 3]), 1)
   })
 
   it('min', () => {
@@ -313,14 +298,14 @@ describe('O.NonEmptyArray', () => {
     assert.deepStrictEqual(
       pipe(
         ['a', 'bb'],
-        _.nonEmptyArray.traverseWithIndex(O.applicativeOption)((i, s) => (s.length >= 1 ? O.some(s + i) : O.none))
+        _.traverseWithIndex(O.applicativeOption)((i, s) => (s.length >= 1 ? O.some(s + i) : O.none))
       ),
       O.some(['a0', 'bb1'])
     )
     assert.deepStrictEqual(
       pipe(
         ['a', 'bb'],
-        _.nonEmptyArray.traverseWithIndex(O.applicativeOption)((i, s) => (s.length > 1 ? O.some(s + i) : O.none))
+        _.traverseWithIndex(O.applicativeOption)((i, s) => (s.length > 1 ? O.some(s + i) : O.none))
       ),
       O.none
     )
@@ -331,7 +316,7 @@ describe('O.NonEmptyArray', () => {
       pipe(['a', 'bb'], _.foldMapWithIndex(M.monoidString)(f)),
       pipe(
         ['a', 'bb'],
-        _.nonEmptyArray.traverseWithIndex(C.getApplicative(M.monoidString))((i, a) => C.make(f(i, a)))
+        _.traverseWithIndex(C.getApplicative(M.monoidString))((i, a) => C.make(f(i, a)))
       )
     )
 
@@ -340,7 +325,7 @@ describe('O.NonEmptyArray', () => {
       pipe(['a', 'bb'], _.mapWithIndex(f)),
       pipe(
         ['a', 'bb'],
-        _.nonEmptyArray.traverseWithIndex(I.identity)((i, a) => I.identity.of(f(i, a)))
+        _.traverseWithIndex(I.identity)((i, a) => I.identity.of(f(i, a)))
       )
     )
   })

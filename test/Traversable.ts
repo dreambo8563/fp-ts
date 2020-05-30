@@ -1,5 +1,5 @@
 import * as assert from 'assert'
-import { array } from '../src/Array'
+import * as A from '../src/Array'
 import * as O from '../src/Option'
 import { getTraversableComposition } from '../src/Traversable'
 import { pipe } from '../src/function'
@@ -10,7 +10,7 @@ export type ArrayOptionURI = typeof ArrayOptionURI
 
 describe('Traversable', () => {
   it('getTraversableComposition', () => {
-    const T = getTraversableComposition(array, O.traversableOption)
+    const T = getTraversableComposition(A.traversableArray, O.traversableOption)
     assert.deepStrictEqual(
       pipe(
         [O.some(1), O.some(2)],

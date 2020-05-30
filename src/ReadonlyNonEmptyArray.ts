@@ -19,7 +19,11 @@ import { getJoinSemigroup, getMeetSemigroup, Semigroup } from './Semigroup'
 import { Show } from './Show'
 import { TraversableWithIndex1 } from './TraversableWithIndex'
 import { Traversable1 } from './Traversable'
-import { Witherable1 } from './Witherable'
+import { Foldable1 } from './Foldable'
+import { Functor1 } from './Functor'
+import { Apply1 } from './Apply'
+import { Applicative1 } from './Applicative'
+import { Extend1 } from './Extend'
 
 declare module './HKT' {
   interface URItoKind<A> {
@@ -494,34 +498,83 @@ export const sequence: Traversable1<URI>['sequence'] = RA.sequence as any
  */
 export const traverseWithIndex: TraversableWithIndex1<URI, number>['traverseWithIndex'] = RA.traverseWithIndex as any
 
-/**
- * @since 3.0.0
- */
-export const wither: Witherable1<URI>['wither'] = RA.wither as any
-
-/**
- * @since 3.0.0
- */
-export const wilt: Witherable1<URI>['wilt'] = RA.wilt as any
-
 // -------------------------------------------------------------------------------------
 // instances
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 2.5.0
+ * @since 3.0.0
  */
-export const readonlyNonEmptyArray: Monad1<URI> &
-  Comonad1<URI> &
-  TraversableWithIndex1<URI, number> &
-  FunctorWithIndex1<URI, number> &
-  FoldableWithIndex1<URI, number> &
-  Alt1<URI> =
-  /*#__PURE__*/
-  (() => {
-    return {
-      ...(RA.readonlyArray as any),
-      URI,
-      extract: head
-    }
-  })()
+export const functorReadonlyNonEmptyArray: Functor1<URI> = RA.functorReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const functorWithIndexReadonlyNonEmptyArray: FunctorWithIndex1<
+  URI,
+  number
+> = RA.functorWithIndexReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const applyReadonlyNonEmptyArray: Apply1<URI> = RA.applyReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const applicativeReadonlyNonEmptyArray: Applicative1<URI> = RA.applicativeReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const monadReadonlyNonEmptyArray: Monad1<URI> = RA.monadReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const foldableReadonlyNonEmptyArray: Foldable1<URI> = RA.foldableReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const foldableWithIndexReadonlyNonEmptyArray: FoldableWithIndex1<
+  URI,
+  number
+> = RA.foldableWithIndexReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const altReadonlyNonEmptyArray: Alt1<URI> = RA.altReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const traversableReadonlyNonEmptyArray: Traversable1<URI> = RA.traversableReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const traversableWithIndexReadonlyNonEmptyArray: TraversableWithIndex1<
+  URI,
+  number
+> = RA.traversableWithIndexReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const extendReadonlyNonEmptyArray: Extend1<URI> = RA.extendReadonlyArray as any
+
+/**
+ * @since 3.0.0
+ */
+export const extract: <A>(wa: ReadonlyNonEmptyArray<A>) => A = head
+
+/**
+ * @since 3.0.0
+ */
+export const comonadReadonlyNonEmptyArray: Comonad1<URI> = {
+  ...extendReadonlyNonEmptyArray,
+  extract
+}

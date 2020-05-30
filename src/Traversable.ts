@@ -323,12 +323,12 @@ export interface TraversableComposition11<F extends URIS, G extends URIS>
  * Returns the composition of two traversables
  *
  * @example
- * import { array } from 'fp-ts/lib/Array'
+ * import { traversableArray } from 'fp-ts/lib/Array'
  * import { io } from 'fp-ts/lib/IO'
  * import { none, traversableOption, some } from 'fp-ts/lib/Option'
  * import { getTraversableComposition } from 'fp-ts/lib/Traversable'
  *
- * const T = getTraversableComposition(array, traversableOption)
+ * const T = getTraversableComposition(traversableArray, traversableOption)
  * const state: Record<string, number | undefined> = {
  *   a: 1,
  *   b: 2
