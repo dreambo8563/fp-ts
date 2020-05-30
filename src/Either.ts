@@ -758,7 +758,7 @@ export const extendEither: Extend2<URI> = {
 /**
  * @since 3.0.0
  */
-export const nonadThrowEither: MonadThrow2<URI> = {
+export const monadThrowEither: MonadThrow2<URI> = {
   ...monadEither,
   throwError: left
 }

@@ -90,7 +90,7 @@ Added in v2.0.0
 - [map](#map)
 - [mapLeft](#mapleft)
 - [monadEither](#monadeither)
-- [nonadThrowEither](#nonadthroweither)
+- [monadThrowEither](#monadthroweither)
 - [orElse](#orelse)
 - [parseJSON](#parsejson)
 - [reduce](#reduce)
@@ -688,12 +688,12 @@ export declare const monadEither: Monad2<'Either'>
 
 Added in v3.0.0
 
-# nonadThrowEither
+# monadThrowEither
 
 **Signature**
 
 ```ts
-export declare const nonadThrowEither: MonadThrow2<'Either'>
+export declare const monadThrowEither: MonadThrow2<'Either'>
 ```
 
 Added in v3.0.0
