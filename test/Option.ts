@@ -54,14 +54,14 @@ describe('Option', () => {
 
     describe('Witherable', () => {
       it('wither', () => {
-        const wither = _.wither(I.identity)((n: number) => (p(n) ? _.some(n + 1) : _.none))
+        const wither = _.wither(I.applicativeIdentity)((n: number) => (p(n) ? _.some(n + 1) : _.none))
         assert.deepStrictEqual(wither(_.none), _.none)
         assert.deepStrictEqual(wither(_.some(1)), _.none)
         assert.deepStrictEqual(wither(_.some(3)), _.some(4))
       })
 
       it('wilt', () => {
-        const wilt = _.wilt(I.identity)((n: number) => (p(n) ? right(n + 1) : left(n - 1)))
+        const wilt = _.wilt(I.applicativeIdentity)((n: number) => (p(n) ? right(n + 1) : left(n - 1)))
         assert.deepStrictEqual(wilt(_.none), { left: _.none, right: _.none })
         assert.deepStrictEqual(wilt(_.some(1)), { left: _.some(0), right: _.none })
         assert.deepStrictEqual(wilt(_.some(3)), { left: _.none, right: _.some(4) })

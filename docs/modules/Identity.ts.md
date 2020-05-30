@@ -16,23 +16,31 @@ Added in v2.0.0
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
 - [alt](#alt)
+- [altIdentity](#altidentity)
 - [ap](#ap)
 - [apFirst](#apfirst)
 - [apSecond](#apsecond)
+- [applicativeIdentity](#applicativeidentity)
+- [applyIdentity](#applyidentity)
 - [chain](#chain)
 - [chainFirst](#chainfirst)
+- [comonadIdentity](#comonadidentity)
 - [duplicate](#duplicate)
 - [extend](#extend)
+- [extendIdentity](#extendidentity)
 - [extract](#extract)
 - [flatten](#flatten)
 - [foldMap](#foldmap)
+- [foldableIdentity](#foldableidentity)
+- [functorIdentity](#functoridentity)
 - [getEq](#geteq)
 - [getShow](#getshow)
-- [identity](#identity)
 - [map](#map)
+- [monadIdentity](#monadidentity)
 - [reduce](#reduce)
 - [reduceRight](#reduceright)
 - [sequence](#sequence)
+- [traversableIdentity](#traversableidentity)
 - [traverse](#traverse)
 
 ---
@@ -77,6 +85,16 @@ export declare const alt: <A>(that: () => A) => (fa: A) => A
 
 Added in v2.0.0
 
+# altIdentity
+
+**Signature**
+
+```ts
+export declare const altIdentity: Alt1<'Identity'>
+```
+
+Added in v3.0.0
+
 # ap
 
 **Signature**
@@ -107,6 +125,26 @@ export declare const apSecond: <B>(fb: B) => <A>(fa: A) => B
 
 Added in v2.0.0
 
+# applicativeIdentity
+
+**Signature**
+
+```ts
+export declare const applicativeIdentity: Applicative1<'Identity'>
+```
+
+Added in v3.0.0
+
+# applyIdentity
+
+**Signature**
+
+```ts
+export declare const applyIdentity: Apply1<'Identity'>
+```
+
+Added in v3.0.0
+
 # chain
 
 **Signature**
@@ -127,6 +165,16 @@ export declare const chainFirst: <A, B>(f: (a: A) => B) => (ma: A) => A
 
 Added in v2.0.0
 
+# comonadIdentity
+
+**Signature**
+
+```ts
+export declare const comonadIdentity: Comonad1<'Identity'>
+```
+
+Added in v3.0.0
+
 # duplicate
 
 **Signature**
@@ -146,6 +194,16 @@ export declare const extend: <A, B>(f: (wa: A) => B) => (wa: A) => B
 ```
 
 Added in v2.0.0
+
+# extendIdentity
+
+**Signature**
+
+```ts
+export declare const extendIdentity: Extend1<'Identity'>
+```
+
+Added in v3.0.0
 
 # extract
 
@@ -177,6 +235,26 @@ export declare const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: A
 
 Added in v2.0.0
 
+# foldableIdentity
+
+**Signature**
+
+```ts
+export declare const foldableIdentity: Foldable1<'Identity'>
+```
+
+Added in v3.0.0
+
+# functorIdentity
+
+**Signature**
+
+```ts
+export declare const functorIdentity: Functor1<'Identity'>
+```
+
+Added in v3.0.0
+
 # getEq
 
 **Signature**
@@ -197,20 +275,6 @@ export declare const getShow: <A>(S: Show<A>) => Show<A>
 
 Added in v2.0.0
 
-# identity
-
-**Signature**
-
-```ts
-export declare const identity: Monad1<'Identity'> &
-  Foldable1<'Identity'> &
-  Traversable1<'Identity'> &
-  Alt1<'Identity'> &
-  Comonad1<'Identity'>
-```
-
-Added in v2.0.0
-
 # map
 
 **Signature**
@@ -220,6 +284,16 @@ export declare const map: <A, B>(f: (a: A) => B) => (fa: A) => B
 ```
 
 Added in v2.0.0
+
+# monadIdentity
+
+**Signature**
+
+```ts
+export declare const monadIdentity: Monad1<'Identity'>
+```
+
+Added in v3.0.0
 
 # reduce
 
@@ -247,6 +321,16 @@ Added in v2.0.0
 
 ```ts
 export declare const sequence: Sequence1<'Identity'>
+```
+
+Added in v3.0.0
+
+# traversableIdentity
+
+**Signature**
+
+```ts
+export declare const traversableIdentity: Traversable1<'Identity'>
 ```
 
 Added in v3.0.0

@@ -71,7 +71,7 @@ describe('Array', () => {
 
       it('should be compatible with FunctorWithIndex', () => {
         const f = (i: number, s: string): string => s + i
-        const traverseWithIndex = _.traverseWithIndex(I.identity)((i, s: string) => f(i, s))
+        const traverseWithIndex = _.traverseWithIndex(I.applicativeIdentity)((i, s: string) => f(i, s))
         assert.deepStrictEqual(pipe(['a', 'bb'], _.mapWithIndex(f)), traverseWithIndex(['a', 'bb']))
       })
     })
@@ -80,12 +80,12 @@ describe('Array', () => {
       const p = (n: number) => n > 2
 
       it('wither', () => {
-        const wither = _.wither(I.identity)((n: number) => (p(n) ? O.some(n + 1) : O.none))
+        const wither = _.wither(I.applicativeIdentity)((n: number) => (p(n) ? O.some(n + 1) : O.none))
         assert.deepStrictEqual(wither([1, 3]), [4])
       })
 
       it('wilt', () => {
-        const wilt = _.wilt(I.identity)((n: number) => (p(n) ? E.right(n + 1) : E.left(n - 1)))
+        const wilt = _.wilt(I.applicativeIdentity)((n: number) => (p(n) ? E.right(n + 1) : E.left(n - 1)))
         assert.deepStrictEqual(wilt([1, 3]), { left: [0], right: [4] })
       })
     })

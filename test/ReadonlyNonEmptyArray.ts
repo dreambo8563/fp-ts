@@ -45,7 +45,7 @@ describe('ReadonlyNonEmptyArray', () => {
 
       it('should be compatible with FunctorWithIndex', () => {
         const f = (i: number, s: string): string => s + i
-        const traverseWithIndex = _.traverseWithIndex(I.identity)((i, s: string) => f(i, s))
+        const traverseWithIndex = _.traverseWithIndex(I.applicativeIdentity)((i, s: string) => f(i, s))
         assert.deepStrictEqual(pipe(['a', 'bb'], _.mapWithIndex(f)), traverseWithIndex(['a', 'bb']))
       })
     })
@@ -324,7 +324,7 @@ describe('ReadonlyNonEmptyArray', () => {
       pipe(['a', 'bb'], _.mapWithIndex(f)),
       pipe(
         ['a', 'bb'],
-        _.traverseWithIndex(I.identity)((i, a: string) => I.identity.of(f(i, a)))
+        _.traverseWithIndex(I.applicativeIdentity)((i, a: string) => f(i, a))
       )
     )
   })

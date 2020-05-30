@@ -2,7 +2,7 @@
  * @since 2.0.0
  */
 import { Alt1 } from './Alt'
-import { Applicative } from './Applicative'
+import { Applicative, Applicative1 } from './Applicative'
 import { Comonad1 } from './Comonad'
 import { Eq } from './Eq'
 import { Foldable1 } from './Foldable'
@@ -12,6 +12,9 @@ import { Monad1 } from './Monad'
 import { Monoid } from './Monoid'
 import { Show } from './Show'
 import { Traversable1 } from './Traversable'
+import { Functor1 } from './Functor'
+import { Apply1 } from './Apply'
+import { Extend1 } from './Extend'
 
 declare module './HKT' {
   interface URItoKind<A> {
@@ -155,31 +158,77 @@ export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: Identity<A>
 // -------------------------------------------------------------------------------------
 
 /**
- * @internal
+ * @since 3.0.0
+ */
+export const functorIdentity: Functor1<URI> = {
+  URI,
+  map
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applyIdentity: Apply1<URI> = {
+  ...functorIdentity,
+  ap
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applicativeIdentity: Applicative1<URI> = {
+  ...applyIdentity,
+  of: id
+}
+
+/**
+ * @since 3.0.0
  */
 export const monadIdentity: Monad1<URI> = {
-  URI,
-  map,
-  of: id,
-  ap,
+  ...applicativeIdentity,
   chain
 }
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const identity: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Alt1<URI> & Comonad1<URI> = {
+export const foldableIdentity: Foldable1<URI> = {
   URI,
-  map,
-  of: id,
-  ap,
-  chain,
   reduce,
   foldMap,
-  reduceRight,
-  traverse,
-  sequence,
-  alt,
-  extract,
+  reduceRight
+}
+
+/**
+ * @since 3.0.0
+ */
+export const altIdentity: Alt1<URI> = {
+  ...functorIdentity,
+  alt
+}
+
+/**
+ * @since 3.0.0
+ */
+export const extendIdentity: Extend1<URI> = {
+  ...functorIdentity,
   extend
+}
+
+/**
+ * @since 3.0.0
+ */
+export const comonadIdentity: Comonad1<URI> = {
+  ...extendIdentity,
+  extract
+}
+
+/**
+ * @since 3.0.0
+ */
+export const traversableIdentity: Traversable1<URI> = {
+  ...functorIdentity,
+  ...foldableIdentity,
+  traverse,
+  sequence
 }

@@ -11,11 +11,11 @@ describe('Tree', () => {
     describe('Traversable', () => {
       it('traverse', () => {
         const fa = _.make('a', [_.make('b'), _.make('c')])
-        assert.deepStrictEqual(pipe(fa, _.traverse(I.identity)(identity)), fa)
+        assert.deepStrictEqual(pipe(fa, _.traverse(I.applicativeIdentity)(identity)), fa)
       })
 
       it('sequence', () => {
-        const sequence = _.sequence(I.identity)
+        const sequence = _.sequence(I.applicativeIdentity)
         assert.deepStrictEqual(
           sequence(_.make('a', [_.make('b'), _.make('c')])),
           _.make('a', [_.make('b'), _.make('c')])
@@ -166,8 +166,8 @@ describe('Tree', () => {
   })
 
   it('unfoldTreeM', () => {
-    const fa = _.unfoldTreeM(I.identity)(1, (b) => I.identity.of([b, b < 3 ? [b + 1, b + 2] : []]))
-    const expected = I.identity.of(_.make(1, [_.make(2, [_.make(3), _.make(4)]), _.make(3)]))
+    const fa = _.unfoldTreeM(I.monadIdentity)(1, (b) => [b, b < 3 ? [b + 1, b + 2] : []])
+    const expected = _.make(1, [_.make(2, [_.make(3), _.make(4)]), _.make(3)])
     assert.deepStrictEqual(fa, expected)
   })
 
