@@ -24,12 +24,6 @@ import { Semigroup } from './Semigroup'
 import { Semiring } from './Semiring'
 import { Show } from './Show'
 
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly Const: Const<E, A>
-  }
-}
-
 /**
  * @since 2.0.0
  */
@@ -40,6 +34,12 @@ export const URI = 'Const'
  */
 export type URI = typeof URI
 
+declare module './HKT' {
+  interface URItoKind2<E, A> {
+    readonly [URI]: Const<E, A>
+  }
+}
+
 /**
  * @since 2.0.0
  */
@@ -49,6 +49,10 @@ export type Const<E, A> = E & { readonly _A: A }
  * @since 2.0.0
  */
 export const make: <E, A = never>(e: E) => Const<E, A> = unsafeCoerce
+
+// -------------------------------------------------------------------------------------
+// instances
+// -------------------------------------------------------------------------------------
 
 /**
  * @since 2.0.0
@@ -126,9 +130,18 @@ export function getApplicative<E>(M: Monoid<E>): Applicative2C<URI, E> {
   }
 }
 
-// -------------------------------------------------------------------------------------
-// pipeables
-// -------------------------------------------------------------------------------------
+/**
+ * @since 2.0.0
+ */
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: Const<E, A>) => Const<E, B> = () => unsafeCoerce
+
+/**
+ * @since 3.0.0
+ */
+export const functorConst: Functor2<URI> = {
+  URI,
+  map
+}
 
 /**
  * @since 2.0.0
@@ -136,9 +149,12 @@ export function getApplicative<E>(M: Monoid<E>): Applicative2C<URI, E> {
 export const contramap: <A, B>(f: (b: B) => A) => <E>(fa: Const<E, A>) => Const<E, B> = () => unsafeCoerce
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: Const<E, A>) => Const<E, B> = () => unsafeCoerce
+export const contravariantConst: Contravariant2<URI> = {
+  URI,
+  contramap
+}
 
 /**
  * @since 2.6.2
@@ -151,17 +167,11 @@ export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: Const<E
  */
 export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: Const<E, A>) => Const<G, A> = (f) => (fea) => make(f(fea))
 
-// -------------------------------------------------------------------------------------
-// instances
-// -------------------------------------------------------------------------------------
-
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const const_: Functor2<URI> & Contravariant2<URI> & Bifunctor2<URI> = {
+export const bifunctorConst: Bifunctor2<URI> = {
   URI,
-  map,
-  contramap,
   bimap,
   mapLeft
 }

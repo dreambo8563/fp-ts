@@ -21,9 +21,11 @@ Added in v2.0.0
 - [Const (type alias)](#const-type-alias)
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
+- [bifunctorConst](#bifunctorconst)
 - [bimap](#bimap)
-- [const\_](#const_)
 - [contramap](#contramap)
+- [contravariantConst](#contravariantconst)
+- [functorConst](#functorconst)
 - [getApplicative](#getapplicative)
 - [getApply](#getapply)
 - [getBooleanAlgebra](#getbooleanalgebra)
@@ -72,6 +74,16 @@ export declare const URI: 'Const'
 
 Added in v2.0.0
 
+# bifunctorConst
+
+**Signature**
+
+```ts
+export declare const bifunctorConst: Bifunctor2<'Const'>
+```
+
+Added in v3.0.0
+
 # bimap
 
 **Signature**
@@ -82,16 +94,6 @@ export declare const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa:
 
 Added in v2.6.2
 
-# const\_
-
-**Signature**
-
-```ts
-export declare const const_: Functor2<'Const'> & Contravariant2<'Const'> & Bifunctor2<'Const'>
-```
-
-Added in v2.0.0
-
 # contramap
 
 **Signature**
@@ -101,6 +103,26 @@ export declare const contramap: <A, B>(f: (b: B) => A) => <E>(fa: Const<E, A>) =
 ```
 
 Added in v2.0.0
+
+# contravariantConst
+
+**Signature**
+
+```ts
+export declare const contravariantConst: Contravariant2<'Const'>
+```
+
+Added in v3.0.0
+
+# functorConst
+
+**Signature**
+
+```ts
+export declare const functorConst: Functor2<'Const'>
+```
+
+Added in v3.0.0
 
 # getApplicative
 
