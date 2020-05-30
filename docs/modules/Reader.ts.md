@@ -126,7 +126,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const chain: <R, A, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) => Reader<R, B>
+export declare const chain: <A, R, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) => Reader<R, B>
 ```
 
 Added in v2.0.0
@@ -136,7 +136,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const chainFirst: <R, A, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) => Reader<R, A>
+export declare const chainFirst: <A, R, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) => Reader<R, A>
 ```
 
 Added in v2.0.0
@@ -146,7 +146,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const chainW: <Q, A, B>(f: (a: A) => Reader<Q, B>) => <R>(ma: Reader<R, A>) => Reader<R & Q, B>
+export declare const chainW: <A, Q, B>(f: (a: A) => Reader<Q, B>) => <R>(ma: Reader<R, A>) => Reader<R & Q, B>
 ```
 
 Added in v2.6.0
@@ -189,7 +189,7 @@ Changes the value of the local context during the execution of the action `ma` (
 **Signature**
 
 ```ts
-export declare function local<Q, R>(f: (d: Q) => R): <A>(ma: Reader<R, A>) => Reader<Q, A>
+export declare const local: <Q, R>(f: (d: Q) => R) => <A>(ma: Reader<R, A>) => Reader<Q, A>
 ```
 
 Added in v2.0.0

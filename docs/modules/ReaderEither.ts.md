@@ -169,7 +169,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const chain: <R, E, A, B>(
+export declare const chain: <A, R, E, B>(
   f: (a: A) => ReaderEither<R, E, B>
 ) => (ma: ReaderEither<R, E, A>) => ReaderEither<R, E, B>
 ```
@@ -181,7 +181,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function chainEitherK<E, A, B>(
+export declare function chainEitherK<A, E, B>(
   f: (a: A) => Either<E, B>
 ): <R>(ma: ReaderEither<R, E, A>) => ReaderEither<R, E, B>
 ```
@@ -254,10 +254,10 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function fold<R, E, A, B>(
+export declare const fold: <R, E, A, B>(
   onLeft: (e: E) => Reader<R, B>,
   onRight: (a: A) => Reader<R, B>
-): (ma: ReaderEither<R, E, A>) => Reader<R, B>
+) => (ma: ReaderEither<R, E, A>) => Reader<R, B>
 ```
 
 Added in v2.0.0
@@ -277,7 +277,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function fromEitherK<E, A extends ReadonlyArray<unknown>, B>(
+export declare function fromEitherK<A extends ReadonlyArray<unknown>, E, B>(
   f: (...a: A) => Either<E, B>
 ): <R>(...a: A) => ReaderEither<R, E, B>
 ```
@@ -335,7 +335,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function getOrElse<R, E, A>(onLeft: (e: E) => Reader<R, A>): (ma: ReaderEither<R, E, A>) => Reader<R, A>
+export declare const getOrElse: <E, R, A>(onLeft: (e: E) => Reader<R, A>) => (ma: ReaderEither<R, E, A>) => Reader<R, A>
 ```
 
 Added in v2.0.0
@@ -345,7 +345,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const getOrElseW: <Q, E, B>(
+export declare const getOrElseW: <E, Q, B>(
   onLeft: (e: E) => Reader<Q, B>
 ) => <R, A>(ma: ReaderEither<R, E, A>) => Reader<R & Q, B | A>
 ```
@@ -432,9 +432,9 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function orElse<R, E, A, M>(
+export declare const orElse: <E, R, M, A>(
   onLeft: (e: E) => ReaderEither<R, M, A>
-): (ma: ReaderEither<R, E, A>) => ReaderEither<R, M, A>
+) => (ma: ReaderEither<R, E, A>) => ReaderEither<R, M, A>
 ```
 
 Added in v2.0.0

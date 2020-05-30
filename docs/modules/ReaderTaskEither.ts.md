@@ -577,7 +577,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function local<Q, R>(f: (f: Q) => R): <E, A>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<Q, E, A>
+export declare const local: <Q, R>(f: (f: Q) => R) => <E, A>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<Q, E, A>
 ```
 
 Added in v2.0.0

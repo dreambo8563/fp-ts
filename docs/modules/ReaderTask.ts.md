@@ -128,7 +128,7 @@ Added in v2.3.0
 **Signature**
 
 ```ts
-export declare const chain: <R, A, B>(f: (a: A) => ReaderTask<R, B>) => (ma: ReaderTask<R, A>) => ReaderTask<R, B>
+export declare const chain: <A, R, B>(f: (a: A) => ReaderTask<R, B>) => (ma: ReaderTask<R, A>) => ReaderTask<R, B>
 ```
 
 Added in v2.3.0
@@ -138,7 +138,7 @@ Added in v2.3.0
 **Signature**
 
 ```ts
-export declare const chainFirst: <R, A, B>(f: (a: A) => ReaderTask<R, B>) => (ma: ReaderTask<R, A>) => ReaderTask<R, A>
+export declare const chainFirst: <A, R, B>(f: (a: A) => ReaderTask<R, B>) => (ma: ReaderTask<R, A>) => ReaderTask<R, A>
 ```
 
 Added in v2.3.0
@@ -252,7 +252,7 @@ Added in v2.3.0
 **Signature**
 
 ```ts
-export declare function local<Q, R>(f: (f: Q) => R): <A>(ma: ReaderTask<R, A>) => ReaderTask<Q, A>
+export declare const local: <Q, R>(f: (f: Q) => R) => <A>(ma: ReaderTask<R, A>) => ReaderTask<Q, A>
 ```
 
 Added in v2.3.0

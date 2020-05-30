@@ -62,35 +62,30 @@ export const leftReader: <R, E = never, A = never>(me: Reader<R, E>) => ReaderEi
 /**
  * @since 2.0.0
  */
-export function fold<R, E, A, B>(
+export const fold: <R, E, A, B>(
   onLeft: (e: E) => Reader<R, B>,
   onRight: (a: A) => Reader<R, B>
-): (ma: ReaderEither<R, E, A>) => Reader<R, B> {
-  return (ma) => T.fold(ma, onLeft, onRight)
-}
+) => (ma: ReaderEither<R, E, A>) => Reader<R, B> = T.fold
 
 /**
  * @since 2.0.0
  */
-export function getOrElse<R, E, A>(onLeft: (e: E) => Reader<R, A>): (ma: ReaderEither<R, E, A>) => Reader<R, A> {
-  return (ma) => T.getOrElse(ma, onLeft)
-}
+export const getOrElse: <E, R, A>(onLeft: (e: E) => Reader<R, A>) => (ma: ReaderEither<R, E, A>) => Reader<R, A> =
+  T.getOrElse
 
 /**
  * @since 2.6.0
  */
-export const getOrElseW: <Q, E, B>(
+export const getOrElseW: <E, Q, B>(
   onLeft: (e: E) => Reader<Q, B>
 ) => <R, A>(ma: ReaderEither<R, E, A>) => Reader<R & Q, A | B> = getOrElse as any
 
 /**
  * @since 2.0.0
  */
-export function orElse<R, E, A, M>(
+export const orElse: <E, R, M, A>(
   onLeft: (e: E) => ReaderEither<R, M, A>
-): (ma: ReaderEither<R, E, A>) => ReaderEither<R, M, A> {
-  return (ma) => T.orElse(ma, onLeft)
-}
+) => (ma: ReaderEither<R, E, A>) => ReaderEither<R, M, A> = T.orElse
 
 /**
  * @since 2.0.0
@@ -165,7 +160,7 @@ export function getReaderValidation<E>(
 /**
  * @since 2.4.0
  */
-export function fromEitherK<E, A extends ReadonlyArray<unknown>, B>(
+export function fromEitherK<A extends ReadonlyArray<unknown>, E, B>(
   f: (...a: A) => Either<E, B>
 ): <R>(...a: A) => ReaderEither<R, E, B> {
   return (...a) => fromEither(f(...a))
@@ -174,10 +169,10 @@ export function fromEitherK<E, A extends ReadonlyArray<unknown>, B>(
 /**
  * @since 2.4.0
  */
-export function chainEitherK<E, A, B>(
+export function chainEitherK<A, E, B>(
   f: (a: A) => Either<E, B>
 ): <R>(ma: ReaderEither<R, E, A>) => ReaderEither<R, E, B> {
-  return chain<any, E, A, B>(fromEitherK(f))
+  return chain<A, any, E, B>(fromEitherK(f))
 }
 
 // -------------------------------------------------------------------------------------
@@ -230,7 +225,7 @@ export const bimap: <E, G, A, B>(
 /**
  * @since 2.0.0
  */
-export const chain: <R, E, A, B>(
+export const chain: <A, R, E, B>(
   f: (a: A) => ReaderEither<R, E, B>
 ) => (ma: ReaderEither<R, E, A>) => ReaderEither<R, E, B> = T.chain
 

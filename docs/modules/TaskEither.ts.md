@@ -268,10 +268,10 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function fold<E, A, B>(
+export declare const fold: <E, A, B>(
   onLeft: (e: E) => Task<B>,
   onRight: (a: A) => Task<B>
-): (ma: TaskEither<E, A>) => Task<B>
+) => (ma: TaskEither<E, A>) => Task<B>
 ```
 
 Added in v2.0.0
@@ -381,7 +381,7 @@ Added in v2.1.0
 **Signature**
 
 ```ts
-export declare function getOrElse<E, A>(onLeft: (e: E) => Task<A>): (ma: TaskEither<E, A>) => Task<A>
+export declare const getOrElse: <E, A>(onLeft: (e: E) => Task<A>) => (ma: TaskEither<E, A>) => Task<A>
 ```
 
 Added in v2.0.0
@@ -476,7 +476,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function orElse<E, A, M>(onLeft: (e: E) => TaskEither<M, A>): (ma: TaskEither<E, A>) => TaskEither<M, A>
+export declare const orElse: <E, A, M>(onLeft: (e: E) => TaskEither<M, A>) => (ma: TaskEither<E, A>) => TaskEither<M, A>
 ```
 
 Added in v2.0.0

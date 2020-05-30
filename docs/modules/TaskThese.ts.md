@@ -90,11 +90,11 @@ Added in v2.4.0
 **Signature**
 
 ```ts
-export declare function fold<E, A, B>(
+export declare const fold: <E, B, A>(
   onLeft: (e: E) => Task<B>,
   onRight: (a: A) => Task<B>,
   onBoth: (e: E, a: A) => Task<B>
-): (fa: TaskThese<E, A>) => Task<B>
+) => (fa: TaskThese<E, A>) => Task<B>
 ```
 
 Added in v2.4.0
@@ -234,7 +234,7 @@ Added in v2.4.0
 **Signature**
 
 ```ts
-export declare function toTuple<E, A>(e: () => E, a: () => A): (fa: TaskThese<E, A>) => Task<[E, A]>
+export declare const toTuple: <E, A>(e: () => E, a: () => A) => (fa: TaskThese<E, A>) => Task<[E, A]>
 ```
 
 Added in v3.0.0

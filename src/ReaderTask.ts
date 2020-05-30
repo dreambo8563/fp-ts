@@ -97,9 +97,7 @@ export const asks: <R, A = never>(f: (r: R) => A) => ReaderTask<R, A> = T.asks
 /**
  * @since 2.3.0
  */
-export function local<Q, R>(f: (f: Q) => R): <A>(ma: ReaderTask<R, A>) => ReaderTask<Q, A> {
-  return (ma) => T.local(ma, f)
-}
+export const local: <Q, R>(f: (f: Q) => R) => <A>(ma: ReaderTask<R, A>) => ReaderTask<Q, A> = T.local
 
 /**
  * @since 2.4.0
@@ -112,7 +110,7 @@ export function fromIOK<A extends ReadonlyArray<unknown>, B>(f: (...a: A) => IO<
  * @since 2.4.0
  */
 export function chainIOK<A, B>(f: (a: A) => IO<B>): <R>(ma: ReaderTask<R, A>) => ReaderTask<R, B> {
-  return chain<any, A, B>(fromIOK(f))
+  return chain<A, any, B>(fromIOK(f))
 }
 
 /**
@@ -128,7 +126,7 @@ export function fromTaskK<A extends ReadonlyArray<unknown>, B>(
  * @since 2.4.0
  */
 export function chainTaskK<A, B>(f: (a: A) => Task<B>): <R>(ma: ReaderTask<R, A>) => ReaderTask<R, B> {
-  return chain<any, A, B>(fromTaskK(f))
+  return chain<A, any, B>(fromTaskK(f))
 }
 
 // -------------------------------------------------------------------------------------
@@ -163,17 +161,13 @@ export const apSecond = <R, B>(fb: ReaderTask<R, B>) => <A>(fa: ReaderTask<R, A>
 /**
  * @since 2.3.0
  */
-export const chain: <R, A, B>(f: (a: A) => ReaderTask<R, B>) => (ma: ReaderTask<R, A>) => ReaderTask<R, B> = (f) => (
-  ma
-) => T.chain(ma, f)
+export const chain: <A, R, B>(f: (a: A) => ReaderTask<R, B>) => (ma: ReaderTask<R, A>) => ReaderTask<R, B> = T.chain
 
 /**
  * @since 2.3.0
  */
-export const chainFirst: <R, A, B>(f: (a: A) => ReaderTask<R, B>) => (ma: ReaderTask<R, A>) => ReaderTask<R, A> = (
-  f
-) => (ma) =>
-  T.chain(ma, (a) =>
+export const chainFirst: <A, R, B>(f: (a: A) => ReaderTask<R, B>) => (ma: ReaderTask<R, A>) => ReaderTask<R, A> = (f) =>
+  chain((a) =>
     pipe(
       f(a),
       map(() => a)
@@ -183,7 +177,7 @@ export const chainFirst: <R, A, B>(f: (a: A) => ReaderTask<R, B>) => (ma: Reader
 /**
  * @since 2.3.0
  */
-export const flatten: <R, A>(mma: ReaderTask<R, ReaderTask<R, A>>) => ReaderTask<R, A> = (mma) => T.chain(mma, identity)
+export const flatten: <R, A>(mma: ReaderTask<R, ReaderTask<R, A>>) => ReaderTask<R, A> = chain(identity)
 
 /**
  * @since 2.3.0
@@ -227,6 +221,10 @@ export const readerTaskSeq: typeof readerTask =
   ((): typeof readerTask => {
     return {
       ...readerTask,
-      ap: (fa) => (fab) => T.chain(fab, (f) => pipe(fa, map(f)))
+      ap: (fa) => (fab) =>
+        pipe(
+          fab,
+          chain((f) => pipe(fa, map(f)))
+        )
     }
   })()

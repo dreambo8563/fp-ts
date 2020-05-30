@@ -235,7 +235,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function fold<E, A, B>(onLeft: (e: E) => IO<B>, onRight: (a: A) => IO<B>): (ma: IOEither<E, A>) => IO<B>
+export declare const fold: <E, A, B>(onLeft: (e: E) => IO<B>, onRight: (a: A) => IO<B>) => (ma: IOEither<E, A>) => IO<B>
 ```
 
 Added in v2.0.0
@@ -335,7 +335,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function getOrElse<E, A>(onLeft: (e: E) => IO<A>): (ma: IOEither<E, A>) => IO<A>
+export declare const getOrElse: <E, A>(onLeft: (e: E) => IO<A>) => (ma: IOEither<E, A>) => IO<A>
 ```
 
 Added in v2.0.0
@@ -422,7 +422,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function orElse<E, A, M>(onLeft: (e: E) => IOEither<M, A>): (ma: IOEither<E, A>) => IOEither<M, A>
+export declare const orElse: <E, A, M>(onLeft: (e: E) => IOEither<M, A>) => (ma: IOEither<E, A>) => IOEither<M, A>
 ```
 
 Added in v2.0.0

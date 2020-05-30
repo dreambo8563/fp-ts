@@ -232,9 +232,8 @@ export const asks: <R, E = never, A = never>(f: (r: R) => A) => ReaderTaskEither
 /**
  * @since 2.0.0
  */
-export function local<Q, R>(f: (f: Q) => R): <E, A>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<Q, E, A> {
-  return (ma) => T.local(ma, f)
-}
+export const local: <Q, R>(f: (f: Q) => R) => <E, A>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<Q, E, A> =
+  T.local
 
 /**
  * Make sure that a resource is cleaned up in the event of an exception (*). The release action is called regardless of
@@ -386,15 +385,15 @@ export const bimap: <E, G, A, B>(
  */
 export const chain: <R, E, A, B>(
   f: (a: A) => ReaderTaskEither<R, E, B>
-) => (ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> = (f) => (ma) => T.chain(ma, f)
+) => (ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> = T.chain
 
 /**
  * @since 2.0.0
  */
 export const chainFirst: <R, E, A, B>(
   f: (a: A) => ReaderTaskEither<R, E, B>
-) => (ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, A> = (f) => (ma) =>
-  T.chain(ma, (a) =>
+) => (ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, A> = (f) =>
+  chain((a) =>
     pipe(
       f(a),
       map(() => a)
@@ -404,9 +403,9 @@ export const chainFirst: <R, E, A, B>(
 /**
  * @since 2.0.0
  */
-export const flatten: <R, E, A>(mma: ReaderTaskEither<R, E, ReaderTaskEither<R, E, A>>) => ReaderTaskEither<R, E, A> = (
-  mma
-) => T.chain(mma, identity)
+export const flatten: <R, E, A>(
+  mma: ReaderTaskEither<R, E, ReaderTaskEither<R, E, A>>
+) => ReaderTaskEither<R, E, A> = chain(identity)
 
 /**
  * @since 2.0.0
@@ -450,7 +449,10 @@ export const filterOrElse: {
   ) => ReaderTaskEither<R, E, B>
   <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E): <R>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, A>
 } = <E, A>(predicate: Predicate<A>, onFalse: (a: A) => E) => <R>(ma: ReaderTaskEither<R, E, A>) =>
-  T.chain(ma, (a) => (predicate(a) ? right(a) : left(onFalse(a))))
+  pipe(
+    ma,
+    chain((a) => (predicate(a) ? right(a) : left(onFalse(a))))
+  )
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -493,7 +495,11 @@ export const readerTaskEitherSeq: typeof readerTaskEither =
   ((): typeof readerTaskEither => {
     return {
       ...readerTaskEither,
-      ap: (fa) => (fab) => T.chain(fab, (f) => pipe(fa, map(f)))
+      ap: (fa) => (fab) =>
+        pipe(
+          fab,
+          chain((f) => pipe(fa, map(f)))
+        )
     }
   })()
 

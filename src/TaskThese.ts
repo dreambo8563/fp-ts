@@ -84,13 +84,11 @@ export const fromIOEither: <E, A>(fa: IOEither<E, A>) => TaskThese<E, A> = fromI
 /**
  * @since 2.4.0
  */
-export function fold<E, A, B>(
+export const fold: <E, B, A>(
   onLeft: (e: E) => Task<B>,
   onRight: (a: A) => Task<B>,
   onBoth: (e: E, a: A) => Task<B>
-): (fa: TaskThese<E, A>) => Task<B> {
-  return (fa) => T.fold(fa, onLeft, onRight, onBoth)
-}
+) => (fa: TaskThese<E, A>) => Task<B> = T.fold
 
 /**
  * @since 2.4.0
@@ -120,9 +118,7 @@ export function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E> & MonadTask2C<URI,
 /**
  * @since 3.0.0
  */
-export function toTuple<E, A>(e: () => E, a: () => A): (fa: TaskThese<E, A>) => Task<[E, A]> {
-  return (fa) => T.toTuple(fa, e, a)
-}
+export const toTuple: <E, A>(e: () => E, a: () => A) => (fa: TaskThese<E, A>) => Task<[E, A]> = T.toTuple
 /* tslint:enable:readonly-array */
 
 // -------------------------------------------------------------------------------------

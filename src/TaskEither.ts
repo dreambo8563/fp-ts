@@ -88,19 +88,15 @@ export const fromIOEither: <E, A>(fa: IOEither<E, A>) => TaskEither<E, A> = from
 /**
  * @since 2.0.0
  */
-export function fold<E, A, B>(
+export const fold: <E, A, B>(
   onLeft: (e: E) => Task<B>,
   onRight: (a: A) => Task<B>
-): (ma: TaskEither<E, A>) => Task<B> {
-  return (ma) => T.fold(ma, onLeft, onRight)
-}
+) => (ma: TaskEither<E, A>) => Task<B> = T.fold
 
 /**
  * @since 2.0.0
  */
-export function getOrElse<E, A>(onLeft: (e: E) => Task<A>): (ma: TaskEither<E, A>) => Task<A> {
-  return (ma) => T.getOrElse(ma, onLeft)
-}
+export const getOrElse: <E, A>(onLeft: (e: E) => Task<A>) => (ma: TaskEither<E, A>) => Task<A> = T.getOrElse
 
 /**
  * @since 2.6.0
@@ -112,9 +108,8 @@ export const getOrElseW: <E, B>(
 /**
  * @since 2.0.0
  */
-export function orElse<E, A, M>(onLeft: (e: E) => TaskEither<M, A>): (ma: TaskEither<E, A>) => TaskEither<M, A> {
-  return (ma) => T.orElse(ma, onLeft)
-}
+export const orElse: <E, A, M>(onLeft: (e: E) => TaskEither<M, A>) => (ma: TaskEither<E, A>) => TaskEither<M, A> =
+  T.orElse
 
 /**
  * @since 2.0.0

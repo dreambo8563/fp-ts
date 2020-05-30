@@ -67,16 +67,13 @@ export const leftIO: <E = never, A = never>(me: IO<E>) => IOEither<E, A> = T.lef
 /**
  * @since 2.0.0
  */
-export function fold<E, A, B>(onLeft: (e: E) => IO<B>, onRight: (a: A) => IO<B>): (ma: IOEither<E, A>) => IO<B> {
-  return (ma) => T.fold(ma, onLeft, onRight)
-}
+export const fold: <E, A, B>(onLeft: (e: E) => IO<B>, onRight: (a: A) => IO<B>) => (ma: IOEither<E, A>) => IO<B> =
+  T.fold
 
 /**
  * @since 2.0.0
  */
-export function getOrElse<E, A>(onLeft: (e: E) => IO<A>): (ma: IOEither<E, A>) => IO<A> {
-  return (ma) => T.getOrElse(ma, onLeft)
-}
+export const getOrElse: <E, A>(onLeft: (e: E) => IO<A>) => (ma: IOEither<E, A>) => IO<A> = T.getOrElse
 
 /**
  * @since 2.6.0
@@ -86,9 +83,7 @@ export const getOrElseW: <E, B>(onLeft: (e: E) => IO<B>) => <A>(ma: IOEither<E, 
 /**
  * @since 2.0.0
  */
-export function orElse<E, A, M>(onLeft: (e: E) => IOEither<M, A>): (ma: IOEither<E, A>) => IOEither<M, A> {
-  return (ma) => T.orElse(ma, onLeft)
-}
+export const orElse: <E, A, M>(onLeft: (e: E) => IOEither<M, A>) => (ma: IOEither<E, A>) => IOEither<M, A> = T.orElse
 
 /**
  * @since 2.0.0

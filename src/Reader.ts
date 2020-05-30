@@ -55,9 +55,7 @@ export const asks: <R, A>(f: (r: R) => A) => Reader<R, A> = T.asks
  *
  * @since 2.0.0
  */
-export function local<Q, R>(f: (d: Q) => R): <A>(ma: Reader<R, A>) => Reader<Q, A> {
-  return (ma) => T.local(ma, f)
-}
+export const local: <Q, R>(f: (d: Q) => R) => <A>(ma: Reader<R, A>) => Reader<Q, A> = T.local
 
 /**
  * @since 2.0.0
@@ -115,14 +113,13 @@ export const apSecond = <R, B>(fb: Reader<R, B>) => <A>(fa: Reader<R, A>): Reade
 /**
  * @since 2.0.0
  */
-export const chain: <R, A, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) => Reader<R, B> = (f) => (ma) =>
-  T.chain(ma, f)
+export const chain: <A, R, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) => Reader<R, B> = T.chain
 
 /**
  * @since 2.0.0
  */
-export const chainFirst: <R, A, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) => Reader<R, A> = (f) => (ma) =>
-  T.chain(ma, (a) =>
+export const chainFirst: <A, R, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) => Reader<R, A> = (f) =>
+  chain((a) =>
     F.pipe(
       f(a),
       map(() => a)
@@ -132,12 +129,12 @@ export const chainFirst: <R, A, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, 
 /**
  * @since 2.6.0
  */
-export const chainW: <Q, A, B>(f: (a: A) => Reader<Q, B>) => <R>(ma: Reader<R, A>) => Reader<R & Q, B> = chain as any
+export const chainW: <A, Q, B>(f: (a: A) => Reader<Q, B>) => <R>(ma: Reader<R, A>) => Reader<R & Q, B> = chain as any
 
 /**
  * @since 2.0.0
  */
-export const flatten: <R, A>(mma: Reader<R, Reader<R, A>>) => Reader<R, A> = (mma) => T.chain(mma, F.identity)
+export const flatten: <R, A>(mma: Reader<R, Reader<R, A>>) => Reader<R, A> = chain(F.identity)
 
 /**
  * @since 2.0.0
