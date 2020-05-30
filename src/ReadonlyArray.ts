@@ -1577,16 +1577,11 @@ export const chain: <A, B>(f: (a: A) => ReadonlyArray<B>) => (ma: ReadonlyArray<
 /**
  * @since 2.5.0
  */
-export const chainFirst: <A, B>(f: (a: A) => ReadonlyArray<B>) => (ma: ReadonlyArray<A>) => ReadonlyArray<A> = (f) => (
-  ma
-) =>
-  pipe(
-    ma,
-    chain((a) =>
-      pipe(
-        f(a),
-        map(() => a)
-      )
+export const chainFirst: <A, B>(f: (a: A) => ReadonlyArray<B>) => (ma: ReadonlyArray<A>) => ReadonlyArray<A> = (f) =>
+  chain((a) =>
+    pipe(
+      f(a),
+      map(() => a)
     )
   )
 

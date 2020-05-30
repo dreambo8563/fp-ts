@@ -314,14 +314,11 @@ export const chain = <A, B>(f: (a: A) => Tree<B>) => (ma: Tree<A>): Tree<B> => {
 /**
  * @since 2.0.0
  */
-export const chainFirst: <A, B>(f: (a: A) => Tree<B>) => (ma: Tree<A>) => Tree<A> = (f) => (ma) =>
-  pipe(
-    ma,
-    chain((a) =>
-      pipe(
-        f(a),
-        map(() => a)
-      )
+export const chainFirst: <A, B>(f: (a: A) => Tree<B>) => (ma: Tree<A>) => Tree<A> = (f) =>
+  chain((a) =>
+    pipe(
+      f(a),
+      map(() => a)
     )
   )
 

@@ -181,14 +181,11 @@ export const chain: <A, B>(f: (a: A) => IO<B>) => (ma: IO<A>) => IO<B> = (f) => 
 /**
  * @since 2.0.0
  */
-export const chainFirst: <A, B>(f: (a: A) => IO<B>) => (ma: IO<A>) => IO<A> = (f) => (ma) =>
-  pipe(
-    ma,
-    chain((a) =>
-      pipe(
-        f(a),
-        map(() => a)
-      )
+export const chainFirst: <A, B>(f: (a: A) => IO<B>) => (ma: IO<A>) => IO<A> = (f) =>
+  chain((a) =>
+    pipe(
+      f(a),
+      map(() => a)
     )
   )
 

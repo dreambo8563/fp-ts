@@ -390,16 +390,11 @@ export const chainIOEitherKW: <D, A, B>(
 /**
  * @since 2.0.0
  */
-export const chainFirst: <E, A, B>(f: (a: A) => TaskEither<E, B>) => (ma: TaskEither<E, A>) => TaskEither<E, A> = (
-  f
-) => (ma) =>
-  pipe(
-    ma,
-    chain((a) =>
-      pipe(
-        f(a),
-        map(() => a)
-      )
+export const chainFirst: <E, A, B>(f: (a: A) => TaskEither<E, B>) => (ma: TaskEither<E, A>) => TaskEither<E, A> = (f) =>
+  chain((a) =>
+    pipe(
+      f(a),
+      map(() => a)
     )
   )
 
