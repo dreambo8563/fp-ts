@@ -39,17 +39,17 @@ describe('Foldable', () => {
     assert.deepStrictEqual(_.intercalate(monoidString, array)(',', ['a', 'b', 'c']), 'a,b,c')
   })
 
-  it('foldM', () => {
+  it('reduceM', () => {
     assert.deepStrictEqual(
-      _.foldM(O.monadOption, array)([], 1, () => O.none),
+      _.reduceM(O.monadOption, array)([], 1, () => O.none),
       O.some(1)
     )
     assert.deepStrictEqual(
-      _.foldM(O.monadOption, array)([2], 1, () => O.none),
+      _.reduceM(O.monadOption, array)([2], 1, () => O.none),
       O.none
     )
     assert.deepStrictEqual(
-      _.foldM(O.monadOption, array)([2], 1, (b, a) => O.some(b + a)),
+      _.reduceM(O.monadOption, array)([2], 1, (b, a) => O.some(b + a)),
       O.some(3)
     )
   })

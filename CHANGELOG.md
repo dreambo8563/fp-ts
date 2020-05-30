@@ -32,6 +32,7 @@ high state of flux, you're at risk of it changing without notice.
     - move `eqDate` to `Date` module (@gcanti)
   - `Foldable`
     - remove `traverse_` (@gcanti)
+    - rename `foldM` to `reduceM` (@gcanti)
   - `Option`
     - remove `option` instance (@gcanti)
   - `Ord`

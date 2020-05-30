@@ -213,40 +213,40 @@ export function getFoldableComposition<F, G>(F: Foldable<F>, G: Foldable<G>): Fo
  * Note: this function is not generally stack-safe, e.g., for monads which build up thunks a la `IO`.
  *
  * @example
- * import { foldM } from 'fp-ts/lib/Foldable'
+ * import { reduceM } from 'fp-ts/lib/Foldable'
  * import { monadOption, some } from 'fp-ts/lib/Option'
  * import { make, tree } from 'fp-ts/lib/Tree'
  *
  * const t = make(1, [make(2, []), make(3, []), make(4, [])])
- * assert.deepStrictEqual(foldM(monadOption, tree)(t, 0, (b, a) => (a > 2 ? some(b + a) : some(b))), some(7))
+ * assert.deepStrictEqual(reduceM(monadOption, tree)(t, 0, (b, a) => (a > 2 ? some(b + a) : some(b))), some(7))
  *
  * @since 3.0.0
  */
-export function foldM<M extends URIS3, F extends URIS>(
+export function reduceM<M extends URIS3, F extends URIS>(
   M: Monad3<M>,
   F: Foldable1<F>
 ): <R, E, A, B>(fa: Kind<F, A>, b: B, f: (b: B, a: A) => Kind3<M, R, E, B>) => Kind3<M, R, E, B>
-export function foldM<M extends URIS3, F extends URIS, E>(
+export function reduceM<M extends URIS3, F extends URIS, E>(
   M: Monad3C<M, E>,
   F: Foldable1<F>
 ): <R, A, B>(fa: Kind<F, A>, b: B, f: (b: B, a: A) => Kind3<M, R, E, B>) => Kind3<M, R, E, B>
-export function foldM<M extends URIS2, F extends URIS>(
+export function reduceM<M extends URIS2, F extends URIS>(
   M: Monad2<M>,
   F: Foldable1<F>
 ): <E, A, B>(fa: Kind<F, A>, b: B, f: (b: B, a: A) => Kind2<M, E, B>) => Kind2<M, E, B>
-export function foldM<M extends URIS2, F extends URIS, E>(
+export function reduceM<M extends URIS2, F extends URIS, E>(
   M: Monad2C<M, E>,
   F: Foldable1<F>
 ): <A, B>(fa: Kind<F, A>, b: B, f: (b: B, a: A) => Kind2<M, E, B>) => Kind2<M, E, B>
-export function foldM<M extends URIS, F extends URIS>(
+export function reduceM<M extends URIS, F extends URIS>(
   M: Monad1<M>,
   F: Foldable1<F>
 ): <A, B>(fa: Kind<F, A>, b: B, f: (b: B, a: A) => Kind<M, B>) => Kind<M, B>
-export function foldM<M, F>(
+export function reduceM<M, F>(
   M: Monad<M>,
   F: Foldable<F>
 ): <A, B>(fa: HKT<F, A>, b: B, f: (b: B, a: A) => HKT<M, B>) => HKT<M, B>
-export function foldM<M, F>(
+export function reduceM<M, F>(
   M: Monad<M>,
   F: Foldable<F>
 ): <A, B>(fa: HKT<F, A>, b: B, f: (b: B, a: A) => HKT<M, B>) => HKT<M, B> {
