@@ -2,7 +2,7 @@ import * as assert from 'assert'
 import * as A from '../src/Array'
 import * as E from '../src/Either'
 import { pipe } from '../src/function'
-import { io } from '../src/IO'
+import * as IO from '../src/IO'
 import { ioEither } from '../src/IOEither'
 import { monoidString } from '../src/Monoid'
 import { none, some } from '../src/Option'
@@ -201,7 +201,7 @@ describe('TaskEither', () => {
   })
 
   it('leftIO', async () => {
-    const e = await _.leftIO(io.of(1))()
+    const e = await _.leftIO(IO.of(1))()
     assert.deepStrictEqual(e, E.left(1))
   })
 

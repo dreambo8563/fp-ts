@@ -16,12 +16,6 @@ import { Functor1 } from './Functor'
 import { Apply1 } from './Apply'
 import { Extend1 } from './Extend'
 
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly Identity: Identity<A>
-  }
-}
-
 /**
  * @since 2.0.0
  */
@@ -32,10 +26,20 @@ export const URI = 'Identity'
  */
 export type URI = typeof URI
 
+declare module './HKT' {
+  interface URItoKind<A> {
+    readonly [URI]: Identity<A>
+  }
+}
+
 /**
  * @since 2.0.0
  */
 export type Identity<A> = A
+
+// -------------------------------------------------------------------------------------
+// instances
+// -------------------------------------------------------------------------------------
 
 /**
  * @since 2.0.0
@@ -47,35 +51,31 @@ export const getShow: <A>(S: Show<A>) => Show<Identity<A>> = id
  */
 export const getEq: <A>(E: Eq<A>) => Eq<Identity<A>> = id
 
-// -------------------------------------------------------------------------------------
-// pipeables
-// -------------------------------------------------------------------------------------
+/**
+ * @since 2.0.0
+ */
+export const map: <A, B>(f: (a: A) => B) => (fa: Identity<A>) => Identity<B> = (f) => (fa) => f(fa)
 
 /**
  * @since 3.0.0
  */
-export const traverse: Traversable1<URI>['traverse'] = <F>(F: Applicative<F>) => <A, B>(f: (a: A) => HKT<F, B>) => (
-  ta: Identity<A>
-): HKT<F, Identity<B>> => pipe(f(ta), F.map(id))
-
-/**
- * @since 3.0.0
- */
-export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F>) => <A>(
-  ta: Identity<HKT<F, A>>
-): HKT<F, Identity<A>> => {
-  return pipe(ta, F.map(id))
+export const functorIdentity: Functor1<URI> = {
+  URI,
+  map
 }
 
 /**
  * @since 2.0.0
  */
-export const alt: <A>(that: () => Identity<A>) => (fa: Identity<A>) => Identity<A> = () => id
+export const ap: <A>(fa: Identity<A>) => <B>(fab: Identity<(a: A) => B>) => Identity<B> = (fa) => (fab) => fab(fa)
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const ap: <A>(fa: Identity<A>) => <B>(fab: Identity<(a: A) => B>) => Identity<B> = (fa) => (fab) => fab(fa)
+export const applyIdentity: Apply1<URI> = {
+  ...functorIdentity,
+  ap
+}
 
 /**
  * @since 2.0.0
@@ -98,9 +98,30 @@ export const apSecond = <B>(fb: Identity<B>) => <A>(fa: Identity<A>): Identity<B
   )
 
 /**
+ * @since 3.0.0
+ */
+export const of: <A>(a: A) => Identity<A> = id
+
+/**
+ * @since 3.0.0
+ */
+export const applicativeIdentity: Applicative1<URI> = {
+  ...applyIdentity,
+  of
+}
+
+/**
  * @since 2.0.0
  */
 export const chain: <A, B>(f: (a: A) => Identity<B>) => (ma: Identity<A>) => Identity<B> = (f) => (ma) => f(ma)
+
+/**
+ * @since 3.0.0
+ */
+export const monadIdentity: Monad1<URI> = {
+  ...applicativeIdentity,
+  chain
+}
 
 /**
  * @since 2.0.0
@@ -114,34 +135,9 @@ export const chainFirst: <A, B>(f: (a: A) => Identity<B>) => (ma: Identity<A>) =
   )
 
 /**
- * @since 2.6.2
- */
-export const extract: <A>(wa: Identity<A>) => A = id
-
-/**
- * @since 2.0.0
- */
-export const extend: <A, B>(f: (wa: Identity<A>) => B) => (wa: Identity<A>) => Identity<B> = (f) => (wa) => f(wa)
-
-/**
- * @since 2.0.0
- */
-export const duplicate: <A>(ma: Identity<A>) => Identity<Identity<A>> = extend(id)
-
-/**
  * @since 2.0.0
  */
 export const flatten: <A>(mma: Identity<Identity<A>>) => Identity<A> = chain(id)
-
-/**
- * @since 2.0.0
- */
-export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: Identity<A>) => M = () => (f) => (fa) => f(fa)
-
-/**
- * @since 2.0.0
- */
-export const map: <A, B>(f: (a: A) => B) => (fa: Identity<A>) => Identity<B> = (f) => (fa) => f(fa)
 
 /**
  * @since 2.0.0
@@ -151,43 +147,12 @@ export const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: Identity<A>) => 
 /**
  * @since 2.0.0
  */
+export const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: Identity<A>) => M = () => (f) => (fa) => f(fa)
+
+/**
+ * @since 2.0.0
+ */
 export const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: Identity<A>) => B = (b, f) => (fa) => f(fa, b)
-
-// -------------------------------------------------------------------------------------
-// instances
-// -------------------------------------------------------------------------------------
-
-/**
- * @since 3.0.0
- */
-export const functorIdentity: Functor1<URI> = {
-  URI,
-  map
-}
-
-/**
- * @since 3.0.0
- */
-export const applyIdentity: Apply1<URI> = {
-  ...functorIdentity,
-  ap
-}
-
-/**
- * @since 3.0.0
- */
-export const applicativeIdentity: Applicative1<URI> = {
-  ...applyIdentity,
-  of: id
-}
-
-/**
- * @since 3.0.0
- */
-export const monadIdentity: Monad1<URI> = {
-  ...applicativeIdentity,
-  chain
-}
 
 /**
  * @since 3.0.0
@@ -200,12 +165,22 @@ export const foldableIdentity: Foldable1<URI> = {
 }
 
 /**
+ * @since 2.0.0
+ */
+export const alt: <A>(that: () => Identity<A>) => (fa: Identity<A>) => Identity<A> = () => id
+
+/**
  * @since 3.0.0
  */
 export const altIdentity: Alt1<URI> = {
   ...functorIdentity,
   alt
 }
+
+/**
+ * @since 2.0.0
+ */
+export const extend: <A, B>(f: (wa: Identity<A>) => B) => (wa: Identity<A>) => Identity<B> = (f) => (wa) => f(wa)
 
 /**
  * @since 3.0.0
@@ -216,11 +191,37 @@ export const extendIdentity: Extend1<URI> = {
 }
 
 /**
+ * @since 2.0.0
+ */
+export const duplicate: <A>(ma: Identity<A>) => Identity<Identity<A>> = extend(id)
+
+/**
+ * @since 2.6.2
+ */
+export const extract: <A>(wa: Identity<A>) => A = id
+
+/**
  * @since 3.0.0
  */
 export const comonadIdentity: Comonad1<URI> = {
   ...extendIdentity,
   extract
+}
+
+/**
+ * @since 3.0.0
+ */
+export const traverse: Traversable1<URI>['traverse'] = <F>(F: Applicative<F>) => <A, B>(f: (a: A) => HKT<F, B>) => (
+  ta: Identity<A>
+): HKT<F, Identity<B>> => pipe(f(ta), F.map(id))
+
+/**
+ * @since 3.0.0
+ */
+export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F>) => <A>(
+  ta: Identity<HKT<F, A>>
+): HKT<F, Identity<A>> => {
+  return pipe(ta, F.map(id))
 }
 
 /**

@@ -39,6 +39,10 @@ high state of flux, you're at risk of it changing without notice.
   - `Foldable`
     - remove `traverse_` (@gcanti)
     - rename `foldM` to `reduceM` (@gcanti)
+  - `Identity`
+    - remove the `identity` mega instance in favour of splitted instances (@gcanti)
+  - `IO`
+    - remove the `io` mega instance in favour of splitted instances (@gcanti)
   - `NonEmptyArray`
     - remove the `nonEmptyArray` mega instance in favour of splitted instances (@gcanti)
   - `Option`

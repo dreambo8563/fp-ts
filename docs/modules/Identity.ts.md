@@ -37,6 +37,7 @@ Added in v2.0.0
 - [getShow](#getshow)
 - [map](#map)
 - [monadIdentity](#monadidentity)
+- [of](#of)
 - [reduce](#reduce)
 - [reduceRight](#reduceright)
 - [sequence](#sequence)
@@ -291,6 +292,16 @@ Added in v2.0.0
 
 ```ts
 export declare const monadIdentity: Monad1<'Identity'>
+```
+
+Added in v3.0.0
+
+# of
+
+**Signature**
+
+```ts
+export declare const of: <A>(a: A) => A
 ```
 
 Added in v3.0.0

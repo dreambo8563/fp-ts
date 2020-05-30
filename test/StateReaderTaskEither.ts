@@ -1,6 +1,6 @@
 import * as assert from 'assert'
 import * as E from '../src/Either'
-import { io } from '../src/IO'
+import * as IO from '../src/IO'
 import * as IE from '../src/IOEither'
 import * as O from '../src/Option'
 import { pipe } from '../src/function'
@@ -243,12 +243,12 @@ describe('StateReaderTaskEither', () => {
   })
 
   it('rightIO', async () => {
-    const e = await _.run(_.rightIO(io.of(1)), {}, {})
+    const e = await _.run(_.rightIO(IO.of(1)), {}, {})
     assert.deepStrictEqual(e, E.right([1, {}]))
   })
 
   it('leftIO', async () => {
-    const e = await _.run(_.leftIO(io.of(1)), {}, {})
+    const e = await _.run(_.leftIO(IO.of(1)), {}, {})
     assert.deepStrictEqual(e, E.left(1))
   })
 
