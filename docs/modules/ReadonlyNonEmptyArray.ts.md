@@ -65,6 +65,8 @@ Added in v2.5.0
 - [traverseWithIndex](#traversewithindex)
 - [unzip](#unzip)
 - [updateAt](#updateat)
+- [wilt](#wilt)
+- [wither](#wither)
 - [zip](#zip)
 - [zipWith](#zipwith)
 
@@ -718,6 +720,26 @@ export declare function updateAt<A>(
 ```
 
 Added in v2.5.0
+
+# wilt
+
+**Signature**
+
+```ts
+export declare const wilt: Wilt1<'ReadonlyNonEmptyArray'>
+```
+
+Added in v3.0.0
+
+# wither
+
+**Signature**
+
+```ts
+export declare const wither: Wither1<'ReadonlyNonEmptyArray'>
+```
+
+Added in v3.0.0
 
 # zip
 

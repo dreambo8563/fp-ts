@@ -1,7 +1,7 @@
 import * as assert from 'assert'
 import * as fc from 'fast-check'
 import * as _ from '../src/Array'
-import { left, right } from '../src/Either'
+import * as E from '../src/Either'
 import * as M from '../src/Monoid'
 import * as O from '../src/Option'
 import { ord, ordNumber, ordString } from '../src/Ord'
@@ -73,6 +73,20 @@ describe('Array', () => {
         const f = (i: number, s: string): string => s + i
         const traverseWithIndex = _.traverseWithIndex(I.identity)((i, s: string) => f(i, s))
         assert.deepStrictEqual(pipe(['a', 'bb'], _.mapWithIndex(f)), traverseWithIndex(['a', 'bb']))
+      })
+    })
+
+    describe('Witherable', () => {
+      const p = (n: number) => n > 2
+
+      it('wither', () => {
+        const wither = _.wither(I.identity)((n: number) => (p(n) ? O.some(n + 1) : O.none))
+        assert.deepStrictEqual(wither([1, 3]), [4])
+      })
+
+      it('wilt', () => {
+        const wilt = _.wilt(I.identity)((n: number) => (p(n) ? E.right(n + 1) : E.left(n - 1)))
+        assert.deepStrictEqual(wilt([1, 3]), { left: [0], right: [4] })
       })
     })
   })
@@ -392,12 +406,12 @@ describe('Array', () => {
   })
 
   it('rights', () => {
-    assert.deepStrictEqual(_.rights([right(1), left('foo'), right(2)]), [1, 2])
+    assert.deepStrictEqual(_.rights([E.right(1), E.left('foo'), E.right(2)]), [1, 2])
     assert.deepStrictEqual(_.rights([]), [])
   })
 
   it('lefts', () => {
-    assert.deepStrictEqual(_.lefts([right(1), left('foo'), right(2)]), ['foo'])
+    assert.deepStrictEqual(_.lefts([E.right(1), E.left('foo'), E.right(2)]), ['foo'])
     assert.deepStrictEqual(_.lefts([]), [])
   })
 
@@ -590,7 +604,7 @@ describe('Array', () => {
 
   it('separate', () => {
     assert.deepStrictEqual(_.array.separate([]), { left: [], right: [] })
-    assert.deepStrictEqual(_.array.separate([left(123), right('123')]), { left: [123], right: ['123'] })
+    assert.deepStrictEqual(_.array.separate([E.left(123), E.right('123')]), { left: [123], right: ['123'] })
   })
 
   it('filter', () => {
@@ -615,7 +629,7 @@ describe('Array', () => {
 
   it('partitionMap', () => {
     assert.deepStrictEqual(pipe([], _.partitionMap(identity)), { left: [], right: [] })
-    assert.deepStrictEqual(pipe([right(1), left('foo'), right(2)], _.partitionMap(identity)), {
+    assert.deepStrictEqual(pipe([E.right(1), E.left('foo'), E.right(2)], _.partitionMap(identity)), {
       left: ['foo'],
       right: [1, 2]
     })
@@ -629,18 +643,6 @@ describe('Array', () => {
     const isNumber = (x: string | number): x is number => typeof x === 'number'
     const actual = pipe(xs, _.partition(isNumber))
     assert.deepStrictEqual(actual, { left: ['a', 'b'], right: [1] })
-  })
-
-  it('wither', () => {
-    const f = (n: number) => I.identity.of(p(n) ? O.some(n + 1) : O.none)
-    assert.deepStrictEqual(pipe([], _.array.wither(I.identity)(f)), I.identity.of([]))
-    assert.deepStrictEqual(pipe([1, 3], _.array.wither(I.identity)(f)), I.identity.of([4]))
-  })
-
-  it('wilt', () => {
-    const f = (n: number) => I.identity.of(p(n) ? right(n + 1) : left(n - 1))
-    assert.deepStrictEqual(pipe([], _.array.wilt(I.identity)(f)), I.identity.of({ left: [], right: [] }))
-    assert.deepStrictEqual(pipe([1, 3], _.array.wilt(I.identity)(f)), I.identity.of({ left: [0], right: [4] }))
   })
 
   it('chop', () => {

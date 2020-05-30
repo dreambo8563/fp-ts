@@ -17,6 +17,7 @@ import { Semigroup } from './Semigroup'
 import { Show } from './Show'
 import { TraversableWithIndex1 } from './TraversableWithIndex'
 import { Traversable1 } from './Traversable'
+import { Witherable1 } from './Witherable'
 
 /* tslint:disable:readonly-array */
 
@@ -411,6 +412,16 @@ export const sequence: Traversable1<URI>['sequence'] = RNEA.sequence as any
  * @since 3.0.0
  */
 export const traverseWithIndex: TraversableWithIndex1<URI, number>['traverseWithIndex'] = RNEA.traverseWithIndex as any
+
+/**
+ * @since 3.0.0
+ */
+export const wither: Witherable1<URI>['wither'] = RNEA.wither as any
+
+/**re
+ * @since 3.0.0
+ */
+export const wilt: Witherable1<URI>['wilt'] = RNEA.wilt as any
 
 // -------------------------------------------------------------------------------------
 // instances

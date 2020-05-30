@@ -65,6 +65,8 @@ Added in v2.0.0
 - [traverseWithIndex](#traversewithindex)
 - [unzip](#unzip)
 - [updateAt](#updateat)
+- [wilt](#wilt)
+- [wither](#wither)
 - [zip](#zip)
 - [zipWith](#zipwith)
 
@@ -681,6 +683,28 @@ export declare const updateAt: <A>(i: number, a: A) => (nea: NonEmptyArray<A>) =
 ```
 
 Added in v2.0.0
+
+# wilt
+
+re
+
+**Signature**
+
+```ts
+export declare const wilt: Wilt1<'NonEmptyArray'>
+```
+
+Added in v3.0.0
+
+# wither
+
+**Signature**
+
+```ts
+export declare const wither: Wither1<'NonEmptyArray'>
+```
+
+Added in v3.0.0
 
 # zip
 

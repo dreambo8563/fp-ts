@@ -1085,6 +1085,16 @@ export const sequence: Traversable1<URI>['sequence'] = RA.sequence as any
  */
 export const traverseWithIndex: TraversableWithIndex1<URI, number>['traverseWithIndex'] = RA.traverseWithIndex as any
 
+/**
+ * @since 3.0.0
+ */
+export const wither: Witherable1<URI>['wither'] = RA.wither as any
+
+/**
+ * @since 3.0.0
+ */
+export const wilt: Witherable1<URI>['wilt'] = RA.wilt as any
+
 // -------------------------------------------------------------------------------------
 // instances
 // -------------------------------------------------------------------------------------

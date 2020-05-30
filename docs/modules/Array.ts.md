@@ -105,6 +105,8 @@ Added in v2.0.0
 - [unsafeUpdateAt](#unsafeupdateat)
 - [unzip](#unzip)
 - [updateAt](#updateat)
+- [wilt](#wilt)
+- [wither](#wither)
 - [zip](#zip)
 - [zipWith](#zipwith)
 
@@ -1779,6 +1781,26 @@ assert.deepStrictEqual(updateAt(1, 1)([]), none)
 ```
 
 Added in v2.0.0
+
+# wilt
+
+**Signature**
+
+```ts
+export declare const wilt: Wilt1<'Array'>
+```
+
+Added in v3.0.0
+
+# wither
+
+**Signature**
+
+```ts
+export declare const wither: Wither1<'Array'>
+```
+
+Added in v3.0.0
 
 # zip
 
