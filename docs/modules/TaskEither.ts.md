@@ -19,9 +19,13 @@ Added in v2.0.0
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
 - [alt](#alt)
+- [altTaskEither](#alttaskeither)
 - [ap](#ap)
 - [apFirst](#apfirst)
 - [apSecond](#apsecond)
+- [applicativeTaskEither](#applicativetaskeither)
+- [applyTaskEither](#applytaskeither)
+- [bifunctorTaskEither](#bifunctortaskeither)
 - [bimap](#bimap)
 - [bracket](#bracket)
 - [chain](#chain)
@@ -40,6 +44,7 @@ Added in v2.0.0
 - [fromIOEitherK](#fromioeitherk)
 - [fromOption](#fromoption)
 - [fromPredicate](#frompredicate)
+- [functorTaskEither](#functortaskeither)
 - [getApplyMonoid](#getapplymonoid)
 - [getApplySemigroup](#getapplysemigroup)
 - [getFilterable](#getfilterable)
@@ -52,12 +57,15 @@ Added in v2.0.0
 - [leftTask](#lefttask)
 - [map](#map)
 - [mapLeft](#mapleft)
+- [monadIOTaskEither](#monadiotaskeither)
+- [monadTaskEither](#monadtaskeither)
+- [monadTaskTaskEither](#monadtasktaskeither)
+- [monadThrowTaskEither](#monadthrowtaskeither)
 - [orElse](#orelse)
 - [right](#right)
 - [rightIO](#rightio)
 - [rightTask](#righttask)
 - [swap](#swap)
-- [taskEither](#taskeither)
 - [taskEitherSeq](#taskeitherseq)
 - [taskify](#taskify)
 - [tryCatch](#trycatch)
@@ -105,6 +113,16 @@ export declare const alt: <E, A>(that: () => TaskEither<E, A>) => (fa: TaskEithe
 
 Added in v2.0.0
 
+# altTaskEither
+
+**Signature**
+
+```ts
+export declare const altTaskEither: Alt2<'TaskEither'>
+```
+
+Added in v3.0.0
+
 # ap
 
 **Signature**
@@ -134,6 +152,36 @@ export declare const apSecond: <E, B>(fb: TaskEither<E, B>) => <A>(fa: TaskEithe
 ```
 
 Added in v2.0.0
+
+# applicativeTaskEither
+
+**Signature**
+
+```ts
+export declare const applicativeTaskEither: Applicative2<'TaskEither'>
+```
+
+Added in v3.0.0
+
+# applyTaskEither
+
+**Signature**
+
+```ts
+export declare const applyTaskEither: Apply2<'TaskEither'>
+```
+
+Added in v3.0.0
+
+# bifunctorTaskEither
+
+**Signature**
+
+```ts
+export declare const bifunctorTaskEither: Bifunctor2<'TaskEither'>
+```
+
+Added in v3.0.0
 
 # bimap
 
@@ -343,6 +391,16 @@ export declare const fromPredicate: {
 
 Added in v2.0.0
 
+# functorTaskEither
+
+**Signature**
+
+```ts
+export declare const functorTaskEither: Functor2<'TaskEither'>
+```
+
+Added in v3.0.0
+
 # getApplyMonoid
 
 **Signature**
@@ -414,9 +472,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function getTaskValidation<E>(
-  S: Semigroup<E>
-): Monad2C<URI, E> & Bifunctor2<URI> & Alt2C<URI, E> & MonadTask2C<URI, E> & MonadThrow2C<URI, E>
+export declare function getTaskValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E>
 ```
 
 Added in v2.0.0
@@ -471,6 +527,46 @@ export declare const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TaskEither<E, A>
 
 Added in v2.0.0
 
+# monadIOTaskEither
+
+**Signature**
+
+```ts
+export declare const monadIOTaskEither: MonadIO2<'TaskEither'>
+```
+
+Added in v3.0.0
+
+# monadTaskEither
+
+**Signature**
+
+```ts
+export declare const monadTaskEither: Monad2<'TaskEither'>
+```
+
+Added in v3.0.0
+
+# monadTaskTaskEither
+
+**Signature**
+
+```ts
+export declare const monadTaskTaskEither: MonadTask2<'TaskEither'>
+```
+
+Added in v3.0.0
+
+# monadThrowTaskEither
+
+**Signature**
+
+```ts
+export declare const monadThrowTaskEither: MonadThrow2<'TaskEither'>
+```
+
+Added in v3.0.0
+
 # orElse
 
 **Signature**
@@ -517,20 +613,6 @@ Added in v2.0.0
 
 ```ts
 export declare const swap: <E, A>(ma: TaskEither<E, A>) => TaskEither<A, E>
-```
-
-Added in v2.0.0
-
-# taskEither
-
-**Signature**
-
-```ts
-export declare const taskEither: Monad2<'TaskEither'> &
-  Bifunctor2<'TaskEither'> &
-  Alt2<'TaskEither'> &
-  MonadTask2<'TaskEither'> &
-  MonadThrow2<'TaskEither'>
 ```
 
 Added in v2.0.0

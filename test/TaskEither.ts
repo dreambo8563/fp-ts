@@ -142,7 +142,7 @@ describe('TaskEither', () => {
     const useSuccess = () => _.right('use success')
     const useFailure = () => _.left('use failure')
     const releaseSuccess = () =>
-      _.taskEither.fromIO(() => {
+      _.rightIO(() => {
         log.push('release success')
       })
     const releaseFailure = () => _.left('release failure')
@@ -309,7 +309,7 @@ describe('TaskEither', () => {
       append('start 2'),
       _.chain(() => append('end 2'))
     )
-    const sequenceParallel = A.sequence(_.taskEither)
+    const sequenceParallel = A.sequence(_.applicativeTaskEither)
     const x = await sequenceParallel([t1, t2])()
     assert.deepStrictEqual(x, E.right([3, 4]))
     assert.deepStrictEqual(log, ['start 1', 'start 2', 'end 1', 'end 2'])
@@ -336,7 +336,7 @@ describe('TaskEither', () => {
 
   it('fromIO', async () => {
     const io = () => 1
-    const fa = _.taskEither.fromIO(io)
+    const fa = _.rightIO(io)
     const e = await fa()
     assert.deepStrictEqual(e, E.right(1))
   })
@@ -370,24 +370,6 @@ describe('TaskEither', () => {
       assert.deepStrictEqual(e1, E.left('ab'))
     })
 
-    it('chain', async () => {
-      const e1 = await pipe(
-        _.right(3),
-        TV.chain((a) => (a > 2 ? _.right(a) : _.left('b')))
-      )()
-      assert.deepStrictEqual(e1, E.right(3))
-      const e2 = await pipe(
-        _.right(1),
-        TV.chain((a) => (a > 2 ? _.right(a) : _.left('b')))
-      )()
-      assert.deepStrictEqual(e2, E.left('b'))
-      const e3 = await pipe(
-        _.left('a'),
-        TV.chain((a) => (a > 2 ? _.right(a) : _.left('b')))
-      )()
-      assert.deepStrictEqual(e3, E.left('a'))
-    })
-
     it('alt', async () => {
       const e1 = await pipe(
         _.right(1),
@@ -413,10 +395,7 @@ describe('TaskEither', () => {
   })
 
   describe('getFilterable', () => {
-    const F_ = {
-      ..._.taskEither,
-      ..._.getFilterable(getMonoid<string>())
-    }
+    const F_ = _.getFilterable(getMonoid<string>())
 
     it('filter', async () => {
       const r1 = pipe(
