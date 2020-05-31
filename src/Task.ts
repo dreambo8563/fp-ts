@@ -10,6 +10,10 @@ import { Monad1 } from './Monad'
 import { MonadTask1 } from './MonadTask'
 import { Monoid } from './Monoid'
 import { Semigroup } from './Semigroup'
+import { Functor1 } from './Functor'
+import { Apply1 } from './Apply'
+import { Applicative1 } from './Applicative'
+import { MonadIO1 } from './MonadIO'
 
 declare module './HKT' {
   interface URItoKind<A> {
@@ -163,48 +167,68 @@ export const chainFirst: <A, B>(f: (a: A) => Task<B>) => (ma: Task<A>) => Task<A
  */
 export const flatten: <A>(mma: Task<Task<A>>) => Task<A> = chain(identity)
 
-/**
- * @since 2.0.0
- */
-export const map: <A, B>(f: (a: A) => B) => (fa: Task<A>) => Task<B> = (f) => (fa) => () => fa().then(f)
-
 // -------------------------------------------------------------------------------------
 // instances
 // -------------------------------------------------------------------------------------
 
 /**
- * @internal
+ * @since 2.0.0
+ */
+export const map: <A, B>(f: (a: A) => B) => (fa: Task<A>) => Task<B> = (f) => (fa) => () => fa().then(f)
+
+/**
+ * @since 3.0.0
+ */
+export const functorTask: Functor1<URI> = {
+  URI,
+  map
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applyTask: Apply1<URI> = {
+  ...functorTask,
+  ap
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applicativeTask: Applicative1<URI> = {
+  ...applyTask,
+  of
+}
+
+/**
+ * @since 3.0.0
  */
 export const monadTask: Monad1<URI> = {
-  URI,
-  map,
-  of,
-  ap,
+  ...applicativeTask,
   chain
 }
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const task: Monad1<URI> & MonadTask1<URI> = {
-  URI,
-  map,
-  of,
-  ap,
-  chain,
-  fromIO,
+export const monadIOTask: MonadIO1<URI> = {
+  ...monadTask,
+  fromIO
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadTaskTask: MonadTask1<URI> = {
+  ...monadIOTask,
   fromTask: identity
 }
 
 /**
  * TODO
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const monadTaskSeq: typeof task =
-  /*#__PURE__*/
-  ((): typeof task => {
-    return {
-      ...task,
-      ap: (fa) => (fab) => () => fab().then((f) => fa().then((a) => f(a)))
-    }
-  })()
+export const monadTaskSeq: Monad1<URI> = {
+  ...monadTask,
+  ap: (fa) => (fab) => () => fab().then((f) => fa().then((a) => f(a)))
+}

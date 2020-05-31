@@ -10,7 +10,7 @@ const delayReject = <A>(n: number, a: A): _.Task<A> => () =>
     setTimeout(() => reject(a), n)
   })
 
-const delay = <A>(millis: number, a: A): _.Task<A> => _.delay(millis)(_.task.of(a))
+const delay = <A>(millis: number, a: A): _.Task<A> => _.delay(millis)(_.of(a))
 
 describe('Task', () => {
   describe('pipeables', () => {
@@ -127,8 +127,8 @@ describe('Task', () => {
 
   it('fromTask', async () => {
     const io = () => 1
-    const t = _.task.fromIO(io)
-    assert.deepStrictEqual(_.task.fromTask(t), t)
+    const t = _.fromIO(io)
+    assert.deepStrictEqual(_.monadTaskTask.fromTask(t), t)
   })
 
   it('chainIOK', async () => {

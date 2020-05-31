@@ -21,6 +21,8 @@ Added in v2.0.0
 - [ap](#ap)
 - [apFirst](#apfirst)
 - [apSecond](#apsecond)
+- [applicativeTask](#applicativetask)
+- [applyTask](#applytask)
 - [chain](#chain)
 - [chainFirst](#chainfirst)
 - [chainIOK](#chainiok)
@@ -28,14 +30,17 @@ Added in v2.0.0
 - [flatten](#flatten)
 - [fromIO](#fromio)
 - [fromIOK](#fromiok)
+- [functorTask](#functortask)
 - [getMonoid](#getmonoid)
 - [getRaceMonoid](#getracemonoid)
 - [getSemigroup](#getsemigroup)
 - [map](#map)
+- [monadIOTask](#monadiotask)
+- [monadTask](#monadtask)
 - [monadTaskSeq](#monadtaskseq)
+- [monadTaskTask](#monadtasktask)
 - [never](#never)
 - [of](#of)
-- [task](#task)
 
 ---
 
@@ -100,6 +105,26 @@ export declare const apSecond: <B>(fb: Task<B>) => <A>(fa: Task<A>) => Task<B>
 ```
 
 Added in v2.0.0
+
+# applicativeTask
+
+**Signature**
+
+```ts
+export declare const applicativeTask: Applicative1<'Task'>
+```
+
+Added in v3.0.0
+
+# applyTask
+
+**Signature**
+
+```ts
+export declare const applyTask: Apply1<'Task'>
+```
+
+Added in v3.0.0
 
 # chain
 
@@ -171,6 +196,16 @@ export declare function fromIOK<A extends ReadonlyArray<unknown>, B>(f: (...a: A
 
 Added in v2.4.0
 
+# functorTask
+
+**Signature**
+
+```ts
+export declare const functorTask: Functor1<'Task'>
+```
+
+Added in v3.0.0
+
 # getMonoid
 
 **Signature**
@@ -213,6 +248,26 @@ export declare const map: <A, B>(f: (a: A) => B) => (fa: Task<A>) => Task<B>
 
 Added in v2.0.0
 
+# monadIOTask
+
+**Signature**
+
+```ts
+export declare const monadIOTask: MonadIO1<'Task'>
+```
+
+Added in v3.0.0
+
+# monadTask
+
+**Signature**
+
+```ts
+export declare const monadTask: Monad1<'Task'>
+```
+
+Added in v3.0.0
+
 # monadTaskSeq
 
 TODO
@@ -220,10 +275,20 @@ TODO
 **Signature**
 
 ```ts
-export declare const monadTaskSeq: Monad1<'Task'> & MonadTask1<'Task'>
+export declare const monadTaskSeq: Monad1<'Task'>
 ```
 
-Added in v2.0.0
+Added in v3.0.0
+
+# monadTaskTask
+
+**Signature**
+
+```ts
+export declare const monadTaskTask: MonadTask1<'Task'>
+```
+
+Added in v3.0.0
 
 # never
 
@@ -241,16 +306,6 @@ Added in v2.0.0
 
 ```ts
 export declare function of<A>(a: A): Task<A>
-```
-
-Added in v2.0.0
-
-# task
-
-**Signature**
-
-```ts
-export declare const task: Monad1<'Task'> & MonadTask1<'Task'>
 ```
 
 Added in v2.0.0
