@@ -13,6 +13,7 @@ import * as RT from './ReadonlyTuple'
 import { Semigroup } from './Semigroup'
 import { Semigroupoid2 } from './Semigroupoid'
 import { Traversable2 } from './Traversable'
+import { Extend2 } from './Extend'
 
 // tslint:disable:readonly-array
 
@@ -136,13 +137,31 @@ export const sequence: Traversable2<URI>['sequence'] = RT.sequence as any
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const tuple: Semigroupoid2<URI> & Bifunctor2<URI> & Comonad2<URI> & Foldable2<URI> & Traversable2<URI> =
-  /*#__PURE__*/
-  (() => {
-    return {
-      ...(RT.readonlyTuple as any),
-      URI
-    }
-  })()
+export const semigroupoidTuple: Semigroupoid2<URI> = RT.semigroupoidReadonlyTuple as any
+
+/**
+ * @since 3.0.0
+ */
+export const bifunctorTuple: Bifunctor2<URI> = RT.semigroupoidReadonlyTuple as any
+
+/**
+ * @since 3.0.0
+ */
+export const extendTuple: Extend2<URI> = RT.semigroupoidReadonlyTuple as any
+
+/**
+ * @since 3.0.0
+ */
+export const comonadTuple: Comonad2<URI> = RT.semigroupoidReadonlyTuple as any
+
+/**
+ * @since 3.0.0
+ */
+export const foldableTuple: Foldable2<URI> = RT.semigroupoidReadonlyTuple as any
+
+/**
+ * @since 3.0.0
+ */
+export const traversableTuple: Traversable2<URI> = RT.semigroupoidReadonlyTuple as any

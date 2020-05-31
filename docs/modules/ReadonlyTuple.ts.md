@@ -14,11 +14,15 @@ Added in v2.5.0
 
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
+- [bifunctorReadonlyTuple](#bifunctorreadonlytuple)
 - [bimap](#bimap)
+- [comonadReadonlyTuple](#comonadreadonlytuple)
 - [duplicate](#duplicate)
 - [extend](#extend)
+- [extendReadonlyTuple](#extendreadonlytuple)
 - [extract](#extract)
 - [foldMap](#foldmap)
+- [foldableReadonlyTuple](#foldablereadonlytuple)
 - [fst](#fst)
 - [getApplicative](#getapplicative)
 - [getApply](#getapply)
@@ -27,12 +31,13 @@ Added in v2.5.0
 - [map](#map)
 - [mapLeft](#mapleft)
 - [pipe](#pipe)
-- [readonlyTuple](#readonlytuple)
 - [reduce](#reduce)
 - [reduceRight](#reduceright)
+- [semigroupoidReadonlyTuple](#semigroupoidreadonlytuple)
 - [sequence](#sequence)
 - [snd](#snd)
 - [swap](#swap)
+- [traversableReadonlyTuple](#traversablereadonlytuple)
 - [traverse](#traverse)
 
 ---
@@ -57,6 +62,16 @@ export declare const URI: 'ReadonlyTuple'
 
 Added in v2.5.0
 
+# bifunctorReadonlyTuple
+
+**Signature**
+
+```ts
+export declare const bifunctorReadonlyTuple: Bifunctor2<'ReadonlyTuple'>
+```
+
+Added in v3.0.0
+
 # bimap
 
 **Signature**
@@ -66,6 +81,16 @@ export declare const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fea
 ```
 
 Added in v2.5.0
+
+# comonadReadonlyTuple
+
+**Signature**
+
+```ts
+export declare const comonadReadonlyTuple: Comonad2<'ReadonlyTuple'>
+```
+
+Added in v3.0.0
 
 # duplicate
 
@@ -87,6 +112,16 @@ export declare const extend: <E, A, B>(f: (fa: readonly [A, E]) => B) => (wa: re
 
 Added in v2.5.0
 
+# extendReadonlyTuple
+
+**Signature**
+
+```ts
+export declare const extendReadonlyTuple: Extend2<'ReadonlyTuple'>
+```
+
+Added in v3.0.0
+
 # extract
 
 **Signature**
@@ -106,6 +141,16 @@ export declare const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => <E>(fa
 ```
 
 Added in v2.5.0
+
+# foldableReadonlyTuple
+
+**Signature**
+
+```ts
+export declare const foldableReadonlyTuple: Foldable2<'ReadonlyTuple'>
+```
+
+Added in v3.0.0
 
 # fst
 
@@ -187,20 +232,6 @@ export declare const pipe: <B, C>(fbc: readonly [C, B]) => <A>(fab: readonly [B,
 
 Added in v3.0.0
 
-# readonlyTuple
-
-**Signature**
-
-```ts
-export declare const readonlyTuple: Semigroupoid2<'ReadonlyTuple'> &
-  Bifunctor2<'ReadonlyTuple'> &
-  Comonad2<'ReadonlyTuple'> &
-  Foldable2<'ReadonlyTuple'> &
-  Traversable2<'ReadonlyTuple'>
-```
-
-Added in v2.5.0
-
 # reduce
 
 **Signature**
@@ -220,6 +251,16 @@ export declare const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => <E>(fa: 
 ```
 
 Added in v2.5.0
+
+# semigroupoidReadonlyTuple
+
+**Signature**
+
+```ts
+export declare const semigroupoidReadonlyTuple: Semigroupoid2<'ReadonlyTuple'>
+```
+
+Added in v3.0.0
 
 # sequence
 
@@ -250,6 +291,16 @@ export declare function swap<A, S>(sa: readonly [A, S]): readonly [S, A]
 ```
 
 Added in v2.5.0
+
+# traversableReadonlyTuple
+
+**Signature**
+
+```ts
+export declare const traversableReadonlyTuple: Traversable2<'ReadonlyTuple'>
+```
+
+Added in v3.0.0
 
 # traverse
 

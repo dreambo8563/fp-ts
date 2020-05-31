@@ -14,12 +14,7 @@ import { Monoid } from './Monoid'
 import { Semigroup } from './Semigroup'
 import { Semigroupoid2 } from './Semigroupoid'
 import { Traversable2 } from './Traversable'
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly ReadonlyTuple: readonly [A, E]
-  }
-}
+import { Extend2 } from './Extend'
 
 /**
  * @since 2.5.0
@@ -30,6 +25,12 @@ export const URI = 'ReadonlyTuple'
  * @since 2.5.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind2<E, A> {
+    readonly [URI]: readonly [A, E]
+  }
+}
 
 /**
  * @since 2.5.0
@@ -201,20 +202,57 @@ export const sequence: Traversable2<URI>['sequence'] = <F>(A: Applicative<F>) =>
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 2.5.0
+ * @since 3.0.0
  */
-export const readonlyTuple: Semigroupoid2<URI> &
-  Bifunctor2<URI> &
-  Comonad2<URI> &
-  Foldable2<URI> &
-  Traversable2<URI> = {
+export const semigroupoidReadonlyTuple: Semigroupoid2<URI> = {
   URI,
-  pipe,
-  map,
+  pipe
+}
+
+/**
+ * @since 3.0.0
+ */
+export const bifunctorReadonlyTuple: Bifunctor2<URI> = {
+  URI,
   bimap,
-  mapLeft,
-  extract,
+  mapLeft
+}
+
+/**
+ * @since 3.0.0
+ */
+export const extendReadonlyTuple: Extend2<URI> = {
+  URI,
+  map,
+  extend
+}
+
+/**
+ * @since 3.0.0
+ */
+export const comonadReadonlyTuple: Comonad2<URI> = {
+  URI,
+  map,
   extend,
+  extract
+}
+
+/**
+ * @since 3.0.0
+ */
+export const foldableReadonlyTuple: Foldable2<URI> = {
+  URI,
+  reduce,
+  foldMap,
+  reduceRight
+}
+
+/**
+ * @since 3.0.0
+ */
+export const traversableReadonlyTuple: Traversable2<URI> = {
+  URI,
+  map,
   reduce,
   foldMap,
   reduceRight,

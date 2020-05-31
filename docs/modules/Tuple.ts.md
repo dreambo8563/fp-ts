@@ -14,11 +14,15 @@ Added in v2.0.0
 
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
+- [bifunctorTuple](#bifunctortuple)
 - [bimap](#bimap)
+- [comonadTuple](#comonadtuple)
 - [duplicate](#duplicate)
 - [extend](#extend)
+- [extendTuple](#extendtuple)
 - [extract](#extract)
 - [foldMap](#foldmap)
+- [foldableTuple](#foldabletuple)
 - [fst](#fst)
 - [getApplicative](#getapplicative)
 - [getApply](#getapply)
@@ -29,11 +33,12 @@ Added in v2.0.0
 - [pipe](#pipe)
 - [reduce](#reduce)
 - [reduceRight](#reduceright)
+- [semigroupoidTuple](#semigroupoidtuple)
 - [sequence](#sequence)
 - [snd](#snd)
 - [swap](#swap)
+- [traversableTuple](#traversabletuple)
 - [traverse](#traverse)
-- [tuple](#tuple)
 
 ---
 
@@ -57,6 +62,16 @@ export declare const URI: 'Tuple'
 
 Added in v2.0.0
 
+# bifunctorTuple
+
+**Signature**
+
+```ts
+export declare const bifunctorTuple: Bifunctor2<'Tuple'>
+```
+
+Added in v3.0.0
+
 # bimap
 
 **Signature**
@@ -66,6 +81,16 @@ export declare const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa:
 ```
 
 Added in v2.0.0
+
+# comonadTuple
+
+**Signature**
+
+```ts
+export declare const comonadTuple: Comonad2<'Tuple'>
+```
+
+Added in v3.0.0
 
 # duplicate
 
@@ -87,6 +112,16 @@ export declare const extend: <E, A, B>(f: (wa: [A, E]) => B) => (wa: [A, E]) => 
 
 Added in v2.0.0
 
+# extendTuple
+
+**Signature**
+
+```ts
+export declare const extendTuple: Extend2<'Tuple'>
+```
+
+Added in v3.0.0
+
 # extract
 
 **Signature**
@@ -106,6 +141,16 @@ export declare const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => <E>(fa
 ```
 
 Added in v2.0.0
+
+# foldableTuple
+
+**Signature**
+
+```ts
+export declare const foldableTuple: Foldable2<'Tuple'>
+```
+
+Added in v3.0.0
 
 # fst
 
@@ -207,6 +252,16 @@ export declare const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => <E>(fa: 
 
 Added in v2.0.0
 
+# semigroupoidTuple
+
+**Signature**
+
+```ts
+export declare const semigroupoidTuple: Semigroupoid2<'Tuple'>
+```
+
+Added in v3.0.0
+
 # sequence
 
 **Signature**
@@ -237,6 +292,16 @@ export declare const swap: <A, S>(sa: [A, S]) => [S, A]
 
 Added in v2.0.0
 
+# traversableTuple
+
+**Signature**
+
+```ts
+export declare const traversableTuple: Traversable2<'Tuple'>
+```
+
+Added in v3.0.0
+
 # traverse
 
 **Signature**
@@ -246,17 +311,3 @@ export declare const traverse: Traverse2<'Tuple'>
 ```
 
 Added in v3.0.0
-
-# tuple
-
-**Signature**
-
-```ts
-export declare const tuple: Semigroupoid2<'Tuple'> &
-  Bifunctor2<'Tuple'> &
-  Comonad2<'Tuple'> &
-  Foldable2<'Tuple'> &
-  Traversable2<'Tuple'>
-```
-
-Added in v2.0.0
