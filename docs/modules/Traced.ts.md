@@ -16,11 +16,11 @@ Added in v2.0.0
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
 - [censor](#censor)
+- [functorTraced](#functortraced)
 - [getComonad](#getcomonad)
 - [listen](#listen)
 - [listens](#listens)
 - [map](#map)
-- [traced](#traced)
 - [tracks](#tracks)
 
 ---
@@ -69,12 +69,22 @@ export declare function censor<P>(f: (p: P) => P): <A>(wa: Traced<P, A>) => Trac
 
 Added in v2.0.0
 
+# functorTraced
+
+**Signature**
+
+```ts
+export declare const functorTraced: Functor2<'Traced'>
+```
+
+Added in v3.0.0
+
 # getComonad
 
 **Signature**
 
 ```ts
-export declare function getComonad<P>(monoid: Monoid<P>): Comonad2C<URI, P>
+export declare function getComonad<P>(M: Monoid<P>): Comonad2C<URI, P>
 ```
 
 Added in v2.0.0
@@ -109,16 +119,6 @@ Added in v2.0.0
 
 ```ts
 export declare const map: <A, B>(f: (a: A) => B) => <E>(fa: Traced<E, A>) => Traced<E, B>
-```
-
-Added in v2.0.0
-
-# traced
-
-**Signature**
-
-```ts
-export declare const traced: Functor2<'Traced'>
 ```
 
 Added in v2.0.0

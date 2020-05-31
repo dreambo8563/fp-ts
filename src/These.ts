@@ -35,12 +35,6 @@ import { Show } from './Show'
 import { Traversable2 } from './Traversable'
 import { pipe } from './function'
 
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly These: These<E, A>
-  }
-}
-
 /**
  * @since 2.0.0
  */
@@ -50,6 +44,12 @@ export const URI = 'These'
  * @since 2.0.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind2<E, A> {
+    readonly [URI]: These<E, A>
+  }
+}
 
 /**
  * @since 2.0.0

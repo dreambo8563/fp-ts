@@ -5,12 +5,6 @@ import { Comonad2C } from './Comonad'
 import { Functor2 } from './Functor'
 import { Monoid } from './Monoid'
 
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly Traced: Traced<E, A>
-  }
-}
-
 /**
  * @since 2.0.0
  */
@@ -20,6 +14,12 @@ export const URI = 'Traced'
  * @since 2.0.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind2<E, A> {
+    readonly [URI]: Traced<E, A>
+  }
+}
 
 /**
  * @since 2.0.0
@@ -68,35 +68,6 @@ export function censor<P>(f: (p: P) => P): <A>(wa: Traced<P, A>) => Traced<P, A>
   return (wa) => (e) => wa(f(e))
 }
 
-/**
- * @since 2.0.0
- */
-export function getComonad<P>(monoid: Monoid<P>): Comonad2C<URI, P> {
-  const extend = <A, B>(f: (wa: Traced<P, A>) => B) => (wa: Traced<P, A>): Traced<P, B> => (p1) =>
-    f((p2) => wa(monoid.concat(p1, p2)))
-
-  function extract<A>(wa: Traced<P, A>): A {
-    return wa(monoid.empty)
-  }
-
-  return {
-    URI,
-    _E: undefined as any,
-    map,
-    extend,
-    extract
-  }
-}
-
-// -------------------------------------------------------------------------------------
-// pipeables
-// -------------------------------------------------------------------------------------
-
-/**
- * @since 2.0.0
- */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: Traced<E, A>) => Traced<E, B> = (f) => (fa) => (p) => f(fa(p))
-
 // -------------------------------------------------------------------------------------
 // instances
 // -------------------------------------------------------------------------------------
@@ -104,7 +75,25 @@ export const map: <A, B>(f: (a: A) => B) => <E>(fa: Traced<E, A>) => Traced<E, B
 /**
  * @since 2.0.0
  */
-export const traced: Functor2<URI> = {
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: Traced<E, A>) => Traced<E, B> = (f) => (fa) => (p) => f(fa(p))
+
+/**
+ * @since 3.0.0
+ */
+export const functorTraced: Functor2<URI> = {
   URI,
   map
+}
+
+/**
+ * @since 2.0.0
+ */
+export function getComonad<P>(M: Monoid<P>): Comonad2C<URI, P> {
+  return {
+    URI,
+    _E: undefined as any,
+    map,
+    extend: (f) => (wa) => (p1) => f((p2) => wa(M.concat(p1, p2))),
+    extract: (wa) => wa(M.empty)
+  }
 }

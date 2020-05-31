@@ -124,13 +124,9 @@ export function getTheseM<M>(M: Monad<M>): TheseM<M>
 export function getTheseM<M>(M: Monad<M>): TheseM<M> {
   const map = <A, B>(f: (a: A) => B) => <E>(fa: TheseT<M, E, A>): TheseT<M, E, B> => pipe(fa, M.map(TH.map(f)))
 
-  function of<E, A>(a: A): TheseT<M, E, A> {
-    return M.of(TH.right(a))
-  }
+  const of = <E, A>(a: A): TheseT<M, E, A> => M.of(TH.right(a))
 
-  function leftT<E = never, A = never>(e: E): TheseT<M, E, A> {
-    return M.of(TH.left(e))
-  }
+  const left = <E = never, A = never>(e: E): TheseT<M, E, A> => M.of(TH.left(e))
 
   return {
     map,
@@ -140,30 +136,26 @@ export function getTheseM<M>(M: Monad<M>): TheseM<M> {
     swap: M.map(TH.swap),
     rightM: M.map(TH.right),
     leftM: M.map(TH.left),
-    left: leftT,
+    left: left,
     right: of,
     both: (e, a) => M.of(TH.both(e, a)),
     toTuple: (e, a) => M.map(TH.toTuple(e, a)),
     getMonad: <E>(E: Semigroup<E>) => {
-      const chain = <A, B>(f: (a: A) => TheseT<M, E, B>) => (fa: TheseT<M, E, A>): TheseT<M, E, B> => {
-        return pipe(
-          fa,
-          M.chain(
-            TH.fold(leftT, f, (e1, a) =>
-              pipe(
-                f(a),
-                M.map(
-                  TH.fold(
-                    (e2) => TH.left(E.concat(e1, e2)),
-                    TH.right,
-                    (e2, b) => TH.both(E.concat(e1, e2), b)
-                  )
+      const chain = <A, B>(f: (a: A) => TheseT<M, E, B>): ((fa: TheseT<M, E, A>) => TheseT<M, E, B>) =>
+        M.chain(
+          TH.fold(left, f, (e1, a) =>
+            pipe(
+              f(a),
+              M.map(
+                TH.fold(
+                  (e2) => TH.left(E.concat(e1, e2)),
+                  TH.right,
+                  (e2, b) => TH.both(E.concat(e1, e2), b)
                 )
               )
             )
           )
         )
-      }
 
       return {
         _E: undefined as any,
