@@ -317,9 +317,9 @@ Added in v2.0.0
 
 ```ts
 export declare const fold: <E, A, B>(
-  onLeft: (e: E) => Task<B>,
-  onRight: (a: A) => Task<B>
-) => (ma: TaskEither<E, A>) => Task<B>
+  onLeft: (e: E) => T.Task<B>,
+  onRight: (a: A) => T.Task<B>
+) => (ma: TaskEither<E, A>) => T.Task<B>
 ```
 
 Added in v2.0.0
@@ -439,7 +439,7 @@ Added in v2.1.0
 **Signature**
 
 ```ts
-export declare const getOrElse: <E, A>(onLeft: (e: E) => Task<A>) => (ma: TaskEither<E, A>) => Task<A>
+export declare const getOrElse: <E, A>(onLeft: (e: E) => T.Task<A>) => (ma: TaskEither<E, A>) => T.Task<A>
 ```
 
 Added in v2.0.0
@@ -449,7 +449,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const getOrElseW: <E, B>(onLeft: (e: E) => Task<B>) => <A>(ma: TaskEither<E, A>) => Task<B | A>
+export declare const getOrElseW: <E, B>(onLeft: (e: E) => T.Task<B>) => <A>(ma: TaskEither<E, A>) => T.Task<B | A>
 ```
 
 Added in v2.6.0
@@ -502,7 +502,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const leftTask: <E = never, A = never>(me: Task<E>) => TaskEither<E, A>
+export declare const leftTask: <E = never, A = never>(me: T.Task<E>) => TaskEither<E, A>
 ```
 
 Added in v2.0.0
@@ -618,7 +618,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const rightTask: <E = never, A = never>(ma: Task<A>) => TaskEither<E, A>
+export declare const rightTask: <E = never, A = never>(ma: T.Task<A>) => TaskEither<E, A>
 ```
 
 Added in v2.0.0

@@ -535,7 +535,7 @@ export function getApplySemigroup<A>(S: Semigroup<A>): Semigroup<Option<A>> {
  */
 export function getApplyMonoid<A>(M: Monoid<A>): Monoid<Option<A>> {
   return {
-    ...getApplySemigroup(M),
+    concat: getApplySemigroup(M).concat,
     empty: some(M.empty)
   }
 }
@@ -655,7 +655,8 @@ export const ap: Apply1<URI>['ap'] = (fa) => (fab) =>
  * @since 3.0.0
  */
 export const applyOption: Apply1<URI> = {
-  ...functorOption,
+  URI,
+  map,
   ap
 }
 
@@ -688,7 +689,9 @@ export const of: Applicative1<URI>['of'] = some
  * @since 3.0.0
  */
 export const applicativeOption: Applicative1<URI> = {
-  ...applyOption,
+  URI,
+  map,
+  ap,
   of
 }
 
@@ -701,7 +704,10 @@ export const chain: Monad1<URI>['chain'] = (f) => (ma) => (isNone(ma) ? none : f
  * @since 3.0.0
  */
 export const monadOption: Monad1<URI> = {
-  ...applicativeOption,
+  URI,
+  map,
+  ap,
+  of,
   chain
 }
 
@@ -719,13 +725,19 @@ export const chainFirst: <A, B>(f: (a: A) => Option<B>) => (ma: Option<A>) => Op
 /**
  * @since 2.0.0
  */
-export const flatten: <A>(mma: Option<Option<A>>) => Option<A> = chain(identity)
+export const flatten: <A>(mma: Option<Option<A>>) => Option<A> =
+  /*#__PURE__*/
+  chain(identity)
 
 /**
  * @since 3.0.0
  */
 export const monadThrowOption: MonadThrow1<URI> = {
-  ...monadOption,
+  URI,
+  map,
+  ap,
+  of,
+  chain,
   throwError: () => none
 }
 
@@ -793,8 +805,10 @@ export const partitionMap: Filterable1<URI>['partitionMap'] = (f) => (fa) => sep
  * @since 3.0.0
  */
 export const filterableOption: Filterable1<URI> = {
-  ...compactableOption,
-  ...functorOption,
+  URI,
+  compact,
+  separate,
+  map,
   filter,
   filterMap,
   partition,
@@ -844,8 +858,11 @@ export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F>) =>
  * @since 3.0.0
  */
 export const traversableOption: Traversable1<URI> = {
-  ...foldableOption,
-  ...functorOption,
+  URI,
+  reduce,
+  foldMap,
+  reduceRight,
+  map,
   traverse,
   sequence
 }
@@ -860,7 +877,8 @@ export const alt: <A>(that: () => Option<A>) => (fa: Option<A>) => Option<A> = (
  * @since 3.0.0
  */
 export const altOption: Alt1<URI> = {
-  ...functorOption,
+  URI,
+  map,
   alt
 }
 
@@ -868,8 +886,11 @@ export const altOption: Alt1<URI> = {
  * @since 3.0.0
  */
 export const alternativeOption: O<URI> = {
-  ...applicativeOption,
-  ...altOption,
+  URI,
+  map,
+  ap,
+  of,
+  alt,
   zero: () => none
 }
 
@@ -883,14 +904,17 @@ export const extend: <A, B>(f: (wa: Option<A>) => B) => (wa: Option<A>) => Optio
  * @since 3.0.0
  */
 export const extendOption: Extend1<URI> = {
-  ...functorOption,
+  URI,
+  map,
   extend
 }
 
 /**
  * @since 2.0.0
  */
-export const duplicate: <A>(ma: Option<A>) => Option<Option<A>> = extend(identity)
+export const duplicate: <A>(ma: Option<A>) => Option<Option<A>> =
+  /*#__PURE__*/
+  extend(identity)
 
 /**
  * @since 3.0.0
@@ -929,11 +953,19 @@ export const wilt: Witherable1<URI>['wilt'] = <F>(F: Applicative<F>) => <A, B, C
  * @since 3.0.0
  */
 export const witherableOption: Witherable1<URI> = {
-  ...compactableOption,
-  ...foldableOption,
-  ...functorOption,
-  ...filterableOption,
-  ...traversableOption,
+  URI,
+  compact,
+  separate,
+  reduce,
+  foldMap,
+  reduceRight,
+  map,
+  filter,
+  filterMap,
+  partition,
+  partitionMap,
+  traverse,
+  sequence,
   wither,
   wilt
 }

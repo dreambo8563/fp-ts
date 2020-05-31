@@ -1750,7 +1750,8 @@ export const functorReadonlyArray: Functor1<URI> = {
  * @since 3.0.0
  */
 export const functorWithIndexReadonlyArray: FunctorWithIndex1<URI, number> = {
-  ...functorReadonlyArray,
+  URI,
+  map,
   mapWithIndex
 }
 
@@ -1758,7 +1759,8 @@ export const functorWithIndexReadonlyArray: FunctorWithIndex1<URI, number> = {
  * @since 3.0.0
  */
 export const applyReadonlyArray: Apply1<URI> = {
-  ...functorReadonlyArray,
+  URI,
+  map,
   ap
 }
 
@@ -1766,7 +1768,9 @@ export const applyReadonlyArray: Apply1<URI> = {
  * @since 3.0.0
  */
 export const applicativeReadonlyArray: Applicative1<URI> = {
-  ...applyReadonlyArray,
+  URI,
+  map,
+  ap,
   of
 }
 
@@ -1774,7 +1778,10 @@ export const applicativeReadonlyArray: Applicative1<URI> = {
  * @since 3.0.0
  */
 export const monadReadonlyArray: Monad1<URI> = {
-  ...applicativeReadonlyArray,
+  URI,
+  map,
+  ap,
+  of,
   chain
 }
 
@@ -1819,8 +1826,10 @@ export const compactableReadonlyArray: Compactable1<URI> = {
  * @since 3.0.0
  */
 export const filterableReadonlyArray: Filterable1<URI> = {
-  ...compactableReadonlyArray,
-  ...functorReadonlyArray,
+  URI,
+  compact,
+  separate,
+  map,
   filter,
   filterMap,
   partition,
@@ -1831,8 +1840,15 @@ export const filterableReadonlyArray: Filterable1<URI> = {
  * @since 3.0.0
  */
 export const filterableWithIndexReadonlyArray: FilterableWithIndex1<URI, number> = {
-  ...filterableReadonlyArray,
-  ...functorWithIndexReadonlyArray,
+  URI,
+  compact,
+  separate,
+  map,
+  filter,
+  filterMap,
+  partition,
+  partitionMap,
+  mapWithIndex,
   partitionMapWithIndex,
   partitionWithIndex: partitionWithIndex_,
   filterMapWithIndex: filterMapWithIndex_,
@@ -1853,7 +1869,10 @@ export const foldableReadonlyArray: Foldable1<URI> = {
  * @since 3.0.0
  */
 export const foldableWithIndexReadonlyArray: FoldableWithIndex1<URI, number> = {
-  ...foldableReadonlyArray,
+  URI,
+  reduce,
+  foldMap,
+  reduceRight,
   reduceWithIndex,
   foldMapWithIndex,
   reduceRightWithIndex
@@ -1863,7 +1882,8 @@ export const foldableWithIndexReadonlyArray: FoldableWithIndex1<URI, number> = {
  * @since 3.0.0
  */
 export const altReadonlyArray: Alt1<URI> = {
-  ...functorReadonlyArray,
+  URI,
+  map,
   alt
 }
 
@@ -1871,8 +1891,11 @@ export const altReadonlyArray: Alt1<URI> = {
  * @since 3.0.0
  */
 export const alternativeReadonlyArray: Alternative1<URI> = {
-  ...applicativeReadonlyArray,
-  ...altReadonlyArray,
+  URI,
+  map,
+  ap,
+  of,
+  alt,
   zero: zero_
 }
 
@@ -1880,8 +1903,11 @@ export const alternativeReadonlyArray: Alternative1<URI> = {
  * @since 3.0.0
  */
 export const traversableReadonlyArray: Traversable1<URI> = {
-  ...functorReadonlyArray,
-  ...foldableReadonlyArray,
+  URI,
+  map,
+  reduce,
+  foldMap,
+  reduceRight,
   traverse,
   sequence
 }
@@ -1890,9 +1916,17 @@ export const traversableReadonlyArray: Traversable1<URI> = {
  * @since 3.0.0
  */
 export const traversableWithIndexReadonlyArray: TraversableWithIndex1<URI, number> = {
-  ...functorWithIndexReadonlyArray,
-  ...foldableWithIndexReadonlyArray,
-  ...traversableReadonlyArray,
+  URI,
+  map,
+  reduce,
+  foldMap,
+  reduceRight,
+  mapWithIndex,
+  reduceWithIndex,
+  foldMapWithIndex,
+  reduceRightWithIndex,
+  traverse,
+  sequence,
   traverseWithIndex
 }
 
@@ -1900,7 +1934,8 @@ export const traversableWithIndexReadonlyArray: TraversableWithIndex1<URI, numbe
  * @since 3.0.0
  */
 export const extendReadonlyArray: Extend1<URI> = {
-  ...functorReadonlyArray,
+  URI,
+  map,
   extend
 }
 
@@ -1908,8 +1943,19 @@ export const extendReadonlyArray: Extend1<URI> = {
  * @since 3.0.0
  */
 export const witherableReadonlyArray: Witherable1<URI> = {
-  ...filterableReadonlyArray,
-  ...traversableReadonlyArray,
+  URI,
+  compact,
+  separate,
+  map,
+  filter,
+  filterMap,
+  partition,
+  partitionMap,
+  reduce,
+  foldMap,
+  reduceRight,
+  traverse,
+  sequence,
   wither,
   wilt
 }

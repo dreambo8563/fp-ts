@@ -22,12 +22,15 @@ import { MonadThrow2 } from './MonadThrow'
 import { Monoid } from './Monoid'
 import { Option } from './Option'
 import { Semigroup } from './Semigroup'
-import { fromIO as fromIOTask, getSemigroup as getTaskSemigroup, monadTask, Task } from './Task'
+import * as T from './Task'
 import { getValidationM } from './ValidationT'
 
 import Either = E.Either
+import Task = T.Task
 
-const T = /*#__PURE__*/ getEitherM(monadTask)
+const MT =
+  /*#__PURE__*/
+  getEitherM(T.monadTask)
 
 declare module './HKT' {
   interface URItoKind2<E, A> {
@@ -53,41 +56,51 @@ export interface TaskEither<E, A> extends Task<Either<E, A>> {}
 /**
  * @since 2.0.0
  */
-export const left: <E = never, A = never>(e: E) => TaskEither<E, A> = T.left
+export const left: <E = never, A = never>(e: E) => TaskEither<E, A> =
+  /*#__PURE__*/
+  (() => MT.left)()
 
 /**
  * @since 2.0.0
  */
-export const right: <E = never, A = never>(a: A) => TaskEither<E, A> = T.of
+export const right: <E = never, A = never>(a: A) => TaskEither<E, A> =
+  /*#__PURE__*/
+  (() => MT.of)()
 
 /**
  * @since 2.0.0
  */
 export function rightIO<E = never, A = never>(ma: IO<A>): TaskEither<E, A> {
-  return rightTask(fromIOTask(ma))
+  return rightTask(T.fromIO(ma))
 }
 
 /**
  * @since 2.0.0
  */
 export function leftIO<E = never, A = never>(me: IO<E>): TaskEither<E, A> {
-  return leftTask(fromIOTask(me))
+  return leftTask(T.fromIO(me))
 }
 
 /**
  * @since 2.0.0
  */
-export const rightTask: <E = never, A = never>(ma: Task<A>) => TaskEither<E, A> = T.rightM
+export const rightTask: <E = never, A = never>(ma: Task<A>) => TaskEither<E, A> =
+  /*#__PURE__*/
+  (() => MT.rightM)()
 
 /**
  * @since 2.0.0
  */
-export const leftTask: <E = never, A = never>(me: Task<E>) => TaskEither<E, A> = T.leftM
+export const leftTask: <E = never, A = never>(me: Task<E>) => TaskEither<E, A> =
+  /*#__PURE__*/
+  (() => MT.leftM)()
 
 /**
  * @since 2.0.0
  */
-export const fromIOEither: <E, A>(fa: IOEither<E, A>) => TaskEither<E, A> = fromIOTask
+export const fromIOEither: <E, A>(fa: IOEither<E, A>) => TaskEither<E, A> =
+  /*#__PURE__*/
+  (() => T.fromIO)()
 
 /**
  * @since 2.0.0
@@ -95,12 +108,16 @@ export const fromIOEither: <E, A>(fa: IOEither<E, A>) => TaskEither<E, A> = from
 export const fold: <E, A, B>(
   onLeft: (e: E) => Task<B>,
   onRight: (a: A) => Task<B>
-) => (ma: TaskEither<E, A>) => Task<B> = T.fold
+) => (ma: TaskEither<E, A>) => Task<B> =
+  /*#__PURE__*/
+  (() => MT.fold)()
 
 /**
  * @since 2.0.0
  */
-export const getOrElse: <E, A>(onLeft: (e: E) => Task<A>) => (ma: TaskEither<E, A>) => Task<A> = T.getOrElse
+export const getOrElse: <E, A>(onLeft: (e: E) => Task<A>) => (ma: TaskEither<E, A>) => Task<A> =
+  /*#__PURE__*/
+  (() => MT.getOrElse)()
 
 /**
  * @since 2.6.0
@@ -113,12 +130,15 @@ export const getOrElseW: <E, B>(
  * @since 2.0.0
  */
 export const orElse: <E, A, M>(onLeft: (e: E) => TaskEither<M, A>) => (ma: TaskEither<E, A>) => TaskEither<M, A> =
-  T.orElse
+  /*#__PURE__*/
+  (() => MT.orElse)()
 
 /**
  * @since 2.0.0
  */
-export const swap: <E, A>(ma: TaskEither<E, A>) => TaskEither<A, E> = T.swap
+export const swap: <E, A>(ma: TaskEither<E, A>) => TaskEither<A, E> =
+  /*#__PURE__*/
+  (() => MT.swap)()
 
 /**
  * Semigroup returning the left-most non-`Left` value. If both operands are `Right`s then the inner values are
@@ -127,7 +147,7 @@ export const swap: <E, A>(ma: TaskEither<E, A>) => TaskEither<A, E> = T.swap
  * @since 2.0.0
  */
 export function getSemigroup<E, A>(S: Semigroup<A>): Semigroup<TaskEither<E, A>> {
-  return getTaskSemigroup(E.getSemigroup<E, A>(S))
+  return T.getSemigroup(E.getSemigroup<E, A>(S))
 }
 
 /**
@@ -137,7 +157,7 @@ export function getSemigroup<E, A>(S: Semigroup<A>): Semigroup<TaskEither<E, A>>
  * @since 2.0.0
  */
 export function getApplySemigroup<E, A>(S: Semigroup<A>): Semigroup<TaskEither<E, A>> {
-  return getTaskSemigroup(E.getApplySemigroup<E, A>(S))
+  return T.getSemigroup(E.getApplySemigroup<E, A>(S))
 }
 
 /**
@@ -189,11 +209,11 @@ export function bracket<E, A, B>(
     acquire,
     chain((a) =>
       pipe(
-        pipe(use(a), monadTask.map(E.right)),
+        pipe(use(a), T.map(E.right)),
         chain((e) =>
           pipe(
             release(a, e),
-            chain(() => (E.isLeft(e) ? T.left(e.left) : T.of(e.right)))
+            chain(() => (E.isLeft(e) ? left(e.left) : of(e.right)))
           )
         )
       )
@@ -259,11 +279,14 @@ export function taskify<L, R>(f: Function): () => TaskEither<L, R> {
  * @since 2.0.0
  */
 export function getTaskValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E> {
-  const T = getValidationM(S, monadTask)
+  const V = getValidationM(S, T.monadTask)
   return {
     URI,
     _E: undefined as any,
-    ...T
+    map: V.map,
+    ap: V.ap,
+    of: V.of,
+    alt: V.alt
   }
 }
 
@@ -271,12 +294,17 @@ export function getTaskValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & A
  * @since 2.1.0
  */
 export function getFilterable<E>(M: Monoid<E>): Filterable2C<URI, E> {
-  const F = E.getWitherable(M)
-
+  const F = getFilterableComposition(T.monadTask, E.getWitherable(M))
   return {
     URI,
     _E: undefined as any,
-    ...getFilterableComposition(monadTask, F)
+    map: F.map,
+    compact: F.compact,
+    separate: F.separate,
+    filter: F.filter,
+    filterMap: F.filterMap,
+    partition: F.partition,
+    partitionMap: F.partitionMap
   }
 }
 
@@ -367,7 +395,9 @@ export const filterOrElse: {
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: TaskEither<E, A>) => TaskEither<E, B> = T.map
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: TaskEither<E, A>) => TaskEither<E, B> =
+  /*#__PURE__*/
+  (() => MT.map)()
 
 /**
  * @since 3.0.0
@@ -380,13 +410,16 @@ export const functorTaskEither: Functor2<URI> = {
 /**
  * @since 2.0.0
  */
-export const ap: <E, A>(fa: TaskEither<E, A>) => <B>(fab: TaskEither<E, (a: A) => B>) => TaskEither<E, B> = T.ap
+export const ap: <E, A>(fa: TaskEither<E, A>) => <B>(fab: TaskEither<E, (a: A) => B>) => TaskEither<E, B> =
+  /*#__PURE__*/
+  (() => MT.ap)()
 
 /**
  * @since 3.0.0
  */
 export const applyTaskEither: Apply2<URI> = {
-  ...functorTaskEither,
+  URI,
+  map,
   ap
 }
 
@@ -410,24 +443,33 @@ export const apSecond = <E, B>(fb: TaskEither<E, B>) => <A>(fa: TaskEither<E, A>
     ap(fb)
   )
 
+const of = right
+
 /**
  * @since 3.0.0
  */
 export const applicativeTaskEither: Applicative2<URI> = {
-  ...applyTaskEither,
-  of: right
+  URI,
+  map,
+  ap,
+  of
 }
 
 /**
  * @since 2.0.0
  */
-export const chain: <E, A, B>(f: (a: A) => TaskEither<E, B>) => (ma: TaskEither<E, A>) => TaskEither<E, B> = T.chain
+export const chain: <E, A, B>(f: (a: A) => TaskEither<E, B>) => (ma: TaskEither<E, A>) => TaskEither<E, B> =
+  /*#__PURE__*/
+  (() => MT.chain)()
 
 /**
  * @since 3.0.0
  */
 export const monadTaskEither: Monad2<URI> = {
-  ...applicativeTaskEither,
+  URI,
+  map,
+  ap,
+  of,
   chain
 }
 
@@ -466,17 +508,23 @@ export const chainFirst: <E, A, B>(f: (a: A) => TaskEither<E, B>) => (ma: TaskEi
 /**
  * @since 2.0.0
  */
-export const flatten: <E, A>(mma: TaskEither<E, TaskEither<E, A>>) => TaskEither<E, A> = chain(identity)
+export const flatten: <E, A>(mma: TaskEither<E, TaskEither<E, A>>) => TaskEither<E, A> =
+  /*#__PURE__*/
+  chain(identity)
 
 /**
  * @since 2.0.0
  */
-export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: TaskEither<E, A>) => TaskEither<G, B> = T.bimap
+export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: TaskEither<E, A>) => TaskEither<G, B> =
+  /*#__PURE__*/
+  (() => MT.bimap)()
 
 /**
  * @since 2.0.0
  */
-export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TaskEither<E, A>) => TaskEither<G, A> = T.mapLeft
+export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TaskEither<E, A>) => TaskEither<G, A> =
+  /*#__PURE__*/
+  (() => MT.mapLeft)()
 
 /**
  * @since 3.0.0
@@ -490,38 +538,60 @@ export const bifunctorTaskEither: Bifunctor2<URI> = {
 /**
  * @since 2.0.0
  */
-export const alt: <E, A>(that: () => TaskEither<E, A>) => (fa: TaskEither<E, A>) => TaskEither<E, A> = T.alt
+export const alt: <E, A>(that: () => TaskEither<E, A>) => (fa: TaskEither<E, A>) => TaskEither<E, A> =
+  /*#__PURE__*/
+  (() => MT.alt)()
 
 /**
  * @since 3.0.0
  */
 export const altTaskEither: Alt2<URI> = {
-  ...functorTaskEither,
+  URI,
+  map,
   alt
 }
+
+const fromIO = rightIO
 
 /**
  * @since 3.0.0
  */
 export const monadIOTaskEither: MonadIO2<URI> = {
-  ...monadTaskEither,
-  fromIO: rightIO
+  URI,
+  map,
+  ap,
+  of,
+  chain,
+  fromIO
 }
+
+const fromTask = rightTask
 
 /**
  * @since 3.0.0
  */
 export const monadTaskTaskEither: MonadTask2<URI> = {
-  ...monadIOTaskEither,
-  fromTask: rightTask
+  URI,
+  map,
+  ap,
+  of,
+  chain,
+  fromIO,
+  fromTask
 }
+
+const throwError = left
 
 /**
  * @since 3.0.0
  */
 export const monadThrowTaskEither: MonadThrow2<URI> = {
-  ...monadTaskEither,
-  throwError: left
+  URI,
+  map,
+  ap,
+  of,
+  chain,
+  throwError
 }
 
 /**
@@ -530,18 +600,18 @@ export const monadThrowTaskEither: MonadThrow2<URI> = {
  */
 export const monadTaskEitherSeq: Monad2<URI> & Bifunctor2<URI> & Alt2<URI> & MonadTask2<URI> & MonadThrow2<URI> = {
   URI,
-  bimap: T.bimap,
-  mapLeft: T.mapLeft,
+  bimap,
+  mapLeft,
   map,
-  of: T.of,
+  of,
   ap: (fa) => (fab) =>
     pipe(
       fab,
       chain((f) => pipe(fa, map(f)))
     ),
   chain,
-  alt: T.alt,
-  fromIO: rightIO,
-  fromTask: rightTask,
-  throwError: left
+  alt,
+  fromIO,
+  fromTask,
+  throwError
 }

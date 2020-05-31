@@ -209,7 +209,9 @@ export const chainFirst: <A, B>(f: (a: A) => Task<B>) => (ma: Task<A>) => Task<A
 /**
  * @since 2.0.0
  */
-export const flatten: <A>(mma: Task<Task<A>>) => Task<A> = chain(identity)
+export const flatten: <A>(mma: Task<Task<A>>) => Task<A> =
+  /*#__PURE__*/
+  chain(identity)
 
 /**
  * @since 2.4.0

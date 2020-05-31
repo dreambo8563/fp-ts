@@ -52,12 +52,6 @@ import { Show } from './Show'
 import { Traversable2 } from './Traversable'
 import { Witherable2C } from './Witherable'
 
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly Either: Either<E, A>
-  }
-}
-
 /**
  * @since 2.0.0
  */
@@ -67,6 +61,12 @@ export const URI = 'Either'
  * @since 2.0.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind2<E, A> {
+    readonly [URI]: Either<E, A>
+  }
+}
 
 /**
  * @since 2.0.0
@@ -611,12 +611,16 @@ export const extend: <E, A, B>(f: (wa: Either<E, A>) => B) => (wa: Either<E, A>)
 /**
  * @since 2.0.0
  */
-export const duplicate: <E, A>(ma: Either<E, A>) => Either<E, Either<E, A>> = extend(identity)
+export const duplicate: <E, A>(ma: Either<E, A>) => Either<E, Either<E, A>> =
+  /*#__PURE__*/
+  extend(identity)
 
 /**
  * @since 2.0.0
  */
-export const flatten: <E, A>(mma: Either<E, Either<E, A>>) => Either<E, A> = chain(identity)
+export const flatten: <E, A>(mma: Either<E, Either<E, A>>) => Either<E, A> =
+  /*#__PURE__*/
+  chain(identity)
 
 /**
  * @since 2.0.0
@@ -697,23 +701,31 @@ export const functorEither: Functor2<URI> = {
  * @since 3.0.0
  */
 export const applyEither: Apply2<URI> = {
-  ...functorEither,
+  URI,
+  map,
   ap
 }
+
+const of = right
 
 /**
  * @since 3.0.0
  */
 export const applicativeEither: Applicative2<URI> = {
-  ...applyEither,
-  of: right
+  URI,
+  map,
+  ap,
+  of
 }
 
 /**
  * @since 3.0.0
  */
 export const monadEither: Monad2<URI> = {
-  ...applicativeEither,
+  URI,
+  map,
+  ap,
+  of,
   chain
 }
 
@@ -740,8 +752,11 @@ export const bifunctorEither: Bifunctor2<URI> = {
  * @since 3.0.0
  */
 export const traversableEither: Traversable2<URI> = {
-  ...functorEither,
-  ...foldableEither,
+  URI,
+  map,
+  reduce,
+  foldMap,
+  reduceRight,
   traverse,
   sequence
 }
@@ -750,7 +765,8 @@ export const traversableEither: Traversable2<URI> = {
  * @since 3.0.0
  */
 export const altEither: Alt2<URI> = {
-  ...functorEither,
+  URI,
+  map,
   alt
 }
 
@@ -758,7 +774,8 @@ export const altEither: Alt2<URI> = {
  * @since 3.0.0
  */
 export const extendEither: Extend2<URI> = {
-  ...functorEither,
+  URI,
+  map,
   extend
 }
 
@@ -766,6 +783,10 @@ export const extendEither: Extend2<URI> = {
  * @since 3.0.0
  */
 export const monadThrowEither: MonadThrow2<URI> = {
-  ...monadEither,
+  URI,
+  map,
+  ap,
+  of,
+  chain,
   throwError: left
 }

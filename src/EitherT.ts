@@ -98,7 +98,9 @@ export function getEitherM<M>(M: Monad<M>): EitherM<M> {
   const A = getApplicativeComposition(M, applicativeEither)
 
   return {
-    ...A,
+    map: A.map,
+    ap: A.ap,
+    of: A.of,
     chain: (f) => M.chain((e) => (isLeft(e) ? M.of(left(e.left)) : f(e.right))),
     alt: (that) => M.chain((e) => (isLeft(e) ? that() : A.of(e.right))),
     bimap: (f, g) => M.map(bifunctorEither.bimap(f, g)),
