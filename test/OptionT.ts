@@ -1,82 +1,115 @@
 import * as assert from 'assert'
 import * as O from '../src/Option'
-import { getOptionM } from '../src/OptionT'
+import * as OptionT from '../src/OptionT'
 import * as T from '../src/Task'
 import { pipe } from '../src/function'
 
-const MT = getOptionM(T.monadTask)
+const none = T.of(O.none)
 
 describe('OptionT', () => {
-  it('map', () => {
-    const greetingT = MT.of('welcome')
-    const excitedGreetingT = pipe(
-      greetingT,
-      MT.map((s) => s + '!')
+  it('map', async () => {
+    const some = OptionT.some(T.monadTask)
+    const map = OptionT.map(T.monadTask)
+    assert.deepStrictEqual(
+      await pipe(
+        some(1),
+        map((n) => n * 2)
+      )(),
+      O.some(2)
     )
-    return excitedGreetingT().then((o) => {
-      assert.deepStrictEqual(o, O.some('welcome!'))
-    })
   })
 
-  it('chain', () => {
-    const to1 = pipe(
-      MT.of('foo'),
-      MT.chain((a) => MT.of(a.length))
+  it('ap', async () => {
+    const some = OptionT.some(T.monadTask)
+    const ap = OptionT.ap(T.monadTask)
+    assert.deepStrictEqual(
+      await pipe(
+        some((n: number) => n * 2),
+        ap(some(1))
+      )(),
+      O.some(2)
     )
-    const to2 = pipe(
-      T.of(O.none),
-      MT.chain((a: string) => MT.of(a.length))
+  })
+
+  it('chain', async () => {
+    const some = OptionT.some(T.monadTask)
+    const chain = OptionT.chain(T.monadTask)
+    assert.deepStrictEqual(
+      await pipe(
+        some(1),
+        chain((n) => some(n * 2))
+      )(),
+      O.some(2)
     )
-    return Promise.all([to1(), to2()]).then(([o1, o2]) => {
-      assert.deepStrictEqual(o1, O.some(3))
-      assert.deepStrictEqual(o2, O.none)
-    })
+    assert.deepStrictEqual(
+      await pipe(
+        none,
+        chain((n) => some(n * 2))
+      )(),
+      O.none
+    )
   })
 
   it('fold', async () => {
-    const f = () => T.of('none')
-    const g = (s: string) => T.of(`some${s.length}`)
-    const s1 = await pipe(T.of(O.none), MT.fold(f, g))()
-    assert.deepStrictEqual(s1, 'none')
-    const s2 = await pipe(MT.of('s'), MT.fold(f, g))()
-    assert.deepStrictEqual(s2, 'some1')
+    const some = OptionT.some(T.monadTask)
+    const fold = OptionT.fold(T.monadTask)
+    assert.deepStrictEqual(
+      await pipe(
+        some(1),
+        fold(
+          () => T.of('none'),
+          () => T.of('some(1)')
+        )
+      )(),
+      'some(1)'
+    )
+    assert.deepStrictEqual(
+      await pipe(
+        none,
+        fold(
+          () => T.of('none'),
+          () => T.of('some(1)')
+        )
+      )(),
+      'none'
+    )
   })
 
   it('alt', async () => {
-    const o1 = await pipe(
-      T.of(O.some(1)),
-      MT.alt(() => T.of(O.some(2)))
-    )()
-    assert.deepStrictEqual(o1, O.some(1))
-    const o2 = await pipe(
-      T.of(O.none),
-      MT.alt(() => T.of(O.some(2)))
-    )()
-    assert.deepStrictEqual(o2, O.some(2))
+    const some = OptionT.some(T.monadTask)
+    const alt = OptionT.alt(T.monadTask)
+    assert.deepStrictEqual(
+      await pipe(
+        some(1),
+        alt(() => some(2))
+      )(),
+      O.some(1)
+    )
+    assert.deepStrictEqual(
+      await pipe(
+        none,
+        alt(() => some(2))
+      )(),
+      O.some(2)
+    )
   })
 
   it('getOrElse', async () => {
-    const n1 = await pipe(
-      T.of(O.some(1)),
-      MT.getOrElse(() => T.of(2))
-    )()
-    assert.deepStrictEqual(n1, 1)
-    const n2 = await pipe(
-      T.of(O.none),
-      MT.getOrElse(() => T.of(2))
-    )()
-    assert.deepStrictEqual(n2, 2)
-  })
-
-  it('fromM', () => {
-    return MT.fromM(T.of(1))().then((o) => {
-      assert.deepStrictEqual(o, O.some(1))
-    })
-  })
-
-  it('none', () => {
-    return MT.none()().then((o) => {
-      assert.deepStrictEqual(o, O.none)
-    })
+    const some = OptionT.some(T.monadTask)
+    const getOrElse = OptionT.getOrElse(T.monadTask)
+    assert.deepStrictEqual(
+      await pipe(
+        some(1),
+        getOrElse(() => T.of(2))
+      )(),
+      1
+    )
+    assert.deepStrictEqual(
+      await pipe(
+        none,
+        getOrElse(() => T.of(2))
+      )(),
+      2
+    )
   })
 })

@@ -138,7 +138,7 @@ Added in v3.0.0
 ```ts
 export declare function fold<M extends URIS2>(
   M: Chain2<M>
-): <E, B, R, A>(
+): <E, R, B, A>(
   onLeft: (e: E) => Kind2<M, R, B>,
   onRight: (a: A) => Kind2<M, R, B>
 ) => (ma: EitherT2<M, R, E, A>) => Kind2<M, R, B>
