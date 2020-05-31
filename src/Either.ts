@@ -274,7 +274,7 @@ export function getApplySemigroup<E, A>(S: Semigroup<A>): Semigroup<Either<E, A>
  */
 export function getApplyMonoid<E, A>(M: Monoid<A>): Monoid<Either<E, A>> {
   return {
-    ...getApplySemigroup(M),
+    concat: getApplySemigroup<E, A>(M).concat,
     empty: right(M.empty)
   }
 }
@@ -482,8 +482,9 @@ export function getWitherable<E>(M: Monoid<E>): Witherable2C<URI, E> {
  */
 export function getValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E> {
   return {
-    ...applicativeEither,
+    URI,
     _E: undefined as any,
+    map,
     ap: (ma) => (mab) =>
       isLeft(mab)
         ? isLeft(ma)
@@ -492,6 +493,7 @@ export function getValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C
         : isLeft(ma)
         ? ma
         : right(mab.right(ma.right)),
+    of,
     alt: (that) => (fa) => {
       if (isRight(fa)) {
         return fa

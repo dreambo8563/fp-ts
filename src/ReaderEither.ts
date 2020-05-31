@@ -329,23 +329,31 @@ export const functorReaderTask: Functor3<URI> = {
  * @since 3.0.0
  */
 export const applyReaderTask: Apply3<URI> = {
-  ...functorReaderTask,
+  URI,
+  map,
   ap
 }
+
+const of = right
 
 /**
  * @since 3.0.0
  */
 export const applicativeReaderTask: Applicative3<URI> = {
-  ...applyReaderTask,
-  of: right
+  URI,
+  map,
+  ap,
+  of
 }
 
 /**
  * @since 3.0.0
  */
 export const monadReaderTask: Monad3<URI> = {
-  ...applicativeReaderTask,
+  URI,
+  map,
+  ap,
+  of,
   chain
 }
 
@@ -362,7 +370,8 @@ export const bifunctorReaderTask: Bifunctor3<URI> = {
  * @since 3.0.0
  */
 export const altReaderTask: Alt3<URI> = {
-  ...functorReaderTask,
+  URI,
+  map,
   alt
 }
 
@@ -370,6 +379,10 @@ export const altReaderTask: Alt3<URI> = {
  * @since 3.0.0
  */
 export const monadThrowReaderTask: MonadThrow3<URI> = {
-  ...monadReaderTask,
+  URI,
+  map,
+  ap,
+  of,
+  chain,
   throwError: left
 }

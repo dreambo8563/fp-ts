@@ -113,7 +113,8 @@ export const ap: <R, A>(fa: Reader<R, A>) => <B>(fab: Reader<R, (a: A) => B>) =>
  * @since 3.0.0
  */
 export const applyReader: Apply2<URI> = {
-  ...functorReader,
+  URI,
+  map,
   ap
 }
 
@@ -141,7 +142,9 @@ export const apSecond = <R, B>(fb: Reader<R, B>) => <A>(fa: Reader<R, A>): Reade
  * @since 3.0.0
  */
 export const applicativeReader: Applicative2<URI> = {
-  ...applyReader,
+  URI,
+  map,
+  ap,
   of
 }
 
@@ -154,7 +157,10 @@ export const chain: <A, R, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) =
  * @since 3.0.0
  */
 export const monadReader: Monad2<URI> = {
-  ...applicativeReader,
+  URI,
+  map,
+  ap,
+  of,
   chain
 }
 
@@ -190,7 +196,8 @@ export const promap: <D, E, A, B>(f: (d: D) => E, g: (a: A) => B) => (fbc: Reade
  * @since 3.0.0
  */
 export const profunctorReader: Profunctor2<URI> = {
-  ...functorReader,
+  URI,
+  map,
   promap
 }
 
@@ -212,6 +219,7 @@ export const semigroupoidReader: Semigroupoid2<URI> = {
  * @since 3.0.0
  */
 export const categoryReader: Category2<URI> = {
-  ...semigroupoidReader,
+  URI,
+  pipe,
   id: () => F.identity
 }

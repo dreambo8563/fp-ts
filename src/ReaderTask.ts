@@ -222,11 +222,16 @@ export const readerTaskSeq: typeof readerTask =
   /*#__PURE__*/
   ((): typeof readerTask => {
     return {
-      ...readerTask,
+      URI,
+      map,
+      of,
       ap: (fa) => (fab) =>
         pipe(
           fab,
           chain((f) => pipe(fa, map(f)))
-        )
+        ),
+      chain,
+      fromIO,
+      fromTask
     }
   })()

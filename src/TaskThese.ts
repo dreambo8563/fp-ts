@@ -164,9 +164,14 @@ export const bifunctorTaskThese: Bifunctor2<URI> = {
  * @since 2.4.0
  */
 export function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E> & MonadTask2C<URI, E> {
+  const M = MT.getMonad(S)
   return {
     URI,
-    ...MT.getMonad(S),
+    _E: M._E,
+    map: M.map,
+    ap: M.ap,
+    of: M.of,
+    chain: M.chain,
     fromIO: rightIO,
     fromTask: rightTask
   }

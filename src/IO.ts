@@ -94,7 +94,8 @@ export const ap: <A>(fa: IO<A>) => <B>(fab: IO<(a: A) => B>) => IO<B> = (fa) => 
  * @since 3.0.0
  */
 export const applyIO: Apply1<URI> = {
-  ...functorIO,
+  URI,
+  map,
   ap
 }
 
@@ -122,7 +123,9 @@ export const apSecond = <B>(fb: IO<B>) => <A>(fa: IO<A>): IO<B> =>
  * @since 3.0.0
  */
 export const applicativeIO: Applicative1<URI> = {
-  ...applyIO,
+  URI,
+  map,
+  ap,
   of
 }
 
@@ -135,7 +138,10 @@ export const chain: <A, B>(f: (a: A) => IO<B>) => (ma: IO<A>) => IO<B> = (f) => 
  * @since 3.0.0
  */
 export const monadIO: Monad1<URI> = {
-  ...applicativeIO,
+  URI,
+  map,
+  ap,
+  of,
   chain
 }
 
@@ -164,6 +170,10 @@ export const fromIO: <A>(fa: IO<A>) => IO<A> = identity
  * @since 3.0.0
  */
 export const monadIOIO: MonadIO1<URI> = {
-  ...monadIO,
+  URI,
+  map,
+  ap,
+  of,
+  chain,
   fromIO
 }

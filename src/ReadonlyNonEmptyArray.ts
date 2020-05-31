@@ -575,6 +575,8 @@ export const extract: <A>(wa: ReadonlyNonEmptyArray<A>) => A = head
  * @since 3.0.0
  */
 export const comonadReadonlyNonEmptyArray: Comonad1<URI> = {
-  ...extendReadonlyNonEmptyArray,
+  URI,
+  map: extendReadonlyNonEmptyArray.map,
+  extend: extendReadonlyNonEmptyArray.extend,
   extract
 }

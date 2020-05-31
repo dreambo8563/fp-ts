@@ -73,7 +73,8 @@ export const ap: <A>(fa: Identity<A>) => <B>(fab: Identity<(a: A) => B>) => Iden
  * @since 3.0.0
  */
 export const applyIdentity: Apply1<URI> = {
-  ...functorIdentity,
+  URI,
+  map,
   ap
 }
 
@@ -106,7 +107,9 @@ export const of: <A>(a: A) => Identity<A> = id
  * @since 3.0.0
  */
 export const applicativeIdentity: Applicative1<URI> = {
-  ...applyIdentity,
+  URI,
+  map,
+  ap,
   of
 }
 
@@ -119,7 +122,10 @@ export const chain: <A, B>(f: (a: A) => Identity<B>) => (ma: Identity<A>) => Ide
  * @since 3.0.0
  */
 export const monadIdentity: Monad1<URI> = {
-  ...applicativeIdentity,
+  URI,
+  map,
+  ap,
+  of,
   chain
 }
 
@@ -173,7 +179,8 @@ export const alt: <A>(that: () => Identity<A>) => (fa: Identity<A>) => Identity<
  * @since 3.0.0
  */
 export const altIdentity: Alt1<URI> = {
-  ...functorIdentity,
+  URI,
+  map,
   alt
 }
 
@@ -186,7 +193,8 @@ export const extend: <A, B>(f: (wa: Identity<A>) => B) => (wa: Identity<A>) => I
  * @since 3.0.0
  */
 export const extendIdentity: Extend1<URI> = {
-  ...functorIdentity,
+  URI,
+  map,
   extend
 }
 
@@ -204,7 +212,9 @@ export const extract: <A>(wa: Identity<A>) => A = id
  * @since 3.0.0
  */
 export const comonadIdentity: Comonad1<URI> = {
-  ...extendIdentity,
+  URI,
+  map,
+  extend,
   extract
 }
 
@@ -228,8 +238,11 @@ export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F>) =>
  * @since 3.0.0
  */
 export const traversableIdentity: Traversable1<URI> = {
-  ...functorIdentity,
-  ...foldableIdentity,
+  URI,
+  map,
+  reduce,
+  foldMap,
+  reduceRight,
   traverse,
   sequence
 }

@@ -505,23 +505,31 @@ export const functorReaderTaskEither: Functor3<URI> = {
  * @since 3.0.0
  */
 export const applyReaderTaskEither: Apply3<URI> = {
-  ...functorReaderTaskEither,
+  URI,
+  map,
   ap
 }
+
+const of = right
 
 /**
  * @since 3.0.0
  */
 export const applicativeReaderTaskEither: Applicative3<URI> = {
-  ...applyReaderTaskEither,
-  of: right
+  URI,
+  map,
+  ap,
+  of
 }
 
 /**
  * @since 3.0.0
  */
 export const monadReaderTaskEither: Monad3<URI> = {
-  ...applicativeReaderTaskEither,
+  URI,
+  map,
+  ap,
+  of,
   chain
 }
 
@@ -538,7 +546,8 @@ export const bifunctorReaderTaskEither: Bifunctor3<URI> = {
  * @since 3.0.0
  */
 export const altReaderTaskEither: Alt3<URI> = {
-  ...functorReaderTaskEither,
+  URI,
+  map,
   alt
 }
 
@@ -546,7 +555,11 @@ export const altReaderTaskEither: Alt3<URI> = {
  * @since 3.0.0
  */
 export const monadIOReaderTaskEither: MonadIO3<URI> = {
-  ...monadReaderTaskEither,
+  URI,
+  map,
+  ap,
+  of,
+  chain,
   fromIO: rightIO
 }
 
@@ -554,7 +567,12 @@ export const monadIOReaderTaskEither: MonadIO3<URI> = {
  * @since 3.0.0
  */
 export const monadTaskReaderTaskEither: MonadTask3<URI> = {
-  ...monadIOReaderTaskEither,
+  URI,
+  map,
+  ap,
+  of,
+  chain,
+  fromIO: rightIO,
   fromTask: rightTask
 }
 
@@ -562,7 +580,11 @@ export const monadTaskReaderTaskEither: MonadTask3<URI> = {
  * @since 3.0.0
  */
 export const monadThrowReaderTaskEither: MonadThrow3<URI> = {
-  ...monadReaderTaskEither,
+  URI,
+  map,
+  ap,
+  of,
+  chain,
   throwError: left
 }
 

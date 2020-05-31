@@ -250,8 +250,9 @@ export function getApplicativeComposition<F, G extends URIS>(
 ): ApplicativeCompositionHKT1<F, G>
 export function getApplicativeComposition<F, G>(F: Applicative<F>, G: Applicative<G>): ApplicativeComposition<F, G>
 export function getApplicativeComposition<F, G>(F: Applicative<F>, G: Applicative<G>): ApplicativeComposition<F, G> {
+  const FG = getFunctorComposition(F, G)
   return {
-    ...getFunctorComposition(F, G),
+    map: FG.map,
     of: (a) => F.of(G.of(a)),
     ap: <A>(fga: HKT<F, HKT<G, A>>) => <B>(fgab: HKT<F, HKT<G, (a: A) => B>>): HKT<F, HKT<G, B>> =>
       pipe(

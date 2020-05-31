@@ -199,8 +199,9 @@ export function getFunctorWithIndexComposition<F, FI, G, GI>(
   F: FunctorWithIndex<F, FI>,
   G: FunctorWithIndex<G, GI>
 ): FunctorWithIndexComposition<F, FI, G, GI> {
+  const FC = getFunctorComposition(F, G)
   return {
-    ...getFunctorComposition(F, G),
+    map: FC.map,
     mapWithIndex: (f) =>
       F.mapWithIndex((fi, ga) =>
         pipe(

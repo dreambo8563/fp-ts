@@ -455,8 +455,11 @@ export function getFilterableComposition<F extends URIS, G extends URIS>(
 ): FilterableComposition11<F, G>
 export function getFilterableComposition<F, G>(F: Functor<F>, G: Filterable<G>): FilterableComposition<F, G>
 export function getFilterableComposition<F, G>(F: Functor<F>, G: Filterable<G>): FilterableComposition<F, G> {
+  const CC = getCompactableComposition(F, G)
   const FC: FilterableComposition<F, G> = {
-    ...getCompactableComposition(F, G),
+    map: CC.map,
+    compact: CC.compact,
+    separate: CC.separate,
     partitionMap: (f) => (fga) => {
       return {
         left: pipe(

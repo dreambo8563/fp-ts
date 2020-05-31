@@ -44,7 +44,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function getFunctionRing<A, B>(ring: Ring<B>): Ring<(a: A) => B>
+export declare function getFunctionRing<A, B>(R: Ring<B>): Ring<(a: A) => B>
 ```
 
 Added in v2.0.0
