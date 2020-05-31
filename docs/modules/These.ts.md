@@ -34,11 +34,14 @@ Added in v2.0.0
 - [These (type alias)](#these-type-alias)
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
+- [bifunctorThese](#bifunctorthese)
 - [bimap](#bimap)
 - [both](#both)
 - [fold](#fold)
 - [foldMap](#foldmap)
+- [foldableThese](#foldablethese)
 - [fromOptions](#fromoptions)
+- [functorThese](#functorthese)
 - [getEq](#geteq)
 - [getLeft](#getleft)
 - [getLeftOnly](#getleftonly)
@@ -60,8 +63,8 @@ Added in v2.0.0
 - [rightOrBoth](#rightorboth)
 - [sequence](#sequence)
 - [swap](#swap)
-- [these](#these)
 - [toTuple](#totuple)
+- [traversableThese](#traversablethese)
 - [traverse](#traverse)
 
 ---
@@ -110,6 +113,16 @@ export declare const URI: 'These'
 
 Added in v2.0.0
 
+# bifunctorThese
+
+**Signature**
+
+```ts
+export declare const bifunctorThese: Bifunctor2<'These'>
+```
+
+Added in v3.0.0
+
 # bimap
 
 **Signature**
@@ -154,6 +167,16 @@ export declare const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => <E>(fa
 
 Added in v2.0.0
 
+# foldableThese
+
+**Signature**
+
+```ts
+export declare const foldableThese: Foldable2<'These'>
+```
+
+Added in v3.0.0
+
 # fromOptions
 
 Takes a pair of `Option`s and attempts to create a `These` from them
@@ -177,6 +200,16 @@ assert.deepStrictEqual(fromOptions(some('a'), some(1)), some(both('a', 1)))
 ```
 
 Added in v2.0.0
+
+# functorThese
+
+**Signature**
+
+```ts
+export declare const functorThese: Functor2<'These'>
+```
+
+Added in v3.0.0
 
 # getEq
 
@@ -468,16 +501,6 @@ export declare const swap: <E, A>(fa: These<E, A>) => These<A, E>
 
 Added in v2.4.0
 
-# these
-
-**Signature**
-
-```ts
-export declare const these: Functor2<'These'> & Bifunctor2<'These'> & Foldable2<'These'> & Traversable2<'These'>
-```
-
-Added in v2.0.0
-
 # toTuple
 
 **Signature**
@@ -498,6 +521,16 @@ const f = toTuple(
 assert.deepStrictEqual(f(left('b')), ['b', 1])
 assert.deepStrictEqual(f(right(2)), ['a', 2])
 assert.deepStrictEqual(f(both('b', 2)), ['b', 2])
+```
+
+Added in v3.0.0
+
+# traversableThese
+
+**Signature**
+
+```ts
+export declare const traversableThese: Traversable2<'These'>
 ```
 
 Added in v3.0.0

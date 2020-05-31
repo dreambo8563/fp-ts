@@ -442,13 +442,38 @@ export const sequence: Traversable2<URI>['sequence'] = <F>(F: Applicative<F>) =>
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const these: Functor2<URI> & Bifunctor2<URI> & Foldable2<URI> & Traversable2<URI> = {
+export const functorThese: Functor2<URI> = {
+  URI,
+  map
+}
+
+/**
+ * @since 3.0.0
+ */
+export const bifunctorThese: Bifunctor2<URI> = {
+  URI,
+  bimap,
+  mapLeft
+}
+
+/**
+ * @since 3.0.0
+ */
+export const foldableThese: Foldable2<URI> = {
+  URI,
+  reduce,
+  foldMap,
+  reduceRight
+}
+
+/**
+ * @since 3.0.0
+ */
+export const traversableThese: Traversable2<URI> = {
   URI,
   map,
-  bimap,
-  mapLeft,
   reduce,
   foldMap,
   reduceRight,
