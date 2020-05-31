@@ -9,17 +9,13 @@ import { Monoid } from './Monoid'
 import { getSemigroup as getReaderSemigroup, Reader } from './Reader'
 import { getReaderM } from './ReaderT'
 import { Semigroup } from './Semigroup'
-import * as TA from './Task'
+import * as T from './Task'
 
-import Task = TA.Task
+import Task = T.Task
 
-const T = /*#__PURE__*/ getReaderM(TA.monadTask)
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly ReaderTask: ReaderTask<E, A>
-  }
-}
+const MT =
+  /*#__PURE__*/
+  getReaderM(T.monadTask)
 
 /**
  * @since 2.3.0
@@ -30,6 +26,12 @@ export const URI = 'ReaderTask'
  * @since 2.3.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind2<E, A> {
+    readonly [URI]: ReaderTask<E, A>
+  }
+}
 
 /**
  * @since 2.3.0
@@ -48,30 +50,30 @@ export function run<R, A>(ma: ReaderTask<R, A>, r: R): Promise<A> {
 /**
  * @since 2.3.0
  */
-export const fromTask: <R, A>(ma: Task<A>) => ReaderTask<R, A> = T.fromM
+export const fromTask: <R, A>(ma: Task<A>) => ReaderTask<R, A> = MT.fromM
 
 /**
  * @since 2.3.0
  */
-export const fromReader: <R, A = never>(ma: Reader<R, A>) => ReaderTask<R, A> = T.fromReader
+export const fromReader: <R, A = never>(ma: Reader<R, A>) => ReaderTask<R, A> = MT.fromReader
 
 /**
  * @since 2.3.0
  */
 export function fromIO<R, A>(ma: IO<A>): ReaderTask<R, A> {
-  return fromTask(TA.fromIO(ma))
+  return fromTask(T.fromIO(ma))
 }
 
 /**
  * @since 2.3.0
  */
-export const of: <R, A>(a: A) => ReaderTask<R, A> = T.of
+export const of: <R, A>(a: A) => ReaderTask<R, A> = MT.of
 
 /**
  * @since 2.3.0
  */
 export function getSemigroup<R, A>(S: Semigroup<A>): Semigroup<ReaderTask<R, A>> {
-  return getReaderSemigroup(TA.getSemigroup<A>(S))
+  return getReaderSemigroup(T.getSemigroup<A>(S))
 }
 
 /**
@@ -87,17 +89,17 @@ export function getMonoid<R, A>(M: Monoid<A>): Monoid<ReaderTask<R, A>> {
 /**
  * @since 2.3.0
  */
-export const ask: <R>() => ReaderTask<R, R> = T.ask
+export const ask: <R>() => ReaderTask<R, R> = MT.ask
 
 /**
  * @since 2.3.0
  */
-export const asks: <R, A = never>(f: (r: R) => A) => ReaderTask<R, A> = T.asks
+export const asks: <R, A = never>(f: (r: R) => A) => ReaderTask<R, A> = MT.asks
 
 /**
  * @since 2.3.0
  */
-export const local: <Q, R>(f: (f: Q) => R) => <A>(ma: ReaderTask<R, A>) => ReaderTask<Q, A> = T.local
+export const local: <Q, R>(f: (f: Q) => R) => <A>(ma: ReaderTask<R, A>) => ReaderTask<Q, A> = MT.local
 
 /**
  * @since 2.4.0
@@ -136,7 +138,7 @@ export function chainTaskK<A, B>(f: (a: A) => Task<B>): <R>(ma: ReaderTask<R, A>
 /**
  * @since 2.3.0
  */
-export const ap: <R, A>(fa: ReaderTask<R, A>) => <B>(fab: ReaderTask<R, (a: A) => B>) => ReaderTask<R, B> = T.ap
+export const ap: <R, A>(fa: ReaderTask<R, A>) => <B>(fab: ReaderTask<R, (a: A) => B>) => ReaderTask<R, B> = MT.ap
 
 /**
  * @since 2.3.0
@@ -161,7 +163,7 @@ export const apSecond = <R, B>(fb: ReaderTask<R, B>) => <A>(fa: ReaderTask<R, A>
 /**
  * @since 2.3.0
  */
-export const chain: <A, R, B>(f: (a: A) => ReaderTask<R, B>) => (ma: ReaderTask<R, A>) => ReaderTask<R, B> = T.chain
+export const chain: <A, R, B>(f: (a: A) => ReaderTask<R, B>) => (ma: ReaderTask<R, A>) => ReaderTask<R, B> = MT.chain
 
 /**
  * @since 2.3.0
@@ -182,7 +184,7 @@ export const flatten: <R, A>(mma: ReaderTask<R, ReaderTask<R, A>>) => ReaderTask
 /**
  * @since 2.3.0
  */
-export const map: <A, B>(f: (a: A) => B) => <R>(fa: ReaderTask<R, A>) => ReaderTask<R, B> = T.map
+export const map: <A, B>(f: (a: A) => B) => <R>(fa: ReaderTask<R, A>) => ReaderTask<R, B> = MT.map
 
 // -------------------------------------------------------------------------------------
 // instances

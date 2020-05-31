@@ -23,12 +23,6 @@ import { Unfoldable, Unfoldable1 } from './Unfoldable'
 import { Witherable2C } from './Witherable'
 import { FunctorWithIndex2C } from './FunctorWithIndex'
 
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly ReadonlyMap: ReadonlyMap<E, A>
-  }
-}
-
 /**
  * @since 2.5.0
  */
@@ -38,6 +32,12 @@ export const URI = 'ReadonlyMap'
  * @since 2.5.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind2<E, A> {
+    readonly [URI]: ReadonlyMap<E, A>
+  }
+}
 
 /**
  * @since 2.5.0
@@ -553,8 +553,9 @@ export const mapWithIndex = <K, A, B>(f: (k: K, a: A) => B) => (fa: ReadonlyMap<
  */
 export function getFunctorWithIndex<K = never>(): FunctorWithIndex2C<URI, K, K> {
   return {
-    ...functorReadonlyMap,
+    URI,
     _E: undefined as any,
+    map,
     mapWithIndex
   }
 }
@@ -642,8 +643,10 @@ export const partitionMap: Filterable2<URI>['partitionMap'] = (f) => partitionMa
  * @since 2.5.0
  */
 export const filterableReadonlyMap: Filterable2<URI> = {
-  ...functorReadonlyMap,
-  ...compactableReadonlyMap,
+  URI,
+  map,
+  compact,
+  separate,
   filter,
   filterMap,
   partition,
@@ -710,7 +713,7 @@ export function getFoldableWithIndex<K>(O: Ord<K>): FoldableWithIndex2C<URI, K, 
   }
 
   return {
-    ...filterableReadonlyMap,
+    URI,
     _E: undefined as any,
     reduce: (b, f) => reduceWithIndex(b, (_, b, a) => f(b, a)),
     foldMap: (M) => {
@@ -729,8 +732,15 @@ export function getFoldableWithIndex<K>(O: Ord<K>): FoldableWithIndex2C<URI, K, 
  */
 export function getFilterableWithIndex<K = never>(): FilterableWithIndex2C<URI, K, K> {
   return {
-    ...filterableReadonlyMap,
+    URI,
     _E: undefined as any,
+    map,
+    compact,
+    separate,
+    filter,
+    filterMap,
+    partition,
+    partitionMap,
     mapWithIndex,
     partitionMapWithIndex: partitionMapWithIndex_,
     partitionWithIndex: partitionWithIndex_,
@@ -755,10 +765,23 @@ const sequence_ = <F>(F: Applicative<F>): (<K, A>(ta: ReadonlyMap<K, HKT<F, A>>)
  * @since 2.5.0
  */
 export function getWitherable<K>(O: Ord<K>): Witherable2C<URI, K> & TraversableWithIndex2C<URI, K, K> {
+  const F = getFoldableWithIndex<K>(O)
   return {
-    ...filterableReadonlyMap,
-    ...getFoldableWithIndex<K>(O),
+    URI,
     _E: undefined as any,
+    map,
+    compact,
+    separate,
+    filter,
+    filterMap,
+    partition,
+    partitionMap,
+    reduce: F.reduce,
+    foldMap: F.foldMap,
+    reduceRight: F.reduceRight,
+    reduceWithIndex: F.reduceWithIndex,
+    foldMapWithIndex: F.foldMapWithIndex,
+    reduceRightWithIndex: F.reduceRightWithIndex,
     traverse: traverse_,
     sequence: sequence_,
     mapWithIndex,

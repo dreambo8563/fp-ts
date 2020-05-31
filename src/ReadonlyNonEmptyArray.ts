@@ -25,12 +25,6 @@ import { Apply1 } from './Apply'
 import { Applicative1 } from './Applicative'
 import { Extend1 } from './Extend'
 
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly ReadonlyNonEmptyArray: ReadonlyNonEmptyArray<A>
-  }
-}
-
 /**
  * @since 2.5.0
  */
@@ -40,6 +34,12 @@ export const URI = 'ReadonlyNonEmptyArray'
  * @since 2.5.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind<A> {
+    readonly [URI]: ReadonlyNonEmptyArray<A>
+  }
+}
 
 /**
  * @since 2.5.0

@@ -32,12 +32,6 @@ const MT =
   /*#__PURE__*/
   getEitherM(T.monadTask)
 
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly TaskEither: TaskEither<E, A>
-  }
-}
-
 /**
  * @since 2.0.0
  */
@@ -47,6 +41,12 @@ export const URI = 'TaskEither'
  * @since 2.0.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind2<E, A> {
+    readonly [URI]: TaskEither<E, A>
+  }
+}
 
 /**
  * @since 2.0.0

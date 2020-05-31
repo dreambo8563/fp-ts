@@ -27,13 +27,9 @@ import { getValidationM } from './ValidationT'
 
 import TaskEither = TE.TaskEither
 
-const T = /*#__PURE__*/ getReaderM(TE.monadTaskEither)
-
-declare module './HKT' {
-  interface URItoKind3<R, E, A> {
-    readonly ReaderTaskEither: ReaderTaskEither<R, E, A>
-  }
-}
+const MT =
+  /*#__PURE__*/
+  getReaderM(TE.monadTaskEither)
 
 /**
  * @since 2.0.0
@@ -44,6 +40,12 @@ export const URI = 'ReaderTaskEither'
  * @since 2.0.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind3<R, E, A> {
+    readonly [URI]: ReaderTaskEither<R, E, A>
+  }
+}
 
 /**
  * @since 2.0.0
@@ -69,7 +71,7 @@ export function left<R, E = never, A = never>(e: E): ReaderTaskEither<R, E, A> {
 /**
  * @since 2.0.0
  */
-export const right: <R, E = never, A = never>(a: A) => ReaderTaskEither<R, E, A> = T.of
+export const right: <R, E = never, A = never>(a: A) => ReaderTaskEither<R, E, A> = MT.of
 
 /**
  * @since 2.0.0
@@ -88,12 +90,12 @@ export function leftTask<R, E = never, A = never>(me: Task<E>): ReaderTaskEither
 /**
  * @since 2.0.0
  */
-export const fromTaskEither: <R, E, A>(ma: TaskEither<E, A>) => ReaderTaskEither<R, E, A> = T.fromM
+export const fromTaskEither: <R, E, A>(ma: TaskEither<E, A>) => ReaderTaskEither<R, E, A> = MT.fromM
 
 /**
  * @since 2.0.0
  */
-export const rightReader: <R, E = never, A = never>(ma: Reader<R, A>) => ReaderTaskEither<R, E, A> = T.fromReader
+export const rightReader: <R, E = never, A = never>(ma: Reader<R, A>) => ReaderTaskEither<R, E, A> = MT.fromReader
 
 /**
  * @since 2.5.0
@@ -226,18 +228,18 @@ export function getApplyMonoid<R, E, A>(M: Monoid<A>): Monoid<ReaderTaskEither<R
 /**
  * @since 2.0.0
  */
-export const ask: <R, E = never>() => ReaderTaskEither<R, E, R> = T.ask
+export const ask: <R, E = never>() => ReaderTaskEither<R, E, R> = MT.ask
 
 /**
  * @since 2.0.0
  */
-export const asks: <R, E = never, A = never>(f: (r: R) => A) => ReaderTaskEither<R, E, A> = T.asks
+export const asks: <R, E = never, A = never>(f: (r: R) => A) => ReaderTaskEither<R, E, A> = MT.asks
 
 /**
  * @since 2.0.0
  */
 export const local: <Q, R>(f: (f: Q) => R) => <E, A>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<Q, E, A> =
-  T.local
+  MT.local
 
 /**
  * Make sure that a resource is cleaned up in the event of an exception (*). The release action is called regardless of
@@ -264,11 +266,14 @@ export function bracket<R, E, A, B>(
  * @since 2.3.0
  */
 export function getReaderTaskValidation<E>(S: Semigroup<E>): Applicative3C<URI, E> & Alt3C<URI, E> {
-  const T = getValidationM(S, monadReaderTask)
+  const V = getValidationM(S, monadReaderTask)
   return {
     URI,
     _E: undefined as any,
-    ...T
+    map: V.map,
+    ap: V.ap,
+    of: V.of,
+    alt: V.alt
   }
 }
 
@@ -346,7 +351,7 @@ export const alt: <R, E, A>(
  */
 export const ap: <R, E, A>(
   fa: ReaderTaskEither<R, E, A>
-) => <B>(fab: ReaderTaskEither<R, E, (a: A) => B>) => ReaderTaskEither<R, E, B> = T.ap
+) => <B>(fab: ReaderTaskEither<R, E, (a: A) => B>) => ReaderTaskEither<R, E, B> = MT.ap
 
 /**
  * @since 2.0.0
@@ -387,7 +392,7 @@ export const bimap: <E, G, A, B>(
  */
 export const chain: <R, E, A, B>(
   f: (a: A) => ReaderTaskEither<R, E, B>
-) => (ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> = T.chain
+) => (ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> = MT.chain
 
 /**
  * @since 2.0.0
@@ -412,7 +417,7 @@ export const flatten: <R, E, A>(
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> = T.map
+export const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> = MT.map
 
 /**
  * @since 2.0.0

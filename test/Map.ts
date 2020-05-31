@@ -623,7 +623,6 @@ describe('Map', () => {
   describe('map_', () => {
     describe('functor', () => {
       it('map', () => {
-        const map = M.map_.map
         const d1 = new Map<string, number>([
           ['k1', 1],
           ['k2', 2]
@@ -633,19 +632,18 @@ describe('Map', () => {
           ['k2', 4]
         ])
         const double = (n: number): number => n * 2
-        assert.deepStrictEqual(pipe(d1, map(double)), expected)
+        assert.deepStrictEqual(pipe(d1, M.map(double)), expected)
       })
     })
 
     describe('filterable', () => {
       it('compact', () => {
-        const compact = M.map_.compact
         const fooBar = new Map<string, O.Option<number>>([
           ['foo', O.none],
           ['bar', O.some(123)]
         ])
         const bar = new Map<string, number>([['bar', 123]])
-        assert.deepStrictEqual(compact(fooBar), bar)
+        assert.deepStrictEqual(M.compact(fooBar), bar)
       })
 
       it('partitionMap', () => {

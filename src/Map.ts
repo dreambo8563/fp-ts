@@ -1,7 +1,7 @@
 /**
  * @since 2.0.0
  */
-import { Separated } from './Compactable'
+import { Separated, Compactable2 } from './Compactable'
 import { Either } from './Either'
 import { Eq } from './Eq'
 import { Filterable2 } from './Filterable'
@@ -19,14 +19,9 @@ import { Show } from './Show'
 import { TraversableWithIndex2C } from './TraversableWithIndex'
 import { Unfoldable, Unfoldable1 } from './Unfoldable'
 import { Witherable2C } from './Witherable'
+import { Functor2 } from './Functor'
 
 /* tslint:disable:readonly-array */
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly Map: Map<E, A>
-  }
-}
 
 /**
  * @since 2.0.0
@@ -37,6 +32,12 @@ export const URI = 'Map'
  * @since 2.0.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind2<E, A> {
+    readonly [URI]: Map<E, A>
+  }
+}
 
 /**
  * @since 2.0.0
@@ -281,13 +282,16 @@ export const getWitherable: <K>(
 ) => Witherable2C<URI, K> & TraversableWithIndex2C<URI, K, K> = RM.getWitherable as any
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const map_: Filterable2<URI> =
-  /*#__PURE__*/
-  (() => {
-    return {
-      ...(RM.filterableReadonlyMap as any),
-      URI
-    }
-  })()
+export const functorMap: Functor2<URI> = RM.functorReadonlyMap as any
+
+/**
+ * @since 3.0.0
+ */
+export const compactableMap: Compactable2<URI> = RM.compactableReadonlyMap as any
+
+/**
+ * @since 2.5.0
+ */
+export const filterableMap: Filterable2<URI> = RM.filterableReadonlyMap as any

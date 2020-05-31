@@ -24,23 +24,23 @@ import { Witherable1 } from './Witherable'
 /**
  * @since 2.5.0
  */
-export type ReadonlyRecord<K extends string, T> = Readonly<Record<K, T>>
-
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly ReadonlyRecord: ReadonlyRecord<string, A>
-  }
-}
-
-/**
- * @since 2.5.0
- */
 export const URI = 'ReadonlyRecord'
 
 /**
  * @since 2.5.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind<A> {
+    readonly [URI]: ReadonlyRecord<string, A>
+  }
+}
+
+/**
+ * @since 2.5.0
+ */
+export type ReadonlyRecord<K extends string, T> = Readonly<Record<K, T>>
 
 /**
  * @since 2.5.0

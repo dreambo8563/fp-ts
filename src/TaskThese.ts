@@ -15,7 +15,9 @@ import { getTheseM } from './TheseT'
 import These = TH.These
 import Task = T.Task
 
-const MT = /*#__PURE__*/ getTheseM(T.monadTask)
+const MT =
+  /*#__PURE__*/
+  getTheseM(T.monadTask)
 
 /**
  * @since 2.4.0

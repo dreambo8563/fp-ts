@@ -210,7 +210,7 @@ Added in v2.3.0
 **Signature**
 
 ```ts
-export declare const fromTask: <R, A>(ma: TA.Task<A>) => ReaderTask<R, A>
+export declare const fromTask: <R, A>(ma: T.Task<A>) => ReaderTask<R, A>
 ```
 
 Added in v2.3.0

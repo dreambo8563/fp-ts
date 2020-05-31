@@ -24,13 +24,9 @@ import { getValidationM } from './ValidationT'
 
 import Either = E.Either
 
-const T = /*#__PURE__*/ getEitherM(monadIO)
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly IOEither: IOEither<E, A>
-  }
-}
+const MT =
+  /*#__PURE__*/
+  getEitherM(monadIO)
 
 /**
  * @since 2.0.0
@@ -42,6 +38,12 @@ export const URI = 'IOEither'
  */
 export type URI = typeof URI
 
+declare module './HKT' {
+  interface URItoKind2<E, A> {
+    readonly [URI]: IOEither<E, A>
+  }
+}
+
 /**
  * @since 2.0.0
  */
@@ -50,33 +52,33 @@ export interface IOEither<E, A> extends IO<Either<E, A>> {}
 /**
  * @since 2.0.0
  */
-export const left: <E = never, A = never>(l: E) => IOEither<E, A> = T.left
+export const left: <E = never, A = never>(l: E) => IOEither<E, A> = MT.left
 
 /**
  * @since 2.0.0
  */
-export const right: <E = never, A = never>(a: A) => IOEither<E, A> = T.of
+export const right: <E = never, A = never>(a: A) => IOEither<E, A> = MT.of
 
 /**
  * @since 2.0.0
  */
-export const rightIO: <E = never, A = never>(ma: IO<A>) => IOEither<E, A> = T.rightM
+export const rightIO: <E = never, A = never>(ma: IO<A>) => IOEither<E, A> = MT.rightM
 
 /**
  * @since 2.0.0
  */
-export const leftIO: <E = never, A = never>(me: IO<E>) => IOEither<E, A> = T.leftM
+export const leftIO: <E = never, A = never>(me: IO<E>) => IOEither<E, A> = MT.leftM
 
 /**
  * @since 2.0.0
  */
 export const fold: <E, A, B>(onLeft: (e: E) => IO<B>, onRight: (a: A) => IO<B>) => (ma: IOEither<E, A>) => IO<B> =
-  T.fold
+  MT.fold
 
 /**
  * @since 2.0.0
  */
-export const getOrElse: <E, A>(onLeft: (e: E) => IO<A>) => (ma: IOEither<E, A>) => IO<A> = T.getOrElse
+export const getOrElse: <E, A>(onLeft: (e: E) => IO<A>) => (ma: IOEither<E, A>) => IO<A> = MT.getOrElse
 
 /**
  * @since 2.6.0
@@ -86,12 +88,12 @@ export const getOrElseW: <E, B>(onLeft: (e: E) => IO<B>) => <A>(ma: IOEither<E, 
 /**
  * @since 2.0.0
  */
-export const orElse: <E, A, M>(onLeft: (e: E) => IOEither<M, A>) => (ma: IOEither<E, A>) => IOEither<M, A> = T.orElse
+export const orElse: <E, A, M>(onLeft: (e: E) => IOEither<M, A>) => (ma: IOEither<E, A>) => IOEither<M, A> = MT.orElse
 
 /**
  * @since 2.0.0
  */
-export const swap: <E, A>(ma: IOEither<E, A>) => IOEither<A, E> = T.swap
+export const swap: <E, A>(ma: IOEither<E, A>) => IOEither<A, E> = MT.swap
 
 /**
  * Semigroup returning the left-most non-`Left` value. If both operands are `Right`s then the inner values are
@@ -153,7 +155,7 @@ export function bracket<E, A, B>(
         chain((e) =>
           pipe(
             release(a, e),
-            chain(() => (E.isLeft(e) ? T.left(e.left) : T.of(e.right)))
+            chain(() => (E.isLeft(e) ? MT.left(e.left) : MT.of(e.right)))
           )
         )
       )
@@ -165,11 +167,14 @@ export function bracket<E, A, B>(
  * @since 3.0.0
  */
 export function getIOValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E> {
-  const T = getValidationM(S, monadIO)
+  const V = getValidationM(S, monadIO)
   return {
     URI,
     _E: undefined as any,
-    ...T
+    map: V.map,
+    ap: V.ap,
+    of: V.of,
+    alt: V.alt
   }
 }
 
@@ -245,7 +250,7 @@ export const fromEither: <E, A>(ma: E.Either<E, A>) => IOEither<E, A> = (ma) =>
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: IOEither<E, A>) => IOEither<E, B> = T.map
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: IOEither<E, A>) => IOEither<E, B> = MT.map
 
 /**
  * @since 3.0.0
@@ -258,7 +263,7 @@ export const functorIOEither: Functor2<URI> = {
 /**
  * @since 2.0.0
  */
-export const ap: <E, A>(fa: IOEither<E, A>) => <B>(fab: IOEither<E, (a: A) => B>) => IOEither<E, B> = T.ap
+export const ap: <E, A>(fa: IOEither<E, A>) => <B>(fab: IOEither<E, (a: A) => B>) => IOEither<E, B> = MT.ap
 
 /**
  * @since 3.0.0
@@ -304,7 +309,7 @@ export const applicativeIOEither: Applicative2<URI> = {
 /**
  * @since 2.0.0
  */
-export const chain: <E, A, B>(f: (a: A) => IOEither<E, B>) => (ma: IOEither<E, A>) => IOEither<E, B> = T.chain
+export const chain: <E, A, B>(f: (a: A) => IOEither<E, B>) => (ma: IOEither<E, A>) => IOEither<E, B> = MT.chain
 
 /**
  * @since 3.0.0
@@ -347,12 +352,12 @@ export const flatten: <E, A>(mma: IOEither<E, IOEither<E, A>>) => IOEither<E, A>
 /**
  * @since 2.0.0
  */
-export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: IOEither<E, A>) => IOEither<G, B> = T.bimap
+export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: IOEither<E, A>) => IOEither<G, B> = MT.bimap
 
 /**
  * @since 2.0.0
  */
-export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: IOEither<E, A>) => IOEither<G, A> = T.mapLeft
+export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: IOEither<E, A>) => IOEither<G, A> = MT.mapLeft
 
 /**
  * @since 3.0.0
@@ -366,7 +371,7 @@ export const bifunctorIOEither: Bifunctor2<URI> = {
 /**
  * @since 2.0.0
  */
-export const alt: <E, A>(that: () => IOEither<E, A>) => (fa: IOEither<E, A>) => IOEither<E, A> = T.alt
+export const alt: <E, A>(that: () => IOEither<E, A>) => (fa: IOEither<E, A>) => IOEither<E, A> = MT.alt
 
 /**
  * @since 3.0.0

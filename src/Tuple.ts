@@ -17,12 +17,6 @@ import { Extend2 } from './Extend'
 
 // tslint:disable:readonly-array
 
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly Tuple: [A, E]
-  }
-}
-
 /**
  * @since 2.0.0
  */
@@ -32,6 +26,12 @@ export const URI = 'Tuple'
  * @since 2.0.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind2<E, A> {
+    readonly [URI]: [A, E]
+  }
+}
 
 /**
  * @since 2.0.0

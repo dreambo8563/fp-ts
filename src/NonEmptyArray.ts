@@ -25,12 +25,6 @@ import { TraversableWithIndex1 } from './TraversableWithIndex'
 
 /* tslint:disable:readonly-array */
 
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly NonEmptyArray: NonEmptyArray<A>
-  }
-}
-
 /**
  * @since 2.0.0
  */
@@ -40,6 +34,12 @@ export const URI = 'NonEmptyArray'
  * @since 2.0.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind<A> {
+    readonly [URI]: NonEmptyArray<A>
+  }
+}
 
 /* tslint:disable:readonly-keyword */
 /**

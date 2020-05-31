@@ -16,12 +16,15 @@ Added in v2.0.0
 - [URI](#uri)
 - [collect](#collect)
 - [compact](#compact)
+- [compactableMap](#compactablemap)
 - [deleteAt](#deleteat)
 - [elem](#elem)
 - [empty](#empty)
 - [filter](#filter)
 - [filterMap](#filtermap)
+- [filterableMap](#filterablemap)
 - [fromFoldable](#fromfoldable)
+- [functorMap](#functormap)
 - [getEq](#geteq)
 - [getFilterableWithIndex](#getfilterablewithindex)
 - [getMonoid](#getmonoid)
@@ -34,7 +37,6 @@ Added in v2.0.0
 - [lookup](#lookup)
 - [lookupWithKey](#lookupwithkey)
 - [map](#map)
-- [map\_](#map_)
 - [member](#member)
 - [modifyAt](#modifyat)
 - [partition](#partition)
@@ -89,6 +91,16 @@ export declare const compact: <K, A>(fa: Map<K, Option<A>>) => Map<K, A>
 ```
 
 Added in v2.0.0
+
+# compactableMap
+
+**Signature**
+
+```ts
+export declare const compactableMap: Compactable2<'Map'>
+```
+
+Added in v3.0.0
 
 # deleteAt
 
@@ -147,6 +159,16 @@ export declare const filterMap: <A, B>(f: (a: A) => Option<B>) => <K>(fa: Map<K,
 
 Added in v2.0.0
 
+# filterableMap
+
+**Signature**
+
+```ts
+export declare const filterableMap: Filterable2<'Map'>
+```
+
+Added in v2.5.0
+
 # fromFoldable
 
 Create a map from a foldable collection of key/value pairs, using the
@@ -174,6 +196,16 @@ export declare function fromFoldable<F, K, A>(E: Eq<K>, M: Magma<A>, F: Foldable
 ```
 
 Added in v2.0.0
+
+# functorMap
+
+**Signature**
+
+```ts
+export declare const functorMap: Functor2<'Map'>
+```
+
+Added in v3.0.0
 
 # getEq
 
@@ -306,16 +338,6 @@ Added in v2.0.0
 
 ```ts
 export declare const map: <A, B>(f: (a: A) => B) => <E>(fa: Map<E, A>) => Map<E, B>
-```
-
-Added in v2.0.0
-
-# map\_
-
-**Signature**
-
-```ts
-export declare const map_: Filterable2<'Map'>
 ```
 
 Added in v2.0.0

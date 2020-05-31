@@ -7,12 +7,6 @@ import { Functor, Functor1, Functor2, Functor2C, Functor3, Functor3C } from './F
 import { HKT, Kind, Kind2, Kind3, URIS, URIS2, URIS3 } from './HKT'
 import { Extend2 } from './Extend'
 
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly Store: Store<E, A>
-  }
-}
-
 /**
  * @since 2.0.0
  */
@@ -22,6 +16,12 @@ export const URI = 'Store'
  * @since 2.0.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind2<E, A> {
+    readonly [URI]: Store<E, A>
+  }
+}
 
 /**
  * @since 2.0.0

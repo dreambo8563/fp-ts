@@ -33,12 +33,6 @@ import { Apply1 } from './Apply'
 import { Foldable1 } from './Foldable'
 import { Alt1 } from './Alt'
 
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly ReadonlyArray: ReadonlyArray<A>
-  }
-}
-
 /**
  * @since 2.5.0
  */
@@ -48,6 +42,12 @@ export const URI = 'ReadonlyArray'
  * @since 2.5.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind<A> {
+    readonly [URI]: ReadonlyArray<A>
+  }
+}
 
 /**
  * @since 2.5.0

@@ -25,13 +25,9 @@ import { MonadIO4 } from './MonadIO'
 
 import ReaderTaskEither = RTE.ReaderTaskEither
 
-const T = /*#__PURE__*/ getStateM(RTE.monadReaderTaskEither)
-
-declare module './HKT' {
-  interface URItoKind4<S, R, E, A> {
-    readonly StateReaderTaskEither: StateReaderTaskEither<S, R, E, A>
-  }
-}
+const MT =
+  /*#__PURE__*/
+  getStateM(RTE.monadReaderTaskEither)
 
 /**
  * @since 2.0.0
@@ -42,6 +38,12 @@ export const URI = 'StateReaderTaskEither'
  * @since 2.0.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind4<S, R, E, A> {
+    readonly [URI]: StateReaderTaskEither<S, R, E, A>
+  }
+}
 
 /* tslint:disable:readonly-array */
 /**
@@ -67,7 +69,7 @@ export function run<S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S, r: 
  * @since 2.0.0
  */
 export const evalState: <S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S) => ReaderTaskEither<R, E, A> =
-  T.evalState
+  MT.evalState
 
 /**
  * Run a computation in the `StateReaderTaskEither` monad discarding the result
@@ -75,7 +77,7 @@ export const evalState: <S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S
  * @since 2.0.0
  */
 export const execState: <S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S) => ReaderTaskEither<R, E, S> =
-  T.execState
+  MT.execState
 
 /**
  * @since 2.0.0
@@ -87,7 +89,7 @@ export function left<S, R, E = never, A = never>(e: E): StateReaderTaskEither<S,
 /**
  * @since 2.0.0
  */
-export const right: <S, R, E = never, A = never>(a: A) => StateReaderTaskEither<S, R, E, A> = T.of
+export const right: <S, R, E = never, A = never>(a: A) => StateReaderTaskEither<S, R, E, A> = MT.of
 
 /**
  * @since 2.0.0
@@ -156,7 +158,7 @@ export function leftIO<S, R, E = never, A = never>(me: IO<E>): StateReaderTaskEi
  * @since 2.0.0
  */
 export const rightState: <S, R, E = never, A = never>(ma: State<S, A>) => StateReaderTaskEither<S, R, E, A> =
-  T.fromState
+  MT.fromState
 
 /**
  * @since 2.0.0
@@ -169,35 +171,35 @@ export function leftState<S, R, E = never, A = never>(me: State<S, E>): StateRea
  * @since 2.0.0
  */
 export const fromReaderTaskEither: <S, R, E, A>(ma: ReaderTaskEither<R, E, A>) => StateReaderTaskEither<S, R, E, A> =
-  T.fromM
+  MT.fromM
 
 /**
  * Get the current state
  *
  * @since 2.0.0
  */
-export const get: <S, R, E = never>() => StateReaderTaskEither<S, R, E, S> = T.get
+export const get: <S, R, E = never>() => StateReaderTaskEither<S, R, E, S> = MT.get
 
 /**
  * Set the state
  *
  * @since 2.0.0
  */
-export const put: <S, R, E = never>(s: S) => StateReaderTaskEither<S, R, E, void> = T.put
+export const put: <S, R, E = never>(s: S) => StateReaderTaskEither<S, R, E, void> = MT.put
 
 /**
  * Modify the state by applying a function to the current state
  *
  * @since 2.0.0
  */
-export const modify: <S, R, E = never>(f: (s: S) => S) => StateReaderTaskEither<S, R, E, void> = T.modify
+export const modify: <S, R, E = never>(f: (s: S) => S) => StateReaderTaskEither<S, R, E, void> = MT.modify
 
 /**
  * Get a value which depends on the current state
  *
  * @since 2.0.0
  */
-export const gets: <S, R, E = never, A = never>(f: (s: S) => A) => StateReaderTaskEither<S, R, E, A> = T.gets
+export const gets: <S, R, E = never, A = never>(f: (s: S) => A) => StateReaderTaskEither<S, R, E, A> = MT.gets
 
 /**
  * @since 2.4.0
@@ -291,7 +293,7 @@ export const alt: <S, R, E, A>(
  */
 export const ap: <S, R, E, A>(
   fa: StateReaderTaskEither<S, R, E, A>
-) => <B>(fab: StateReaderTaskEither<S, R, E, (a: A) => B>) => StateReaderTaskEither<S, R, E, B> = T.ap
+) => <B>(fab: StateReaderTaskEither<S, R, E, (a: A) => B>) => StateReaderTaskEither<S, R, E, B> = MT.ap
 
 /**
  * @since 2.0.0
@@ -334,7 +336,7 @@ export const bimap: <E, G, A, B>(
  */
 export const chain: <S, R, E, A, B>(
   f: (a: A) => StateReaderTaskEither<S, R, E, B>
-) => (ma: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> = T.chain
+) => (ma: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> = MT.chain
 
 /**
  * @since 2.0.0
@@ -398,7 +400,7 @@ export const flatten: <S, R, E, A>(
  */
 export const map: <A, B>(
   f: (a: A) => B
-) => <S, R, E>(fa: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> = T.map
+) => <S, R, E>(fa: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> = MT.map
 
 /**
  * @since 2.6.2
