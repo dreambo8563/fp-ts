@@ -25,26 +25,33 @@ Added in v2.0.0
 - [ap](#ap)
 - [apFirst](#apfirst)
 - [apSecond](#apsecond)
+- [applicativeTree](#applicativetree)
+- [applyTree](#applytree)
 - [chain](#chain)
 - [chainFirst](#chainfirst)
+- [comonadTree](#comonadtree)
 - [drawForest](#drawforest)
 - [drawTree](#drawtree)
 - [duplicate](#duplicate)
 - [elem](#elem)
 - [extend](#extend)
+- [extendTree](#extendtree)
 - [extract](#extract)
 - [flatten](#flatten)
 - [fold](#fold)
 - [foldMap](#foldmap)
+- [foldableTree](#foldabletree)
+- [functorTree](#functortree)
 - [getEq](#geteq)
 - [getShow](#getshow)
 - [make](#make)
 - [map](#map)
+- [monadTree](#monadtree)
 - [reduce](#reduce)
 - [reduceRight](#reduceright)
 - [sequence](#sequence)
+- [traversableTree](#traversabletree)
 - [traverse](#traverse)
-- [tree](#tree)
 - [unfoldForest](#unfoldforest)
 - [unfoldForestM](#unfoldforestm)
 - [unfoldTree](#unfoldtree)
@@ -125,6 +132,26 @@ export declare const apSecond: <B>(fb: Tree<B>) => <A>(fa: Tree<A>) => Tree<B>
 
 Added in v2.0.0
 
+# applicativeTree
+
+**Signature**
+
+```ts
+export declare const applicativeTree: Applicative1<'Tree'>
+```
+
+Added in v3.0.0
+
+# applyTree
+
+**Signature**
+
+```ts
+export declare const applyTree: Apply1<'Tree'>
+```
+
+Added in v3.0.0
+
 # chain
 
 **Signature**
@@ -144,6 +171,16 @@ export declare const chainFirst: <A, B>(f: (a: A) => Tree<B>) => (ma: Tree<A>) =
 ```
 
 Added in v2.0.0
+
+# comonadTree
+
+**Signature**
+
+```ts
+export declare const comonadTree: Comonad1<'Tree'>
+```
+
+Added in v3.0.0
 
 # drawForest
 
@@ -170,9 +207,9 @@ export declare function drawTree(tree: Tree<string>): string
 **Example**
 
 ```ts
-import { make, drawTree, tree } from 'fp-ts/lib/Tree'
+import { make, drawTree } from 'fp-ts/lib/Tree'
 
-const fa = make('a', [tree.of('b'), tree.of('c'), make('d', [tree.of('e'), tree.of('f')])])
+const fa = make('a', [make('b'), make('c'), make('d', [make('e'), make('f')])])
 
 assert.strictEqual(
   drawTree(fa),
@@ -216,6 +253,16 @@ export declare const extend: <A, B>(f: (wa: Tree<A>) => B) => (wa: Tree<A>) => T
 ```
 
 Added in v2.0.0
+
+# extendTree
+
+**Signature**
+
+```ts
+export declare const extendTree: Extend1<'Tree'>
+```
+
+Added in v3.0.0
 
 # extract
 
@@ -282,6 +329,26 @@ export declare const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: T
 
 Added in v2.0.0
 
+# foldableTree
+
+**Signature**
+
+```ts
+export declare const foldableTree: Foldable1<'Tree'>
+```
+
+Added in v3.0.0
+
+# functorTree
+
+**Signature**
+
+```ts
+export declare const functorTree: Functor1<'Tree'>
+```
+
+Added in v3.0.0
+
 # getEq
 
 **Signature**
@@ -322,6 +389,16 @@ export declare const map: <A, B>(f: (a: A) => B) => (fa: Tree<A>) => Tree<B>
 
 Added in v2.0.0
 
+# monadTree
+
+**Signature**
+
+```ts
+export declare const monadTree: Monad1<'Tree'>
+```
+
+Added in v3.0.0
+
 # reduce
 
 **Signature**
@@ -352,6 +429,16 @@ export declare const sequence: Sequence1<'Tree'>
 
 Added in v3.0.0
 
+# traversableTree
+
+**Signature**
+
+```ts
+export declare const traversableTree: Traversable1<'Tree'>
+```
+
+Added in v3.0.0
+
 # traverse
 
 **Signature**
@@ -361,16 +448,6 @@ export declare const traverse: Traverse1<'Tree'>
 ```
 
 Added in v3.0.0
-
-# tree
-
-**Signature**
-
-```ts
-export declare const tree: Monad1<'Tree'> & Foldable1<'Tree'> & Traversable1<'Tree'> & Comonad1<'Tree'>
-```
-
-Added in v2.0.0
 
 # unfoldForest
 

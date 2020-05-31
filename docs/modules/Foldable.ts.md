@@ -334,10 +334,10 @@ export declare function intercalate<M, F>(M: Monoid<M>, F: Foldable<F>): (sep: M
 ```ts
 import { intercalate } from 'fp-ts/lib/Foldable'
 import { monoidString } from 'fp-ts/lib/Monoid'
-import { make, tree } from 'fp-ts/lib/Tree'
+import { make, foldableTree } from 'fp-ts/lib/Tree'
 
 const t = make('a', [make('b', []), make('c', []), make('d', [])])
-assert.strictEqual(intercalate(monoidString, tree)('|', t), 'a|b|c|d')
+assert.strictEqual(intercalate(monoidString, foldableTree)('|', t), 'a|b|c|d')
 ```
 
 Added in v3.0.0
@@ -382,11 +382,11 @@ export declare function reduceM<M, F>(
 ```ts
 import { reduceM } from 'fp-ts/lib/Foldable'
 import { monadOption, some } from 'fp-ts/lib/Option'
-import { make, tree } from 'fp-ts/lib/Tree'
+import { make, foldableTree } from 'fp-ts/lib/Tree'
 
 const t = make(1, [make(2, []), make(3, []), make(4, [])])
 assert.deepStrictEqual(
-  reduceM(monadOption, tree)(t, 0, (b, a) => (a > 2 ? some(b + a) : some(b))),
+  reduceM(monadOption, foldableTree)(t, 0, (b, a) => (a > 2 ? some(b + a) : some(b))),
   some(7)
 )
 ```

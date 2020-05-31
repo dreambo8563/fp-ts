@@ -7,12 +7,15 @@
  *
  * @since 2.0.0
  */
-import { Applicative } from './Applicative'
+import { Applicative, Applicative1 } from './Applicative'
+import { Apply1 } from './Apply'
 import * as A from './Array'
 import { Comonad1 } from './Comonad'
 import { Eq, fromEquals } from './Eq'
+import { Extend1 } from './Extend'
 import { Foldable1 } from './Foldable'
 import { identity, pipe } from './function'
+import { Functor1 } from './Functor'
 import { HKT, Kind, Kind2, Kind3, URIS, URIS2, URIS3 } from './HKT'
 import { Monad, Monad1, Monad2, Monad2C, Monad3, Monad3C } from './Monad'
 import { Monoid } from './Monoid'
@@ -20,12 +23,6 @@ import { Show } from './Show'
 import { Traversable1 } from './Traversable'
 
 // tslint:disable:readonly-array
-
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly Tree: Tree<A>
-  }
-}
 
 /**
  * @since 2.0.0
@@ -36,6 +33,12 @@ export const URI = 'Tree'
  * @since 2.0.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind<A> {
+    readonly [URI]: Tree<A>
+  }
+}
 
 /**
  * @since 2.0.0
@@ -110,12 +113,12 @@ export function drawForest(forest: Forest<string>): string {
  * Neat 2-dimensional drawing of a tree
  *
  * @example
- * import { make, drawTree, tree } from 'fp-ts/lib/Tree'
+ * import { make, drawTree } from 'fp-ts/lib/Tree'
  *
  * const fa = make('a', [
- *   tree.of('b'),
- *   tree.of('c'),
- *   make('d', [tree.of('e'), tree.of('f')])
+ *   make('b'),
+ *   make('c'),
+ *   make('d', [make('e'), make('f')])
  * ])
  *
  * assert.strictEqual(drawTree(fa), `a
@@ -408,7 +411,7 @@ export const traverse: Traversable1<URI>['traverse'] = <F>(
 export const sequence: Traversable1<URI>['sequence'] = <F>(
   F: Applicative<F>
 ): (<A>(ta: Tree<HKT<F, A>>) => HKT<F, Tree<A>>) => {
-  const traverseF = tree.traverse(F)
+  const traverseF = traverse(F)
   return traverseF(identity)
 }
 
@@ -417,22 +420,83 @@ export const sequence: Traversable1<URI>['sequence'] = <F>(
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const tree: Monad1<URI> & Foldable1<URI> & Traversable1<URI> & Comonad1<URI> = {
+export const functorTree: Functor1<URI> = {
+  URI,
+  map
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applyTree: Apply1<URI> = {
   URI,
   map,
-  of: (a) => ({
-    value: a,
-    forest: A.empty
-  }),
+  ap
+}
+
+const of = <A>(a: A): Tree<A> => make(a)
+
+/**
+ * @since 3.0.0
+ */
+export const applicativeTree: Applicative1<URI> = {
+  URI,
+  map,
   ap,
-  chain,
+  of
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadTree: Monad1<URI> = {
+  URI,
+  map,
+  ap,
+  of,
+  chain
+}
+
+/**
+ * @since 3.0.0
+ */
+export const foldableTree: Foldable1<URI> = {
+  URI,
+  reduce,
+  foldMap,
+  reduceRight
+}
+
+/**
+ * @since 3.0.0
+ */
+export const traversableTree: Traversable1<URI> = {
+  URI,
+  map,
   reduce,
   foldMap,
   reduceRight,
   traverse,
-  sequence,
-  extract,
+  sequence
+}
+
+/**
+ * @since 3.0.0
+ */
+export const extendTree: Extend1<URI> = {
+  URI,
+  map,
   extend
+}
+
+/**
+ * @since 3.0.0
+ */
+export const comonadTree: Comonad1<URI> = {
+  URI,
+  map,
+  extend,
+  extract
 }

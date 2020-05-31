@@ -33,10 +33,14 @@ describe('Tree', () => {
 
   it('ap', () => {
     const double = (n: number): number => n * 2
-    const fab = _.tree.of(double)
+    const fab = _.make(double)
     const fa = _.make(1, [_.make(2), _.make(3)])
     const expected = _.make(2, [_.make(4), _.make(6)])
     assert.deepStrictEqual(pipe(fab, _.ap(fa)), expected)
+  })
+
+  it('ok', () => {
+    assert.deepStrictEqual(_.applicativeTree.of(1), _.make(1))
   })
 
   it('apFirst', () => {
@@ -48,14 +52,14 @@ describe('Tree', () => {
   })
 
   it('chain', () => {
-    const f = (n: number) => _.tree.of(n * 2)
+    const f = (n: number) => _.make(n * 2)
     const fa = _.make(1, [_.make(2), _.make(3)])
     const expected = _.make(2, [_.make(4), _.make(6)])
     assert.deepStrictEqual(pipe(fa, _.chain(f)), expected)
   })
 
   it('chainFirst', () => {
-    const f = (n: number) => _.tree.of(n * 2)
+    const f = (n: number) => _.make(n * 2)
     const fa = _.make(1, [_.make(2), _.make(3)])
     assert.deepStrictEqual(pipe(fa, _.chainFirst(f)), fa)
   })

@@ -215,10 +215,10 @@ export function getFoldableComposition<F, G>(F: Foldable<F>, G: Foldable<G>): Fo
  * @example
  * import { reduceM } from 'fp-ts/lib/Foldable'
  * import { monadOption, some } from 'fp-ts/lib/Option'
- * import { make, tree } from 'fp-ts/lib/Tree'
+ * import { make, foldableTree } from 'fp-ts/lib/Tree'
  *
  * const t = make(1, [make(2, []), make(3, []), make(4, [])])
- * assert.deepStrictEqual(reduceM(monadOption, tree)(t, 0, (b, a) => (a > 2 ? some(b + a) : some(b))), some(7))
+ * assert.deepStrictEqual(reduceM(monadOption, foldableTree)(t, 0, (b, a) => (a > 2 ? some(b + a) : some(b))), some(7))
  *
  * @since 3.0.0
  */
@@ -268,10 +268,10 @@ export function reduceM<M, F>(
  * @example
  * import { intercalate } from 'fp-ts/lib/Foldable'
  * import { monoidString } from 'fp-ts/lib/Monoid'
- * import { make, tree } from 'fp-ts/lib/Tree'
+ * import { make, foldableTree } from 'fp-ts/lib/Tree'
  *
  * const t = make('a', [make('b', []), make('c', []), make('d', [])])
- * assert.strictEqual(intercalate(monoidString, tree)('|', t), 'a|b|c|d')
+ * assert.strictEqual(intercalate(monoidString, foldableTree)('|', t), 'a|b|c|d')
  *
  * @since 3.0.0
  */
