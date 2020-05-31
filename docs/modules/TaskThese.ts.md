@@ -15,10 +15,12 @@ Added in v2.4.0
 - [TaskThese (interface)](#taskthese-interface)
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
+- [bifunctorTaskThese](#bifunctortaskthese)
 - [bimap](#bimap)
 - [both](#both)
 - [fold](#fold)
 - [fromIOEither](#fromioeither)
+- [functorTaskThese](#functortaskthese)
 - [getMonad](#getmonad)
 - [getSemigroup](#getsemigroup)
 - [left](#left)
@@ -30,7 +32,6 @@ Added in v2.4.0
 - [rightIO](#rightio)
 - [rightTask](#righttask)
 - [swap](#swap)
-- [taskThese](#taskthese)
 - [toTuple](#totuple)
 
 ---
@@ -65,6 +66,16 @@ export declare const URI: 'TaskThese'
 
 Added in v2.4.0
 
+# bifunctorTaskThese
+
+**Signature**
+
+```ts
+export declare const bifunctorTaskThese: Bifunctor2<'TaskThese'>
+```
+
+Added in v3.0.0
+
 # bimap
 
 **Signature**
@@ -91,10 +102,10 @@ Added in v2.4.0
 
 ```ts
 export declare const fold: <E, B, A>(
-  onLeft: (e: E) => Task<B>,
-  onRight: (a: A) => Task<B>,
-  onBoth: (e: E, a: A) => Task<B>
-) => (fa: TaskThese<E, A>) => Task<B>
+  onLeft: (e: E) => T.Task<B>,
+  onRight: (a: A) => T.Task<B>,
+  onBoth: (e: E, a: A) => T.Task<B>
+) => (fa: TaskThese<E, A>) => T.Task<B>
 ```
 
 Added in v2.4.0
@@ -108,6 +119,16 @@ export declare const fromIOEither: <E, A>(fa: IOEither<E, A>) => TaskThese<E, A>
 ```
 
 Added in v2.4.0
+
+# functorTaskThese
+
+**Signature**
+
+```ts
+export declare const functorTaskThese: Functor2<'TaskThese'>
+```
+
+Added in v3.0.0
 
 # getMonad
 
@@ -154,7 +175,7 @@ Added in v2.4.0
 **Signature**
 
 ```ts
-export declare const leftTask: <E = never, A = never>(me: Task<E>) => TaskThese<E, A>
+export declare const leftTask: <E = never, A = never>(me: T.Task<E>) => TaskThese<E, A>
 ```
 
 Added in v2.4.0
@@ -204,7 +225,7 @@ Added in v2.4.0
 **Signature**
 
 ```ts
-export declare const rightTask: <E = never, A = never>(ma: Task<A>) => TaskThese<E, A>
+export declare const rightTask: <E = never, A = never>(ma: T.Task<A>) => TaskThese<E, A>
 ```
 
 Added in v2.4.0
@@ -219,22 +240,12 @@ export declare const swap: <E, A>(fa: TaskThese<E, A>) => TaskThese<A, E>
 
 Added in v2.4.0
 
-# taskThese
-
-**Signature**
-
-```ts
-export declare const taskThese: Functor2<'TaskThese'> & Bifunctor2<'TaskThese'>
-```
-
-Added in v2.4.0
-
 # toTuple
 
 **Signature**
 
 ```ts
-export declare const toTuple: <E, A>(e: () => E, a: () => A) => (fa: TaskThese<E, A>) => Task<[E, A]>
+export declare const toTuple: <E, A>(e: () => E, a: () => A) => (fa: TaskThese<E, A>) => T.Task<[E, A]>
 ```
 
 Added in v3.0.0
