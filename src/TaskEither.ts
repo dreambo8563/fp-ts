@@ -9,7 +9,7 @@ import { Applicative2, Applicative2C } from './Applicative'
 import { Apply2 } from './Apply'
 import { Bifunctor2 } from './Bifunctor'
 import * as E from './Either'
-import { getEitherM } from './EitherT'
+import * as EitherT from './EitherT'
 import { Filterable2C, getFilterableComposition } from './Filterable'
 import { identity, Lazy, pipe, Predicate, Refinement } from './function'
 import { Functor2 } from './Functor'
@@ -30,7 +30,7 @@ import Task = T.Task
 
 const MT =
   /*#__PURE__*/
-  getEitherM(T.monadTask)
+  (() => EitherT.getEitherM(T.monadTask))()
 
 /**
  * @since 2.0.0
@@ -65,7 +65,7 @@ export const left: <E = never, A = never>(e: E) => TaskEither<E, A> =
  */
 export const right: <E = never, A = never>(a: A) => TaskEither<E, A> =
   /*#__PURE__*/
-  (() => MT.of)()
+  (() => EitherT.of(T.applicativeTask))()
 
 /**
  * @since 2.0.0
@@ -397,7 +397,7 @@ export const filterOrElse: {
  */
 export const map: <A, B>(f: (a: A) => B) => <E>(fa: TaskEither<E, A>) => TaskEither<E, B> =
   /*#__PURE__*/
-  (() => MT.map)()
+  (() => EitherT.map(T.functorTask))()
 
 /**
  * @since 3.0.0
@@ -460,7 +460,7 @@ export const applicativeTaskEither: Applicative2<URI> = {
  */
 export const chain: <E, A, B>(f: (a: A) => TaskEither<E, B>) => (ma: TaskEither<E, A>) => TaskEither<E, B> =
   /*#__PURE__*/
-  (() => MT.chain)()
+  (() => EitherT.chain(T.monadTask))()
 
 /**
  * @since 3.0.0
