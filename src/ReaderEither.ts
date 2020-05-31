@@ -6,22 +6,19 @@ import { Applicative3, Applicative3C } from './Applicative'
 import { Apply3 } from './Apply'
 import { Bifunctor3 } from './Bifunctor'
 import * as E from './Either'
-import { getEitherM } from './EitherT'
+import * as EitherT from './EitherT'
 import { identity, pipe, Predicate, Refinement } from './function'
 import { Functor3 } from './Functor'
 import { Monad3 } from './Monad'
 import { MonadThrow3 } from './MonadThrow'
 import { Monoid } from './Monoid'
 import { Option } from './Option'
-import { getSemigroup as getReaderSemigroup, monadReader, Reader } from './Reader'
+import * as R from './Reader'
 import { Semigroup } from './Semigroup'
 import { getValidationM } from './ValidationT'
 
 import Either = E.Either
-
-const MT =
-  /*#__PURE__*/
-  getEitherM(monadReader)
+import Reader = R.Reader
 
 /**
  * @since 2.0.0
@@ -49,28 +46,28 @@ export interface ReaderEither<R, E, A> extends Reader<R, Either<E, A>> {}
  */
 export const left: <R, E = never, A = never>(e: E) => ReaderEither<R, E, A> =
   /*#__PURE__*/
-  (() => MT.left)()
+  (() => EitherT.left(R.monadReader))()
 
 /**
  * @since 2.0.0
  */
 export const right: <R, E = never, A = never>(a: A) => ReaderEither<R, E, A> =
   /*#__PURE__*/
-  (() => MT.of)()
+  (() => EitherT.right(R.monadReader))()
 
 /**
  * @since 2.0.0
  */
 export const rightReader: <R, E = never, A = never>(ma: Reader<R, A>) => ReaderEither<R, E, A> =
   /*#__PURE__*/
-  (() => MT.rightM)()
+  R.map(E.right)
 
 /**
  * @since 2.0.0
  */
 export const leftReader: <R, E = never, A = never>(me: Reader<R, E>) => ReaderEither<R, E, A> =
   /*#__PURE__*/
-  (() => MT.leftM)()
+  R.map(E.left)
 
 /**
  * @since 2.0.0
@@ -80,13 +77,14 @@ export const fold: <R, E, A, B>(
   onRight: (a: A) => Reader<R, B>
 ) => (ma: ReaderEither<R, E, A>) => Reader<R, B> =
   /*#__PURE__*/
-  (() => MT.fold)()
+  (() => EitherT.fold(R.monadReader))()
 
 /**
  * @since 2.0.0
  */
 export const getOrElse: <E, R, A>(onLeft: (e: E) => Reader<R, A>) => (ma: ReaderEither<R, E, A>) => Reader<R, A> =
-  MT.getOrElse
+  /*#__PURE__*/
+  (() => EitherT.getOrElse(R.monadReader))()
 
 /**
  * @since 2.6.0
@@ -102,14 +100,14 @@ export const orElse: <E, R, M, A>(
   onLeft: (e: E) => ReaderEither<R, M, A>
 ) => (ma: ReaderEither<R, E, A>) => ReaderEither<R, M, A> =
   /*#__PURE__*/
-  (() => MT.orElse)()
+  (() => EitherT.orElse(R.monadReader))()
 
 /**
  * @since 2.0.0
  */
 export const swap: <R, E, A>(ma: ReaderEither<R, E, A>) => ReaderEither<R, A, E> =
   /*#__PURE__*/
-  (() => MT.swap)()
+  R.map(E.swap)
 
 /**
  * Semigroup returning the left-most non-`Left` value. If both operands are `Right`s then the inner values are
@@ -118,7 +116,7 @@ export const swap: <R, E, A>(ma: ReaderEither<R, E, A>) => ReaderEither<R, A, E>
  * @since 2.0.0
  */
 export function getSemigroup<R, E, A>(S: Semigroup<A>): Semigroup<ReaderEither<R, E, A>> {
-  return getReaderSemigroup(E.getSemigroup<E, A>(S))
+  return R.getSemigroup(E.getSemigroup<E, A>(S))
 }
 
 /**
@@ -128,7 +126,7 @@ export function getSemigroup<R, E, A>(S: Semigroup<A>): Semigroup<ReaderEither<R
  * @since 2.0.0
  */
 export function getApplySemigroup<R, E, A>(S: Semigroup<A>): Semigroup<ReaderEither<R, E, A>> {
-  return getReaderSemigroup(E.getApplySemigroup<E, A>(S))
+  return R.getSemigroup(E.getApplySemigroup<E, A>(S))
 }
 
 /**
@@ -166,7 +164,7 @@ export function local<Q, R>(f: (f: Q) => R): <E, A>(ma: ReaderEither<R, E, A>) =
  * @since 2.3.0
  */
 export function getReaderValidation<E>(S: Semigroup<E>): Applicative3C<URI, E> & Alt3C<URI, E> {
-  const V = getValidationM(S, monadReader)
+  const V = getValidationM(S, R.monadReader)
   return {
     URI,
     _E: undefined as any,
@@ -203,7 +201,8 @@ export function chainEitherK<A, E, B>(
  * @since 2.0.0
  */
 export const alt: <R, E, A>(that: () => ReaderEither<R, E, A>) => (fa: ReaderEither<R, E, A>) => ReaderEither<R, E, A> =
-  MT.alt
+  /*#__PURE__*/
+  (() => EitherT.alt(R.monadReader))()
 
 /**
  * @since 2.0.0
@@ -212,7 +211,7 @@ export const ap: <R, E, A>(
   fa: ReaderEither<R, E, A>
 ) => <B>(fab: ReaderEither<R, E, (a: A) => B>) => ReaderEither<R, E, B> =
   /*#__PURE__*/
-  (() => MT.ap)()
+  (() => EitherT.ap(R.monadReader))()
 
 /**
  * @since 2.0.0
@@ -244,7 +243,7 @@ export const bimap: <E, G, A, B>(
   g: (a: A) => B
 ) => <R>(fa: ReaderEither<R, E, A>) => ReaderEither<R, G, B> =
   /*#__PURE__*/
-  (() => MT.bimap)()
+  (() => EitherT.bimap(R.monadReader))()
 
 /**
  * @since 2.0.0
@@ -253,7 +252,7 @@ export const chain: <A, R, E, B>(
   f: (a: A) => ReaderEither<R, E, B>
 ) => (ma: ReaderEither<R, E, A>) => ReaderEither<R, E, B> =
   /*#__PURE__*/
-  (() => MT.chain)()
+  (() => EitherT.chain(R.monadReader))()
 
 /**
  * @since 2.6.0
@@ -294,7 +293,7 @@ export const flatten: <R, E, A>(mma: ReaderEither<R, E, ReaderEither<R, E, A>>) 
  */
 export const mapLeft: <E, G>(f: (e: E) => G) => <R, A>(fa: ReaderEither<R, E, A>) => ReaderEither<R, G, A> =
   /*#__PURE__*/
-  (() => MT.mapLeft)()
+  (() => EitherT.mapLeft(R.monadReader))()
 
 /**
  * @since 2.0.0
@@ -339,7 +338,7 @@ export const filterOrElse: {
  */
 export const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderEither<R, E, A>) => ReaderEither<R, E, B> =
   /*#__PURE__*/
-  (() => MT.map)()
+  (() => EitherT.map(R.monadReader))()
 
 /**
  * @since 3.0.0

@@ -265,6 +265,8 @@ Added in v3.0.0
 
 # ApplicativeCompositionHKT2 (interface)
 
+TODO remove when EitherT is switched to single functions
+
 **Signature**
 
 ```ts

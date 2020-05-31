@@ -9,11 +9,11 @@ import { Applicative2, Applicative2C } from './Applicative'
 import { Apply2 } from './Apply'
 import { Bifunctor2 } from './Bifunctor'
 import * as E from './Either'
-import { getEitherM } from './EitherT'
+import * as EitherT from './EitherT'
 import { Filterable2C, getFilterableComposition } from './Filterable'
 import { identity, Lazy, pipe, Predicate, Refinement } from './function'
 import { Functor2 } from './Functor'
-import { getSemigroup as getIOSemigroup, IO, monadIO } from './IO'
+import * as io from './IO'
 import { Monad2 } from './Monad'
 import { MonadIO2 } from './MonadIO'
 import { MonadThrow2 } from './MonadThrow'
@@ -23,10 +23,7 @@ import { Semigroup } from './Semigroup'
 import { getValidationM } from './ValidationT'
 
 import Either = E.Either
-
-const MT =
-  /*#__PURE__*/
-  getEitherM(monadIO)
+import IO = io.IO
 
 /**
  * @since 2.0.0
@@ -54,42 +51,42 @@ export interface IOEither<E, A> extends IO<Either<E, A>> {}
  */
 export const left: <E = never, A = never>(l: E) => IOEither<E, A> =
   /*#__PURE__*/
-  (() => MT.left)()
+  (() => EitherT.left(io.monadIO))()
 
 /**
  * @since 2.0.0
  */
 export const right: <E = never, A = never>(a: A) => IOEither<E, A> =
   /*#__PURE__*/
-  (() => MT.of)()
+  (() => EitherT.right(io.monadIO))()
 
 /**
  * @since 2.0.0
  */
 export const rightIO: <E = never, A = never>(ma: IO<A>) => IOEither<E, A> =
   /*#__PURE__*/
-  (() => MT.rightM)()
+  io.map(E.right)
 
 /**
  * @since 2.0.0
  */
 export const leftIO: <E = never, A = never>(me: IO<E>) => IOEither<E, A> =
   /*#__PURE__*/
-  (() => MT.leftM)()
+  io.map(E.left)
 
 /**
  * @since 2.0.0
  */
 export const fold: <E, A, B>(onLeft: (e: E) => IO<B>, onRight: (a: A) => IO<B>) => (ma: IOEither<E, A>) => IO<B> =
   /*#__PURE__*/
-  (() => MT.fold)()
+  (() => EitherT.fold(io.monadIO))()
 
 /**
  * @since 2.0.0
  */
 export const getOrElse: <E, A>(onLeft: (e: E) => IO<A>) => (ma: IOEither<E, A>) => IO<A> =
   /*#__PURE__*/
-  (() => MT.getOrElse)()
+  (() => EitherT.getOrElse(io.monadIO))()
 
 /**
  * @since 2.6.0
@@ -101,14 +98,14 @@ export const getOrElseW: <E, B>(onLeft: (e: E) => IO<B>) => <A>(ma: IOEither<E, 
  */
 export const orElse: <E, A, M>(onLeft: (e: E) => IOEither<M, A>) => (ma: IOEither<E, A>) => IOEither<M, A> =
   /*#__PURE__*/
-  (() => MT.orElse)()
+  (() => EitherT.orElse(io.monadIO))()
 
 /**
  * @since 2.0.0
  */
 export const swap: <E, A>(ma: IOEither<E, A>) => IOEither<A, E> =
   /*#__PURE__*/
-  (() => MT.swap)()
+  io.map(E.swap)
 
 /**
  * Semigroup returning the left-most non-`Left` value. If both operands are `Right`s then the inner values are
@@ -117,7 +114,7 @@ export const swap: <E, A>(ma: IOEither<E, A>) => IOEither<A, E> =
  * @since 2.0.0
  */
 export function getSemigroup<E, A>(S: Semigroup<A>): Semigroup<IOEither<E, A>> {
-  return getIOSemigroup(E.getSemigroup<E, A>(S))
+  return io.getSemigroup(E.getSemigroup<E, A>(S))
 }
 
 /**
@@ -127,7 +124,7 @@ export function getSemigroup<E, A>(S: Semigroup<A>): Semigroup<IOEither<E, A>> {
  * @since 2.0.0
  */
 export function getApplySemigroup<E, A>(S: Semigroup<A>): Semigroup<IOEither<E, A>> {
-  return getIOSemigroup(E.getApplySemigroup<E, A>(S))
+  return io.getSemigroup(E.getApplySemigroup<E, A>(S))
 }
 
 /**
@@ -166,7 +163,7 @@ export function bracket<E, A, B>(
     acquire,
     chain((a) =>
       pipe(
-        pipe(use(a), monadIO.map(E.right)),
+        pipe(use(a), io.monadIO.map(E.right)),
         chain((e) =>
           pipe(
             release(a, e),
@@ -182,7 +179,7 @@ export function bracket<E, A, B>(
  * @since 3.0.0
  */
 export function getIOValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E> {
-  const V = getValidationM(S, monadIO)
+  const V = getValidationM(S, io.monadIO)
   return {
     URI,
     _E: undefined as any,
@@ -202,7 +199,7 @@ export function getFilterable<E>(M: Monoid<E>): Filterable2C<URI, E> {
   return {
     URI,
     _E: undefined as any,
-    ...getFilterableComposition(monadIO, F)
+    ...getFilterableComposition(io.monadIO, F)
   }
 }
 
@@ -267,7 +264,7 @@ export const fromEither: <E, A>(ma: E.Either<E, A>) => IOEither<E, A> = (ma) =>
  */
 export const map: <A, B>(f: (a: A) => B) => <E>(fa: IOEither<E, A>) => IOEither<E, B> =
   /*#__PURE__*/
-  (() => MT.map)()
+  (() => EitherT.map(io.monadIO))()
 
 /**
  * @since 3.0.0
@@ -282,7 +279,7 @@ export const functorIOEither: Functor2<URI> = {
  */
 export const ap: <E, A>(fa: IOEither<E, A>) => <B>(fab: IOEither<E, (a: A) => B>) => IOEither<E, B> =
   /*#__PURE__*/
-  (() => MT.ap)()
+  (() => EitherT.ap(io.monadIO))()
 
 /**
  * @since 3.0.0
@@ -330,7 +327,7 @@ export const applicativeIOEither: Applicative2<URI> = {
  */
 export const chain: <E, A, B>(f: (a: A) => IOEither<E, B>) => (ma: IOEither<E, A>) => IOEither<E, B> =
   /*#__PURE__*/
-  (() => MT.chain)()
+  (() => EitherT.chain(io.monadIO))()
 
 /**
  * @since 3.0.0
@@ -375,14 +372,14 @@ export const flatten: <E, A>(mma: IOEither<E, IOEither<E, A>>) => IOEither<E, A>
  */
 export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: IOEither<E, A>) => IOEither<G, B> =
   /*#__PURE__*/
-  (() => MT.bimap)()
+  (() => EitherT.bimap(io.monadIO))()
 
 /**
  * @since 2.0.0
  */
 export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: IOEither<E, A>) => IOEither<G, A> =
   /*#__PURE__*/
-  (() => MT.mapLeft)()
+  (() => EitherT.mapLeft(io.monadIO))()
 
 /**
  * @since 3.0.0
@@ -398,7 +395,7 @@ export const bifunctorIOEither: Bifunctor2<URI> = {
  */
 export const alt: <E, A>(that: () => IOEither<E, A>) => (fa: IOEither<E, A>) => IOEither<E, A> =
   /*#__PURE__*/
-  (() => MT.alt)()
+  (() => EitherT.alt(io.monadIO))()
 
 /**
  * @since 3.0.0

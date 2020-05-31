@@ -301,9 +301,9 @@ Added in v2.0.0
 
 ```ts
 export declare const fold: <R, E, A, B>(
-  onLeft: (e: E) => Reader<R, B>,
-  onRight: (a: A) => Reader<R, B>
-) => (ma: ReaderEither<R, E, A>) => Reader<R, B>
+  onLeft: (e: E) => R.Reader<R, B>,
+  onRight: (a: A) => R.Reader<R, B>
+) => (ma: ReaderEither<R, E, A>) => R.Reader<R, B>
 ```
 
 Added in v2.0.0
@@ -391,7 +391,9 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const getOrElse: <E, R, A>(onLeft: (e: E) => Reader<R, A>) => (ma: ReaderEither<R, E, A>) => Reader<R, A>
+export declare const getOrElse: <E, R, A>(
+  onLeft: (e: E) => R.Reader<R, A>
+) => (ma: ReaderEither<R, E, A>) => R.Reader<R, A>
 ```
 
 Added in v2.0.0
@@ -402,8 +404,8 @@ Added in v2.0.0
 
 ```ts
 export declare const getOrElseW: <E, Q, B>(
-  onLeft: (e: E) => Reader<Q, B>
-) => <R, A>(ma: ReaderEither<R, E, A>) => Reader<R & Q, B | A>
+  onLeft: (e: E) => R.Reader<Q, B>
+) => <R, A>(ma: ReaderEither<R, E, A>) => R.Reader<R & Q, B | A>
 ```
 
 Added in v2.6.0
@@ -446,7 +448,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const leftReader: <R, E = never, A = never>(me: Reader<R, E>) => ReaderEither<R, E, A>
+export declare const leftReader: <R, E = never, A = never>(me: R.Reader<R, E>) => ReaderEither<R, E, A>
 ```
 
 Added in v2.0.0
@@ -528,7 +530,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const rightReader: <R, E = never, A = never>(ma: Reader<R, A>) => ReaderEither<R, E, A>
+export declare const rightReader: <R, E = never, A = never>(ma: R.Reader<R, A>) => ReaderEither<R, E, A>
 ```
 
 Added in v2.0.0

@@ -12,99 +12,29 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [EitherM (interface)](#eitherm-interface)
-- [EitherM1 (interface)](#eitherm1-interface)
-- [EitherM2 (interface)](#eitherm2-interface)
 - [EitherT (interface)](#eithert-interface)
 - [EitherT1 (type alias)](#eithert1-type-alias)
 - [EitherT2 (type alias)](#eithert2-type-alias)
-- [getEitherM](#geteitherm)
+- [alt](#alt)
+- [ap](#ap)
+- [bimap](#bimap)
+- [chain](#chain)
+- [fold](#fold)
+- [getOrElse](#getorelse)
+- [left](#left)
+- [map](#map)
+- [mapLeft](#mapleft)
+- [orElse](#orelse)
+- [right](#right)
 
 ---
-
-# EitherM (interface)
-
-**Signature**
-
-```ts
-export interface EitherM<M> extends ApplicativeCompositionHKT2<M, URI> {
-  readonly chain: <E, A, B>(f: (a: A) => EitherT<M, E, B>) => (ma: EitherT<M, E, A>) => EitherT<M, E, B>
-  readonly alt: <E, A>(that: () => EitherT<M, E, A>) => (fa: EitherT<M, E, A>) => EitherT<M, E, A>
-  readonly bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fea: EitherT<M, E, A>) => EitherT<M, G, B>
-  readonly mapLeft: <E, G>(f: (e: E) => G) => <A>(fea: EitherT<M, E, A>) => EitherT<M, G, A>
-  readonly fold: <E, A, R>(
-    onLeft: (e: E) => HKT<M, R>,
-    onRight: (a: A) => HKT<M, R>
-  ) => (ma: EitherT<M, E, A>) => HKT<M, R>
-  readonly getOrElse: <E, A>(onLeft: (e: E) => HKT<M, A>) => (ma: EitherT<M, E, A>) => HKT<M, A>
-  readonly orElse: <E, N, A>(onLeft: (e: E) => EitherT<M, N, A>) => (ma: EitherT<M, E, A>) => EitherT<M, N, A>
-  readonly swap: <E, A>(ma: EitherT<M, E, A>) => EitherT<M, A, E>
-  readonly rightM: <E, A>(ma: HKT<M, A>) => EitherT<M, E, A>
-  readonly leftM: <E, A>(me: HKT<M, E>) => EitherT<M, E, A>
-  readonly left: <E, A>(e: E) => EitherT<M, E, A>
-}
-```
-
-Added in v3.0.0
-
-# EitherM1 (interface)
-
-**Signature**
-
-```ts
-export interface EitherM1<M extends URIS> extends ApplicativeComposition12<M, URI> {
-  readonly chain: <E, A, B>(f: (a: A) => EitherT1<M, E, B>) => (ma: EitherT1<M, E, A>) => EitherT1<M, E, B>
-  readonly alt: <E, A>(that: () => EitherT1<M, E, A>) => (fa: EitherT1<M, E, A>) => EitherT1<M, E, A>
-  readonly bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fea: EitherT1<M, E, A>) => EitherT1<M, G, B>
-  readonly mapLeft: <E, G>(f: (e: E) => G) => <A>(fea: EitherT1<M, E, A>) => EitherT1<M, G, A>
-  readonly fold: <E, A, R>(
-    onLeft: (e: E) => Kind<M, R>,
-    onRight: (a: A) => Kind<M, R>
-  ) => (ma: EitherT1<M, E, A>) => Kind<M, R>
-  readonly getOrElse: <E, A>(onLeft: (e: E) => Kind<M, A>) => (ma: EitherT1<M, E, A>) => Kind<M, A>
-  readonly orElse: <E, N, A>(onLeft: (e: E) => EitherT1<M, N, A>) => (ma: EitherT1<M, E, A>) => EitherT1<M, N, A>
-  readonly swap: <E, A>(ma: EitherT1<M, E, A>) => EitherT1<M, A, E>
-  readonly rightM: <E, A>(ma: Kind<M, A>) => EitherT1<M, E, A>
-  readonly leftM: <E, A>(me: Kind<M, E>) => EitherT1<M, E, A>
-  readonly left: <E, A>(e: E) => EitherT1<M, E, A>
-}
-```
-
-Added in v3.0.0
-
-# EitherM2 (interface)
-
-**Signature**
-
-```ts
-export interface EitherM2<M extends URIS2> extends ApplicativeComposition22<M, URI> {
-  readonly chain: <R, E, A, B>(f: (a: A) => EitherT2<M, R, E, B>) => (ma: EitherT2<M, R, E, A>) => EitherT2<M, R, E, B>
-  readonly alt: <R, E, A>(that: () => EitherT2<M, R, E, A>) => (fa: EitherT2<M, R, E, A>) => EitherT2<M, R, E, A>
-  readonly bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => <R>(fea: EitherT2<M, R, E, A>) => EitherT2<M, R, G, B>
-  readonly mapLeft: <E, G>(f: (e: E) => G) => <R, A>(fea: EitherT2<M, R, E, A>) => EitherT2<M, R, G, A>
-  readonly fold: <R, E, A, B>(
-    onLeft: (e: E) => Kind2<M, R, B>,
-    onRight: (a: A) => Kind2<M, R, B>
-  ) => (ma: EitherT2<M, R, E, A>) => Kind2<M, R, B>
-  readonly getOrElse: <R, E, A>(onLeft: (e: E) => Kind2<M, R, A>) => (ma: EitherT2<M, R, E, A>) => Kind2<M, R, A>
-  readonly orElse: <E, R, F, A>(
-    onLeft: (e: E) => EitherT2<M, R, F, A>
-  ) => (ma: EitherT2<M, R, E, A>) => EitherT2<M, R, F, A>
-  readonly swap: <R, E, A>(ma: EitherT2<M, R, E, A>) => EitherT2<M, R, A, E>
-  readonly rightM: <R, E, A>(ma: Kind2<M, R, A>) => EitherT2<M, R, E, A>
-  readonly leftM: <R, E, A>(me: Kind2<M, R, E>) => EitherT2<M, R, E, A>
-  readonly left: <R, E, A>(e: E) => EitherT2<M, R, E, A>
-}
-```
-
-Added in v3.0.0
 
 # EitherT (interface)
 
 **Signature**
 
 ```ts
-export interface EitherT<M, E, A> extends HKT<M, Either<E, A>> {}
+export interface EitherT<M, E, A> extends HKT<M, E.Either<E, A>> {}
 ```
 
 Added in v2.0.0
@@ -114,7 +44,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export type EitherT1<M extends URIS, E, A> = Kind<M, Either<E, A>>
+export type EitherT1<M extends URIS, E, A> = Kind<M, E.Either<E, A>>
 ```
 
 Added in v2.0.0
@@ -124,19 +54,194 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export type EitherT2<M extends URIS2, R, E, A> = Kind2<M, R, Either<E, A>>
+export type EitherT2<M extends URIS2, R, E, A> = Kind2<M, R, E.Either<E, A>>
 ```
 
 Added in v2.0.0
 
-# getEitherM
+# alt
 
 **Signature**
 
 ```ts
-export declare function getEitherM<M extends URIS2>(M: Monad2<M>): EitherM2<M>
-export declare function getEitherM<M extends URIS>(M: Monad1<M>): EitherM1<M>
-export declare function getEitherM<M>(M: Monad<M>): EitherM<M>
+export declare function alt<M extends URIS2>(
+  M: Monad2<M>
+): <R, E, A>(that: () => EitherT2<M, R, E, A>) => (fa: EitherT2<M, R, E, A>) => EitherT2<M, R, E, A>
+export declare function alt<M extends URIS>(
+  M: Monad1<M>
+): <E, A>(that: () => EitherT1<M, E, A>) => (fa: EitherT1<M, E, A>) => EitherT1<M, E, A>
+export declare function alt<M>(
+  M: Monad<M>
+): <E, A>(that: () => EitherT<M, E, A>) => (fa: EitherT<M, E, A>) => EitherT<M, E, A>
 ```
 
-Added in v2.0.0
+Added in v3.0.0
+
+# ap
+
+**Signature**
+
+```ts
+export declare function ap<F extends URIS2>(
+  F: Apply2<F>
+): <R, E, A>(fa: EitherT2<F, R, E, A>) => <B>(fab: EitherT2<F, R, E, (a: A) => B>) => EitherT2<F, R, E, B>
+export declare function ap<F extends URIS>(
+  F: Apply1<F>
+): <E, A>(fa: EitherT1<F, E, A>) => <B>(fab: EitherT1<F, E, (a: A) => B>) => EitherT1<F, E, B>
+export declare function ap<F>(
+  F: Apply<F>
+): <E, A>(fa: EitherT<F, E, A>) => <B>(fab: EitherT<F, E, (a: A) => B>) => EitherT<F, E, B>
+```
+
+Added in v3.0.0
+
+# bimap
+
+**Signature**
+
+```ts
+export declare function bimap<F extends URIS2>(
+  F: Functor2<F>
+): <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => <R>(fea: EitherT2<F, R, E, A>) => EitherT2<F, R, G, B>
+export declare function bimap<F extends URIS>(
+  F: Functor1<F>
+): <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fea: EitherT1<F, E, A>) => EitherT1<F, G, B>
+export declare function bimap<F>(
+  F: Functor<F>
+): <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fea: EitherT<F, E, A>) => EitherT<F, G, B>
+```
+
+Added in v3.0.0
+
+# chain
+
+**Signature**
+
+```ts
+export declare function chain<F extends URIS2>(
+  M: Monad2<F>
+): <A, R, E, B>(f: (a: A) => EitherT2<F, R, E, B>) => (fa: EitherT2<F, R, E, A>) => EitherT2<F, R, E, B>
+export declare function chain<F extends URIS>(
+  M: Monad1<F>
+): <A, E, B>(f: (a: A) => EitherT1<F, E, B>) => (fa: EitherT1<F, E, A>) => EitherT1<F, E, B>
+export declare function chain<F>(
+  M: Monad<F>
+): <A, E, B>(f: (a: A) => EitherT<F, E, B>) => (fa: EitherT<F, E, A>) => EitherT<F, E, B>
+```
+
+Added in v3.0.0
+
+# fold
+
+**Signature**
+
+```ts
+export declare function fold<M extends URIS2>(
+  M: Chain2<M>
+): <E, B, R, A>(
+  onLeft: (e: E) => Kind2<M, R, B>,
+  onRight: (a: A) => Kind2<M, R, B>
+) => (ma: EitherT2<M, R, E, A>) => Kind2<M, R, B>
+export declare function fold<M extends URIS>(
+  M: Chain1<M>
+): <E, B, A>(onLeft: (e: E) => Kind<M, B>, onRight: (a: A) => Kind<M, B>) => (ma: EitherT1<M, E, A>) => Kind<M, B>
+export declare function fold<M>(
+  M: Chain<M>
+): <E, B, A>(onLeft: (e: E) => HKT<M, B>, onRight: (a: A) => HKT<M, B>) => (ma: EitherT<M, E, A>) => HKT<M, B>
+```
+
+Added in v3.0.0
+
+# getOrElse
+
+**Signature**
+
+```ts
+export declare function getOrElse<M extends URIS2>(
+  M: Monad2<M>
+): <E, R, A>(onLeft: (e: E) => Kind2<M, R, A>) => (ma: EitherT2<M, R, E, A>) => Kind2<M, R, A>
+export declare function getOrElse<M extends URIS>(
+  M: Monad1<M>
+): <E, A>(onLeft: (e: E) => Kind<M, A>) => (ma: EitherT1<M, E, A>) => Kind<M, A>
+export declare function getOrElse<M>(
+  M: Monad<M>
+): <E, A>(onLeft: (e: E) => HKT<M, A>) => (ma: EitherT<M, E, A>) => HKT<M, A>
+```
+
+Added in v3.0.0
+
+# left
+
+**Signature**
+
+```ts
+export declare function left<F extends URIS2>(A: Applicative2<F>): <R, E, A>(e: E) => EitherT2<F, R, E, A>
+export declare function left<F extends URIS>(A: Applicative1<F>): <E, A>(e: E) => EitherT1<F, E, A>
+export declare function left<F>(A: Applicative<F>): <E, A>(e: E) => EitherT<F, E, A>
+```
+
+Added in v3.0.0
+
+# map
+
+**Signature**
+
+```ts
+export declare function map<F extends URIS2>(
+  F: Functor2<F>
+): <A, B>(f: (a: A) => B) => <R, E>(fa: EitherT2<F, R, E, A>) => EitherT2<F, R, E, B>
+export declare function map<F extends URIS>(
+  F: Functor1<F>
+): <A, B>(f: (a: A) => B) => <E>(fa: EitherT1<F, E, A>) => EitherT1<F, E, B>
+export declare function map<F>(F: Functor<F>): <A, B>(f: (a: A) => B) => <E>(fa: EitherT<F, E, A>) => EitherT<F, E, B>
+```
+
+Added in v3.0.0
+
+# mapLeft
+
+**Signature**
+
+```ts
+export declare function mapLeft<F extends URIS2>(
+  F: Functor2<F>
+): <E, G>(f: (e: E) => G) => <R, A>(fea: EitherT2<F, R, E, A>) => EitherT2<F, R, G, A>
+export declare function mapLeft<F extends URIS>(
+  F: Functor1<F>
+): <E, G>(f: (e: E) => G) => <A>(fea: EitherT1<F, E, A>) => EitherT1<F, G, A>
+export declare function mapLeft<F>(
+  F: Functor<F>
+): <E, G>(f: (e: E) => G) => <A>(fea: EitherT<F, E, A>) => EitherT<F, G, A>
+```
+
+Added in v3.0.0
+
+# orElse
+
+**Signature**
+
+```ts
+export declare function orElse<M extends URIS2>(
+  M: Monad2<M>
+): <E, R, N, A>(onLeft: (e: E) => EitherT2<M, R, N, A>) => (ma: EitherT2<M, R, E, A>) => EitherT2<M, R, N, A>
+export declare function orElse<M extends URIS>(
+  M: Monad1<M>
+): <E, N, A>(onLeft: (e: E) => EitherT1<M, N, A>) => (ma: EitherT1<M, E, A>) => EitherT1<M, N, A>
+export declare function orElse<M>(
+  M: Monad<M>
+): <E, N, A>(onLeft: (e: E) => EitherT<M, N, A>) => (ma: EitherT<M, E, A>) => EitherT<M, N, A>
+```
+
+Added in v3.0.0
+
+# right
+
+**Signature**
+
+```ts
+export declare function right<F extends URIS2>(A: Applicative2<F>): <R, E, A>(a: A) => EitherT2<F, R, E, A>
+export declare function right<F extends URIS>(A: Applicative1<F>): <E, A>(a: A) => EitherT1<F, E, A>
+export declare function right<F>(A: Applicative<F>): <E, A>(a: A) => EitherT<F, E, A>
+```
+
+Added in v3.0.0

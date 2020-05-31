@@ -34,6 +34,8 @@ high state of flux, you're at risk of it changing without notice.
     - make `fromNullable` lazy, closes #918 (@gcanti)
     - `getValidation` now returns an instance of `Applicative2C` (@gcanti)
     - remove the `either` mega instance in favour of splitted instances (@gcanti)
+  - `EitherT`
+    - remove `getEitherM` (@gcanti)
   - `Eq`
     - move `eqDate` to `Date` module (@gcanti)
   - `Foldable`

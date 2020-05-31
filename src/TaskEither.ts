@@ -28,10 +28,6 @@ import { getValidationM } from './ValidationT'
 import Either = E.Either
 import Task = T.Task
 
-const MT =
-  /*#__PURE__*/
-  (() => EitherT.getEitherM(T.monadTask))()
-
 /**
  * @since 2.0.0
  */
@@ -58,14 +54,14 @@ export interface TaskEither<E, A> extends Task<Either<E, A>> {}
  */
 export const left: <E = never, A = never>(e: E) => TaskEither<E, A> =
   /*#__PURE__*/
-  (() => MT.left)()
+  (() => EitherT.left(T.monadTask))()
 
 /**
  * @since 2.0.0
  */
 export const right: <E = never, A = never>(a: A) => TaskEither<E, A> =
   /*#__PURE__*/
-  (() => EitherT.of(T.applicativeTask))()
+  (() => EitherT.right(T.monadTask))()
 
 /**
  * @since 2.0.0
@@ -86,14 +82,14 @@ export function leftIO<E = never, A = never>(me: IO<E>): TaskEither<E, A> {
  */
 export const rightTask: <E = never, A = never>(ma: Task<A>) => TaskEither<E, A> =
   /*#__PURE__*/
-  (() => MT.rightM)()
+  T.map(E.right)
 
 /**
  * @since 2.0.0
  */
 export const leftTask: <E = never, A = never>(me: Task<E>) => TaskEither<E, A> =
   /*#__PURE__*/
-  (() => MT.leftM)()
+  T.map(E.left)
 
 /**
  * @since 2.0.0
@@ -110,14 +106,14 @@ export const fold: <E, A, B>(
   onRight: (a: A) => Task<B>
 ) => (ma: TaskEither<E, A>) => Task<B> =
   /*#__PURE__*/
-  (() => MT.fold)()
+  (() => EitherT.fold(T.monadTask))()
 
 /**
  * @since 2.0.0
  */
 export const getOrElse: <E, A>(onLeft: (e: E) => Task<A>) => (ma: TaskEither<E, A>) => Task<A> =
   /*#__PURE__*/
-  (() => MT.getOrElse)()
+  (() => EitherT.getOrElse(T.monadTask))()
 
 /**
  * @since 2.6.0
@@ -131,14 +127,14 @@ export const getOrElseW: <E, B>(
  */
 export const orElse: <E, A, M>(onLeft: (e: E) => TaskEither<M, A>) => (ma: TaskEither<E, A>) => TaskEither<M, A> =
   /*#__PURE__*/
-  (() => MT.orElse)()
+  (() => EitherT.orElse(T.monadTask))()
 
 /**
  * @since 2.0.0
  */
 export const swap: <E, A>(ma: TaskEither<E, A>) => TaskEither<A, E> =
   /*#__PURE__*/
-  (() => MT.swap)()
+  T.map(E.swap)
 
 /**
  * Semigroup returning the left-most non-`Left` value. If both operands are `Right`s then the inner values are
@@ -397,7 +393,7 @@ export const filterOrElse: {
  */
 export const map: <A, B>(f: (a: A) => B) => <E>(fa: TaskEither<E, A>) => TaskEither<E, B> =
   /*#__PURE__*/
-  (() => EitherT.map(T.functorTask))()
+  (() => EitherT.map(T.monadTask))()
 
 /**
  * @since 3.0.0
@@ -412,7 +408,7 @@ export const functorTaskEither: Functor2<URI> = {
  */
 export const ap: <E, A>(fa: TaskEither<E, A>) => <B>(fab: TaskEither<E, (a: A) => B>) => TaskEither<E, B> =
   /*#__PURE__*/
-  (() => MT.ap)()
+  (() => EitherT.ap(T.monadTask))()
 
 /**
  * @since 3.0.0
@@ -517,14 +513,14 @@ export const flatten: <E, A>(mma: TaskEither<E, TaskEither<E, A>>) => TaskEither
  */
 export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: TaskEither<E, A>) => TaskEither<G, B> =
   /*#__PURE__*/
-  (() => MT.bimap)()
+  (() => EitherT.bimap(T.monadTask))()
 
 /**
  * @since 2.0.0
  */
 export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TaskEither<E, A>) => TaskEither<G, A> =
   /*#__PURE__*/
-  (() => MT.mapLeft)()
+  (() => EitherT.mapLeft(T.monadTask))()
 
 /**
  * @since 3.0.0
@@ -540,7 +536,7 @@ export const bifunctorTaskEither: Bifunctor2<URI> = {
  */
 export const alt: <E, A>(that: () => TaskEither<E, A>) => (fa: TaskEither<E, A>) => TaskEither<E, A> =
   /*#__PURE__*/
-  (() => MT.alt)()
+  (() => EitherT.alt(T.monadTask))()
 
 /**
  * @since 3.0.0

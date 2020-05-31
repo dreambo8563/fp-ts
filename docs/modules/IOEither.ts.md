@@ -283,7 +283,10 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const fold: <E, A, B>(onLeft: (e: E) => IO<B>, onRight: (a: A) => IO<B>) => (ma: IOEither<E, A>) => IO<B>
+export declare const fold: <E, A, B>(
+  onLeft: (e: E) => io.IO<B>,
+  onRight: (a: A) => io.IO<B>
+) => (ma: IOEither<E, A>) => io.IO<B>
 ```
 
 Added in v2.0.0
@@ -391,7 +394,7 @@ Added in v3.0.0
 **Signature**
 
 ```ts
-export declare const getOrElse: <E, A>(onLeft: (e: E) => IO<A>) => (ma: IOEither<E, A>) => IO<A>
+export declare const getOrElse: <E, A>(onLeft: (e: E) => io.IO<A>) => (ma: IOEither<E, A>) => io.IO<A>
 ```
 
 Added in v2.0.0
@@ -401,7 +404,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const getOrElseW: <E, B>(onLeft: (e: E) => IO<B>) => <A>(ma: IOEither<E, A>) => IO<B | A>
+export declare const getOrElseW: <E, B>(onLeft: (e: E) => io.IO<B>) => <A>(ma: IOEither<E, A>) => io.IO<B | A>
 ```
 
 Added in v2.6.0
@@ -434,7 +437,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const leftIO: <E = never, A = never>(me: IO<E>) => IOEither<E, A>
+export declare const leftIO: <E = never, A = never>(me: io.IO<E>) => IOEither<E, A>
 ```
 
 Added in v2.0.0
@@ -524,7 +527,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const rightIO: <E = never, A = never>(ma: IO<A>) => IOEither<E, A>
+export declare const rightIO: <E = never, A = never>(ma: io.IO<A>) => IOEither<E, A>
 ```
 
 Added in v2.0.0
