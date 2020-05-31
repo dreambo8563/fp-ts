@@ -7,13 +7,9 @@ import { Monad2C } from './Monad'
 import { Monoid } from './Monoid'
 import { getWriterM } from './WriterT'
 
-const T = /*#__PURE__*/ getWriterM(monadIdentity)
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly Writer: Writer<E, A>
-  }
-}
+const MT =
+  /*#__PURE__*/
+  getWriterM(monadIdentity)
 
 /**
  * @since 2.0.0
@@ -24,6 +20,12 @@ export const URI = 'Writer'
  * @since 2.0.0
  */
 export type URI = typeof URI
+
+declare module './HKT' {
+  interface URItoKind2<E, A> {
+    readonly [URI]: Writer<E, A>
+  }
+}
 
 // tslint:disable:readonly-array
 /**
@@ -37,19 +39,19 @@ export interface Writer<W, A> {
 /**
  * @since 2.0.0
  */
-export const evalWriter: <W, A>(fa: Writer<W, A>) => A = T.evalWriter
+export const evalWriter: <W, A>(fa: Writer<W, A>) => A = MT.evalWriter
 
 /**
  * @since 2.0.0
  */
-export const execWriter: <W, A>(fa: Writer<W, A>) => W = T.execWriter
+export const execWriter: <W, A>(fa: Writer<W, A>) => W = MT.execWriter
 
 /**
  * Appends a value to the accumulator
  *
  * @since 2.0.0
  */
-export const tell: <W>(w: W) => Writer<W, void> = T.tell
+export const tell: <W>(w: W) => Writer<W, void> = MT.tell
 
 // tslint:disable:readonly-array
 /**
@@ -57,7 +59,7 @@ export const tell: <W>(w: W) => Writer<W, void> = T.tell
  *
  * @since 2.0.0
  */
-export const listen: <W, A>(fa: Writer<W, A>) => Writer<W, [A, W]> = T.listen
+export const listen: <W, A>(fa: Writer<W, A>) => Writer<W, [A, W]> = MT.listen
 // tslint:enable:readonly-array
 
 // tslint:disable:readonly-array
@@ -66,7 +68,7 @@ export const listen: <W, A>(fa: Writer<W, A>) => Writer<W, [A, W]> = T.listen
  *
  * @since 2.0.0
  */
-export const pass: <W, A>(fa: Writer<W, [A, (w: W) => W]>) => Writer<W, A> = T.pass
+export const pass: <W, A>(fa: Writer<W, [A, (w: W) => W]>) => Writer<W, A> = MT.pass
 // tslint:enable:readonly-array
 
 // tslint:disable:readonly-array
@@ -76,7 +78,7 @@ export const pass: <W, A>(fa: Writer<W, [A, (w: W) => W]>) => Writer<W, A> = T.p
  * @since 2.0.0
  */
 export function listens<W, B>(f: (w: W) => B): <A>(fa: Writer<W, A>) => Writer<W, [A, B]> {
-  return (fa) => T.listens(fa, f)
+  return (fa) => MT.listens(fa, f)
 }
 // tslint:enable:readonly-array
 
@@ -86,27 +88,8 @@ export function listens<W, B>(f: (w: W) => B): <A>(fa: Writer<W, A>) => Writer<W
  * @since 2.0.0
  */
 export function censor<W>(f: (w: W) => W): <A>(fa: Writer<W, A>) => Writer<W, A> {
-  return (fa) => T.censor(fa, f)
+  return (fa) => MT.censor(fa, f)
 }
-
-/**
- * @since 2.0.0
- */
-export function getMonad<W>(M: Monoid<W>): Monad2C<URI, W> {
-  return {
-    URI,
-    ...T.getMonad(M)
-  }
-}
-
-// -------------------------------------------------------------------------------------
-// pipeables
-// -------------------------------------------------------------------------------------
-
-/**
- * @since 2.0.0
- */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: Writer<E, A>) => Writer<E, B> = T.map
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -115,7 +98,27 @@ export const map: <A, B>(f: (a: A) => B) => <E>(fa: Writer<E, A>) => Writer<E, B
 /**
  * @since 2.0.0
  */
-export const writer: Functor2<URI> = {
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: Writer<E, A>) => Writer<E, B> = MT.map
+
+/**
+ * @since 3.0.0
+ */
+export const functorWriter: Functor2<URI> = {
   URI,
   map
+}
+
+/**
+ * @since 2.0.0
+ */
+export function getMonad<W>(M: Monoid<W>): Monad2C<URI, W> {
+  const _ = MT.getMonad(M)
+  return {
+    URI,
+    _E: undefined as any,
+    map: _.map,
+    ap: _.ap,
+    of: _.of,
+    chain: _.chain
+  }
 }

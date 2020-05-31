@@ -18,13 +18,13 @@ Added in v2.0.0
 - [censor](#censor)
 - [evalWriter](#evalwriter)
 - [execWriter](#execwriter)
+- [functorWriter](#functorwriter)
 - [getMonad](#getmonad)
 - [listen](#listen)
 - [listens](#listens)
 - [map](#map)
 - [pass](#pass)
 - [tell](#tell)
-- [writer](#writer)
 
 ---
 
@@ -92,6 +92,16 @@ export declare const execWriter: <W, A>(fa: Writer<W, A>) => W
 
 Added in v2.0.0
 
+# functorWriter
+
+**Signature**
+
+```ts
+export declare const functorWriter: Functor2<'Writer'>
+```
+
+Added in v3.0.0
+
 # getMonad
 
 **Signature**
@@ -156,16 +166,6 @@ Appends a value to the accumulator
 
 ```ts
 export declare const tell: <W>(w: W) => Writer<W, void>
-```
-
-Added in v2.0.0
-
-# writer
-
-**Signature**
-
-```ts
-export declare const writer: Functor2<'Writer'>
 ```
 
 Added in v2.0.0
