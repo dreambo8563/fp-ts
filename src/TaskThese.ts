@@ -47,17 +47,23 @@ export interface TaskThese<E, A> extends Task<These<E, A>> {}
 /**
  * @since 2.4.0
  */
-export const left: <E = never, A = never>(e: E) => TaskThese<E, A> = MT.left
+export const left: <E = never, A = never>(e: E) => TaskThese<E, A> =
+  /*#__PURE__*/
+  (() => MT.left)()
 
 /**
  * @since 2.4.0
  */
-export const right: <E = never, A = never>(a: A) => TaskThese<E, A> = MT.right
+export const right: <E = never, A = never>(a: A) => TaskThese<E, A> =
+  /*#__PURE__*/
+  (() => MT.right)()
 
 /**
  * @since 2.4.0
  */
-export const both: <E, A>(e: E, a: A) => TaskThese<E, A> = MT.both
+export const both: <E, A>(e: E, a: A) => TaskThese<E, A> =
+  /*#__PURE__*/
+  (() => MT.both)()
 
 /**
  * @since 2.4.0
@@ -76,17 +82,23 @@ export function leftIO<E = never, A = never>(me: IO<E>): TaskThese<E, A> {
 /**
  * @since 2.4.0
  */
-export const leftTask: <E = never, A = never>(me: Task<E>) => TaskThese<E, A> = MT.leftM
+export const leftTask: <E = never, A = never>(me: Task<E>) => TaskThese<E, A> =
+  /*#__PURE__*/
+  (() => MT.leftM)()
 
 /**
  * @since 2.4.0
  */
-export const rightTask: <E = never, A = never>(ma: Task<A>) => TaskThese<E, A> = MT.rightM
+export const rightTask: <E = never, A = never>(ma: Task<A>) => TaskThese<E, A> =
+  /*#__PURE__*/
+  (() => MT.rightM)()
 
 /**
  * @since 2.4.0
  */
-export const fromIOEither: <E, A>(fa: IOEither<E, A>) => TaskThese<E, A> = T.fromIO
+export const fromIOEither: <E, A>(fa: IOEither<E, A>) => TaskThese<E, A> =
+  /*#__PURE__*/
+  (() => T.fromIO)()
 
 // -------------------------------------------------------------------------------------
 // destructors
@@ -99,13 +111,17 @@ export const fold: <E, B, A>(
   onLeft: (e: E) => Task<B>,
   onRight: (a: A) => Task<B>,
   onBoth: (e: E, a: A) => Task<B>
-) => (fa: TaskThese<E, A>) => Task<B> = MT.fold
+) => (fa: TaskThese<E, A>) => Task<B> =
+  /*#__PURE__*/
+  (() => MT.fold)()
 
 /* tslint:disable:readonly-array */
 /**
  * @since 3.0.0
  */
-export const toTuple: <E, A>(e: () => E, a: () => A) => (fa: TaskThese<E, A>) => Task<[E, A]> = MT.toTuple
+export const toTuple: <E, A>(e: () => E, a: () => A) => (fa: TaskThese<E, A>) => Task<[E, A]> =
+  /*#__PURE__*/
+  (() => MT.toTuple)()
 /* tslint:enable:readonly-array */
 
 // -------------------------------------------------------------------------------------
@@ -115,7 +131,9 @@ export const toTuple: <E, A>(e: () => E, a: () => A) => (fa: TaskThese<E, A>) =>
 /**
  * @since 2.4.0
  */
-export const swap: <E, A>(fa: TaskThese<E, A>) => TaskThese<A, E> = MT.swap
+export const swap: <E, A>(fa: TaskThese<E, A>) => TaskThese<A, E> =
+  /*#__PURE__*/
+  (() => MT.swap)()
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -131,7 +149,9 @@ export function getSemigroup<E, A>(SE: Semigroup<E>, SA: Semigroup<A>): Semigrou
 /**
  * @since 2.4.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: TaskThese<E, A>) => TaskThese<E, B> = MT.map
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: TaskThese<E, A>) => TaskThese<E, B> =
+  /*#__PURE__*/
+  (() => MT.map)()
 
 /**
  * @since 3.0.0
@@ -144,12 +164,16 @@ export const functorTaskThese: Functor2<URI> = {
 /**
  * @since 2.4.0
  */
-export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: TaskThese<E, A>) => TaskThese<G, B> = MT.bimap
+export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: TaskThese<E, A>) => TaskThese<G, B> =
+  /*#__PURE__*/
+  (() => MT.bimap)()
 
 /**
  * @since 2.4.0
  */
-export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TaskThese<E, A>) => TaskThese<G, A> = MT.mapLeft
+export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TaskThese<E, A>) => TaskThese<G, A> =
+  /*#__PURE__*/
+  (() => MT.mapLeft)()
 
 /**
  * @since 3.0.0
@@ -164,14 +188,14 @@ export const bifunctorTaskThese: Bifunctor2<URI> = {
  * @since 2.4.0
  */
 export function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E> & MonadTask2C<URI, E> {
-  const M = MT.getMonad(S)
+  const _ = MT.getMonad(S)
   return {
     URI,
-    _E: M._E,
-    map: M.map,
-    ap: M.ap,
-    of: M.of,
-    chain: M.chain,
+    _E: _._E,
+    map: _.map,
+    ap: _.ap,
+    of: _.of,
+    chain: _.chain,
     fromIO: rightIO,
     fromTask: rightTask
   }

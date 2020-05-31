@@ -45,47 +45,61 @@ export interface State<S, A> {
  *
  * @since 2.0.0
  */
-export const evalState: <S, A>(ma: State<S, A>, s: S) => A = MT.evalState
+export const evalState: <S, A>(ma: State<S, A>, s: S) => A =
+  /*#__PURE__*/
+  (() => MT.evalState)()
 
 /**
  * Run a computation in the `State` monad discarding the result
  *
  * @since 2.0.0
  */
-export const execState: <S, A>(ma: State<S, A>, s: S) => S = MT.execState
+export const execState: <S, A>(ma: State<S, A>, s: S) => S =
+  /*#__PURE__*/
+  (() => MT.execState)()
 
 /**
  * Get the current state
  *
  * @since 2.0.0
  */
-export const get: <S>() => State<S, S> = MT.get
+export const get: <S>() => State<S, S> =
+  /*#__PURE__*/
+  (() => MT.get)()
 
 /**
  * Set the state
  *
  * @since 2.0.0
  */
-export const put: <S>(s: S) => State<S, void> = MT.put
+export const put: <S>(s: S) => State<S, void> =
+  /*#__PURE__*/
+  (() => MT.put)()
 
 /**
  * Modify the state by applying a function to the current state
  *
  * @since 2.0.0
  */
-export const modify: <S>(f: (s: S) => S) => State<S, void> = MT.modify
+export const modify: <S>(f: (s: S) => S) => State<S, void> =
+  /*#__PURE__*/
+  (() => MT.modify)()
 
 /**
  * Get a value which depends on the current state
  *
  * @since 2.0.0
  */
-export const gets: <S, A>(f: (s: S) => A) => State<S, A> = MT.gets
+export const gets: <S, A>(f: (s: S) => A) => State<S, A> =
+  /*#__PURE__*/
+  (() => MT.gets)()
 
 /**
  * @since 2.0.0
  */
-export const of: <S, A>(a: A) => State<S, A> = MT.of
+export const of: <S, A>(a: A) => State<S, A> =
+  /*#__PURE__*/
+  (() => MT.of)()
 
 // -------------------------------------------------------------------------------------
 // pipeables
@@ -94,7 +108,9 @@ export const of: <S, A>(a: A) => State<S, A> = MT.of
 /**
  * @since 2.0.0
  */
-export const ap: <E, A>(fa: State<E, A>) => <B>(fab: State<E, (a: A) => B>) => State<E, B> = MT.ap
+export const ap: <E, A>(fa: State<E, A>) => <B>(fab: State<E, (a: A) => B>) => State<E, B> =
+  /*#__PURE__*/
+  (() => MT.ap)()
 
 /**
  * @since 2.0.0
@@ -119,7 +135,9 @@ export const apSecond = <E, B>(fb: State<E, B>) => <A>(fa: State<E, A>): State<E
 /**
  * @since 2.0.0
  */
-export const chain: <E, A, B>(f: (a: A) => State<E, B>) => (ma: State<E, A>) => State<E, B> = MT.chain
+export const chain: <E, A, B>(f: (a: A) => State<E, B>) => (ma: State<E, A>) => State<E, B> =
+  /*#__PURE__*/
+  (() => MT.chain)()
 
 /**
  * @since 2.0.0
@@ -140,7 +158,9 @@ export const flatten: <E, A>(mma: State<E, State<E, A>>) => State<E, A> = chain(
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: State<E, A>) => State<E, B> = MT.map
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: State<E, A>) => State<E, B> =
+  /*#__PURE__*/
+  (() => MT.map)()
 
 // -------------------------------------------------------------------------------------
 // instances

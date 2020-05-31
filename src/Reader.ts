@@ -46,14 +46,18 @@ export interface Reader<R, A> {
  *
  * @since 2.0.0
  */
-export const ask: <R>() => Reader<R, R> = MT.ask
+export const ask: <R>() => Reader<R, R> =
+  /*#__PURE__*/
+  (() => MT.ask)()
 
 /**
  * Projects a value from the global context in a Reader
  *
  * @since 2.0.0
  */
-export const asks: <R, A>(f: (r: R) => A) => Reader<R, A> = MT.asks
+export const asks: <R, A>(f: (r: R) => A) => Reader<R, A> =
+  /*#__PURE__*/
+  (() => MT.asks)()
 
 /**
  * Changes the value of the local context during the execution of the action `ma` (similar to `Contravariant`'s
@@ -61,7 +65,9 @@ export const asks: <R, A>(f: (r: R) => A) => Reader<R, A> = MT.asks
  *
  * @since 2.0.0
  */
-export const local: <Q, R>(f: (d: Q) => R) => <A>(ma: Reader<R, A>) => Reader<Q, A> = MT.local
+export const local: <Q, R>(f: (d: Q) => R) => <A>(ma: Reader<R, A>) => Reader<Q, A> =
+  /*#__PURE__*/
+  (() => MT.local)()
 
 /**
  * @since 2.0.0
@@ -85,7 +91,9 @@ export function getMonoid<R, A>(M: Monoid<A>): Monoid<Reader<R, A>> {
 /**
  * @since 2.0.0
  */
-export const of: <R, A>(a: A) => Reader<R, A> = MT.of
+export const of: <R, A>(a: A) => Reader<R, A> =
+  /*#__PURE__*/
+  (() => MT.of)()
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -94,7 +102,9 @@ export const of: <R, A>(a: A) => Reader<R, A> = MT.of
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <R>(fa: Reader<R, A>) => Reader<R, B> = MT.map
+export const map: <A, B>(f: (a: A) => B) => <R>(fa: Reader<R, A>) => Reader<R, B> =
+  /*#__PURE__*/
+  (() => MT.map)()
 
 /**
  * @since 3.0.0
@@ -107,7 +117,9 @@ export const functorReader: Functor2<URI> = {
 /**
  * @since 2.0.0
  */
-export const ap: <R, A>(fa: Reader<R, A>) => <B>(fab: Reader<R, (a: A) => B>) => Reader<R, B> = MT.ap
+export const ap: <R, A>(fa: Reader<R, A>) => <B>(fab: Reader<R, (a: A) => B>) => Reader<R, B> =
+  /*#__PURE__*/
+  (() => MT.ap)()
 
 /**
  * @since 3.0.0
@@ -151,7 +163,9 @@ export const applicativeReader: Applicative2<URI> = {
 /**
  * @since 2.0.0
  */
-export const chain: <A, R, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) => Reader<R, B> = MT.chain
+export const chain: <A, R, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) => Reader<R, B> =
+  /*#__PURE__*/
+  (() => MT.chain)()
 
 /**
  * @since 3.0.0

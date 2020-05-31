@@ -89,7 +89,9 @@ export function left<S, R, E = never, A = never>(e: E): StateReaderTaskEither<S,
 /**
  * @since 2.0.0
  */
-export const right: <S, R, E = never, A = never>(a: A) => StateReaderTaskEither<S, R, E, A> = MT.of
+export const right: <S, R, E = never, A = never>(a: A) => StateReaderTaskEither<S, R, E, A> =
+  /*#__PURE__*/
+  (() => MT.of)()
 
 /**
  * @since 2.0.0
@@ -178,28 +180,36 @@ export const fromReaderTaskEither: <S, R, E, A>(ma: ReaderTaskEither<R, E, A>) =
  *
  * @since 2.0.0
  */
-export const get: <S, R, E = never>() => StateReaderTaskEither<S, R, E, S> = MT.get
+export const get: <S, R, E = never>() => StateReaderTaskEither<S, R, E, S> =
+  /*#__PURE__*/
+  (() => MT.get)()
 
 /**
  * Set the state
  *
  * @since 2.0.0
  */
-export const put: <S, R, E = never>(s: S) => StateReaderTaskEither<S, R, E, void> = MT.put
+export const put: <S, R, E = never>(s: S) => StateReaderTaskEither<S, R, E, void> =
+  /*#__PURE__*/
+  (() => MT.put)()
 
 /**
  * Modify the state by applying a function to the current state
  *
  * @since 2.0.0
  */
-export const modify: <S, R, E = never>(f: (s: S) => S) => StateReaderTaskEither<S, R, E, void> = MT.modify
+export const modify: <S, R, E = never>(f: (s: S) => S) => StateReaderTaskEither<S, R, E, void> =
+  /*#__PURE__*/
+  (() => MT.modify)()
 
 /**
  * Get a value which depends on the current state
  *
  * @since 2.0.0
  */
-export const gets: <S, R, E = never, A = never>(f: (s: S) => A) => StateReaderTaskEither<S, R, E, A> = MT.gets
+export const gets: <S, R, E = never, A = never>(f: (s: S) => A) => StateReaderTaskEither<S, R, E, A> =
+  /*#__PURE__*/
+  (() => MT.gets)()
 
 /**
  * @since 2.4.0
@@ -293,7 +303,9 @@ export const alt: <S, R, E, A>(
  */
 export const ap: <S, R, E, A>(
   fa: StateReaderTaskEither<S, R, E, A>
-) => <B>(fab: StateReaderTaskEither<S, R, E, (a: A) => B>) => StateReaderTaskEither<S, R, E, B> = MT.ap
+) => <B>(fab: StateReaderTaskEither<S, R, E, (a: A) => B>) => StateReaderTaskEither<S, R, E, B> =
+  /*#__PURE__*/
+  (() => MT.ap)()
 
 /**
  * @since 2.0.0
@@ -336,7 +348,9 @@ export const bimap: <E, G, A, B>(
  */
 export const chain: <S, R, E, A, B>(
   f: (a: A) => StateReaderTaskEither<S, R, E, B>
-) => (ma: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> = MT.chain
+) => (ma: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> =
+  /*#__PURE__*/
+  (() => MT.chain)()
 
 /**
  * @since 2.0.0
@@ -400,7 +414,9 @@ export const flatten: <S, R, E, A>(
  */
 export const map: <A, B>(
   f: (a: A) => B
-) => <S, R, E>(fa: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> = MT.map
+) => <S, R, E>(fa: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> =
+  /*#__PURE__*/
+  (() => MT.map)()
 
 /**
  * @since 2.6.2

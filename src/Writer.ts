@@ -39,19 +39,25 @@ export interface Writer<W, A> {
 /**
  * @since 2.0.0
  */
-export const evalWriter: <W, A>(fa: Writer<W, A>) => A = MT.evalWriter
+export const evalWriter: <W, A>(fa: Writer<W, A>) => A =
+  /*#__PURE__*/
+  (() => MT.evalWriter)()
 
 /**
  * @since 2.0.0
  */
-export const execWriter: <W, A>(fa: Writer<W, A>) => W = MT.execWriter
+export const execWriter: <W, A>(fa: Writer<W, A>) => W =
+  /*#__PURE__*/
+  (() => MT.execWriter)()
 
 /**
  * Appends a value to the accumulator
  *
  * @since 2.0.0
  */
-export const tell: <W>(w: W) => Writer<W, void> = MT.tell
+export const tell: <W>(w: W) => Writer<W, void> =
+  /*#__PURE__*/
+  (() => MT.tell)()
 
 // tslint:disable:readonly-array
 /**
@@ -59,7 +65,9 @@ export const tell: <W>(w: W) => Writer<W, void> = MT.tell
  *
  * @since 2.0.0
  */
-export const listen: <W, A>(fa: Writer<W, A>) => Writer<W, [A, W]> = MT.listen
+export const listen: <W, A>(fa: Writer<W, A>) => Writer<W, [A, W]> =
+  /*#__PURE__*/
+  (() => MT.listen)()
 // tslint:enable:readonly-array
 
 // tslint:disable:readonly-array
@@ -68,7 +76,9 @@ export const listen: <W, A>(fa: Writer<W, A>) => Writer<W, [A, W]> = MT.listen
  *
  * @since 2.0.0
  */
-export const pass: <W, A>(fa: Writer<W, [A, (w: W) => W]>) => Writer<W, A> = MT.pass
+export const pass: <W, A>(fa: Writer<W, [A, (w: W) => W]>) => Writer<W, A> =
+  /*#__PURE__*/
+  (() => MT.pass)()
 // tslint:enable:readonly-array
 
 // tslint:disable:readonly-array
@@ -98,7 +108,9 @@ export function censor<W>(f: (w: W) => W): <A>(fa: Writer<W, A>) => Writer<W, A>
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: Writer<E, A>) => Writer<E, B> = MT.map
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: Writer<E, A>) => Writer<E, B> =
+  /*#__PURE__*/
+  (() => MT.map)()
 
 /**
  * @since 3.0.0

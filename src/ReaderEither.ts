@@ -47,22 +47,30 @@ export interface ReaderEither<R, E, A> extends Reader<R, Either<E, A>> {}
 /**
  * @since 2.0.0
  */
-export const left: <R, E = never, A = never>(e: E) => ReaderEither<R, E, A> = MT.left
+export const left: <R, E = never, A = never>(e: E) => ReaderEither<R, E, A> =
+  /*#__PURE__*/
+  (() => MT.left)()
 
 /**
  * @since 2.0.0
  */
-export const right: <R, E = never, A = never>(a: A) => ReaderEither<R, E, A> = MT.of
+export const right: <R, E = never, A = never>(a: A) => ReaderEither<R, E, A> =
+  /*#__PURE__*/
+  (() => MT.of)()
 
 /**
  * @since 2.0.0
  */
-export const rightReader: <R, E = never, A = never>(ma: Reader<R, A>) => ReaderEither<R, E, A> = MT.rightM
+export const rightReader: <R, E = never, A = never>(ma: Reader<R, A>) => ReaderEither<R, E, A> =
+  /*#__PURE__*/
+  (() => MT.rightM)()
 
 /**
  * @since 2.0.0
  */
-export const leftReader: <R, E = never, A = never>(me: Reader<R, E>) => ReaderEither<R, E, A> = MT.leftM
+export const leftReader: <R, E = never, A = never>(me: Reader<R, E>) => ReaderEither<R, E, A> =
+  /*#__PURE__*/
+  (() => MT.leftM)()
 
 /**
  * @since 2.0.0
@@ -70,7 +78,9 @@ export const leftReader: <R, E = never, A = never>(me: Reader<R, E>) => ReaderEi
 export const fold: <R, E, A, B>(
   onLeft: (e: E) => Reader<R, B>,
   onRight: (a: A) => Reader<R, B>
-) => (ma: ReaderEither<R, E, A>) => Reader<R, B> = MT.fold
+) => (ma: ReaderEither<R, E, A>) => Reader<R, B> =
+  /*#__PURE__*/
+  (() => MT.fold)()
 
 /**
  * @since 2.0.0
@@ -90,12 +100,16 @@ export const getOrElseW: <E, Q, B>(
  */
 export const orElse: <E, R, M, A>(
   onLeft: (e: E) => ReaderEither<R, M, A>
-) => (ma: ReaderEither<R, E, A>) => ReaderEither<R, M, A> = MT.orElse
+) => (ma: ReaderEither<R, E, A>) => ReaderEither<R, M, A> =
+  /*#__PURE__*/
+  (() => MT.orElse)()
 
 /**
  * @since 2.0.0
  */
-export const swap: <R, E, A>(ma: ReaderEither<R, E, A>) => ReaderEither<R, A, E> = MT.swap
+export const swap: <R, E, A>(ma: ReaderEither<R, E, A>) => ReaderEither<R, A, E> =
+  /*#__PURE__*/
+  (() => MT.swap)()
 
 /**
  * Semigroup returning the left-most non-`Left` value. If both operands are `Right`s then the inner values are
@@ -196,7 +210,9 @@ export const alt: <R, E, A>(that: () => ReaderEither<R, E, A>) => (fa: ReaderEit
  */
 export const ap: <R, E, A>(
   fa: ReaderEither<R, E, A>
-) => <B>(fab: ReaderEither<R, E, (a: A) => B>) => ReaderEither<R, E, B> = MT.ap
+) => <B>(fab: ReaderEither<R, E, (a: A) => B>) => ReaderEither<R, E, B> =
+  /*#__PURE__*/
+  (() => MT.ap)()
 
 /**
  * @since 2.0.0
@@ -226,14 +242,18 @@ export const apSecond = <R, E, B>(fb: ReaderEither<R, E, B>) => <A>(fa: ReaderEi
 export const bimap: <E, G, A, B>(
   f: (e: E) => G,
   g: (a: A) => B
-) => <R>(fa: ReaderEither<R, E, A>) => ReaderEither<R, G, B> = MT.bimap
+) => <R>(fa: ReaderEither<R, E, A>) => ReaderEither<R, G, B> =
+  /*#__PURE__*/
+  (() => MT.bimap)()
 
 /**
  * @since 2.0.0
  */
 export const chain: <A, R, E, B>(
   f: (a: A) => ReaderEither<R, E, B>
-) => (ma: ReaderEither<R, E, A>) => ReaderEither<R, E, B> = MT.chain
+) => (ma: ReaderEither<R, E, A>) => ReaderEither<R, E, B> =
+  /*#__PURE__*/
+  (() => MT.chain)()
 
 /**
  * @since 2.6.0
@@ -272,7 +292,9 @@ export const flatten: <R, E, A>(mma: ReaderEither<R, E, ReaderEither<R, E, A>>) 
 /**
  * @since 2.0.0
  */
-export const mapLeft: <E, G>(f: (e: E) => G) => <R, A>(fa: ReaderEither<R, E, A>) => ReaderEither<R, G, A> = MT.mapLeft
+export const mapLeft: <E, G>(f: (e: E) => G) => <R, A>(fa: ReaderEither<R, E, A>) => ReaderEither<R, G, A> =
+  /*#__PURE__*/
+  (() => MT.mapLeft)()
 
 /**
  * @since 2.0.0
@@ -315,7 +337,9 @@ export const filterOrElse: {
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderEither<R, E, A>) => ReaderEither<R, E, B> = MT.map
+export const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderEither<R, E, A>) => ReaderEither<R, E, B> =
+  /*#__PURE__*/
+  (() => MT.map)()
 
 /**
  * @since 3.0.0
