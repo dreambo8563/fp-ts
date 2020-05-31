@@ -85,7 +85,9 @@ export const pipe: <B, C>(fbc: [C, B]) => <A>(fab: [B, A]) => [C, A] = RT.pipe a
 /**
  * @since 2.0.0
  */
-export const duplicate: <E, A>(ma: [A, E]) => [[A, E], E] = RT.duplicate as any
+export const duplicate: <E, A>(ma: [A, E]) => [[A, E], E] =
+  /*#__PURE__*/
+  RT.duplicate as any
 
 /**
  * @since 2.0.0

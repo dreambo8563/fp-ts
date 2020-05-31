@@ -429,9 +429,9 @@ export const chainFirst: <A, B>(
 /**
  * @since 2.5.0
  */
-export const duplicate: <A>(
-  ma: ReadonlyNonEmptyArray<A>
-) => ReadonlyNonEmptyArray<ReadonlyNonEmptyArray<A>> = RA.duplicate as any
+export const duplicate: <A>(ma: ReadonlyNonEmptyArray<A>) => ReadonlyNonEmptyArray<ReadonlyNonEmptyArray<A>> =
+  /*#__PURE__*/
+  RA.duplicate as any
 
 /**
  * @since 2.5.0

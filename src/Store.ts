@@ -107,7 +107,9 @@ export const extend: <E, A, B>(f: (wa: Store<E, A>) => B) => (wa: Store<E, A>) =
 /**
  * @since 2.0.0
  */
-export const duplicate: <E, A>(wa: Store<E, A>) => Store<E, Store<E, A>> = extend(identity)
+export const duplicate: <E, A>(wa: Store<E, A>) => Store<E, Store<E, A>> =
+  /*#__PURE__*/
+  extend(identity)
 
 /**
  * @since 2.0.0

@@ -145,7 +145,9 @@ export const extend: <E, A, B>(f: (fa: readonly [A, E]) => B) => (wa: readonly [
 /**
  * @since 2.5.0
  */
-export const duplicate: <E, A>(ma: readonly [A, E]) => readonly [readonly [A, E], E] = extend(F.identity)
+export const duplicate: <E, A>(ma: readonly [A, E]) => readonly [readonly [A, E], E] =
+  /*#__PURE__*/
+  extend(F.identity)
 
 /**
  * @since 2.6.2

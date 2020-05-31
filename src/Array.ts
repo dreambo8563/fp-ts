@@ -1041,7 +1041,9 @@ export const extend: <A, B>(f: (fa: Array<A>) => B) => (wa: Array<A>) => Array<B
 /**
  * @since 2.0.0
  */
-export const duplicate: <A>(wa: Array<A>) => Array<Array<A>> = RA.duplicate as any
+export const duplicate: <A>(wa: Array<A>) => Array<Array<A>> =
+  /*#__PURE__*/
+  RA.duplicate as any
 
 /**
  * @since 2.0.0

@@ -201,7 +201,9 @@ export const extendIdentity: Extend1<URI> = {
 /**
  * @since 2.0.0
  */
-export const duplicate: <A>(ma: Identity<A>) => Identity<Identity<A>> = extend(id)
+export const duplicate: <A>(ma: Identity<A>) => Identity<Identity<A>> =
+  /*#__PURE__*/
+  extend(id)
 
 /**
  * @since 2.6.2

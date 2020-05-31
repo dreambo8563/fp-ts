@@ -336,7 +336,9 @@ export const extend: <A, B>(f: (wa: Tree<A>) => B) => (wa: Tree<A>) => Tree<B> =
 /**
  * @since 2.0.0
  */
-export const duplicate: <A>(wa: Tree<A>) => Tree<Tree<A>> = extend(identity)
+export const duplicate: <A>(wa: Tree<A>) => Tree<Tree<A>> =
+  /*#__PURE__*/
+  extend(identity)
 
 /**
  * @since 2.0.0
