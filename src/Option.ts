@@ -749,7 +749,9 @@ export const fromEither: <E, A>(ma: Either<E, A>) => Option<A> = (ma) => (ma._ta
 /**
  * @since 2.0.0
  */
-export const compact: <A>(fa: Option<Option<A>>) => Option<A> = chain(identity)
+export const compact: <A>(fa: Option<Option<A>>) => Option<A> =
+  /*#__PURE__*/
+  chain(identity)
 
 /**
  * @since 2.0.0
