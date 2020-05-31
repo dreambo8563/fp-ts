@@ -32,7 +32,6 @@ Added in v2.3.0
 - [fromTaskK](#fromtaskk)
 - [getMonoid](#getmonoid)
 - [getSemigroup](#getsemigroup)
-- [local](#local)
 - [map](#map)
 - [of](#of)
 - [readerTask](#readertask)
@@ -200,7 +199,7 @@ Added in v2.4.0
 **Signature**
 
 ```ts
-export declare const fromReader: <R, A = never>(ma: Reader<R, A>) => ReaderTask<R, A>
+export declare const fromReader: <R, A = never>(ma: R.Reader<R, A>) => ReaderTask<R, A>
 ```
 
 Added in v2.3.0
@@ -243,16 +242,6 @@ Added in v2.3.0
 
 ```ts
 export declare function getSemigroup<R, A>(S: Semigroup<A>): Semigroup<ReaderTask<R, A>>
-```
-
-Added in v2.3.0
-
-# local
-
-**Signature**
-
-```ts
-export declare const local: <Q, R>(f: (f: Q) => R) => <A>(ma: ReaderTask<R, A>) => ReaderTask<Q, A>
 ```
 
 Added in v2.3.0

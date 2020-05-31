@@ -51,6 +51,10 @@ high state of flux, you're at risk of it changing without notice.
     - remove the `option` mega instance in favour of splitted instances (@gcanti)
   - `Ord`
     - move `ordDate` to `Date` module (@gcanti)
+  - `ReaderTask`
+    - remove `local` (@gcanti)
+  - `ReaderTaskEither`
+    - remove `local` (@gcanti)
   - `ReadonlyArray`
     - remove the `readonlyArray` mega instance in favour of splitted instances (@gcanti)
   - `ReadonlyNonEmptyArray`

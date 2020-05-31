@@ -68,15 +68,6 @@ describe('ReaderTask', () => {
     return assert.deepStrictEqual(e, 3)
   })
 
-  it('local', async () => {
-    const len = (s: string): number => s.length
-    const e = await pipe(
-      _.asks((n: number) => n + 1),
-      _.local(len)
-    )('aaa')()
-    assert.deepStrictEqual(e, 4)
-  })
-
   it('fromTask', async () => {
     const e = await _.fromTask(T.of(1))({})()
     assert.deepStrictEqual(e, 1)

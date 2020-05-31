@@ -3,20 +3,16 @@
  */
 import { Category2 } from './Category'
 import * as F from './function'
-import { monadIdentity } from './Identity'
+import * as I from './Identity'
 import { Monad2 } from './Monad'
 import { Monoid } from './Monoid'
 import { Profunctor2 } from './Profunctor'
-import { getReaderM } from './ReaderT'
+import * as ReaderT from './ReaderT'
 import { Semigroup } from './Semigroup'
 import { Functor2 } from './Functor'
 import { Apply2 } from './Apply'
 import { Applicative2 } from './Applicative'
 import { Semigroupoid2 } from './Semigroupoid'
-
-const MT =
-  /*#__PURE__*/
-  getReaderM(monadIdentity)
 
 /**
  * @since 2.0.0
@@ -46,9 +42,7 @@ export interface Reader<R, A> {
  *
  * @since 2.0.0
  */
-export const ask: <R>() => Reader<R, R> =
-  /*#__PURE__*/
-  (() => MT.ask)()
+export const ask: <R>() => Reader<R, R> = () => I.of
 
 /**
  * Projects a value from the global context in a Reader
@@ -57,7 +51,7 @@ export const ask: <R>() => Reader<R, R> =
  */
 export const asks: <R, A>(f: (r: R) => A) => Reader<R, A> =
   /*#__PURE__*/
-  (() => MT.asks)()
+  (() => ReaderT.asks(I.monadIdentity))()
 
 /**
  * Changes the value of the local context during the execution of the action `ma` (similar to `Contravariant`'s
@@ -65,9 +59,7 @@ export const asks: <R, A>(f: (r: R) => A) => Reader<R, A> =
  *
  * @since 2.0.0
  */
-export const local: <Q, R>(f: (d: Q) => R) => <A>(ma: Reader<R, A>) => Reader<Q, A> =
-  /*#__PURE__*/
-  (() => MT.local)()
+export const local: <Q, R>(f: (d: Q) => R) => <A>(ma: Reader<R, A>) => Reader<Q, A> = (f) => (ma) => (q) => ma(f(q))
 
 /**
  * @since 2.0.0
@@ -93,7 +85,7 @@ export function getMonoid<R, A>(M: Monoid<A>): Monoid<Reader<R, A>> {
  */
 export const of: <R, A>(a: A) => Reader<R, A> =
   /*#__PURE__*/
-  (() => MT.of)()
+  (() => ReaderT.of(I.monadIdentity))()
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -104,7 +96,7 @@ export const of: <R, A>(a: A) => Reader<R, A> =
  */
 export const map: <A, B>(f: (a: A) => B) => <R>(fa: Reader<R, A>) => Reader<R, B> =
   /*#__PURE__*/
-  (() => MT.map)()
+  (() => ReaderT.map(I.monadIdentity))()
 
 /**
  * @since 3.0.0
@@ -119,7 +111,7 @@ export const functorReader: Functor2<URI> = {
  */
 export const ap: <R, A>(fa: Reader<R, A>) => <B>(fab: Reader<R, (a: A) => B>) => Reader<R, B> =
   /*#__PURE__*/
-  (() => MT.ap)()
+  (() => ReaderT.ap(I.monadIdentity))()
 
 /**
  * @since 3.0.0
@@ -165,7 +157,7 @@ export const applicativeReader: Applicative2<URI> = {
  */
 export const chain: <A, R, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) => Reader<R, B> =
   /*#__PURE__*/
-  (() => MT.chain)()
+  (() => ReaderT.chain(I.monadIdentity))()
 
 /**
  * @since 3.0.0
