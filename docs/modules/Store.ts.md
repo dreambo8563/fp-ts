@@ -15,15 +15,17 @@ Added in v2.0.0
 - [Store (interface)](#store-interface)
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
+- [comonadStore](#comonadstore)
 - [duplicate](#duplicate)
 - [experiment](#experiment)
 - [extend](#extend)
+- [extendStore](#extendstore)
 - [extract](#extract)
+- [functorStore](#functorstore)
 - [map](#map)
 - [peeks](#peeks)
 - [seek](#seek)
 - [seeks](#seeks)
-- [store](#store)
 
 ---
 
@@ -59,6 +61,16 @@ export declare const URI: 'Store'
 ```
 
 Added in v2.0.0
+
+# comonadStore
+
+**Signature**
+
+```ts
+export declare const comonadStore: Comonad2<'Store'>
+```
+
+Added in v3.0.0
 
 # duplicate
 
@@ -107,6 +119,16 @@ export declare const extend: <E, A, B>(f: (wa: Store<E, A>) => B) => (wa: Store<
 
 Added in v2.0.0
 
+# extendStore
+
+**Signature**
+
+```ts
+export declare const extendStore: Extend2<'Store'>
+```
+
+Added in v3.0.0
+
 # extract
 
 **Signature**
@@ -116,6 +138,16 @@ export declare const extract: <E, A>(wa: Store<E, A>) => A
 ```
 
 Added in v2.6.2
+
+# functorStore
+
+**Signature**
+
+```ts
+export declare const functorStore: Functor2<'Store'>
+```
+
+Added in v3.0.0
 
 # map
 
@@ -159,16 +191,6 @@ Reposition the focus at the specified position, which depends on the current pos
 
 ```ts
 export declare function seeks<S>(f: Endomorphism<S>): <A>(wa: Store<S, A>) => Store<S, A>
-```
-
-Added in v2.0.0
-
-# store
-
-**Signature**
-
-```ts
-export declare const store: Comonad2<'Store'>
 ```
 
 Added in v2.0.0

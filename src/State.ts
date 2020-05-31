@@ -156,7 +156,8 @@ export const functorState: Functor2<URI> = {
  * @since 3.0.0
  */
 export const applyState: Apply2<URI> = {
-  ...functorState,
+  URI,
+  map,
   ap
 }
 
@@ -164,7 +165,9 @@ export const applyState: Apply2<URI> = {
  * @since 3.0.0
  */
 export const applicativeState: Applicative2<URI> = {
-  ...applyState,
+  URI,
+  map,
+  ap,
   of
 }
 
@@ -172,6 +175,9 @@ export const applicativeState: Applicative2<URI> = {
  * @since 3.0.0
  */
 export const monadState: Monad2<URI> = {
-  ...applicativeState,
+  URI,
+  map,
+  ap,
+  of,
   chain
 }

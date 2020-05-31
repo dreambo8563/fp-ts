@@ -5,6 +5,7 @@ import { Comonad2 } from './Comonad'
 import { Endomorphism, identity, pipe } from './function'
 import { Functor, Functor1, Functor2, Functor2C, Functor3, Functor3C } from './Functor'
 import { HKT, Kind, Kind2, Kind3, URIS, URIS2, URIS3 } from './HKT'
+import { Extend2 } from './Extend'
 
 declare module './HKT' {
   interface URItoKind2<E, A> {
@@ -121,11 +122,28 @@ export const map: <A, B>(f: (a: A) => B) => <E>(fa: Store<E, A>) => Store<E, B> 
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const store: Comonad2<URI> = {
+export const functorStore: Functor2<URI> = {
+  URI,
+  map
+}
+
+/**
+ * @since 3.0.0
+ */
+export const extendStore: Extend2<URI> = {
   URI,
   map,
-  extract,
   extend
+}
+
+/**
+ * @since 3.0.0
+ */
+export const comonadStore: Comonad2<URI> = {
+  URI,
+  map,
+  extend,
+  extract
 }

@@ -466,23 +466,31 @@ export const functorStateReaderTaskEither: Functor4<URI> = {
  * @since 3.0.0
  */
 export const applyStateReaderTaskEither: Apply4<URI> = {
-  ...functorStateReaderTaskEither,
+  URI,
+  map,
   ap
 }
+
+const of = right
 
 /**
  * @since 3.0.0
  */
 export const applicativeStateReaderTaskEither: Applicative4<URI> = {
-  ...applyStateReaderTaskEither,
-  of: right
+  URI,
+  map,
+  ap,
+  of
 }
 
 /**
  * @since 3.0.0
  */
 export const monadStateReaderTaskEither: Monad4<URI> = {
-  ...applicativeStateReaderTaskEither,
+  URI,
+  map,
+  ap,
+  of,
   chain
 }
 
@@ -499,32 +507,52 @@ export const bifunctorStateReaderTaskEither: Bifunctor4<URI> = {
  * @since 3.0.0
  */
 export const altStateReaderTaskEither: Alt4<URI> = {
-  ...functorStateReaderTaskEither,
+  URI,
+  map,
   alt
 }
+
+const fromIO = rightIO
 
 /**
  * @since 3.0.0
  */
 export const monadIOStateReaderTaskEither: MonadIO4<URI> = {
-  ...monadStateReaderTaskEither,
-  fromIO: rightIO
+  URI,
+  map,
+  ap,
+  of,
+  chain,
+  fromIO
 }
+
+const fromTask = rightTask
 
 /**
  * @since 3.0.0
  */
 export const monadTaskStateReaderTaskEither: MonadTask4<URI> = {
-  ...monadIOStateReaderTaskEither,
-  fromTask: rightTask
+  URI,
+  map,
+  ap,
+  of,
+  chain,
+  fromIO,
+  fromTask
 }
+
+const throwError = left
 
 /**
  * @since 3.0.0
  */
 export const monadThrowStateReaderTaskEither: MonadThrow4<URI> = {
-  ...monadStateReaderTaskEither,
-  throwError: left
+  URI,
+  map,
+  ap,
+  of,
+  chain,
+  throwError
 }
 
 /**
@@ -538,7 +566,7 @@ export const monadReaderTaskEitherSeq: Monad4<URI> &
   MonadThrow4<URI> = {
   URI,
   map,
-  of: right,
+  of,
   ap: (fa) => (fab) =>
     pipe(
       fab,
@@ -548,7 +576,7 @@ export const monadReaderTaskEitherSeq: Monad4<URI> &
   bimap,
   mapLeft,
   alt,
-  fromIO: rightIO,
-  fromTask: rightTask,
-  throwError: left
+  fromIO,
+  fromTask,
+  throwError
 }
