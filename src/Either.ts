@@ -770,9 +770,14 @@ export function getFilterable<E>(M: Monoid<E>): Filterable2C<URI, E> {
     return isLeft(e) ? { left: right(e.left), right: empty } : { left: empty, right: right(e.right) }
   }
 
+  const compactableEither = getCompactable(M)
+
   return {
-    ...getCompactable(M),
+    URI,
+    _E: undefined as any,
     map,
+    compact: compactableEither.compact,
+    separate: compactableEither.separate,
     filter,
     filterMap,
     partition,
@@ -805,7 +810,15 @@ export function getWitherable<E>(M: Monoid<E>): Witherable2C<URI, E> {
   }
 
   return {
-    ...filterableEither,
+    URI,
+    _E: undefined as any,
+    map,
+    compact: filterableEither.compact,
+    separate: filterableEither.separate,
+    filter: filterableEither.filter,
+    filterMap: filterableEither.filterMap,
+    partition: filterableEither.partition,
+    partitionMap: filterableEither.partitionMap,
     traverse,
     sequence,
     reduce,
