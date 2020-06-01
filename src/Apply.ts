@@ -238,3 +238,34 @@ export function sequenceS<F>(F: Apply<F>): (r: Record<string, HKT<F, any>>) => H
   }
 }
 /* tslint:enable:readonly-array */
+
+/**
+ * @since 3.0.0
+ */
+export function apComposition<F extends URIS, G extends URIS2>(
+  F: Apply1<F>,
+  G: Apply2<G>
+): <E, A>(fga: Kind<F, Kind2<G, E, A>>) => <B>(fgab: Kind<F, Kind2<G, E, (a: A) => B>>) => Kind<F, Kind2<G, E, B>>
+export function apComposition<F extends URIS, G extends URIS2, E>(
+  F: Apply1<F>,
+  G: Apply2C<G, E>
+): <A>(fga: Kind<F, Kind2<G, E, A>>) => <B>(fgab: Kind<F, Kind2<G, E, (a: A) => B>>) => Kind<F, Kind2<G, E, B>>
+export function apComposition<F extends URIS, G extends URIS>(
+  F: Apply1<F>,
+  G: Apply1<G>
+): <A>(fga: Kind<F, Kind<G, A>>) => <B>(fgab: Kind<F, Kind<G, (a: A) => B>>) => Kind<F, Kind<G, B>>
+export function apComposition<F, G>(
+  F: Apply<F>,
+  G: Apply<G>
+): <A>(fga: HKT<F, HKT<G, A>>) => <B>(fgab: HKT<F, HKT<G, (a: A) => B>>) => HKT<F, HKT<G, B>>
+export function apComposition<F, G>(
+  F: Apply<F>,
+  G: Apply<G>
+): <A>(fga: HKT<F, HKT<G, A>>) => <B>(fgab: HKT<F, HKT<G, (a: A) => B>>) => HKT<F, HKT<G, B>> {
+  return <A>(fga: HKT<F, HKT<G, A>>) => <B>(fgab: HKT<F, HKT<G, (a: A) => B>>): HKT<F, HKT<G, B>> =>
+    pipe(
+      fgab,
+      F.map((h) => (ga: HKT<G, A>) => pipe(h, G.ap(ga))),
+      F.ap(fga)
+    )
+}

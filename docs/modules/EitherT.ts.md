@@ -22,7 +22,6 @@ Added in v2.0.0
 - [fold](#fold)
 - [getOrElse](#getorelse)
 - [left](#left)
-- [map](#map)
 - [mapLeft](#mapleft)
 - [orElse](#orelse)
 - [right](#right)
@@ -178,22 +177,6 @@ Added in v3.0.0
 export declare function left<F extends URIS2>(A: Applicative2<F>): <R, E, A>(e: E) => EitherT2<F, R, E, A>
 export declare function left<F extends URIS>(A: Applicative1<F>): <E, A>(e: E) => EitherT1<F, E, A>
 export declare function left<F>(A: Applicative<F>): <E, A>(e: E) => EitherT<F, E, A>
-```
-
-Added in v3.0.0
-
-# map
-
-**Signature**
-
-```ts
-export declare function map<F extends URIS2>(
-  F: Functor2<F>
-): <A, B>(f: (a: A) => B) => <R, E>(fa: EitherT2<F, R, E, A>) => EitherT2<F, R, E, B>
-export declare function map<F extends URIS>(
-  F: Functor1<F>
-): <A, B>(f: (a: A) => B) => <E>(fa: EitherT1<F, E, A>) => EitherT1<F, E, B>
-export declare function map<F>(F: Functor<F>): <A, B>(f: (a: A) => B) => <E>(fa: EitherT<F, E, A>) => EitherT<F, E, B>
 ```
 
 Added in v3.0.0

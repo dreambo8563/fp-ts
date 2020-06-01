@@ -262,9 +262,7 @@ export const fromEither: <E, A>(ma: E.Either<E, A>) => IOEither<E, A> = (ma) =>
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: IOEither<E, A>) => IOEither<E, B> =
-  /*#__PURE__*/
-  (() => EitherT.map(io.monadIO))()
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: IOEither<E, A>) => IOEither<E, B> = (f) => io.map(E.map(f))
 
 /**
  * @since 3.0.0

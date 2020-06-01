@@ -6,7 +6,7 @@
  */
 import { Alt2, Alt2C } from './Alt'
 import { Applicative2, Applicative2C } from './Applicative'
-import { Apply2 } from './Apply'
+import { Apply2, apComposition } from './Apply'
 import { Bifunctor2 } from './Bifunctor'
 import * as E from './Either'
 import * as EitherT from './EitherT'
@@ -275,13 +275,14 @@ export function taskify<L, R>(f: Function): () => TaskEither<L, R> {
  * @since 2.0.0
  */
 export function getTaskValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E> {
+  const ap = apComposition(T.applicativeTask, E.getValidation(S))
   const V = getValidationM(S, T.monadTask)
   return {
     URI,
     _E: undefined as any,
-    map: V.map,
-    ap: V.ap,
-    of: V.of,
+    map,
+    ap,
+    of,
     alt: V.alt
   }
 }
@@ -391,9 +392,7 @@ export const filterOrElse: {
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: TaskEither<E, A>) => TaskEither<E, B> =
-  /*#__PURE__*/
-  (() => EitherT.map(T.monadTask))()
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: TaskEither<E, A>) => TaskEither<E, B> = (f) => T.map(E.map(f))
 
 /**
  * @since 3.0.0
@@ -406,9 +405,9 @@ export const functorTaskEither: Functor2<URI> = {
 /**
  * @since 2.0.0
  */
-export const ap: <E, A>(fa: TaskEither<E, A>) => <B>(fab: TaskEither<E, (a: A) => B>) => TaskEither<E, B> =
-  /*#__PURE__*/
-  (() => EitherT.ap(T.monadTask))()
+export const ap: <E, A>(fa: TaskEither<E, A>) => <B>(fab: TaskEither<E, (a: A) => B>) => TaskEither<E, B> = EitherT.ap(
+  T.monadTask
+)
 
 /**
  * @since 3.0.0

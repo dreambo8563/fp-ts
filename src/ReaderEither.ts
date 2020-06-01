@@ -336,9 +336,8 @@ export const filterOrElse: {
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderEither<R, E, A>) => ReaderEither<R, E, B> =
-  /*#__PURE__*/
-  (() => EitherT.map(R.monadReader))()
+export const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderEither<R, E, A>) => ReaderEither<R, E, B> = (f) =>
+  R.map(E.map(f))
 
 /**
  * @since 3.0.0

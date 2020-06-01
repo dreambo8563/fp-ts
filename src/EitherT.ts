@@ -28,20 +28,6 @@ export type EitherT2<M extends URIS2, R, E, A> = Kind2<M, R, E.Either<E, A>>
 /**
  * @since 3.0.0
  */
-export function map<F extends URIS2>(
-  F: Functor2<F>
-): <A, B>(f: (a: A) => B) => <R, E>(fa: EitherT2<F, R, E, A>) => EitherT2<F, R, E, B>
-export function map<F extends URIS>(
-  F: Functor1<F>
-): <A, B>(f: (a: A) => B) => <E>(fa: EitherT1<F, E, A>) => EitherT1<F, E, B>
-export function map<F>(F: Functor<F>): <A, B>(f: (a: A) => B) => <E>(fa: EitherT<F, E, A>) => EitherT<F, E, B>
-export function map<F>(F: Functor<F>): <A, B>(f: (a: A) => B) => <E>(fa: EitherT<F, E, A>) => EitherT<F, E, B> {
-  return (f) => F.map(E.map(f))
-}
-
-/**
- * @since 3.0.0
- */
 export function ap<F extends URIS2>(
   F: Apply2<F>
 ): <R, E, A>(fa: EitherT2<F, R, E, A>) => <B>(fab: EitherT2<F, R, E, (a: A) => B>) => EitherT2<F, R, E, B>
