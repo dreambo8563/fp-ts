@@ -354,9 +354,7 @@ export const chainFirst: <A, B>(
 /**
  * @since 2.0.0
  */
-export const duplicate: <A>(ma: NonEmptyArray<A>) => NonEmptyArray<NonEmptyArray<A>> =
-  /*#__PURE__*/
-  RNEA.duplicate as any
+export const duplicate: <A>(ma: NonEmptyArray<A>) => NonEmptyArray<NonEmptyArray<A>> = RNEA.duplicate as any
 
 /**
  * @since 2.0.0

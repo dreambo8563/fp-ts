@@ -60,7 +60,7 @@ export const fromTask: <R, A>(ma: Task<A>) => ReaderTask<R, A> =
  */
 export const fromReader: <R, A = never>(ma: Reader<R, A>) => ReaderTask<R, A> =
   /*#__PURE__*/
-  (() => ReaderT.fromReader(T.monadTask))()
+  ReaderT.fromReader(T.monadTask)
 
 /**
  * @since 2.3.0
@@ -74,7 +74,7 @@ export function fromIO<R, A>(ma: IO<A>): ReaderTask<R, A> {
  */
 export const of: <R, A>(a: A) => ReaderTask<R, A> =
   /*#__PURE__*/
-  (() => ReaderT.of(T.monadTask))()
+  ReaderT.of(T.monadTask)
 
 /**
  * @since 2.3.0
@@ -103,7 +103,7 @@ export const ask: <R>() => ReaderTask<R, R> = () => T.of
  */
 export const asks: <R, A = never>(f: (r: R) => A) => ReaderTask<R, A> =
   /*#__PURE__*/
-  (() => ReaderT.asks(T.monadTask))()
+  ReaderT.asks(T.monadTask)
 
 /**
  * @since 2.4.0
@@ -144,7 +144,7 @@ export function chainTaskK<A, B>(f: (a: A) => Task<B>): <R>(ma: ReaderTask<R, A>
  */
 export const ap: <R, A>(fa: ReaderTask<R, A>) => <B>(fab: ReaderTask<R, (a: A) => B>) => ReaderTask<R, B> =
   /*#__PURE__*/
-  (() => ReaderT.ap(T.monadTask))()
+  ReaderT.ap(T.monadTask)
 
 /**
  * @since 2.3.0
@@ -171,7 +171,7 @@ export const apSecond = <R, B>(fb: ReaderTask<R, B>) => <A>(fa: ReaderTask<R, A>
  */
 export const chain: <A, R, B>(f: (a: A) => ReaderTask<R, B>) => (ma: ReaderTask<R, A>) => ReaderTask<R, B> =
   /*#__PURE__*/
-  (() => ReaderT.chain(T.monadTask))()
+  ReaderT.chain(T.monadTask)
 
 /**
  * @since 2.3.0
@@ -194,7 +194,7 @@ export const flatten: <R, A>(mma: ReaderTask<R, ReaderTask<R, A>>) => ReaderTask
  */
 export const map: <A, B>(f: (a: A) => B) => <R>(fa: ReaderTask<R, A>) => ReaderTask<R, B> =
   /*#__PURE__*/
-  (() => ReaderT.map(T.monadTask))()
+  ReaderT.map(T.monadTask)
 
 // -------------------------------------------------------------------------------------
 // instances

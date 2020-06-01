@@ -51,7 +51,7 @@ export const ask: <R>() => Reader<R, R> = () => I.of
  */
 export const asks: <R, A>(f: (r: R) => A) => Reader<R, A> =
   /*#__PURE__*/
-  (() => ReaderT.asks(I.monadIdentity))()
+  ReaderT.asks(I.monadIdentity)
 
 /**
  * Changes the value of the local context during the execution of the action `ma` (similar to `Contravariant`'s
@@ -85,7 +85,7 @@ export function getMonoid<R, A>(M: Monoid<A>): Monoid<Reader<R, A>> {
  */
 export const of: <R, A>(a: A) => Reader<R, A> =
   /*#__PURE__*/
-  (() => ReaderT.of(I.monadIdentity))()
+  ReaderT.of(I.monadIdentity)
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -96,7 +96,7 @@ export const of: <R, A>(a: A) => Reader<R, A> =
  */
 export const map: <A, B>(f: (a: A) => B) => <R>(fa: Reader<R, A>) => Reader<R, B> =
   /*#__PURE__*/
-  (() => ReaderT.map(I.monadIdentity))()
+  ReaderT.map(I.monadIdentity)
 
 /**
  * @since 3.0.0
@@ -111,7 +111,7 @@ export const functorReader: Functor2<URI> = {
  */
 export const ap: <R, A>(fa: Reader<R, A>) => <B>(fab: Reader<R, (a: A) => B>) => Reader<R, B> =
   /*#__PURE__*/
-  (() => ReaderT.ap(I.monadIdentity))()
+  ReaderT.ap(I.monadIdentity)
 
 /**
  * @since 3.0.0
@@ -157,7 +157,7 @@ export const applicativeReader: Applicative2<URI> = {
  */
 export const chain: <A, R, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) => Reader<R, B> =
   /*#__PURE__*/
-  (() => ReaderT.chain(I.monadIdentity))()
+  ReaderT.chain(I.monadIdentity)
 
 /**
  * @since 3.0.0

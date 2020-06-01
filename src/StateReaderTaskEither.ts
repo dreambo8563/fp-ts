@@ -66,7 +66,7 @@ export function run<S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S, r: 
  */
 export const evalState: <S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S) => ReaderTaskEither<R, E, A> =
   /*#__PURE__*/
-  (() => StateT.evalState(RTE.monadReaderTaskEither))()
+  StateT.evalState(RTE.monadReaderTaskEither)
 
 /**
  * Run a computation in the `StateReaderTaskEither` monad discarding the result
@@ -75,7 +75,7 @@ export const evalState: <S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S
  */
 export const execState: <S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S) => ReaderTaskEither<R, E, S> =
   /*#__PURE__*/
-  (() => StateT.execState(RTE.monadReaderTaskEither))()
+  StateT.execState(RTE.monadReaderTaskEither)
 
 /**
  * @since 2.0.0
@@ -89,7 +89,7 @@ export function left<S, R, E = never, A = never>(e: E): StateReaderTaskEither<S,
  */
 export const right: <S, R, E = never, A = never>(a: A) => StateReaderTaskEither<S, R, E, A> =
   /*#__PURE__*/
-  (() => StateT.of(RTE.monadReaderTaskEither))()
+  StateT.of(RTE.monadReaderTaskEither)
 
 /**
  * @since 2.0.0
@@ -159,7 +159,7 @@ export function leftIO<S, R, E = never, A = never>(me: IO<E>): StateReaderTaskEi
  */
 export const rightState: <S, R, E = never, A = never>(ma: State<S, A>) => StateReaderTaskEither<S, R, E, A> =
   /*#__PURE__*/
-  (() => StateT.fromState(RTE.monadReaderTaskEither))()
+  StateT.fromState(RTE.monadReaderTaskEither)
 
 /**
  * @since 2.0.0
@@ -173,7 +173,7 @@ export function leftState<S, R, E = never, A = never>(me: State<S, E>): StateRea
  */
 export const fromReaderTaskEither: <S, R, E, A>(ma: ReaderTaskEither<R, E, A>) => StateReaderTaskEither<S, R, E, A> =
   /*#__PURE__*/
-  (() => StateT.fromF(RTE.monadReaderTaskEither))()
+  StateT.fromF(RTE.monadReaderTaskEither)
 
 /**
  * Get the current state
@@ -182,7 +182,7 @@ export const fromReaderTaskEither: <S, R, E, A>(ma: ReaderTaskEither<R, E, A>) =
  */
 export const get: <S, R, E = never>() => StateReaderTaskEither<S, R, E, S> =
   /*#__PURE__*/
-  (() => StateT.get(RTE.monadReaderTaskEither))()
+  StateT.get(RTE.monadReaderTaskEither)
 
 /**
  * Set the state
@@ -191,7 +191,7 @@ export const get: <S, R, E = never>() => StateReaderTaskEither<S, R, E, S> =
  */
 export const put: <S, R, E = never>(s: S) => StateReaderTaskEither<S, R, E, void> =
   /*#__PURE__*/
-  (() => StateT.put(RTE.monadReaderTaskEither))()
+  StateT.put(RTE.monadReaderTaskEither)
 
 /**
  * Modify the state by applying a function to the current state
@@ -200,7 +200,7 @@ export const put: <S, R, E = never>(s: S) => StateReaderTaskEither<S, R, E, void
  */
 export const modify: <S, R, E = never>(f: (s: S) => S) => StateReaderTaskEither<S, R, E, void> =
   /*#__PURE__*/
-  (() => StateT.modify(RTE.monadReaderTaskEither))()
+  StateT.modify(RTE.monadReaderTaskEither)
 
 /**
  * Get a value which depends on the current state
@@ -209,7 +209,7 @@ export const modify: <S, R, E = never>(f: (s: S) => S) => StateReaderTaskEither<
  */
 export const gets: <S, R, E = never, A = never>(f: (s: S) => A) => StateReaderTaskEither<S, R, E, A> =
   /*#__PURE__*/
-  (() => StateT.gets(RTE.monadReaderTaskEither))()
+  StateT.gets(RTE.monadReaderTaskEither)
 
 /**
  * @since 2.4.0
@@ -305,7 +305,7 @@ export const ap: <S, R, E, A>(
   fa: StateReaderTaskEither<S, R, E, A>
 ) => <B>(fab: StateReaderTaskEither<S, R, E, (a: A) => B>) => StateReaderTaskEither<S, R, E, B> =
   /*#__PURE__*/
-  (() => StateT.ap(RTE.monadReaderTaskEither))()
+  StateT.ap(RTE.monadReaderTaskEither)
 
 /**
  * @since 2.0.0
@@ -350,7 +350,7 @@ export const chain: <S, R, E, A, B>(
   f: (a: A) => StateReaderTaskEither<S, R, E, B>
 ) => (ma: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> =
   /*#__PURE__*/
-  (() => StateT.chain(RTE.monadReaderTaskEither))()
+  StateT.chain(RTE.monadReaderTaskEither)
 
 /**
  * @since 2.0.0
@@ -416,7 +416,7 @@ export const map: <A, B>(
   f: (a: A) => B
 ) => <S, R, E>(fa: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> =
   /*#__PURE__*/
-  (() => StateT.map(RTE.monadReaderTaskEither))()
+  StateT.map(RTE.monadReaderTaskEither)
 
 /**
  * @since 2.6.2
