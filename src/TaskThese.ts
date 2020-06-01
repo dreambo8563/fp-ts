@@ -2,22 +2,18 @@
  * @since 2.4.0
  */
 import { Bifunctor2 } from './Bifunctor'
+import { flow, pipe } from './function'
 import { Functor2 } from './Functor'
 import { IO } from './IO'
 import { IOEither } from './IOEither'
 import { Monad2C } from './Monad'
-import { MonadTask2C } from './MonadTask'
 import { Semigroup } from './Semigroup'
 import * as T from './Task'
 import * as TH from './These'
-import { getTheseM } from './TheseT'
+import * as TheseT from './TheseT'
 
 import These = TH.These
 import Task = T.Task
-
-const MT =
-  /*#__PURE__*/
-  getTheseM(T.monadTask)
 
 /**
  * @since 2.4.0
@@ -47,58 +43,42 @@ export interface TaskThese<E, A> extends Task<These<E, A>> {}
 /**
  * @since 2.4.0
  */
-export const left: <E = never, A = never>(e: E) => TaskThese<E, A> =
-  /*#__PURE__*/
-  (() => MT.left)()
+export const left: <E = never, A = never>(e: E) => TaskThese<E, A> = flow(TH.left, T.of)
 
 /**
  * @since 2.4.0
  */
-export const right: <E = never, A = never>(a: A) => TaskThese<E, A> =
-  /*#__PURE__*/
-  (() => MT.right)()
+export const right: <E = never, A = never>(a: A) => TaskThese<E, A> = flow(TH.right, T.of)
 
 /**
  * @since 2.4.0
  */
-export const both: <E, A>(e: E, a: A) => TaskThese<E, A> =
-  /*#__PURE__*/
-  (() => MT.both)()
+export const both: <E, A>(e: E, a: A) => TaskThese<E, A> = flow(TH.both, T.of)
 
 /**
  * @since 2.4.0
  */
-export function rightIO<E = never, A = never>(ma: IO<A>): TaskThese<E, A> {
-  return rightTask(T.fromIO(ma))
-}
+export const rightTask: <E = never, A = never>(ma: Task<A>) => TaskThese<E, A> = T.map(TH.right)
 
 /**
  * @since 2.4.0
  */
-export function leftIO<E = never, A = never>(me: IO<E>): TaskThese<E, A> {
-  return leftTask(T.fromIO(me))
-}
+export const leftTask: <E = never, A = never>(me: Task<E>) => TaskThese<E, A> = T.map(TH.left)
 
 /**
  * @since 2.4.0
  */
-export const leftTask: <E = never, A = never>(me: Task<E>) => TaskThese<E, A> =
-  /*#__PURE__*/
-  (() => MT.leftM)()
+export const rightIO: <E = never, A = never>(ma: IO<A>) => TaskThese<E, A> = flow(T.fromIO, rightTask)
 
 /**
  * @since 2.4.0
  */
-export const rightTask: <E = never, A = never>(ma: Task<A>) => TaskThese<E, A> =
-  /*#__PURE__*/
-  (() => MT.rightM)()
+export const leftIO: <E = never, A = never>(me: IO<E>) => TaskThese<E, A> = flow(T.fromIO, leftTask)
 
 /**
  * @since 2.4.0
  */
-export const fromIOEither: <E, A>(fa: IOEither<E, A>) => TaskThese<E, A> =
-  /*#__PURE__*/
-  (() => T.fromIO)()
+export const fromIOEither: <E, A>(fa: IOEither<E, A>) => TaskThese<E, A> = T.fromIO
 
 // -------------------------------------------------------------------------------------
 // destructors
@@ -111,17 +91,13 @@ export const fold: <E, B, A>(
   onLeft: (e: E) => Task<B>,
   onRight: (a: A) => Task<B>,
   onBoth: (e: E, a: A) => Task<B>
-) => (fa: TaskThese<E, A>) => Task<B> =
-  /*#__PURE__*/
-  (() => MT.fold)()
+) => (fa: TaskThese<E, A>) => Task<B> = flow(TH.fold, T.chain)
 
 /* tslint:disable:readonly-array */
 /**
  * @since 3.0.0
  */
-export const toTuple: <E, A>(e: () => E, a: () => A) => (fa: TaskThese<E, A>) => Task<[E, A]> =
-  /*#__PURE__*/
-  (() => MT.toTuple)()
+export const toTuple: <E, A>(e: () => E, a: () => A) => (fa: TaskThese<E, A>) => Task<[E, A]> = flow(TH.toTuple, T.map)
 /* tslint:enable:readonly-array */
 
 // -------------------------------------------------------------------------------------
@@ -133,7 +109,7 @@ export const toTuple: <E, A>(e: () => E, a: () => A) => (fa: TaskThese<E, A>) =>
  */
 export const swap: <E, A>(fa: TaskThese<E, A>) => TaskThese<A, E> =
   /*#__PURE__*/
-  (() => MT.swap)()
+  T.map(TH.swap)
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -149,9 +125,7 @@ export function getSemigroup<E, A>(SE: Semigroup<E>, SA: Semigroup<A>): Semigrou
 /**
  * @since 2.4.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: TaskThese<E, A>) => TaskThese<E, B> =
-  /*#__PURE__*/
-  (() => MT.map)()
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: TaskThese<E, A>) => TaskThese<E, B> = (f) => T.map(TH.map(f))
 
 /**
  * @since 3.0.0
@@ -164,16 +138,14 @@ export const functorTaskThese: Functor2<URI> = {
 /**
  * @since 2.4.0
  */
-export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: TaskThese<E, A>) => TaskThese<G, B> =
-  /*#__PURE__*/
-  (() => MT.bimap)()
+export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: TaskThese<E, A>) => TaskThese<G, B> = (f, g) =>
+  T.map(TH.bimap(f, g))
 
 /**
  * @since 2.4.0
  */
-export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TaskThese<E, A>) => TaskThese<G, A> =
-  /*#__PURE__*/
-  (() => MT.mapLeft)()
+export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TaskThese<E, A>) => TaskThese<G, A> = (f) =>
+  T.map(TH.mapLeft(f))
 
 /**
  * @since 3.0.0
@@ -185,18 +157,20 @@ export const bifunctorTaskThese: Bifunctor2<URI> = {
 }
 
 /**
- * @since 2.4.0
+ * @since 3.0.0
  */
-export function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E> & MonadTask2C<URI, E> {
-  const _ = MT.getMonad(S)
+export function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E> {
+  const chain = TheseT.chain(T.monadTask)(S)
   return {
     URI,
-    _E: _._E,
-    map: _.map,
-    ap: _.ap,
-    of: _.of,
-    chain: _.chain,
-    fromIO: rightIO,
-    fromTask: rightTask
+    _E: undefined as any,
+    map,
+    ap: (fa) => (fab) =>
+      pipe(
+        fab,
+        chain((f) => pipe(fa, map(f)))
+      ),
+    of: right,
+    chain
   }
 }

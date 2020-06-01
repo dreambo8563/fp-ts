@@ -135,10 +135,10 @@ Added in v3.0.0
 **Signature**
 
 ```ts
-export declare function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E> & MonadTask2C<URI, E>
+export declare function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E>
 ```
 
-Added in v2.4.0
+Added in v3.0.0
 
 # getSemigroup
 
@@ -165,7 +165,7 @@ Added in v2.4.0
 **Signature**
 
 ```ts
-export declare function leftIO<E = never, A = never>(me: IO<E>): TaskThese<E, A>
+export declare const leftIO: <E = never, A = never>(me: IO<E>) => TaskThese<E, A>
 ```
 
 Added in v2.4.0
@@ -215,7 +215,7 @@ Added in v2.4.0
 **Signature**
 
 ```ts
-export declare function rightIO<E = never, A = never>(ma: IO<A>): TaskThese<E, A>
+export declare const rightIO: <E = never, A = never>(ma: IO<A>) => TaskThese<E, A>
 ```
 
 Added in v2.4.0
