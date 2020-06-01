@@ -14,28 +14,6 @@ A common use of `Either` is as an alternative to `Option` for dealing with possi
 `None` is replaced with a `Left` which can contain useful information. `Right` takes the place of `Some`. Convention
 dictates that `Left` is used for failure and `Right` is used for success.
 
-For example, you could use `Either<string, number>` to detect whether a received input is a `string` or a `number`.
-
-```ts
-import { Either, left, right } from 'fp-ts/lib/Either'
-
-function parse(input: string): Either<Error, number> {
-  const n = parseInt(input, 10)
-  return isNaN(n) ? left(new Error('not a number')) : right(n)
-}
-```
-
-`Either` is right-biased, which means that `Right` is assumed to be the default case to operate on. If it is `Left`,
-operations like `map`, `chain`, ... return the `Left` value unchanged:
-
-```ts
-import { map, left, right } from 'fp-ts/lib/Either'
-import { pipe } from 'fp-ts/lib/function'
-
-pipe(right(12), map(double)) // right(24)
-pipe(left(23), map(double)) // left(23)
-```
-
 Added in v2.0.0
 
 ---
@@ -75,7 +53,9 @@ Added in v2.0.0
 - [functorEither](#functoreither)
 - [getApplyMonoid](#getapplymonoid)
 - [getApplySemigroup](#getapplysemigroup)
+- [getCompactable](#getcompactable)
 - [getEq](#geteq)
+- [getFilterable](#getfilterable)
 - [getOrElse](#getorelse)
 - [getOrElseW](#getorelsew)
 - [getSemigroup](#getsemigroup)
@@ -513,6 +493,16 @@ assert.deepStrictEqual(S.concat(right(1), right(2)), right(3))
 
 Added in v2.0.0
 
+# getCompactable
+
+**Signature**
+
+```ts
+export declare function getCompactable<E>(M: Monoid<E>): Compactable2C<URI, E>
+```
+
+Added in v3.0.0
+
 # getEq
 
 **Signature**
@@ -522,6 +512,16 @@ export declare function getEq<E, A>(EL: Eq<E>, EA: Eq<A>): Eq<Either<E, A>>
 ```
 
 Added in v2.0.0
+
+# getFilterable
+
+**Signature**
+
+```ts
+export declare function getFilterable<E>(M: Monoid<E>): Filterable2C<URI, E>
+```
+
+Added in v3.0.0
 
 # getOrElse
 
