@@ -3,7 +3,7 @@
  */
 import { Alt3, Alt3C } from './Alt'
 import { Applicative3, Applicative3C } from './Applicative'
-import { Apply3 } from './Apply'
+import { apComposition, Apply3 } from './Apply'
 import { Bifunctor3 } from './Bifunctor'
 import * as E from './Either'
 import * as EitherT from './EitherT'
@@ -15,7 +15,7 @@ import { Monoid } from './Monoid'
 import { Option } from './Option'
 import * as R from './Reader'
 import { Semigroup } from './Semigroup'
-import { getValidationM } from './ValidationT'
+import * as ValidationT from './ValidationT'
 
 import Either = E.Either
 import Reader = R.Reader
@@ -164,14 +164,13 @@ export function local<Q, R>(f: (f: Q) => R): <E, A>(ma: ReaderEither<R, E, A>) =
  * @since 2.3.0
  */
 export function getReaderValidation<E>(S: Semigroup<E>): Applicative3C<URI, E> & Alt3C<URI, E> {
-  const V = getValidationM(S, R.monadReader)
   return {
     URI,
     _E: undefined as any,
-    map: V.map,
-    ap: V.ap,
-    of: V.of,
-    alt: V.alt
+    map,
+    ap: apComposition(R.applicativeReader, E.getValidation(S)),
+    of,
+    alt: ValidationT.alt(S, R.monadReader)
   }
 }
 

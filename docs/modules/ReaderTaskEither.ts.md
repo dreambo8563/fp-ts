@@ -548,8 +548,8 @@ Added in v2.0.0
 
 ```ts
 export declare const getOrElseW: <Q, E, B>(
-  onLeft: (e: E) => ReaderTask<Q, B>
-) => <R, A>(ma: ReaderTaskEither<R, E, A>) => ReaderTask<R & Q, B | A>
+  onLeft: (e: E) => RT.ReaderTask<Q, B>
+) => <R, A>(ma: ReaderTaskEither<R, E, A>) => RT.ReaderTask<R & Q, B | A>
 ```
 
 Added in v2.6.0

@@ -13,12 +13,10 @@ Added in v2.0.0
 <h2 class="text-delta">Table of contents</h2>
 
 - [ValidationM (interface)](#validationm-interface)
-- [ValidationM1 (interface)](#validationm1-interface)
-- [ValidationM2 (interface)](#validationm2-interface)
 - [ValidationT (interface)](#validationt-interface)
 - [ValidationT1 (type alias)](#validationt1-type-alias)
 - [ValidationT2 (type alias)](#validationt2-type-alias)
-- [getValidationM](#getvalidationm)
+- [alt](#alt)
 
 ---
 
@@ -27,34 +25,8 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export interface ValidationM<M, E> extends ApplicativeCompositionHKT2C<M, URI, E> {
+export interface ValidationM<M, E> {
   readonly alt: <A>(that: () => ValidationT<M, E, A>) => (fa: ValidationT<M, E, A>) => ValidationT<M, E, A>
-}
-```
-
-Added in v3.0.0
-
-# ValidationM1 (interface)
-
-**Signature**
-
-```ts
-export interface ValidationM1<M extends URIS, E> extends ApplicativeComposition12C<M, URI, E> {
-  readonly alt: <A>(that: () => ValidationT1<M, E, A>) => (fa: ValidationT1<M, E, A>) => ValidationT1<M, E, A>
-}
-```
-
-Added in v3.0.0
-
-# ValidationM2 (interface)
-
-**Signature**
-
-```ts
-export interface ValidationM2<M extends URIS2, E> extends ApplicativeComposition22C<M, URI, E> {
-  readonly alt: <R, A>(
-    that: () => ValidationT2<M, R, E, A>
-  ) => (fa: ValidationT2<M, R, E, A>) => ValidationT2<M, R, E, A>
 }
 ```
 
@@ -90,14 +62,23 @@ export type ValidationT2<M extends URIS2, R, E, A> = Kind2<M, R, Either<E, A>>
 
 Added in v2.0.0
 
-# getValidationM
+# alt
 
 **Signature**
 
 ```ts
-export declare function getValidationM<E, M extends URIS2>(S: Semigroup<E>, M: Monad2<M>): ValidationM2<M, E>
-export declare function getValidationM<E, M extends URIS>(S: Semigroup<E>, M: Monad1<M>): ValidationM1<M, E>
-export declare function getValidationM<E, M>(S: Semigroup<E>, M: Monad<M>): ValidationM<M, E>
+export declare function alt<E, M extends URIS2>(
+  S: Semigroup<E>,
+  M: Monad2<M>
+): <R, A>(that: () => ValidationT2<M, R, E, A>) => (fa: ValidationT2<M, R, E, A>) => ValidationT2<M, R, E, A>
+export declare function alt<E, M extends URIS>(
+  S: Semigroup<E>,
+  M: Monad1<M>
+): <A>(that: () => ValidationT1<M, E, A>) => (fa: ValidationT1<M, E, A>) => ValidationT1<M, E, A>
+export declare function alt<E, M>(
+  S: Semigroup<E>,
+  M: Monad<M>
+): <A>(that: () => ValidationT<M, E, A>) => (fa: ValidationT<M, E, A>) => ValidationT<M, E, A>
 ```
 
-Added in v2.0.0
+Added in v3.0.0

@@ -3,9 +3,9 @@
  */
 import { Alt3, Alt3C } from './Alt'
 import { Applicative3, Applicative3C } from './Applicative'
-import { Apply3 } from './Apply'
+import { Apply3, apComposition } from './Apply'
 import { Bifunctor3 } from './Bifunctor'
-import { Either } from './Either'
+import { Either, getValidation } from './Either'
 import { identity, pipe, Predicate, Refinement } from './function'
 import { Functor3 } from './Functor'
 import { IO } from './IO'
@@ -19,14 +19,15 @@ import { Option } from './Option'
 import * as R from './Reader'
 import { ReaderEither } from './ReaderEither'
 import * as ReaderT from './ReaderT'
-import { monadReaderTask, ReaderTask } from './ReaderTask'
+import * as RT from './ReaderTask'
 import { Semigroup } from './Semigroup'
 import { Task } from './Task'
 import * as TE from './TaskEither'
-import { getValidationM } from './ValidationT'
+import * as ValidationT from './ValidationT'
 
 import Reader = R.Reader
 import TaskEither = TE.TaskEither
+import ReaderTask = RT.ReaderTask
 
 /**
  * @since 2.0.0
@@ -265,14 +266,13 @@ export function bracket<R, E, A, B>(
  * @since 2.3.0
  */
 export function getReaderTaskValidation<E>(S: Semigroup<E>): Applicative3C<URI, E> & Alt3C<URI, E> {
-  const V = getValidationM(S, monadReaderTask)
   return {
     URI,
     _E: undefined as any,
-    map: V.map,
-    ap: V.ap,
-    of: V.of,
-    alt: V.alt
+    map,
+    ap: apComposition(RT.applicativeReaderTask, getValidation(S)),
+    of,
+    alt: ValidationT.alt(S, RT.monadReaderTask)
   }
 }
 

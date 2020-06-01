@@ -23,7 +23,7 @@ import { Monoid } from './Monoid'
 import { Option } from './Option'
 import { Semigroup } from './Semigroup'
 import * as T from './Task'
-import { getValidationM } from './ValidationT'
+import * as ValidationT from './ValidationT'
 
 import Either = E.Either
 import Task = T.Task
@@ -275,15 +275,13 @@ export function taskify<L, R>(f: Function): () => TaskEither<L, R> {
  * @since 2.0.0
  */
 export function getTaskValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E> {
-  const ap = apComposition(T.applicativeTask, E.getValidation(S))
-  const V = getValidationM(S, T.monadTask)
   return {
     URI,
     _E: undefined as any,
     map,
-    ap,
+    ap: apComposition(T.applicativeTask, E.getValidation(S)),
     of,
-    alt: V.alt
+    alt: ValidationT.alt(S, T.monadTask)
   }
 }
 

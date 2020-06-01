@@ -111,7 +111,7 @@ describe('ReaderTask', () => {
       append('start 2'),
       _.chain(() => append('end 2'))
     )
-    const sequenceParallel = A.sequence(_.readerTask)
+    const sequenceParallel = A.sequence(_.applicativeReaderTask)
     const ns = await sequenceParallel([t1, t2])({})()
     assert.deepStrictEqual(ns, [3, 4])
     assert.deepStrictEqual(log, ['start 1', 'start 2', 'end 1', 'end 2'])

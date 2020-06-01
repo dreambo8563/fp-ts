@@ -13,6 +13,10 @@ import * as T from './Task'
 
 import Reader = R.Reader
 import Task = T.Task
+import { Functor2 } from './Functor'
+import { Apply2 } from './Apply'
+import { Applicative2 } from './Applicative'
+import { MonadIO2 } from './MonadIO'
 
 /**
  * @since 2.3.0
@@ -197,7 +201,34 @@ export const map: <A, B>(f: (a: A) => B) => <R>(fa: ReaderTask<R, A>) => ReaderT
 // -------------------------------------------------------------------------------------
 
 /**
- * @internal
+ * @since 3.0.0
+ */
+export const functorReaderTask: Functor2<URI> = {
+  URI,
+  map
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applyReaderTask: Apply2<URI> = {
+  URI,
+  map,
+  ap
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applicativeReaderTask: Applicative2<URI> = {
+  URI,
+  map,
+  ap,
+  of
+}
+
+/**
+ * @since 3.0.0
  */
 export const monadReaderTask: Monad2<URI> = {
   URI,
@@ -208,9 +239,21 @@ export const monadReaderTask: Monad2<URI> = {
 }
 
 /**
- * @since 2.3.0
+ * @since 3.0.0
  */
-export const readerTask: Monad2<URI> & MonadTask2<URI> = {
+export const monadIOReaderTask: MonadIO2<URI> = {
+  URI,
+  map,
+  of,
+  ap,
+  chain,
+  fromIO
+}
+
+/**
+ * @since 3.0.0
+ */
+export const monadTaskReaderTask: MonadTask2<URI> = {
   URI,
   map,
   of,
@@ -221,23 +264,19 @@ export const readerTask: Monad2<URI> & MonadTask2<URI> = {
 }
 
 /**
- * Like `readerTask` but `ap` is sequential
+ * TODO
  * @since 2.3.0
  */
-export const readerTaskSeq: typeof readerTask =
-  /*#__PURE__*/
-  ((): typeof readerTask => {
-    return {
-      URI,
-      map,
-      of,
-      ap: (fa) => (fab) =>
-        pipe(
-          fab,
-          chain((f) => pipe(fa, map(f)))
-        ),
-      chain,
-      fromIO,
-      fromTask
-    }
-  })()
+export const readerTaskSeq: Monad2<URI> & MonadTask2<URI> = {
+  URI,
+  map,
+  of,
+  ap: (fa) => (fab) =>
+    pipe(
+      fab,
+      chain((f) => pipe(fa, map(f)))
+    ),
+  chain,
+  fromIO,
+  fromTask
+}

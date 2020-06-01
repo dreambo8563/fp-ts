@@ -18,6 +18,8 @@ Added in v2.3.0
 - [ap](#ap)
 - [apFirst](#apfirst)
 - [apSecond](#apsecond)
+- [applicativeReaderTask](#applicativereadertask)
+- [applyReaderTask](#applyreadertask)
 - [ask](#ask)
 - [asks](#asks)
 - [chain](#chain)
@@ -30,11 +32,14 @@ Added in v2.3.0
 - [fromReader](#fromreader)
 - [fromTask](#fromtask)
 - [fromTaskK](#fromtaskk)
+- [functorReaderTask](#functorreadertask)
 - [getMonoid](#getmonoid)
 - [getSemigroup](#getsemigroup)
 - [map](#map)
+- [monadIOReaderTask](#monadioreadertask)
+- [monadReaderTask](#monadreadertask)
+- [monadTaskReaderTask](#monadtaskreadertask)
 - [of](#of)
-- [readerTask](#readertask)
 - [readerTaskSeq](#readertaskseq)
 - [run](#run)
 
@@ -101,6 +106,26 @@ export declare const apSecond: <R, B>(fb: ReaderTask<R, B>) => <A>(fa: ReaderTas
 ```
 
 Added in v2.3.0
+
+# applicativeReaderTask
+
+**Signature**
+
+```ts
+export declare const applicativeReaderTask: Applicative2<'ReaderTask'>
+```
+
+Added in v3.0.0
+
+# applyReaderTask
+
+**Signature**
+
+```ts
+export declare const applyReaderTask: Apply2<'ReaderTask'>
+```
+
+Added in v3.0.0
 
 # ask
 
@@ -226,6 +251,16 @@ export declare function fromTaskK<A extends ReadonlyArray<unknown>, B>(
 
 Added in v2.4.0
 
+# functorReaderTask
+
+**Signature**
+
+```ts
+export declare const functorReaderTask: Functor2<'ReaderTask'>
+```
+
+Added in v3.0.0
+
 # getMonoid
 
 **Signature**
@@ -256,6 +291,36 @@ export declare const map: <A, B>(f: (a: A) => B) => <R>(fa: ReaderTask<R, A>) =>
 
 Added in v2.3.0
 
+# monadIOReaderTask
+
+**Signature**
+
+```ts
+export declare const monadIOReaderTask: MonadIO2<'ReaderTask'>
+```
+
+Added in v3.0.0
+
+# monadReaderTask
+
+**Signature**
+
+```ts
+export declare const monadReaderTask: Monad2<'ReaderTask'>
+```
+
+Added in v3.0.0
+
+# monadTaskReaderTask
+
+**Signature**
+
+```ts
+export declare const monadTaskReaderTask: MonadTask2<'ReaderTask'>
+```
+
+Added in v3.0.0
+
 # of
 
 **Signature**
@@ -266,19 +331,9 @@ export declare const of: <R, A>(a: A) => ReaderTask<R, A>
 
 Added in v2.3.0
 
-# readerTask
-
-**Signature**
-
-```ts
-export declare const readerTask: Monad2<'ReaderTask'> & MonadTask2<'ReaderTask'>
-```
-
-Added in v2.3.0
-
 # readerTaskSeq
 
-Like `readerTask` but `ap` is sequential
+TODO
 
 **Signature**
 

@@ -127,6 +127,12 @@ Added in v3.0.0
 **Signature**
 
 ```ts
+export declare function apComposition<F extends URIS2, G extends URIS2, EG>(
+  F: Apply2<F>,
+  G: Apply2C<G, EG>
+): <EF, A>(
+  fga: Kind2<F, EF, Kind2<G, EG, A>>
+) => <B>(fgab: Kind2<F, EF, Kind2<G, EG, (a: A) => B>>) => Kind2<F, EF, Kind2<G, EG, B>>
 export declare function apComposition<F extends URIS, G extends URIS2>(
   F: Apply1<F>,
   G: Apply2<G>

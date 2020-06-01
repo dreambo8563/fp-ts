@@ -6,7 +6,7 @@
  */
 import { Alt2, Alt2C } from './Alt'
 import { Applicative2, Applicative2C } from './Applicative'
-import { Apply2 } from './Apply'
+import { Apply2, apComposition } from './Apply'
 import { Bifunctor2 } from './Bifunctor'
 import * as E from './Either'
 import * as EitherT from './EitherT'
@@ -20,7 +20,7 @@ import { MonadThrow2 } from './MonadThrow'
 import { Monoid } from './Monoid'
 import { Option } from './Option'
 import { Semigroup } from './Semigroup'
-import { getValidationM } from './ValidationT'
+import * as ValidationT from './ValidationT'
 
 import Either = E.Either
 import IO = io.IO
@@ -179,14 +179,13 @@ export function bracket<E, A, B>(
  * @since 3.0.0
  */
 export function getIOValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E> {
-  const V = getValidationM(S, io.monadIO)
   return {
     URI,
     _E: undefined as any,
-    map: V.map,
-    ap: V.ap,
-    of: V.of,
-    alt: V.alt
+    map,
+    ap: apComposition(io.applicativeIO, E.getValidation(S)),
+    of,
+    alt: ValidationT.alt(S, io.monadIO)
   }
 }
 
