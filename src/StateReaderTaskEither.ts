@@ -15,7 +15,7 @@ import { Reader } from './Reader'
 import { ReaderEither } from './ReaderEither'
 import * as RTE from './ReaderTaskEither'
 import { State } from './State'
-import { getStateM } from './StateT'
+import * as StateT from './StateT'
 import { Task } from './Task'
 import { TaskEither } from './TaskEither'
 import { Functor4 } from './Functor'
@@ -24,10 +24,6 @@ import { Applicative4 } from './Applicative'
 import { MonadIO4 } from './MonadIO'
 
 import ReaderTaskEither = RTE.ReaderTaskEither
-
-const MT =
-  /*#__PURE__*/
-  getStateM(RTE.monadReaderTaskEither)
 
 /**
  * @since 2.0.0
@@ -69,7 +65,8 @@ export function run<S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S, r: 
  * @since 2.0.0
  */
 export const evalState: <S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S) => ReaderTaskEither<R, E, A> =
-  MT.evalState
+  /*#__PURE__*/
+  (() => StateT.evalState(RTE.monadReaderTaskEither))()
 
 /**
  * Run a computation in the `StateReaderTaskEither` monad discarding the result
@@ -77,7 +74,8 @@ export const evalState: <S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S
  * @since 2.0.0
  */
 export const execState: <S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S) => ReaderTaskEither<R, E, S> =
-  MT.execState
+  /*#__PURE__*/
+  (() => StateT.execState(RTE.monadReaderTaskEither))()
 
 /**
  * @since 2.0.0
@@ -91,7 +89,7 @@ export function left<S, R, E = never, A = never>(e: E): StateReaderTaskEither<S,
  */
 export const right: <S, R, E = never, A = never>(a: A) => StateReaderTaskEither<S, R, E, A> =
   /*#__PURE__*/
-  (() => MT.of)()
+  (() => StateT.of(RTE.monadReaderTaskEither))()
 
 /**
  * @since 2.0.0
@@ -160,7 +158,8 @@ export function leftIO<S, R, E = never, A = never>(me: IO<E>): StateReaderTaskEi
  * @since 2.0.0
  */
 export const rightState: <S, R, E = never, A = never>(ma: State<S, A>) => StateReaderTaskEither<S, R, E, A> =
-  MT.fromState
+  /*#__PURE__*/
+  (() => StateT.fromState(RTE.monadReaderTaskEither))()
 
 /**
  * @since 2.0.0
@@ -173,7 +172,8 @@ export function leftState<S, R, E = never, A = never>(me: State<S, E>): StateRea
  * @since 2.0.0
  */
 export const fromReaderTaskEither: <S, R, E, A>(ma: ReaderTaskEither<R, E, A>) => StateReaderTaskEither<S, R, E, A> =
-  MT.fromM
+  /*#__PURE__*/
+  (() => StateT.fromF(RTE.monadReaderTaskEither))()
 
 /**
  * Get the current state
@@ -182,7 +182,7 @@ export const fromReaderTaskEither: <S, R, E, A>(ma: ReaderTaskEither<R, E, A>) =
  */
 export const get: <S, R, E = never>() => StateReaderTaskEither<S, R, E, S> =
   /*#__PURE__*/
-  (() => MT.get)()
+  (() => StateT.get(RTE.monadReaderTaskEither))()
 
 /**
  * Set the state
@@ -191,7 +191,7 @@ export const get: <S, R, E = never>() => StateReaderTaskEither<S, R, E, S> =
  */
 export const put: <S, R, E = never>(s: S) => StateReaderTaskEither<S, R, E, void> =
   /*#__PURE__*/
-  (() => MT.put)()
+  (() => StateT.put(RTE.monadReaderTaskEither))()
 
 /**
  * Modify the state by applying a function to the current state
@@ -200,7 +200,7 @@ export const put: <S, R, E = never>(s: S) => StateReaderTaskEither<S, R, E, void
  */
 export const modify: <S, R, E = never>(f: (s: S) => S) => StateReaderTaskEither<S, R, E, void> =
   /*#__PURE__*/
-  (() => MT.modify)()
+  (() => StateT.modify(RTE.monadReaderTaskEither))()
 
 /**
  * Get a value which depends on the current state
@@ -209,7 +209,7 @@ export const modify: <S, R, E = never>(f: (s: S) => S) => StateReaderTaskEither<
  */
 export const gets: <S, R, E = never, A = never>(f: (s: S) => A) => StateReaderTaskEither<S, R, E, A> =
   /*#__PURE__*/
-  (() => MT.gets)()
+  (() => StateT.gets(RTE.monadReaderTaskEither))()
 
 /**
  * @since 2.4.0
@@ -305,7 +305,7 @@ export const ap: <S, R, E, A>(
   fa: StateReaderTaskEither<S, R, E, A>
 ) => <B>(fab: StateReaderTaskEither<S, R, E, (a: A) => B>) => StateReaderTaskEither<S, R, E, B> =
   /*#__PURE__*/
-  (() => MT.ap)()
+  (() => StateT.ap(RTE.monadReaderTaskEither))()
 
 /**
  * @since 2.0.0
@@ -350,7 +350,7 @@ export const chain: <S, R, E, A, B>(
   f: (a: A) => StateReaderTaskEither<S, R, E, B>
 ) => (ma: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> =
   /*#__PURE__*/
-  (() => MT.chain)()
+  (() => StateT.chain(RTE.monadReaderTaskEither))()
 
 /**
  * @since 2.0.0
@@ -416,7 +416,7 @@ export const map: <A, B>(
   f: (a: A) => B
 ) => <S, R, E>(fa: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> =
   /*#__PURE__*/
-  (() => MT.map)()
+  (() => StateT.map(RTE.monadReaderTaskEither))()
 
 /**
  * @since 2.6.2

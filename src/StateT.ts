@@ -1,10 +1,12 @@
 /**
  * @since 2.0.0
  */
-import { HKT, Kind, Kind2, Kind3, URIS, URIS2, URIS3 } from './HKT'
-import { Monad, Monad1, Monad2, Monad2C, Monad3, Monad3C } from './Monad'
-import { State } from './State'
+import { Applicative, Applicative1, Applicative2, Applicative3 } from './Applicative'
 import { pipe } from './function'
+import { Functor, Functor1, Functor2, Functor3 } from './Functor'
+import { HKT, Kind, Kind2, Kind3, URIS, URIS2, URIS3 } from './HKT'
+import { Monad, Monad1, Monad2, Monad3 } from './Monad'
+import { State } from './State'
 
 /* tslint:disable:readonly-array */
 /**
@@ -15,24 +17,6 @@ export interface StateT<M, S, A> {
 }
 /* tslint:enable:readonly-array */
 
-/**
- * @since 3.0.0
- */
-export interface StateM<M> {
-  readonly map: <A, B>(f: (a: A) => B) => <S>(fa: StateT<M, S, A>) => StateT<M, S, B>
-  readonly of: <S, A>(a: A) => StateT<M, S, A>
-  readonly ap: <S, A>(fa: StateT<M, S, A>) => <B>(fab: StateT<M, S, (a: A) => B>) => StateT<M, S, B>
-  readonly chain: <S, A, B>(f: (a: A) => StateT<M, S, B>) => (fa: StateT<M, S, A>) => StateT<M, S, B>
-  readonly get: <S>() => StateT<M, S, S>
-  readonly put: <S>(s: S) => StateT<M, S, void>
-  readonly modify: <S>(f: (s: S) => S) => StateT<M, S, void>
-  readonly gets: <S, A>(f: (s: S) => A) => StateT<M, S, A>
-  readonly fromState: <S, A>(fa: State<S, A>) => StateT<M, S, A>
-  readonly fromM: <S, A>(ma: HKT<M, A>) => StateT<M, S, A>
-  readonly evalState: <S, A>(ma: StateT<M, S, A>, s: S) => HKT<M, A>
-  readonly execState: <S, A>(ma: StateT<M, S, A>, s: S) => HKT<M, S>
-}
-
 /* tslint:disable:readonly-array */
 /**
  * @since 2.0.0
@@ -42,24 +26,6 @@ export interface StateT1<M extends URIS, S, A> {
 }
 /* tslint:enable:readonly-array */
 
-/**
- * @since 3.0.0
- */
-export interface StateM1<M extends URIS> {
-  readonly map: <A, B>(f: (a: A) => B) => <S>(fa: StateT1<M, S, A>) => StateT1<M, S, B>
-  readonly of: <S, A>(a: A) => StateT1<M, S, A>
-  readonly ap: <S, A>(fa: StateT1<M, S, A>) => <B>(fab: StateT1<M, S, (a: A) => B>) => StateT1<M, S, B>
-  readonly chain: <S, A, B>(f: (a: A) => StateT1<M, S, B>) => (fa: StateT1<M, S, A>) => StateT1<M, S, B>
-  readonly get: <S>() => StateT1<M, S, S>
-  readonly put: <S>(s: S) => StateT1<M, S, void>
-  readonly modify: <S>(f: (s: S) => S) => StateT1<M, S, void>
-  readonly gets: <S, A>(f: (s: S) => A) => StateT1<M, S, A>
-  readonly fromState: <S, A>(fa: State<S, A>) => StateT1<M, S, A>
-  readonly fromM: <S, A>(ma: Kind<M, A>) => StateT1<M, S, A>
-  readonly evalState: <S, A>(ma: StateT1<M, S, A>, s: S) => Kind<M, A>
-  readonly execState: <S, A>(ma: StateT1<M, S, A>, s: S) => Kind<M, S>
-}
-
 /* tslint:disable:readonly-array */
 /**
  * @since 2.0.0
@@ -68,42 +34,6 @@ export interface StateT2<M extends URIS2, S, E, A> {
   (s: S): Kind2<M, E, [A, S]>
 }
 /* tslint:enable:readonly-array */
-
-/**
- * @since 3.0.0
- */
-export interface StateM2<M extends URIS2> {
-  readonly map: <A, B>(f: (a: A) => B) => <S, E>(fa: StateT2<M, S, E, A>) => StateT2<M, S, E, B>
-  readonly of: <S, E, A>(a: A) => StateT2<M, S, E, A>
-  readonly ap: <S, E, A>(fa: StateT2<M, S, E, A>) => <B>(fab: StateT2<M, S, E, (a: A) => B>) => StateT2<M, S, E, B>
-  readonly chain: <S, E, A, B>(f: (a: A) => StateT2<M, S, E, B>) => (fa: StateT2<M, S, E, A>) => StateT2<M, S, E, B>
-  readonly get: <E, S>() => StateT2<M, S, E, S>
-  readonly put: <E, S>(s: S) => StateT2<M, S, E, void>
-  readonly modify: <E, S>(f: (s: S) => S) => StateT2<M, S, E, void>
-  readonly gets: <S, E, A>(f: (s: S) => A) => StateT2<M, S, E, A>
-  readonly fromState: <S, E, A>(fa: State<S, A>) => StateT2<M, S, E, A>
-  readonly fromM: <S, E, A>(ma: Kind2<M, E, A>) => StateT2<M, S, E, A>
-  readonly evalState: <S, E, A>(ma: StateT2<M, S, E, A>, s: S) => Kind2<M, E, A>
-  readonly execState: <S, E, A>(ma: StateT2<M, S, E, A>, s: S) => Kind2<M, E, S>
-}
-
-/**
- * @since 3.0.0
- */
-export interface StateM2C<M extends URIS2, E> {
-  readonly map: <A, B>(f: (a: A) => B) => <S>(fa: StateT2<M, S, E, A>) => StateT2<M, S, E, B>
-  readonly of: <S, A>(a: A) => StateT2<M, S, E, A>
-  readonly ap: <S, A>(fa: StateT2<M, S, E, A>) => <B>(fab: StateT2<M, S, E, (a: A) => B>) => StateT2<M, S, E, B>
-  readonly chain: <S, A, B>(f: (a: A) => StateT2<M, S, E, B>) => (fa: StateT2<M, S, E, A>) => StateT2<M, S, E, B>
-  readonly get: <S>() => StateT2<M, S, E, S>
-  readonly put: <S>(s: S) => StateT2<M, S, E, void>
-  readonly modify: <S>(f: (s: S) => S) => StateT2<M, S, E, void>
-  readonly gets: <S, A>(f: (s: S) => A) => StateT2<M, S, E, A>
-  readonly fromState: <S, A>(fa: State<S, A>) => StateT2<M, S, E, A>
-  readonly fromM: <S, A>(ma: Kind2<M, E, A>) => StateT2<M, S, E, A>
-  readonly evalState: <S, A>(ma: StateT2<M, S, E, A>, s: S) => Kind2<M, E, A>
-  readonly execState: <S, A>(ma: StateT2<M, S, E, A>, s: S) => Kind2<M, E, S>
-}
 
 /* tslint:disable:readonly-array */
 /**
@@ -117,98 +47,190 @@ export interface StateT3<M extends URIS3, S, R, E, A> {
 /**
  * @since 3.0.0
  */
-export interface StateM3<M extends URIS3> {
-  readonly map: <A, B>(f: (a: A) => B) => <S, R, E>(fa: StateT3<M, S, R, E, A>) => StateT3<M, S, R, E, B>
-  readonly of: <S, R, E, A>(a: A) => StateT3<M, S, R, E, A>
-  readonly ap: <S, R, E, A>(
-    fa: StateT3<M, S, R, E, A>
-  ) => <B>(fab: StateT3<M, S, R, E, (a: A) => B>) => StateT3<M, S, R, E, B>
-  readonly chain: <S, R, E, A, B>(
-    f: (a: A) => StateT3<M, S, R, E, B>
-  ) => (fa: StateT3<M, S, R, E, A>) => StateT3<M, S, R, E, B>
-  readonly get: <R, E, S>() => StateT3<M, S, R, E, S>
-  readonly put: <R, E, S>(s: S) => StateT3<M, S, R, E, void>
-  readonly modify: <R, E, S>(f: (s: S) => S) => StateT3<M, S, R, E, void>
-  readonly gets: <S, R, E, A>(f: (s: S) => A) => StateT3<M, S, R, E, A>
-  readonly fromState: <S, R, E, A>(fa: State<S, A>) => StateT3<M, S, R, E, A>
-  readonly fromM: <S, R, E, A>(ma: Kind3<M, R, E, A>) => StateT3<M, S, R, E, A>
-  readonly evalState: <S, R, E, A>(ma: StateT3<M, S, R, E, A>, s: S) => Kind3<M, R, E, A>
-  readonly execState: <S, R, E, A>(ma: StateT3<M, S, R, E, A>, s: S) => Kind3<M, R, E, S>
+export function map<F extends URIS3>(
+  F: Functor3<F>
+): <A, B>(f: (a: A) => B) => <S, R, E>(fa: StateT3<F, S, R, E, A>) => StateT3<F, S, R, E, B>
+export function map<F extends URIS2>(
+  F: Functor2<F>
+): <A, B>(f: (a: A) => B) => <S, E>(fa: StateT2<F, S, E, A>) => StateT2<F, S, E, B>
+export function map<F extends URIS>(
+  F: Functor1<F>
+): <A, B>(f: (a: A) => B) => <S>(fa: StateT1<F, S, A>) => StateT1<F, S, B>
+export function map<F>(F: Functor<F>): <A, B>(f: (a: A) => B) => <S>(fa: StateT<F, S, A>) => StateT<F, S, B>
+export function map<F>(F: Functor<F>): <A, B>(f: (a: A) => B) => <S>(fa: StateT<F, S, A>) => StateT<F, S, B> {
+  return (f) => (fa) => (s) =>
+    pipe(
+      fa(s),
+      F.map(([a, s1]) => [f(a), s1])
+    )
 }
 
 /**
  * @since 3.0.0
  */
-export interface StateM3C<M extends URIS3, E> {
-  readonly map: <A, B>(f: (a: A) => B) => <S, R, E>(fa: StateT3<M, S, R, E, A>) => StateT3<M, S, R, E, B>
-  readonly of: <S, R, A>(a: A) => StateT3<M, S, R, E, A>
-  readonly ap: <S, R, A>(
-    fa: StateT3<M, S, R, E, A>
-  ) => <B>(fab: StateT3<M, S, R, E, (a: A) => B>) => StateT3<M, S, R, E, B>
-  readonly chain: <S, R, A, B>(
-    f: (a: A) => StateT3<M, S, R, E, B>
-  ) => (fa: StateT3<M, S, R, E, A>) => StateT3<M, S, R, E, B>
-  readonly get: <R, S>() => StateT3<M, S, R, E, S>
-  readonly put: <R, S>(s: S) => StateT3<M, S, R, E, void>
-  readonly modify: <R, S>(f: (s: S) => S) => StateT3<M, S, R, E, void>
-  readonly gets: <S, R, A>(f: (s: S) => A) => StateT3<M, S, R, E, A>
-  readonly fromState: <S, R, A>(fa: State<S, A>) => StateT3<M, S, R, E, A>
-  readonly fromM: <S, R, A>(ma: Kind3<M, R, E, A>) => StateT3<M, S, R, E, A>
-  readonly evalState: <S, R, A>(ma: StateT3<M, S, R, E, A>, s: S) => Kind3<M, R, E, A>
-  readonly execState: <S, R, A>(ma: StateT3<M, S, R, E, A>, s: S) => Kind3<M, R, E, S>
+export function ap<F extends URIS3>(
+  M: Monad3<F>
+): <S, R, E, A>(fa: StateT3<F, S, R, E, A>) => <B>(fab: StateT3<F, S, R, E, (a: A) => B>) => StateT3<F, S, R, E, B>
+export function ap<F extends URIS2>(
+  M: Monad2<F>
+): <S, E, A>(fa: StateT2<F, S, E, A>) => <B>(fab: StateT2<F, S, E, (a: A) => B>) => StateT2<F, S, E, B>
+export function ap<F extends URIS>(
+  M: Monad1<F>
+): <S, A>(fa: StateT1<F, S, A>) => <B>(fab: StateT1<F, S, (a: A) => B>) => StateT1<F, S, B>
+export function ap<F>(
+  M: Monad<F>
+): <S, A>(fa: StateT<F, S, A>) => <B>(fab: StateT<F, S, (a: A) => B>) => StateT<F, S, B>
+export function ap<F>(
+  M: Monad<F>
+): <S, A>(fa: StateT<F, S, A>) => <B>(fab: StateT<F, S, (a: A) => B>) => StateT<F, S, B> {
+  return (fa) => (fab) => (s) =>
+    pipe(
+      fab(s),
+      M.chain(([f, s]) =>
+        pipe(
+          fa(s),
+          M.map(([a, s]) => [f(a), s])
+        )
+      )
+    )
 }
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export function getStateM<M extends URIS3>(M: Monad3<M>): StateM3<M>
-export function getStateM<M extends URIS3, E>(M: Monad3C<M, E>): StateM3C<M, E>
-export function getStateM<M extends URIS2>(M: Monad2<M>): StateM2<M>
-export function getStateM<M extends URIS2, E>(M: Monad2C<M, E>): StateM2C<M, E>
-export function getStateM<M extends URIS>(M: Monad1<M>): StateM1<M>
-export function getStateM<M>(M: Monad<M>): StateM<M>
-export function getStateM<M>(M: Monad<M>): StateM<M> {
-  return {
-    map: (f) => (fa) => (s) =>
-      pipe(
-        fa(s),
-        M.map(([a, s1]) => [f(a), s1])
-      ),
-    of: (a) => (s) => M.of([a, s]),
-    ap: (fa) => (fab) => (s) =>
-      pipe(
-        fab(s),
-        M.chain(([f, s]) =>
-          pipe(
-            fa(s),
-            M.map(([a, s]) => [f(a), s])
-          )
-        )
-      ),
-    chain: (f) => (ma) => (s) =>
-      pipe(
-        ma(s),
-        M.chain(([a, s1]) => f(a)(s1))
-      ),
-    get: () => (s) => M.of([s, s]),
-    put: (s) => () => M.of([undefined, s]),
-    modify: (f) => (s) => M.of([undefined, f(s)]),
-    gets: (f) => (s) => M.of([f(s), s]),
-    fromState: (sa) => (s) => M.of(sa(s)),
-    fromM: (ma) => (s) =>
-      pipe(
-        ma,
-        M.map((a) => [a, s])
-      ),
-    evalState: (ma, s) =>
-      pipe(
-        ma(s),
-        M.map(([a]) => a)
-      ),
-    execState: (ma, s) =>
-      pipe(
-        ma(s),
-        M.map(([_, s]) => s)
-      )
-  }
+export function of<F extends URIS3>(A: Applicative3<F>): <S, R, E, A>(a: A) => StateT3<F, S, R, E, A>
+export function of<F extends URIS2>(A: Applicative2<F>): <S, E, A>(a: A) => StateT2<F, S, E, A>
+export function of<F extends URIS>(A: Applicative1<F>): <S, A>(a: A) => StateT1<F, S, A>
+export function of<F>(A: Applicative<F>): <S, A>(a: A) => StateT<F, S, A>
+export function of<F>(A: Applicative<F>): <S, A>(a: A) => StateT<F, S, A> {
+  return (a) => (s) => A.of([a, s])
+}
+
+/**
+ * @since 3.0.0
+ */
+export function chain<F extends URIS3>(
+  M: Monad3<F>
+): <A, S, R, E, B>(f: (a: A) => StateT3<F, S, R, E, B>) => (fa: StateT3<F, S, R, E, A>) => StateT3<F, S, R, E, B>
+export function chain<F extends URIS2>(
+  M: Monad2<F>
+): <A, S, E, B>(f: (a: A) => StateT2<F, S, E, B>) => (fa: StateT2<F, S, E, A>) => StateT2<F, S, E, B>
+export function chain<F extends URIS>(
+  M: Monad1<F>
+): <A, S, B>(f: (a: A) => StateT1<F, S, B>) => (fa: StateT1<F, S, A>) => StateT1<F, S, B>
+export function chain<F>(
+  M: Monad<F>
+): <A, S, B>(f: (a: A) => StateT<F, S, B>) => (fa: StateT<F, S, A>) => StateT<F, S, B>
+export function chain<F>(
+  M: Monad<F>
+): <A, S, B>(f: (a: A) => StateT<F, S, B>) => (fa: StateT<F, S, A>) => StateT<F, S, B> {
+  return (f) => (ma) => (s) =>
+    pipe(
+      ma(s),
+      M.chain(([a, s1]) => f(a)(s1))
+    )
+}
+
+/**
+ * @since 3.0.0
+ */
+export function get<F extends URIS3>(A: Applicative3<F>): <S, R, E>() => StateT3<F, S, R, E, S>
+export function get<F extends URIS2>(A: Applicative2<F>): <S, E>() => StateT2<F, S, E, S>
+export function get<F extends URIS>(A: Applicative1<F>): <S>() => StateT1<F, S, S>
+export function get<F>(A: Applicative<F>): <S>() => StateT<F, S, S>
+export function get<F>(A: Applicative<F>): <S>() => StateT<F, S, S> {
+  return () => (s) => A.of([s, s])
+}
+
+/**
+ * @since 3.0.0
+ */
+export function put<F extends URIS3>(A: Applicative3<F>): <R, E, S>(s: S) => StateT3<F, S, R, E, void>
+export function put<F extends URIS2>(A: Applicative2<F>): <S, E>(s: S) => StateT2<F, S, E, void>
+export function put<F extends URIS>(A: Applicative1<F>): <S>(s: S) => StateT1<F, S, void>
+export function put<F>(A: Applicative<F>): <S>(s: S) => StateT<F, S, void>
+export function put<F>(A: Applicative<F>): <S>(s: S) => StateT<F, S, void> {
+  return (s) => () => A.of([undefined, s])
+}
+
+/**
+ * @since 3.0.0
+ */
+export function modify<F extends URIS3>(A: Applicative3<F>): <S, R, E>(f: (s: S) => S) => StateT3<F, S, R, E, void>
+export function modify<F extends URIS2>(A: Applicative2<F>): <S, E>(f: (s: S) => S) => StateT2<F, S, E, void>
+export function modify<F extends URIS>(A: Applicative1<F>): <S>(f: (s: S) => S) => StateT1<F, S, void>
+export function modify<F>(A: Applicative<F>): <S>(f: (s: S) => S) => StateT<F, S, void>
+export function modify<F>(A: Applicative<F>): <S>(f: (s: S) => S) => StateT<F, S, void> {
+  return (f) => (s) => A.of([undefined, f(s)])
+}
+
+/**
+ * @since 3.0.0
+ */
+export function gets<F extends URIS3>(A: Applicative3<F>): <S, R, E, A>(f: (s: S) => A) => StateT3<F, S, R, E, A>
+export function gets<F extends URIS2>(A: Applicative2<F>): <S, E, A>(f: (s: S) => A) => StateT2<F, S, E, A>
+export function gets<F extends URIS>(A: Applicative1<F>): <S, A>(f: (s: S) => A) => StateT1<F, S, A>
+export function gets<F>(A: Applicative<F>): <S, A>(f: (s: S) => A) => StateT<F, S, A>
+export function gets<F>(A: Applicative<F>): <S, A>(f: (s: S) => A) => StateT<F, S, A> {
+  return (f) => (s) => A.of([f(s), s])
+}
+
+/**
+ * @since 3.0.0
+ */
+export function fromState<F extends URIS3>(A: Applicative3<F>): <S, R, E, A>(sa: State<S, A>) => StateT3<F, S, R, E, A>
+export function fromState<F extends URIS2>(A: Applicative2<F>): <S, E, A>(sa: State<S, A>) => StateT2<F, S, E, A>
+export function fromState<F extends URIS>(A: Applicative1<F>): <S, A>(sa: State<S, A>) => StateT1<F, S, A>
+export function fromState<F>(A: Applicative<F>): <S, A>(sa: State<S, A>) => StateT<F, S, A>
+export function fromState<F>(A: Applicative<F>): <S, A>(sa: State<S, A>) => StateT<F, S, A> {
+  return (sa) => (s) => A.of(sa(s))
+}
+
+/**
+ * @since 3.0.0
+ */
+export function fromF<F extends URIS3>(F: Functor3<F>): <S, R, E, A>(fa: Kind3<F, R, E, A>) => StateT3<F, S, R, E, A>
+export function fromF<F extends URIS2>(F: Functor2<F>): <S, E, A>(fa: Kind2<F, E, A>) => StateT2<F, S, E, A>
+export function fromF<F extends URIS>(F: Functor1<F>): <S, A>(fa: Kind<F, A>) => StateT1<F, S, A>
+export function fromF<F>(F: Functor<F>): <S, A>(fa: HKT<F, A>) => StateT<F, S, A>
+export function fromF<F>(F: Functor<F>): <S, A>(fa: HKT<F, A>) => StateT<F, S, A> {
+  return (fa) => (s) =>
+    pipe(
+      fa,
+      F.map((a) => [a, s])
+    )
+}
+
+/**
+ * @since 3.0.0
+ */
+export function evalState<F extends URIS3>(
+  F: Functor3<F>
+): <S, R, E, A>(fsa: StateT3<F, S, R, E, A>, s: S) => Kind3<F, R, E, A>
+export function evalState<F extends URIS2>(F: Functor2<F>): <S, E, A>(fsa: StateT2<F, S, E, A>, s: S) => Kind2<F, E, A>
+export function evalState<F extends URIS>(F: Functor1<F>): <S, A>(fsa: StateT1<F, S, A>, s: S) => Kind<F, A>
+export function evalState<F>(F: Functor<F>): <S, A>(fsa: StateT<F, S, A>, s: S) => HKT<F, A>
+export function evalState<F>(F: Functor<F>): <S, A>(fsa: StateT<F, S, A>, s: S) => HKT<F, A> {
+  return (fsa, s) =>
+    pipe(
+      fsa(s),
+      F.map(([a]) => a)
+    )
+}
+
+/**
+ * @since 3.0.0
+ */
+export function execState<F extends URIS3>(
+  F: Functor3<F>
+): <S, R, E, A>(fsa: StateT3<F, S, R, E, A>, s: S) => Kind3<F, R, E, S>
+export function execState<F extends URIS2>(F: Functor2<F>): <S, E, A>(fsa: StateT2<F, S, E, A>, s: S) => Kind2<F, E, S>
+export function execState<F extends URIS>(F: Functor1<F>): <S, A>(fsa: StateT1<F, S, A>, s: S) => Kind<F, S>
+export function execState<F>(F: Functor<F>): <S, A>(fsa: StateT<F, S, A>, s: S) => HKT<F, S>
+export function execState<F>(F: Functor<F>): <S, A>(fsa: StateT<F, S, A>, s: S) => HKT<F, S> {
+  return (fsa, s) =>
+    pipe(
+      fsa(s),
+      F.map(([_, s]) => s)
+    )
 }

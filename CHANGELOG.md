@@ -17,23 +17,19 @@ high state of flux, you're at risk of it changing without notice.
 # 3.0.0
 
 - **Breaking Change**
+  - remove deprecated APIs (@gcanti)
   - remove `pipeable` module (@gcanti)
   - remove `ChainRec` module (@gcanti)
   - remove `Choice` module (@gcanti)
   - remove `Strong` module (@gcanti)
-  - remove deprecated APIs (@gcanti)
-  - `Array`
-    - remove the `array` mega instance in favour of splitted instances (@gcanti)
-  - `Const`
-    - remove the `const_` mega instance in favour of splitted instances (@gcanti)
+  - remove the mega instances in favour of splitted instances (@gcanti)
   - `Date`
     - rename `eqDate` to `eqGetDate` (@gcanti)
     - rename `eqMonth` to `eqGetMonth` (@gcanti)
     - rename `eqYear` to `eqGetFullYear` (@gcanti)
   - `Either`
     - make `fromNullable` lazy, closes #918 (@gcanti)
-    - `getValidation` now returns an instance of `Applicative2C` (@gcanti)
-    - remove the `either` mega instance in favour of splitted instances (@gcanti)
+    - `getValidation` now returns an instance of `Applicative2C & Alt2C` (@gcanti)
   - `EitherT`
     - remove `getEitherM` (@gcanti)
   - `Eq`
@@ -41,28 +37,23 @@ high state of flux, you're at risk of it changing without notice.
   - `Foldable`
     - remove `traverse_` (@gcanti)
     - rename `foldM` to `reduceM` (@gcanti)
-  - `Identity`
-    - remove the `identity` mega instance in favour of splitted instances (@gcanti)
-  - `IO`
-    - remove the `io` mega instance in favour of splitted instances (@gcanti)
-  - `NonEmptyArray`
-    - remove the `nonEmptyArray` mega instance in favour of splitted instances (@gcanti)
-  - `Option`
-    - remove the `option` mega instance in favour of splitted instances (@gcanti)
+  - `IOEither`
+    - `getIOValidation` now returns an instance of `Applicative2C & Alt2C` (@gcanti)
   - `Ord`
     - move `ordDate` to `Date` module (@gcanti)
+  - `ReaderEither`
+    - `getReaderValidation` now returns an instance of `Applicative3C & Alt3C` (@gcanti)
   - `ReaderTask`
     - remove `local` (@gcanti)
   - `ReaderTaskEither`
     - remove `local` (@gcanti)
-  - `ReadonlyArray`
-    - remove the `readonlyArray` mega instance in favour of splitted instances (@gcanti)
-  - `ReadonlyNonEmptyArray`
-    - remove the `readonlyNonEmptyArray` mega instance in favour of splitted instances (@gcanti)
+    - `getReaderTaskValidation` now returns an instance of `Applicative3C & Alt3C` (@gcanti)
   - `ReadonlyTuple`
     - remove `getChainRec` function (@gcanti)
   - `Semigroupoid`
     - rename `compose` to `pipe` (@gcanti)
+  - `TaskEither`
+    - `getTaskValidation` now returns an instance of `Applicative2C & Alt2C` (@gcanti)
   - `TaskThese`
     - make `toTuple` lazy (@gcanti)
   - `These`

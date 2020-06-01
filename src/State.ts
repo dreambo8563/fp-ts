@@ -3,17 +3,13 @@
  *
  * @since 2.0.0
  */
-import { monadIdentity } from './Identity'
+import * as I from './Identity'
 import { Monad2 } from './Monad'
-import { getStateM } from './StateT'
+import * as StateT from './StateT'
 import { identity, pipe } from './function'
 import { Functor2 } from './Functor'
 import { Apply2 } from './Apply'
 import { Applicative2 } from './Applicative'
-
-const MT =
-  /*#__PURE__*/
-  getStateM(monadIdentity)
 
 /**
  * @since 2.0.0
@@ -47,7 +43,7 @@ export interface State<S, A> {
  */
 export const evalState: <S, A>(ma: State<S, A>, s: S) => A =
   /*#__PURE__*/
-  (() => MT.evalState)()
+  (() => StateT.evalState(I.monadIdentity))()
 
 /**
  * Run a computation in the `State` monad discarding the result
@@ -56,7 +52,7 @@ export const evalState: <S, A>(ma: State<S, A>, s: S) => A =
  */
 export const execState: <S, A>(ma: State<S, A>, s: S) => S =
   /*#__PURE__*/
-  (() => MT.execState)()
+  (() => StateT.execState(I.monadIdentity))()
 
 /**
  * Get the current state
@@ -65,7 +61,7 @@ export const execState: <S, A>(ma: State<S, A>, s: S) => S =
  */
 export const get: <S>() => State<S, S> =
   /*#__PURE__*/
-  (() => MT.get)()
+  (() => StateT.get(I.monadIdentity))()
 
 /**
  * Set the state
@@ -74,7 +70,7 @@ export const get: <S>() => State<S, S> =
  */
 export const put: <S>(s: S) => State<S, void> =
   /*#__PURE__*/
-  (() => MT.put)()
+  (() => StateT.put(I.monadIdentity))()
 
 /**
  * Modify the state by applying a function to the current state
@@ -83,7 +79,7 @@ export const put: <S>(s: S) => State<S, void> =
  */
 export const modify: <S>(f: (s: S) => S) => State<S, void> =
   /*#__PURE__*/
-  (() => MT.modify)()
+  (() => StateT.modify(I.monadIdentity))()
 
 /**
  * Get a value which depends on the current state
@@ -92,14 +88,14 @@ export const modify: <S>(f: (s: S) => S) => State<S, void> =
  */
 export const gets: <S, A>(f: (s: S) => A) => State<S, A> =
   /*#__PURE__*/
-  (() => MT.gets)()
+  (() => StateT.gets(I.monadIdentity))()
 
 /**
  * @since 2.0.0
  */
 export const of: <S, A>(a: A) => State<S, A> =
   /*#__PURE__*/
-  (() => MT.of)()
+  (() => StateT.of(I.monadIdentity))()
 
 // -------------------------------------------------------------------------------------
 // pipeables
@@ -110,7 +106,7 @@ export const of: <S, A>(a: A) => State<S, A> =
  */
 export const ap: <E, A>(fa: State<E, A>) => <B>(fab: State<E, (a: A) => B>) => State<E, B> =
   /*#__PURE__*/
-  (() => MT.ap)()
+  (() => StateT.ap(I.monadIdentity))()
 
 /**
  * @since 2.0.0
@@ -137,7 +133,7 @@ export const apSecond = <E, B>(fb: State<E, B>) => <A>(fa: State<E, A>): State<E
  */
 export const chain: <E, A, B>(f: (a: A) => State<E, B>) => (ma: State<E, A>) => State<E, B> =
   /*#__PURE__*/
-  (() => MT.chain)()
+  (() => StateT.chain(I.monadIdentity))()
 
 /**
  * @since 2.0.0
@@ -160,7 +156,7 @@ export const flatten: <E, A>(mma: State<E, State<E, A>>) => State<E, A> = chain(
  */
 export const map: <A, B>(f: (a: A) => B) => <E>(fa: State<E, A>) => State<E, B> =
   /*#__PURE__*/
-  (() => MT.map)()
+  (() => StateT.map(I.monadIdentity))()
 
 // -------------------------------------------------------------------------------------
 // instances
