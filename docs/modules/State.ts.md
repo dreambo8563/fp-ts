@@ -147,7 +147,7 @@ Run a computation in the `State` monad, discarding the final state
 **Signature**
 
 ```ts
-export declare const evalState: <S, A>(ma: State<S, A>, s: S) => A
+export declare const evalState: <S>(s: S) => <A>(ma: State<S, A>) => A
 ```
 
 Added in v2.0.0
@@ -159,7 +159,7 @@ Run a computation in the `State` monad discarding the result
 **Signature**
 
 ```ts
-export declare const execState: <S, A>(ma: State<S, A>, s: S) => S
+export declare const execState: <S>(s: S) => <A>(ma: State<S, A>) => S
 ```
 
 Added in v2.0.0

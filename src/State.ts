@@ -41,7 +41,7 @@ export interface State<S, A> {
  *
  * @since 2.0.0
  */
-export const evalState: <S, A>(ma: State<S, A>, s: S) => A =
+export const evalState: <S>(s: S) => <A>(ma: State<S, A>) => A =
   /*#__PURE__*/
   StateT.evalState(I.monadIdentity)
 
@@ -50,7 +50,7 @@ export const evalState: <S, A>(ma: State<S, A>, s: S) => A =
  *
  * @since 2.0.0
  */
-export const execState: <S, A>(ma: State<S, A>, s: S) => S =
+export const execState: <S>(s: S) => <A>(ma: State<S, A>) => S =
   /*#__PURE__*/
   StateT.execState(I.monadIdentity)
 

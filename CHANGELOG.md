@@ -52,6 +52,12 @@ high state of flux, you're at risk of it changing without notice.
     - remove `getChainRec` function (@gcanti)
   - `Semigroupoid`
     - rename `compose` to `pipe` (@gcanti)
+  - `State`
+    - curry `evalState` (@gcanti)
+    - curry `execState` (@gcanti)
+  - `StateReaderTaskEither`
+    - curry `evalState` (@gcanti)
+    - curry `execState` (@gcanti)
   - `TaskEither`
     - `getTaskValidation` now returns an instance of `Applicative2C & Alt2C` (@gcanti)
   - `TaskThese`

@@ -206,12 +206,14 @@ export function fromF<F>(F: Functor<F>): <S, A>(fa: HKT<F, A>) => StateT<F, S, A
  */
 export function evalState<F extends URIS3>(
   F: Functor3<F>
-): <S, R, E, A>(fsa: StateT3<F, S, R, E, A>, s: S) => Kind3<F, R, E, A>
-export function evalState<F extends URIS2>(F: Functor2<F>): <S, E, A>(fsa: StateT2<F, S, E, A>, s: S) => Kind2<F, E, A>
-export function evalState<F extends URIS>(F: Functor1<F>): <S, A>(fsa: StateT1<F, S, A>, s: S) => Kind<F, A>
-export function evalState<F>(F: Functor<F>): <S, A>(fsa: StateT<F, S, A>, s: S) => HKT<F, A>
-export function evalState<F>(F: Functor<F>): <S, A>(fsa: StateT<F, S, A>, s: S) => HKT<F, A> {
-  return (fsa, s) =>
+): <S>(s: S) => <R, E, A>(fsa: StateT3<F, S, R, E, A>) => Kind3<F, R, E, A>
+export function evalState<F extends URIS2>(
+  F: Functor2<F>
+): <S>(s: S) => <A, E>(fsa: StateT2<F, S, E, A>) => Kind2<F, E, A>
+export function evalState<F extends URIS>(F: Functor1<F>): <S>(s: S) => <A>(fsa: StateT1<F, S, A>) => Kind<F, A>
+export function evalState<F>(F: Functor<F>): <S>(s: S) => <A>(fsa: StateT<F, S, A>) => HKT<F, A>
+export function evalState<F>(F: Functor<F>): <S>(s: S) => <A>(fsa: StateT<F, S, A>) => HKT<F, A> {
+  return (s) => (fsa) =>
     pipe(
       fsa(s),
       F.map(([a]) => a)
@@ -223,12 +225,14 @@ export function evalState<F>(F: Functor<F>): <S, A>(fsa: StateT<F, S, A>, s: S) 
  */
 export function execState<F extends URIS3>(
   F: Functor3<F>
-): <S, R, E, A>(fsa: StateT3<F, S, R, E, A>, s: S) => Kind3<F, R, E, S>
-export function execState<F extends URIS2>(F: Functor2<F>): <S, E, A>(fsa: StateT2<F, S, E, A>, s: S) => Kind2<F, E, S>
-export function execState<F extends URIS>(F: Functor1<F>): <S, A>(fsa: StateT1<F, S, A>, s: S) => Kind<F, S>
-export function execState<F>(F: Functor<F>): <S, A>(fsa: StateT<F, S, A>, s: S) => HKT<F, S>
-export function execState<F>(F: Functor<F>): <S, A>(fsa: StateT<F, S, A>, s: S) => HKT<F, S> {
-  return (fsa, s) =>
+): <S>(s: S) => <R, E, A>(fsa: StateT3<F, S, R, E, A>) => Kind3<F, R, E, S>
+export function execState<F extends URIS2>(
+  F: Functor2<F>
+): <S>(s: S) => <E, A>(fsa: StateT2<F, S, E, A>) => Kind2<F, E, S>
+export function execState<F extends URIS>(F: Functor1<F>): <S>(s: S) => <A>(fsa: StateT1<F, S, A>) => Kind<F, S>
+export function execState<F>(F: Functor<F>): <S>(s: S) => <A>(fsa: StateT<F, S, A>) => HKT<F, S>
+export function execState<F>(F: Functor<F>): <S>(s: S) => <A>(fsa: StateT<F, S, A>) => HKT<F, S> {
+  return (s) => (fsa) =>
     pipe(
       fsa(s),
       F.map(([_, s]) => s)

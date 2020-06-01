@@ -128,12 +128,12 @@ Added in v3.0.0
 ```ts
 export declare function evalState<F extends URIS3>(
   F: Functor3<F>
-): <S, R, E, A>(fsa: StateT3<F, S, R, E, A>, s: S) => Kind3<F, R, E, A>
+): <S>(s: S) => <R, E, A>(fsa: StateT3<F, S, R, E, A>) => Kind3<F, R, E, A>
 export declare function evalState<F extends URIS2>(
   F: Functor2<F>
-): <S, E, A>(fsa: StateT2<F, S, E, A>, s: S) => Kind2<F, E, A>
-export declare function evalState<F extends URIS>(F: Functor1<F>): <S, A>(fsa: StateT1<F, S, A>, s: S) => Kind<F, A>
-export declare function evalState<F>(F: Functor<F>): <S, A>(fsa: StateT<F, S, A>, s: S) => HKT<F, A>
+): <S>(s: S) => <A, E>(fsa: StateT2<F, S, E, A>) => Kind2<F, E, A>
+export declare function evalState<F extends URIS>(F: Functor1<F>): <S>(s: S) => <A>(fsa: StateT1<F, S, A>) => Kind<F, A>
+export declare function evalState<F>(F: Functor<F>): <S>(s: S) => <A>(fsa: StateT<F, S, A>) => HKT<F, A>
 ```
 
 Added in v3.0.0
@@ -145,12 +145,12 @@ Added in v3.0.0
 ```ts
 export declare function execState<F extends URIS3>(
   F: Functor3<F>
-): <S, R, E, A>(fsa: StateT3<F, S, R, E, A>, s: S) => Kind3<F, R, E, S>
+): <S>(s: S) => <R, E, A>(fsa: StateT3<F, S, R, E, A>) => Kind3<F, R, E, S>
 export declare function execState<F extends URIS2>(
   F: Functor2<F>
-): <S, E, A>(fsa: StateT2<F, S, E, A>, s: S) => Kind2<F, E, S>
-export declare function execState<F extends URIS>(F: Functor1<F>): <S, A>(fsa: StateT1<F, S, A>, s: S) => Kind<F, S>
-export declare function execState<F>(F: Functor<F>): <S, A>(fsa: StateT<F, S, A>, s: S) => HKT<F, S>
+): <S>(s: S) => <E, A>(fsa: StateT2<F, S, E, A>) => Kind2<F, E, S>
+export declare function execState<F extends URIS>(F: Functor1<F>): <S>(s: S) => <A>(fsa: StateT1<F, S, A>) => Kind<F, S>
+export declare function execState<F>(F: Functor<F>): <S>(s: S) => <A>(fsa: StateT<F, S, A>) => HKT<F, S>
 ```
 
 Added in v3.0.0

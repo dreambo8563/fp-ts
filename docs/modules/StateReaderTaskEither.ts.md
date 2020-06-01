@@ -348,10 +348,9 @@ Run a computation in the `StateReaderTaskEither` monad, discarding the final sta
 **Signature**
 
 ```ts
-export declare const evalState: <S, R, E, A>(
-  ma: StateReaderTaskEither<S, R, E, A>,
+export declare const evalState: <S>(
   s: S
-) => RTE.ReaderTaskEither<R, E, A>
+) => <R = unknown, E = never, A = never>(ma: StateReaderTaskEither<S, R, E, A>) => RTE.ReaderTaskEither<R, E, A>
 ```
 
 Added in v2.0.0
@@ -363,10 +362,9 @@ Run a computation in the `StateReaderTaskEither` monad discarding the result
 **Signature**
 
 ```ts
-export declare const execState: <S, R, E, A>(
-  ma: StateReaderTaskEither<S, R, E, A>,
+export declare const execState: <S>(
   s: S
-) => RTE.ReaderTaskEither<R, E, S>
+) => <R, E, A>(ma: StateReaderTaskEither<S, R, E, A>) => RTE.ReaderTaskEither<R, E, S>
 ```
 
 Added in v2.0.0

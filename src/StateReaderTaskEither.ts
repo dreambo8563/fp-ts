@@ -64,7 +64,9 @@ export function run<S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S, r: 
  *
  * @since 2.0.0
  */
-export const evalState: <S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S) => ReaderTaskEither<R, E, A> =
+export const evalState: <S>(
+  s: S
+) => <R = unknown, E = never, A = never>(ma: StateReaderTaskEither<S, R, E, A>) => ReaderTaskEither<R, E, A> =
   /*#__PURE__*/
   StateT.evalState(RTE.monadReaderTaskEither)
 
@@ -73,7 +75,7 @@ export const evalState: <S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S
  *
  * @since 2.0.0
  */
-export const execState: <S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S) => ReaderTaskEither<R, E, S> =
+export const execState: <S>(s: S) => <R, E, A>(ma: StateReaderTaskEither<S, R, E, A>) => ReaderTaskEither<R, E, S> =
   /*#__PURE__*/
   StateT.execState(RTE.monadReaderTaskEither)
 
