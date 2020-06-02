@@ -1,7 +1,7 @@
 /**
  * @since 2.5.0
  */
-import { Alternative1 } from './Alternative'
+import { Alternative1 as RA } from './Alternative'
 import { Applicative, Applicative1 } from './Applicative'
 import { Compactable1, Separated } from './Compactable'
 import { Either } from './Either'
@@ -1892,7 +1892,7 @@ export const altReadonlyArray: Alt1<URI> = {
 /**
  * @since 3.0.0
  */
-export const alternativeReadonlyArray: Alternative1<URI> = {
+export const alternativeReadonlyArray: RA<URI> = {
   URI,
   map,
   ap,

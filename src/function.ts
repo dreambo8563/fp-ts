@@ -289,8 +289,8 @@ export function absurd<A>(_: never): A {
  *
  * @since 2.4.0
  */
-export function tupled<A extends ReadonlyArray<unknown>, B>(f: (...a: A) => B): (a: A) => B {
-  return (a) => f(...a)
+export function tupled<A extends ReadonlyArray<unknown>, B>(f: (...a: A) => B): (a: Readonly<A>) => B {
+  return (a) => f(...(a as any))
 }
 
 /**

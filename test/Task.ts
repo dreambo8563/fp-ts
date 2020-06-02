@@ -1,5 +1,5 @@
 import * as assert from 'assert'
-import * as A from '../src/Array'
+import * as RA from '../src/ReadonlyArray'
 import * as I from '../src/IO'
 import { monoidString } from '../src/Monoid'
 import { pipe } from '../src/function'
@@ -112,7 +112,7 @@ describe('Task', () => {
       append('start 2'),
       _.chain(() => append('end 2'))
     )
-    const sequenceSeries = A.sequence(_.monadTaskSeq)
+    const sequenceSeries = RA.sequence(_.monadTaskSeq)
     const x = await sequenceSeries([t1, t2])()
     assert.deepStrictEqual(x, [2, 4])
     assert.deepStrictEqual(log, ['start 1', 'end 1', 'start 2', 'end 2'])

@@ -1,5 +1,5 @@
 import * as assert from 'assert'
-import * as A from '../src/Array'
+import * as RA from '../src/ReadonlyArray'
 import { left, right } from '../src/Either'
 import { eqNumber } from '../src/Eq'
 import { identity, pipe } from '../src/function'
@@ -31,22 +31,22 @@ describe('Option', () => {
         assert.deepStrictEqual(
           pipe(
             _.some('a'),
-            _.traverse(A.applicativeArray)(() => A.empty)
+            _.traverse(RA.applicativeReadonlyArray)(() => RA.empty)
           ),
           []
         )
         assert.deepStrictEqual(
           pipe(
             _.some('a'),
-            _.traverse(A.applicativeArray)((s) => [s.length])
+            _.traverse(RA.applicativeReadonlyArray)((s) => [s.length])
           ),
           [_.some(1)]
         )
-        assert.deepStrictEqual(pipe(_.none, _.traverse(A.applicativeArray)(A.of)), [_.none])
+        assert.deepStrictEqual(pipe(_.none, _.traverse(RA.applicativeReadonlyArray)(RA.of)), [_.none])
       })
 
       it('sequence', () => {
-        const sequence = _.sequence(A.applicativeArray)
+        const sequence = _.sequence(RA.applicativeReadonlyArray)
         assert.deepStrictEqual(sequence(_.some([1, 2])), [_.some(1), _.some(2)])
         assert.deepStrictEqual(sequence(_.none), [_.none])
       })

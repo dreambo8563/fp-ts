@@ -1,11 +1,11 @@
 import * as assert from 'assert'
-import * as A from '../src/Array'
+import * as RA from '../src/ReadonlyArray'
 import { mapWithIndexComposition } from '../src/FunctorWithIndex'
 import { pipe } from '../src/function'
 
 describe('FunctorWithIndex', () => {
   it('mapWithIndexComposition', () => {
-    const mapWithIndex = mapWithIndexComposition(A.functorWithIndexArray, A.functorWithIndexArray)
+    const mapWithIndex = mapWithIndexComposition(RA.functorWithIndexReadonlyArray, RA.functorWithIndexReadonlyArray)
     const f = ([i, j]: readonly [number, number], a: string) => a + i + j
     assert.deepStrictEqual(
       pipe(

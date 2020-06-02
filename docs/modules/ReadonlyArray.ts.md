@@ -1,6 +1,6 @@
 ---
 title: ReadonlyArray.ts
-nav_order: 66
+nav_order: 63
 parent: Modules
 ---
 
@@ -189,7 +189,7 @@ Added in v3.0.0
 **Signature**
 
 ```ts
-export declare const alternativeReadonlyArray: Alternative1<'ReadonlyArray'>
+export declare const alternativeReadonlyArray: RA<'ReadonlyArray'>
 ```
 
 Added in v3.0.0

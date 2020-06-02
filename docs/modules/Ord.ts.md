@@ -1,6 +1,6 @@
 ---
 title: Ord.ts
-nav_order: 57
+nav_order: 54
 parent: Modules
 ---
 
@@ -167,7 +167,7 @@ export declare function getMonoid<A = never>(): Monoid<Ord<A>>
 **Example**
 
 ```ts
-import { sort } from 'fp-ts/lib/Array'
+import { sort } from 'fp-ts/lib/ReadonlyArray'
 import { contramap, getDualOrd, getMonoid, ordBoolean, ordNumber, ordString } from 'fp-ts/lib/Ord'
 import { pipe } from 'fp-ts/lib/function'
 import { fold } from 'fp-ts/lib/Monoid'
@@ -196,7 +196,7 @@ const byRememberMe = pipe(
 
 const M = getMonoid<User>()
 
-const users: Array<User> = [
+const users: ReadonlyArray<User> = [
   { id: 1, name: 'Guido', age: 47, rememberMe: false },
   { id: 2, name: 'Guido', age: 46, rememberMe: true },
   { id: 3, name: 'Giulio', age: 44, rememberMe: false },

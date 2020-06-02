@@ -1,6 +1,6 @@
 ---
 title: function.ts
-nav_order: 32
+nav_order: 31
 parent: Modules
 ---
 
@@ -427,7 +427,7 @@ Creates a tupled version of this function: instead of `n` arguments, it accepts 
 **Signature**
 
 ```ts
-export declare function tupled<A extends ReadonlyArray<unknown>, B>(f: (...a: A) => B): (a: A) => B
+export declare function tupled<A extends ReadonlyArray<unknown>, B>(f: (...a: A) => B): (a: Readonly<A>) => B
 ```
 
 **Example**

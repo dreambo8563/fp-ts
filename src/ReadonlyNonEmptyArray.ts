@@ -10,7 +10,6 @@ import { FoldableWithIndex1 } from './FoldableWithIndex'
 import { Predicate, Refinement } from './function'
 import { FunctorWithIndex1 } from './FunctorWithIndex'
 import { Monad1 } from './Monad'
-import { NonEmptyArray } from './NonEmptyArray'
 import { none, Option, some } from './Option'
 import { Ord } from './Ord'
 import * as RA from './ReadonlyArray'
@@ -152,6 +151,10 @@ export function getSemigroup<A = never>(): Semigroup<ReadonlyNonEmptyArray<A>> {
  * @since 2.5.0
  */
 export const getEq: <A>(E: Eq<A>) => Eq<ReadonlyNonEmptyArray<A>> = RA.getEq
+
+interface NonEmptyArray<A> extends Array<A> {
+  readonly 0: A
+}
 
 /**
  * Group equal, consecutive elements of an array into non empty arrays.

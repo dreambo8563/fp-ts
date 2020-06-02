@@ -1,6 +1,6 @@
 import * as assert from 'assert'
 import { readerTask } from '../src'
-import * as A from '../src/Array'
+import * as RA from '../src/ReadonlyArray'
 import * as E from '../src/Either'
 import { pipe } from '../src/function'
 import * as IO from '../src/IO'
@@ -268,7 +268,7 @@ describe('ReaderTaskEither', () => {
       append('start 2'),
       _.chain(() => append('end 2'))
     )
-    const sequenceParallel = A.sequence(_.applicativeReaderTaskEither)
+    const sequenceParallel = RA.sequence(_.applicativeReaderTaskEither)
     const ns = await sequenceParallel([t1, t2])({})()
     assert.deepStrictEqual(ns, E.right([3, 4]))
     assert.deepStrictEqual(log, ['start 1', 'start 2', 'end 1', 'end 2'])
@@ -287,7 +287,7 @@ describe('ReaderTaskEither', () => {
       append('start 2'),
       _.chain(() => append('end 2'))
     )
-    const sequenceSeries = A.sequence(_.monadReaderTaskEitherSeq)
+    const sequenceSeries = RA.sequence(_.monadReaderTaskEitherSeq)
     const ns = await sequenceSeries([t1, t2])({})()
     assert.deepStrictEqual(ns, E.right([2, 4]))
     assert.deepStrictEqual(log, ['start 1', 'end 1', 'start 2', 'end 2'])

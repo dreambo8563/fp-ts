@@ -1,5 +1,5 @@
 import * as assert from 'assert'
-import * as A from '../src/Array'
+import * as RA from '../src/ReadonlyArray'
 import * as O from '../src/Option'
 import * as _ from '../src/Traversable'
 import { pipe } from '../src/function'
@@ -11,7 +11,7 @@ export type ArrayOptionURI = typeof ArrayOptionURI
 describe('Traversable', () => {
   it('traverseComposition', () => {
     // TODO
-    const traverse: any = _.traverseComposition(A.traversableArray as any, O.traversableOption as any)
+    const traverse: any = _.traverseComposition(RA.traversableReadonlyArray as any, O.traversableOption as any)
     assert.deepStrictEqual(
       pipe(
         [O.some(1), O.some(2)],
@@ -30,7 +30,7 @@ describe('Traversable', () => {
 
   it('sequenceComposition', () => {
     // TODO
-    const sequence: any = _.sequenceComposition(A.traversableArray as any, O.traversableOption as any)
+    const sequence: any = _.sequenceComposition(RA.traversableReadonlyArray as any, O.traversableOption as any)
     assert.deepStrictEqual(
       sequence(O.applicativeOption)([O.some(O.some(1)), O.some(O.some(2))]),
       O.some([O.some(1), O.some(2)])

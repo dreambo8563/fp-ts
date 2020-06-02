@@ -1,11 +1,14 @@
 import * as assert from 'assert'
-import * as A from '../src/Array'
+import * as RA from '../src/ReadonlyArray'
 import * as _ from '../src/Compactable'
 import { left, right } from '../src/Either'
 
 describe('Compactable', () => {
   it('separateComposition', () => {
-    const separate = _.separateComposition(A.functorArray, { ...A.compactableArray, ...A.functorArray })
+    const separate = _.separateComposition(RA.functorReadonlyArray, {
+      ...RA.compactableReadonlyArray,
+      ...RA.functorReadonlyArray
+    })
     assert.deepStrictEqual(
       separate([
         [left('a'), right(1)],

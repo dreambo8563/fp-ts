@@ -1,5 +1,5 @@
 import * as assert from 'assert'
-import * as A from '../src/Array'
+import * as RA from '../src/ReadonlyArray'
 import * as _ from '../src/Filterable'
 import { some, none } from '../src/Option'
 import { right, left } from '../src/Either'
@@ -7,7 +7,7 @@ import { pipe } from '../src/function'
 
 describe('Filterable', () => {
   it('filterComposition', () => {
-    const filter = _.filterComposition(A.functorArray, A.filterableArray)
+    const filter = _.filterComposition(RA.functorReadonlyArray, RA.filterableReadonlyArray)
     assert.deepStrictEqual(
       pipe(
         [
@@ -21,7 +21,7 @@ describe('Filterable', () => {
   })
 
   it('filterMapComposition', () => {
-    const filterMap = _.filterMapComposition(A.functorArray, A.filterableArray)
+    const filterMap = _.filterMapComposition(RA.functorReadonlyArray, RA.filterableReadonlyArray)
     assert.deepStrictEqual(
       pipe(
         [
@@ -35,7 +35,7 @@ describe('Filterable', () => {
   })
 
   it('partitionComposition', () => {
-    const partition = _.partitionComposition(A.functorArray, A.filterableArray)
+    const partition = _.partitionComposition(RA.functorReadonlyArray, RA.filterableReadonlyArray)
     assert.deepStrictEqual(
       pipe(
         [
@@ -52,7 +52,7 @@ describe('Filterable', () => {
   })
 
   it('partitionMapComposition', () => {
-    const partitionMap = _.partitionMapComposition(A.functorArray, A.filterableArray)
+    const partitionMap = _.partitionMapComposition(RA.functorReadonlyArray, RA.filterableReadonlyArray)
     assert.deepStrictEqual(
       pipe(
         [

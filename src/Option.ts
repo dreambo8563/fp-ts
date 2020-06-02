@@ -17,9 +17,9 @@
  * instance of `None`.
  *
  * ```ts
- * import { lookup } from 'fp-ts/lib/Array'
+ * import { lookup } from 'fp-ts/lib/ReadonlyArray'
  *
- * const as: Array<string> = []
+ * const as: ReadonlyArray<string> = []
  * lookup(0, as) // => Option<string>
  * ```
  *

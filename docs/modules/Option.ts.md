@@ -1,6 +1,6 @@
 ---
 title: Option.ts
-nav_order: 55
+nav_order: 52
 parent: Modules
 ---
 
@@ -24,9 +24,9 @@ an instance of `Some<A>`, containing the present value of type `A`. If the value
 instance of `None`.
 
 ```ts
-import { lookup } from 'fp-ts/lib/Array'
+import { lookup } from 'fp-ts/lib/ReadonlyArray'
 
-const as: Array<string> = []
+const as: ReadonlyArray<string> = []
 lookup(0, as) // => Option<string>
 ```
 
