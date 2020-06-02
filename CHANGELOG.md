@@ -52,6 +52,15 @@ high state of flux, you're at risk of it changing without notice.
   - `Foldable`
     - remove `traverse_`
     - (**b**) rename `foldM` to `reduceM`
+    - remove `getFoldableComposition` in favour of
+      - (**b**) `reduceComposition`
+      - (**b**) `foldMapComposition`
+      - (**b**) `reduceRightComposition`
+  - `FoldableWithIndex`
+    - remove `getFoldableWithIndexComposition` in favour of
+      - (**b**) `reduceWithIndexComposition`
+      - (**b**) `foldMapWithIndexComposition`
+      - (**b**) `reduceRightWithIndexComposition`
   - `Functor`
     - remove `getFunctorComposition`
   - `FunctorWithIndex`
