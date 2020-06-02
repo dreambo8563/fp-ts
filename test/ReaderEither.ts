@@ -181,13 +181,6 @@ describe('ReaderEither', () => {
     assert.deepStrictEqual(_.asks((r: { readonly a: number }) => r.a)({ a: 1 }), E.right(1))
   })
 
-  it('local', () => {
-    assert.deepStrictEqual(
-      _.local((n: number) => ({ a: n }))((r: { readonly a: number }) => E.right(r.a))(1),
-      E.right(1)
-    )
-  })
-
   describe('getReaderValidation', () => {
     const RV = _.getReaderValidation(semigroupString)
 

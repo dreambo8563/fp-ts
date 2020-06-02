@@ -47,7 +47,6 @@ Added in v2.0.0
 - [getSemigroup](#getsemigroup)
 - [left](#left)
 - [leftReader](#leftreader)
-- [local](#local)
 - [map](#map)
 - [mapLeft](#mapleft)
 - [monadReaderTask](#monadreadertask)
@@ -449,16 +448,6 @@ Added in v2.0.0
 
 ```ts
 export declare const leftReader: <R, E = never, A = never>(me: R.Reader<R, E>) => ReaderEither<R, E, A>
-```
-
-Added in v2.0.0
-
-# local
-
-**Signature**
-
-```ts
-export declare function local<Q, R>(f: (f: Q) => R): <E, A>(ma: ReaderEither<R, E, A>) => ReaderEither<Q, E, A>
 ```
 
 Added in v2.0.0

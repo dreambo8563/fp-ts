@@ -154,13 +154,6 @@ export function asks<R, E = never, A = never>(f: (r: R) => A): ReaderEither<R, E
 }
 
 /**
- * @since 2.0.0
- */
-export function local<Q, R>(f: (f: Q) => R): <E, A>(ma: ReaderEither<R, E, A>) => ReaderEither<Q, E, A> {
-  return (ma) => (q) => ma(f(q))
-}
-
-/**
  * @since 2.3.0
  */
 export function getReaderValidation<E>(S: Semigroup<E>): Applicative3C<URI, E> & Alt3C<URI, E> {

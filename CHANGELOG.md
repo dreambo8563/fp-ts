@@ -60,6 +60,7 @@ high state of flux, you're at risk of it changing without notice.
     - (**b**) move `ordDate` to `Date` module (@gcanti)
   - `ReaderEither`
     - `getReaderValidation` now returns an instance of `Applicative3C & Alt3C` (@gcanti)
+    - remove `local` (@gcanti)
   - `ReaderTask`
     - remove `local` (@gcanti)
   - `ReaderTaskEither`
