@@ -24,8 +24,8 @@ Added in v2.0.0
 - [applyState](#applystate)
 - [chain](#chain)
 - [chainFirst](#chainfirst)
-- [evalState](#evalstate)
-- [execState](#execstate)
+- [evaluate](#evaluate)
+- [execute](#execute)
 - [flatten](#flatten)
 - [functorState](#functorstate)
 - [get](#get)
@@ -140,29 +140,29 @@ export declare const chainFirst: <E, A, B>(f: (a: A) => State<E, B>) => (ma: Sta
 
 Added in v2.0.0
 
-# evalState
+# evaluate
 
 Run a computation in the `State` monad, discarding the final state
 
 **Signature**
 
 ```ts
-export declare const evalState: <S>(s: S) => <A>(ma: State<S, A>) => A
+export declare const evaluate: <S>(s: S) => <A>(ma: State<S, A>) => A
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
-# execState
+# execute
 
 Run a computation in the `State` monad discarding the result
 
 **Signature**
 
 ```ts
-export declare const execState: <S>(s: S) => <A>(ma: State<S, A>) => S
+export declare const execute: <S>(s: S) => <A>(ma: State<S, A>) => S
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # flatten
 

@@ -18,29 +18,29 @@ high state of flux, you're at risk of it changing without notice.
 
 - **Breaking Change**
   - remove deprecated APIs (@gcanti)
-  - remove `pipeable` module (@gcanti)
+  - (**bc**) remove `pipeable` module and move `pipe` to `function.ts` (@gcanti)
   - remove `ChainRec` module (@gcanti)
   - remove `Choice` module (@gcanti)
   - remove `Strong` module (@gcanti)
-  - remove the mega instances in favour of splitted instances (@gcanti)
+  - (**bc**) remove the mega instances in favour of splitted instances (@gcanti)
   - `Date`
-    - rename `eqDate` to `eqGetDate` (@gcanti)
-    - rename `eqMonth` to `eqGetMonth` (@gcanti)
-    - rename `eqYear` to `eqGetFullYear` (@gcanti)
+    - (**bc**) rename `eqDate` to `eqGetDate` (@gcanti)
+    - (**bc**) rename `eqMonth` to `eqGetMonth` (@gcanti)
+    - (**bc**) rename `eqYear` to `eqGetFullYear` (@gcanti)
   - `Either`
     - make `fromNullable` lazy, closes #918 (@gcanti)
     - `getValidation` now returns an instance of `Applicative2C & Alt2C` (@gcanti)
   - `EitherT`
-    - remove `getEitherM` (@gcanti)
+    - (**bc**) remove `getEitherM` in favour of splitted functions (@gcanti)
   - `Eq`
     - move `eqDate` to `Date` module (@gcanti)
   - `Foldable`
     - remove `traverse_` (@gcanti)
-    - rename `foldM` to `reduceM` (@gcanti)
+    - (**bc**) rename `foldM` to `reduceM` (@gcanti)
   - `IOEither`
     - `getIOValidation` now returns an instance of `Applicative2C & Alt2C` (@gcanti)
   - `Ord`
-    - move `ordDate` to `Date` module (@gcanti)
+    - (**bc**) move `ordDate` to `Date` module (@gcanti)
   - `ReaderEither`
     - `getReaderValidation` now returns an instance of `Applicative3C & Alt3C` (@gcanti)
   - `ReaderTask`
@@ -51,13 +51,14 @@ high state of flux, you're at risk of it changing without notice.
   - `ReadonlyTuple`
     - remove `getChainRec` function (@gcanti)
   - `Semigroupoid`
-    - rename `compose` to `pipe` (@gcanti)
+    - rename the type-class operation `compose` to `pipe` (@gcanti)
   - `State`
-    - curry `evalState` (@gcanti)
-    - curry `execState` (@gcanti)
+    - (**bc**) curry `evalState` and rename to `evaluate` (@gcanti)
+    - (**bc**) curry `execState` and rename to `execute` (@gcanti)
   - `StateReaderTaskEither`
-    - curry `evalState` (@gcanti)
-    - curry `execState` (@gcanti)
+    - (**bc**) curry `evalState` and rename to `evaluate` (@gcanti)
+    - (**bc**) curry `execState` and rename to `execute` (@gcanti)
+    - remove `run` function (@gcanti)
   - `TaskEither`
     - `getTaskValidation` now returns an instance of `Applicative2C & Alt2C` (@gcanti)
   - `TaskThese`

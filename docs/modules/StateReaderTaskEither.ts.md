@@ -35,8 +35,8 @@ Added in v2.0.0
 - [chainTaskEitherK](#chaintaskeitherk)
 - [chainTaskEitherKW](#chaintaskeitherkw)
 - [chainW](#chainw)
-- [evalState](#evalstate)
-- [execState](#execstate)
+- [evaluate](#evaluate)
+- [execute](#execute)
 - [filterOrElse](#filterorelse)
 - [flatten](#flatten)
 - [fromEither](#fromeither)
@@ -72,7 +72,6 @@ Added in v2.0.0
 - [rightReader](#rightreader)
 - [rightState](#rightstate)
 - [rightTask](#righttask)
-- [run](#run)
 
 ---
 
@@ -341,33 +340,33 @@ export declare const chainW: <S, Q, D, A, B>(
 
 Added in v2.6.0
 
-# evalState
+# evaluate
 
 Run a computation in the `StateReaderTaskEither` monad, discarding the final state
 
 **Signature**
 
 ```ts
-export declare const evalState: <S>(
+export declare const evaluate: <S>(
   s: S
 ) => <R = unknown, E = never, A = never>(ma: StateReaderTaskEither<S, R, E, A>) => RTE.ReaderTaskEither<R, E, A>
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
-# execState
+# execute
 
 Run a computation in the `StateReaderTaskEither` monad discarding the result
 
 **Signature**
 
 ```ts
-export declare const execState: <S>(
+export declare const execute: <S>(
   s: S
 ) => <R, E, A>(ma: StateReaderTaskEither<S, R, E, A>) => RTE.ReaderTaskEither<R, E, S>
 ```
 
-Added in v2.0.0
+Added in v3.0.0
 
 # filterOrElse
 
@@ -757,16 +756,6 @@ Added in v2.0.0
 
 ```ts
 export declare function rightTask<S, R, E = never, A = never>(ma: Task<A>): StateReaderTaskEither<S, R, E, A>
-```
-
-Added in v2.0.0
-
-# run
-
-**Signature**
-
-```ts
-export declare function run<S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S, r: R): Promise<Either<E, [A, S]>>
 ```
 
 Added in v2.0.0

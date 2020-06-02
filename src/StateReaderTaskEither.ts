@@ -50,34 +50,25 @@ export interface StateReaderTaskEither<S, R, E, A> {
 }
 /* tslint:enable:readonly-array */
 
-/* tslint:disable:readonly-array */
-/**
- * @since 2.0.0
- */
-export function run<S, R, E, A>(ma: StateReaderTaskEither<S, R, E, A>, s: S, r: R): Promise<Either<E, [A, S]>> {
-  return ma(s)(r)()
-}
-/* tslint:enable:readonly-array */
-
 /**
  * Run a computation in the `StateReaderTaskEither` monad, discarding the final state
  *
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const evalState: <S>(
+export const evaluate: <S>(
   s: S
 ) => <R = unknown, E = never, A = never>(ma: StateReaderTaskEither<S, R, E, A>) => ReaderTaskEither<R, E, A> =
   /*#__PURE__*/
-  StateT.evalState(RTE.monadReaderTaskEither)
+  StateT.evaluate(RTE.monadReaderTaskEither)
 
 /**
  * Run a computation in the `StateReaderTaskEither` monad discarding the result
  *
- * @since 2.0.0
+ * @since 3.0.0
  */
-export const execState: <S>(s: S) => <R, E, A>(ma: StateReaderTaskEither<S, R, E, A>) => ReaderTaskEither<R, E, S> =
+export const execute: <S>(s: S) => <R, E, A>(ma: StateReaderTaskEither<S, R, E, A>) => ReaderTaskEither<R, E, S> =
   /*#__PURE__*/
-  StateT.execState(RTE.monadReaderTaskEither)
+  StateT.execute(RTE.monadReaderTaskEither)
 
 /**
  * @since 2.0.0

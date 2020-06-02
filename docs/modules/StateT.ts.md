@@ -18,8 +18,8 @@ Added in v2.0.0
 - [StateT3 (interface)](#statet3-interface)
 - [ap](#ap)
 - [chain](#chain)
-- [evalState](#evalstate)
-- [execState](#execstate)
+- [evaluate](#evaluate)
+- [execute](#execute)
 - [fromF](#fromf)
 - [fromState](#fromstate)
 - [get](#get)
@@ -121,36 +121,36 @@ export declare function chain<F>(
 
 Added in v3.0.0
 
-# evalState
+# evaluate
 
 **Signature**
 
 ```ts
-export declare function evalState<F extends URIS3>(
+export declare function evaluate<F extends URIS3>(
   F: Functor3<F>
 ): <S>(s: S) => <R, E, A>(fsa: StateT3<F, S, R, E, A>) => Kind3<F, R, E, A>
-export declare function evalState<F extends URIS2>(
+export declare function evaluate<F extends URIS2>(
   F: Functor2<F>
 ): <S>(s: S) => <A, E>(fsa: StateT2<F, S, E, A>) => Kind2<F, E, A>
-export declare function evalState<F extends URIS>(F: Functor1<F>): <S>(s: S) => <A>(fsa: StateT1<F, S, A>) => Kind<F, A>
-export declare function evalState<F>(F: Functor<F>): <S>(s: S) => <A>(fsa: StateT<F, S, A>) => HKT<F, A>
+export declare function evaluate<F extends URIS>(F: Functor1<F>): <S>(s: S) => <A>(fsa: StateT1<F, S, A>) => Kind<F, A>
+export declare function evaluate<F>(F: Functor<F>): <S>(s: S) => <A>(fsa: StateT<F, S, A>) => HKT<F, A>
 ```
 
 Added in v3.0.0
 
-# execState
+# execute
 
 **Signature**
 
 ```ts
-export declare function execState<F extends URIS3>(
+export declare function execute<F extends URIS3>(
   F: Functor3<F>
 ): <S>(s: S) => <R, E, A>(fsa: StateT3<F, S, R, E, A>) => Kind3<F, R, E, S>
-export declare function execState<F extends URIS2>(
+export declare function execute<F extends URIS2>(
   F: Functor2<F>
 ): <S>(s: S) => <E, A>(fsa: StateT2<F, S, E, A>) => Kind2<F, E, S>
-export declare function execState<F extends URIS>(F: Functor1<F>): <S>(s: S) => <A>(fsa: StateT1<F, S, A>) => Kind<F, S>
-export declare function execState<F>(F: Functor<F>): <S>(s: S) => <A>(fsa: StateT<F, S, A>) => HKT<F, S>
+export declare function execute<F extends URIS>(F: Functor1<F>): <S>(s: S) => <A>(fsa: StateT1<F, S, A>) => Kind<F, S>
+export declare function execute<F>(F: Functor<F>): <S>(s: S) => <A>(fsa: StateT<F, S, A>) => HKT<F, S>
 ```
 
 Added in v3.0.0
