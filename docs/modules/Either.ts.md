@@ -60,7 +60,8 @@ Added in v2.0.0
 - [getOrElseW](#getorelsew)
 - [getSemigroup](#getsemigroup)
 - [getShow](#getshow)
-- [getValidation](#getvalidation)
+- [getValidationAlt](#getvalidationalt)
+- [getValidationApplicative](#getvalidationapplicative)
 - [getValidationMonoid](#getvalidationmonoid)
 - [getValidationSemigroup](#getvalidationsemigroup)
 - [getWitherable](#getwitherable)
@@ -579,12 +580,22 @@ export declare function getShow<E, A>(SE: Show<E>, SA: Show<A>): Show<Either<E, 
 
 Added in v2.0.0
 
-# getValidation
+# getValidationAlt
 
 **Signature**
 
 ```ts
-export declare function getValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E>
+export declare function getValidationAlt<E>(S: Semigroup<E>): Alt2C<URI, E>
+```
+
+Added in v3.0.0
+
+# getValidationApplicative
+
+**Signature**
+
+```ts
+export declare function getValidationApplicative<E>(S: Semigroup<E>): Applicative2C<URI, E>
 ```
 
 Added in v3.0.0

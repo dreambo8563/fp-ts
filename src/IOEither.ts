@@ -185,13 +185,24 @@ export function bracket<E, A, B>(
 /**
  * @since 3.0.0
  */
-export function getIOValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E> {
+export function getIOValidationApplicative<E>(S: Semigroup<E>): Applicative2C<URI, E> {
   return {
     URI,
     _E: undefined as any,
     map,
-    ap: apComposition(I.applicativeIO, E.getValidation(S)),
-    of,
+    ap: apComposition(I.applicativeIO, E.getValidationApplicative(S)),
+    of
+  }
+}
+
+/**
+ * @since 3.0.0
+ */
+export function getIOValidationAlt<E>(S: Semigroup<E>): Alt2C<URI, E> {
+  return {
+    URI,
+    _E: undefined as any,
+    map,
     alt: ValidationT.alt(S, I.monadIO)
   }
 }

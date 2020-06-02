@@ -53,7 +53,8 @@ Added in v2.0.0
 - [getApplySemigroup](#getapplysemigroup)
 - [getOrElse](#getorelse)
 - [getOrElseW](#getorelsew)
-- [getReaderTaskValidation](#getreadertaskvalidation)
+- [getReaderTaskValidationAlt](#getreadertaskvalidationalt)
+- [getReaderTaskValidationApplicative](#getreadertaskvalidationapplicative)
 - [getSemigroup](#getsemigroup)
 - [left](#left)
 - [leftIO](#leftio)
@@ -554,15 +555,25 @@ export declare const getOrElseW: <Q, E, B>(
 
 Added in v2.6.0
 
-# getReaderTaskValidation
+# getReaderTaskValidationAlt
 
 **Signature**
 
 ```ts
-export declare function getReaderTaskValidation<E>(S: Semigroup<E>): Applicative3C<URI, E> & Alt3C<URI, E>
+export declare function getReaderTaskValidationAlt<E>(S: Semigroup<E>): Alt3C<URI, E>
 ```
 
-Added in v2.3.0
+Added in v3.0.0
+
+# getReaderTaskValidationApplicative
+
+**Signature**
+
+```ts
+export declare function getReaderTaskValidationApplicative<E>(S: Semigroup<E>): Applicative3C<URI, E>
+```
+
+Added in v3.0.0
 
 # getSemigroup
 

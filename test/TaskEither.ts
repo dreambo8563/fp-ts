@@ -348,49 +348,46 @@ describe('TaskEither', () => {
     assert.deepStrictEqual(e2, E.right('a'))
   })
 
-  describe('getTaskValidation', () => {
-    const TV = _.getTaskValidation(semigroupString)
-    it('of', async () => {
-      const e = await TV.of(1)()
-      assert.deepStrictEqual(e, E.right(1))
-    })
-
-    it('map', async () => {
-      const double = (n: number): number => n * 2
-      const e1 = await pipe(TV.of(1), TV.map(double))()
-      assert.deepStrictEqual(e1, E.right(2))
-      const e2 = await pipe(_.left('a'), TV.map(double))()
-      assert.deepStrictEqual(e2, E.left('a'))
-    })
+  describe('getTaskValidationApplicative', () => {
+    const A = _.getTaskValidationApplicative(semigroupString)
 
     it('ap', async () => {
-      const fab = _.left('a')
-      const fa = _.left('b')
-      const e1 = await pipe(fab, TV.ap(fa))()
-      assert.deepStrictEqual(e1, E.left('ab'))
+      assert.deepStrictEqual(await pipe(_.left('a'), A.ap(_.left('b')))(), E.left('ab'))
     })
+  })
+
+  describe('getTaskValidationAlt', () => {
+    const A = _.getTaskValidationAlt(semigroupString)
 
     it('alt', async () => {
-      const e1 = await pipe(
-        _.right(1),
-        TV.alt(() => _.right(2))
-      )()
-      assert.deepStrictEqual(e1, E.right(1))
-      const e2 = await pipe(
-        _.left('a'),
-        TV.alt(() => _.right(2))
-      )()
-      assert.deepStrictEqual(e2, E.right(2))
-      const e3 = await pipe(
-        _.right(1),
-        TV.alt(() => _.left('b'))
-      )()
-      assert.deepStrictEqual(e3, E.right(1))
-      const e4 = await pipe(
-        _.left('a'),
-        TV.alt(() => _.left('b'))
-      )()
-      assert.deepStrictEqual(e4, E.left('ab'))
+      assert.deepStrictEqual(
+        await pipe(
+          _.right(1),
+          A.alt(() => _.right(2))
+        )(),
+        E.right(1)
+      )
+      assert.deepStrictEqual(
+        await pipe(
+          _.left('a'),
+          A.alt(() => _.right(2))
+        )(),
+        E.right(2)
+      )
+      assert.deepStrictEqual(
+        await pipe(
+          _.right(1),
+          A.alt(() => _.left('b'))
+        )(),
+        E.right(1)
+      )
+      assert.deepStrictEqual(
+        await pipe(
+          _.left('a'),
+          A.alt(() => _.left('b'))
+        )(),
+        E.left('ab')
+      )
     })
   })
 

@@ -303,49 +303,46 @@ describe('IOEither', () => {
     })
   })
 
-  describe('getIOValidation', () => {
-    const IV = _.getIOValidation(semigroupString)
-    it('of', () => {
-      const e = IV.of(1)()
-      assert.deepStrictEqual(e, E.right(1))
-    })
-
-    it('map', () => {
-      const double = (n: number): number => n * 2
-      const e1 = pipe(IV.of(1), IV.map(double))()
-      assert.deepStrictEqual(e1, E.right(2))
-      const e2 = pipe(_.left('a'), IV.map(double))()
-      assert.deepStrictEqual(e2, E.left('a'))
-    })
+  describe('getIOValidationApplicative', () => {
+    const A = _.getIOValidationApplicative(semigroupString)
 
     it('ap', () => {
-      const fab = _.left('a')
-      const fa = _.left('b')
-      const e1 = pipe(fab, IV.ap(fa))()
-      assert.deepStrictEqual(e1, E.left('ab'))
+      assert.deepStrictEqual(pipe(_.left('a'), A.ap(_.left('b')))(), E.left('ab'))
     })
+  })
+
+  describe('getIOValidationAlt', () => {
+    const A = _.getIOValidationAlt(semigroupString)
 
     it('alt', () => {
-      const e1 = pipe(
-        _.right(1),
-        IV.alt(() => _.right(2))
-      )()
-      assert.deepStrictEqual(e1, E.right(1))
-      const e2 = pipe(
-        _.left('a'),
-        IV.alt(() => _.right(2))
-      )()
-      assert.deepStrictEqual(e2, E.right(2))
-      const e3 = pipe(
-        _.right(1),
-        IV.alt(() => _.left('b'))
-      )()
-      assert.deepStrictEqual(e3, E.right(1))
-      const e4 = pipe(
-        _.left('a'),
-        IV.alt(() => _.left('b'))
-      )()
-      assert.deepStrictEqual(e4, E.left('ab'))
+      assert.deepStrictEqual(
+        pipe(
+          _.right(1),
+          A.alt(() => _.right(2))
+        )(),
+        E.right(1)
+      )
+      assert.deepStrictEqual(
+        pipe(
+          _.left('a'),
+          A.alt(() => _.right(2))
+        )(),
+        E.right(2)
+      )
+      assert.deepStrictEqual(
+        pipe(
+          _.right(1),
+          A.alt(() => _.left('b'))
+        )(),
+        E.right(1)
+      )
+      assert.deepStrictEqual(
+        pipe(
+          _.left('a'),
+          A.alt(() => _.left('b'))
+        )(),
+        E.left('ab')
+      )
     })
   })
 

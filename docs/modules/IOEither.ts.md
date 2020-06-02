@@ -44,7 +44,8 @@ Added in v2.0.0
 - [getApplyMonoid](#getapplymonoid)
 - [getApplySemigroup](#getapplysemigroup)
 - [getFilterable](#getfilterable)
-- [getIOValidation](#getiovalidation)
+- [getIOValidationAlt](#getiovalidationalt)
+- [getIOValidationApplicative](#getiovalidationapplicative)
 - [getOrElse](#getorelse)
 - [getOrElseW](#getorelsew)
 - [getSemigroup](#getsemigroup)
@@ -379,12 +380,22 @@ export declare function getFilterable<E>(M: Monoid<E>): Filterable2C<URI, E>
 
 Added in v2.1.0
 
-# getIOValidation
+# getIOValidationAlt
 
 **Signature**
 
 ```ts
-export declare function getIOValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E>
+export declare function getIOValidationAlt<E>(S: Semigroup<E>): Alt2C<URI, E>
+```
+
+Added in v3.0.0
+
+# getIOValidationApplicative
+
+**Signature**
+
+```ts
+export declare function getIOValidationApplicative<E>(S: Semigroup<E>): Applicative2C<URI, E>
 ```
 
 Added in v3.0.0

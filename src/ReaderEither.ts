@@ -154,15 +154,26 @@ export function asks<R, E = never, A = never>(f: (r: R) => A): ReaderEither<R, E
 }
 
 /**
- * @since 2.3.0
+ * @since 3.0.0
  */
-export function getReaderValidation<E>(S: Semigroup<E>): Applicative3C<URI, E> & Alt3C<URI, E> {
+export function getReaderValidationApplicative<E>(S: Semigroup<E>): Applicative3C<URI, E> {
   return {
     URI,
     _E: undefined as any,
     map,
-    ap: apComposition(R.applicativeReader, E.getValidation(S)),
-    of,
+    ap: apComposition(R.applicativeReader, E.getValidationApplicative(S)),
+    of
+  }
+}
+
+/**
+ * @since 3.0.0
+ */
+export function getReaderValidationAlt<E>(S: Semigroup<E>): Alt3C<URI, E> {
+  return {
+    URI,
+    _E: undefined as any,
+    map,
     alt: ValidationT.alt(S, R.monadReader)
   }
 }

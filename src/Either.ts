@@ -330,7 +330,7 @@ export function stringifyJSON<E>(u: unknown, onError: (reason: unknown) => E): E
 /**
  * @since 3.0.0
  */
-export function getValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E> {
+export function getValidationApplicative<E>(S: Semigroup<E>): Applicative2C<URI, E> {
   return {
     URI,
     _E: undefined as any,
@@ -343,7 +343,18 @@ export function getValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C
         : isLeft(ma)
         ? ma
         : right(mab.right(ma.right)),
-    of,
+    of
+  }
+}
+
+/**
+ * @since 3.0.0
+ */
+export function getValidationAlt<E>(S: Semigroup<E>): Alt2C<URI, E> {
+  return {
+    URI,
+    _E: undefined as any,
+    map,
     alt: (that) => (fa) => {
       if (isRight(fa)) {
         return fa

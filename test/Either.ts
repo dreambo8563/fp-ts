@@ -497,19 +497,20 @@ describe('Either', () => {
     })
   })
 
-  describe('getValidation', () => {
+  describe('getValidationApplicative', () => {
     it('ap', () => {
-      const M = _.getValidation(monoidString)
-      assert.deepStrictEqual(M.of(1), _.right(1))
+      const M = _.getValidationApplicative(monoidString)
       const double = (n: number) => n * 2
       assert.deepStrictEqual(pipe(_.right(double), M.ap(_.right(1))), _.right(2))
       assert.deepStrictEqual(pipe(_.right(double), M.ap(_.left('foo'))), _.left('foo'))
       assert.deepStrictEqual(pipe(_.left<string, (n: number) => number>('foo'), M.ap(_.right(1))), _.left('foo'))
       assert.deepStrictEqual(pipe(_.left('foo'), M.ap(_.left('bar'))), _.left('foobar'))
     })
+  })
 
+  describe('getValidationAlt', () => {
     it('alt', () => {
-      const M = _.getValidation(monoidString)
+      const M = _.getValidationAlt(monoidString)
       assert.deepStrictEqual(
         pipe(
           _.left('a'),

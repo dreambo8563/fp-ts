@@ -279,15 +279,26 @@ export function taskify<L, R>(f: Function): () => TaskEither<L, R> {
 }
 
 /**
- * @since 2.0.0
+ * @since 3.0.0
  */
-export function getTaskValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E> {
+export function getTaskValidationApplicative<E>(S: Semigroup<E>): Applicative2C<URI, E> {
   return {
     URI,
     _E: undefined as any,
     map,
-    ap: apComposition(T.applicativeTask, E.getValidation(S)),
-    of,
+    ap: apComposition(T.applicativeTask, E.getValidationApplicative(S)),
+    of
+  }
+}
+
+/**
+ * @since 3.0.0
+ */
+export function getTaskValidationAlt<E>(S: Semigroup<E>): Alt2C<URI, E> {
+  return {
+    URI,
+    _E: undefined as any,
+    map,
     alt: ValidationT.alt(S, T.monadTask)
   }
 }

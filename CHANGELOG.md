@@ -17,84 +17,94 @@ high state of flux, you're at risk of it changing without notice.
 # 3.0.0
 
 - **Breaking Change**
-  - remove deprecated APIs (@gcanti)
-  - remove `pipeable` module (@gcanti)
-  - (**b**) move `pipe` to `function.ts` (@gcanti)
-  - remove `ChainRec` module (@gcanti)
-  - remove `Choice` module (@gcanti)
-  - remove `Strong` module (@gcanti)
-  - remove the mega instances in favour of (**b**) splitted instances (@gcanti)
+  - remove deprecated APIs
+  - remove `pipeable` module
+  - (**b**) move `pipe` to `function.ts`
+  - remove `ChainRec` module
+  - remove `Choice` module
+  - remove `Strong` module
+  - remove the mega instances in favour of (**b**) splitted instances
   - `Applicative`
     - remove `getApplicativeComposition` in favour of
-      - (**b**) `Apply.apComposition` (@gcanti)
+      - (**b**) `Apply.apComposition`
   - `Compactable`
     - remove `getCompactableComposition` in favour of
-      - (**b**) `separateComposition` (@gcanti)
+      - (**b**) `separateComposition`
   - `Date`
-    - (**b**) rename `eqDate` to `eqGetDate` (@gcanti)
-    - (**b**) rename `eqMonth` to `eqGetMonth` (@gcanti)
-    - (**b**) rename `eqYear` to `eqGetFullYear` (@gcanti)
+    - (**b**) rename `eqDate` to `eqGetDate`
+    - (**b**) rename `eqMonth` to `eqGetMonth`
+    - (**b**) rename `eqYear` to `eqGetFullYear`
   - `Either`
-    - make `fromNullable` lazy, closes #918 (@gcanti)
-    - `getValidation` now returns an instance of `Applicative2C & Alt2C` (@gcanti)
+    - make `fromNullable` lazy, closes #918
+    - remove `getValidation` in favour of
+      - (**b**) add `getValidationApplicative`
+      - (**b**) add `getValidationAlt`
   - `EitherT`
-    - remove `getEitherM` in favour of (**b**) splitted functions (@gcanti)
+    - remove `getEitherM` in favour of (**b**) splitted functions
   - `Eq`
-    - move `eqDate` to `Date` module (@gcanti)
+    - move `eqDate` to `Date` module
   - `Filterable`
     - remove `getFilterableComposition` in favour of
-      - (**b**) `filterComposition` (@gcanti)
-      - (**b**) `filterMapComposition` (@gcanti)
-      - (**b**) `partitionComposition` (@gcanti)
-      - (**b**) `partitionMapComposition` (@gcanti)
+      - (**b**) `filterComposition`
+      - (**b**) `filterMapComposition`
+      - (**b**) `partitionComposition`
+      - (**b**) `partitionMapComposition`
   - `Foldable`
-    - remove `traverse_` (@gcanti)
-    - (**b**) rename `foldM` to `reduceM` (@gcanti)
+    - remove `traverse_`
+    - (**b**) rename `foldM` to `reduceM`
   - `Functor`
-    - remove `getFunctorComposition` (@gcanti)
+    - remove `getFunctorComposition`
   - `FunctorWithIndex`
     - remove `getFunctorWithIndexComposition` in favour of
-      - (**b**) `mapWithIndexComposition` (@gcanti)
+      - (**b**) `mapWithIndexComposition`
   - `IOEither`
-    - `getIOValidation` now returns an instance of `Applicative2C & Alt2C` (@gcanti)
+    - remove `getIOValidation` in favour of
+      - (**b**) add `getIOValidationApplicative`
+      - (**b**) add `getIOValidationAlt`
   - `Ord`
-    - (**b**) move `ordDate` to `Date` module (@gcanti)
+    - (**b**) move `ordDate` to `Date` module
   - `ReaderEither`
-    - `getReaderValidation` now returns an instance of `Applicative3C & Alt3C` (@gcanti)
-    - remove `local` (@gcanti)
+    - remove `getReaderValidation` in favour of
+      - (**b**) add `getReaderValidationApplicative`
+      - (**b**) add `getReaderValidationAlt`
+    - remove `local`
   - `ReaderTask`
-    - remove `local` (@gcanti)
+    - remove `local`
   - `ReaderTaskEither`
-    - remove `local` (@gcanti)
-    - `getReaderTaskValidation` now returns an instance of `Applicative3C & Alt3C` (@gcanti)
+    - remove `local`
+    - `getReaderTaskValidation` in favour of
+      - (**b**) add `getReaderTaskValidationApplicative`
+      - (**b**) add `getReaderTaskValidationAlt`
   - `ReadonlyTuple`
-    - remove `getChainRec` function (@gcanti)
+    - remove `getChainRec` function
   - `Semigroupoid`
-    - rename the type-class operation `compose` to `pipe` (@gcanti)
+    - rename the type-class operation `compose` to `pipe`
   - `State`
-    - (**b**) curry `evalState` and rename to `evaluate` (@gcanti)
-    - (**b**) curry `execState` and rename to `execute` (@gcanti)
+    - (**b**) curry `evalState` and rename to `evaluate`
+    - (**b**) curry `execState` and rename to `execute`
   - `StateReaderTaskEither`
-    - (**b**) curry `evalState` and rename to `evaluate` (@gcanti)
-    - (**b**) curry `execState` and rename to `execute` (@gcanti)
-    - remove `run` function (@gcanti)
+    - (**b**) curry `evalState` and rename to `evaluate`
+    - (**b**) curry `execState` and rename to `execute`
+    - remove `run` function
   - `TaskEither`
-    - `getTaskValidation` now returns an instance of `Applicative2C & Alt2C` (@gcanti)
+    - `getTaskValidation` in favour of
+      - (**b**) add `getTaskValidationApplicative`
+      - (**b**) add `getTaskValidationAlt`
   - `TaskThese`
-    - make `toTuple` lazy (@gcanti)
+    - make `toTuple` lazy
   - `These`
-    - make `toTuple` lazy (@gcanti)
-    - make `leftOrBoth` lazy (@gcanti)
-    - make `rightOrBoth` lazy (@gcanti)
+    - make `toTuple` lazy
+    - make `leftOrBoth` lazy
+    - make `rightOrBoth` lazy
   - `TheseT`
-    - make `toTuple` lazy (@gcanti)
+    - make `toTuple` lazy
   - `Traversable`
     - remove `getTraversableComposition` in favour of
-      - (**b**) `traverseComposition` (@gcanti)
-      - (**b**) `sequenceComposition` (@gcanti)
+      - (**b**) `traverseComposition`
+      - (**b**) `sequenceComposition`
   - `Traced`
-    - curry `tracks` (@gcanti)
+    - curry `tracks`
   - `Tuple`
-    - remove `getChainRec` function (@gcanti)
+    - remove `getChainRec` function
 
 (**b**) means "backportable"

@@ -15,12 +15,20 @@ import * as T from '../src/Task'
 import * as TE from '../src/TaskEither'
 
 describe('ReaderTaskEither', () => {
-  it('getReaderTaskValidation', async () => {
-    const RTV = _.getReaderTaskValidation(semigroupString)
+  describe('getReaderValidationApplicative', () => {
+    const A = _.getReaderTaskValidationApplicative(semigroupString)
+
+    it('ap', async () => {
+      assert.deepStrictEqual(await pipe(_.left('a'), A.ap(_.left('b')))({})(), E.left('ab'))
+    })
+  })
+
+  it('getReaderTaskValidationAlt', async () => {
+    const A = _.getReaderTaskValidationAlt(semigroupString)
     assert.deepStrictEqual(
       await pipe(
         _.left('a'),
-        RTV.alt(() => _.right('b'))
+        A.alt(() => _.right('b'))
       )({})(),
       E.right('b')
     )

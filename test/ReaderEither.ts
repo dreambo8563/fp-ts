@@ -181,30 +181,46 @@ describe('ReaderEither', () => {
     assert.deepStrictEqual(_.asks((r: { readonly a: number }) => r.a)({ a: 1 }), E.right(1))
   })
 
-  describe('getReaderValidation', () => {
-    const RV = _.getReaderValidation(semigroupString)
+  describe('getReaderValidationApplicative', () => {
+    const A = _.getReaderValidationApplicative(semigroupString)
+
+    it('ap', () => {
+      assert.deepStrictEqual(pipe(_.left('a'), A.ap(_.left('b')))(undefined), E.left('ab'))
+    })
+  })
+
+  describe('getReaderValidationAlt', () => {
+    const A = _.getReaderValidationAlt(semigroupString)
 
     it('alt', async () => {
-      const e1 = pipe(
-        _.right(1),
-        RV.alt(() => _.right(2))
-      )(undefined)
-      assert.deepStrictEqual(e1, E.right(1))
-      const e2 = pipe(
-        _.left('a'),
-        RV.alt(() => _.right(2))
-      )(undefined)
-      assert.deepStrictEqual(e2, E.right(2))
-      const e3 = pipe(
-        _.right(1),
-        RV.alt(() => _.left('b'))
-      )(undefined)
-      assert.deepStrictEqual(e3, E.right(1))
-      const e4 = pipe(
-        _.left('a'),
-        RV.alt(() => _.left('b'))
-      )(undefined)
-      assert.deepStrictEqual(e4, E.left('ab'))
+      assert.deepStrictEqual(
+        pipe(
+          _.right(1),
+          A.alt(() => _.right(2))
+        )(undefined),
+        E.right(1)
+      )
+      assert.deepStrictEqual(
+        pipe(
+          _.left('a'),
+          A.alt(() => _.right(2))
+        )(undefined),
+        E.right(2)
+      )
+      assert.deepStrictEqual(
+        pipe(
+          _.right(1),
+          A.alt(() => _.left('b'))
+        )(undefined),
+        E.right(1)
+      )
+      assert.deepStrictEqual(
+        pipe(
+          _.left('a'),
+          A.alt(() => _.left('b'))
+        )(undefined),
+        E.left('ab')
+      )
     })
   })
 

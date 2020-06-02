@@ -51,7 +51,8 @@ Added in v2.0.0
 - [getOrElse](#getorelse)
 - [getOrElseW](#getorelsew)
 - [getSemigroup](#getsemigroup)
-- [getTaskValidation](#gettaskvalidation)
+- [getTaskValidationAlt](#gettaskvalidationalt)
+- [getTaskValidationApplicative](#gettaskvalidationapplicative)
 - [left](#left)
 - [leftIO](#leftio)
 - [leftTask](#lefttask)
@@ -467,15 +468,25 @@ export declare function getSemigroup<E, A>(S: Semigroup<A>): Semigroup<TaskEithe
 
 Added in v2.0.0
 
-# getTaskValidation
+# getTaskValidationAlt
 
 **Signature**
 
 ```ts
-export declare function getTaskValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt2C<URI, E>
+export declare function getTaskValidationAlt<E>(S: Semigroup<E>): Alt2C<URI, E>
 ```
 
-Added in v2.0.0
+Added in v3.0.0
+
+# getTaskValidationApplicative
+
+**Signature**
+
+```ts
+export declare function getTaskValidationApplicative<E>(S: Semigroup<E>): Applicative2C<URI, E>
+```
+
+Added in v3.0.0
 
 # left
 
