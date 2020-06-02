@@ -18,17 +18,18 @@ high state of flux, you're at risk of it changing without notice.
 
 - **Breaking Change**
   - remove deprecated APIs (@gcanti)
-  - (**b**) remove `pipeable` module and move `pipe` to `function.ts` (@gcanti)
+  - remove `pipeable` module (@gcanti)
+  - (**b**) move `pipe` to `function.ts` (@gcanti)
   - remove `ChainRec` module (@gcanti)
   - remove `Choice` module (@gcanti)
   - remove `Strong` module (@gcanti)
-  - (**b**) remove the mega instances in favour of splitted instances (@gcanti)
+  - remove the mega instances in favour of (**b**) splitted instances (@gcanti)
   - `Applicative`
-    - (**b**) remove `getApplicativeComposition` in favour of
-      - `Apply.apComposition` (@gcanti)
+    - remove `getApplicativeComposition` in favour of
+      - (**b**) `Apply.apComposition` (@gcanti)
   - `Compactable`
-    - (**b**) remove `getCompactableComposition` in favour of
-      - `separateComposition` (@gcanti)
+    - remove `getCompactableComposition` in favour of
+      - (**b**) `separateComposition` (@gcanti)
   - `Date`
     - (**b**) rename `eqDate` to `eqGetDate` (@gcanti)
     - (**b**) rename `eqMonth` to `eqGetMonth` (@gcanti)
@@ -37,23 +38,23 @@ high state of flux, you're at risk of it changing without notice.
     - make `fromNullable` lazy, closes #918 (@gcanti)
     - `getValidation` now returns an instance of `Applicative2C & Alt2C` (@gcanti)
   - `EitherT`
-    - (**b**) remove `getEitherM` in favour of splitted functions (@gcanti)
+    - remove `getEitherM` in favour of (**b**) splitted functions (@gcanti)
   - `Eq`
     - move `eqDate` to `Date` module (@gcanti)
   - `Filterable`
-    - (**b**) remove `getFilterableComposition` in favour of
-      - `filterComposition` (@gcanti)
-      - `filterMapComposition` (@gcanti)
-      - `partitionComposition` (@gcanti)
-      - `partitionMapComposition` (@gcanti)
+    - remove `getFilterableComposition` in favour of
+      - (**b**) `filterComposition` (@gcanti)
+      - (**b**) `filterMapComposition` (@gcanti)
+      - (**b**) `partitionComposition` (@gcanti)
+      - (**b**) `partitionMapComposition` (@gcanti)
   - `Foldable`
     - remove `traverse_` (@gcanti)
     - (**b**) rename `foldM` to `reduceM` (@gcanti)
   - `Functor`
     - remove `getFunctorComposition` (@gcanti)
   - `FunctorWithIndex`
-    - (**b**) remove `getFunctorWithIndexComposition` in favour of
-      - `mapWithIndexComposition` (@gcanti)
+    - remove `getFunctorWithIndexComposition` in favour of
+      - (**b**) `mapWithIndexComposition` (@gcanti)
   - `IOEither`
     - `getIOValidation` now returns an instance of `Applicative2C & Alt2C` (@gcanti)
   - `Ord`
@@ -89,8 +90,8 @@ high state of flux, you're at risk of it changing without notice.
     - make `toTuple` lazy (@gcanti)
   - `Traversable`
     - remove `getTraversableComposition` in favour of
-      - `traverseComposition` (@gcanti)
-      - `sequenceComposition` (@gcanti)
+      - (**b**) `traverseComposition` (@gcanti)
+      - (**b**) `sequenceComposition` (@gcanti)
   - `Traced`
     - curry `tracks` (@gcanti)
   - `Tuple`
