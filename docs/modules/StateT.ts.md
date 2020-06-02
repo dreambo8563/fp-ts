@@ -37,7 +37,7 @@ Added in v2.0.0
 
 ```ts
 export interface StateT<M, S, A> {
-  (s: S): HKT<M, [A, S]>
+  (s: S): HKT<M, readonly [A, S]>
 }
 ```
 
@@ -49,7 +49,7 @@ Added in v2.0.0
 
 ```ts
 export interface StateT1<M extends URIS, S, A> {
-  (s: S): Kind<M, [A, S]>
+  (s: S): Kind<M, readonly [A, S]>
 }
 ```
 
@@ -61,7 +61,7 @@ Added in v2.0.0
 
 ```ts
 export interface StateT2<M extends URIS2, S, E, A> {
-  (s: S): Kind2<M, E, [A, S]>
+  (s: S): Kind2<M, E, readonly [A, S]>
 }
 ```
 
@@ -73,7 +73,7 @@ Added in v2.0.0
 
 ```ts
 export interface StateT3<M extends URIS3, S, R, E, A> {
-  (s: S): Kind3<M, R, E, [A, S]>
+  (s: S): Kind3<M, R, E, readonly [A, S]>
 }
 ```
 

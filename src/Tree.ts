@@ -9,7 +9,7 @@
  */
 import { Applicative, Applicative1 } from './Applicative'
 import { Apply1 } from './Apply'
-import * as A from './Array'
+import * as RA from './ReadonlyArray'
 import { Comonad1 } from './Comonad'
 import { Eq, fromEquals } from './Eq'
 import { Extend1 } from './Extend'
@@ -21,8 +21,6 @@ import { Monad, Monad1, Monad2, Monad2C, Monad3, Monad3C } from './Monad'
 import { Monoid } from './Monoid'
 import { Show } from './Show'
 import { Traversable1 } from './Traversable'
-
-// tslint:disable:readonly-array
 
 /**
  * @since 2.0.0
@@ -43,7 +41,7 @@ declare module './HKT' {
 /**
  * @since 2.0.0
  */
-export type Forest<A> = Array<Tree<A>>
+export type Forest<A> = ReadonlyArray<Tree<A>>
 
 /**
  * @since 2.0.0
@@ -56,7 +54,7 @@ export interface Tree<A> {
 /**
  * @since 2.0.0
  */
-export function make<A>(value: A, forest: Forest<A> = A.empty): Tree<A> {
+export function make<A>(value: A, forest: Forest<A> = RA.empty): Tree<A> {
   return {
     value,
     forest
@@ -68,7 +66,7 @@ export function make<A>(value: A, forest: Forest<A> = A.empty): Tree<A> {
  */
 export function getShow<A>(S: Show<A>): Show<Tree<A>> {
   const show = (t: Tree<A>): string => {
-    return t.forest === A.empty || t.forest.length === 0
+    return t.forest === RA.empty || t.forest.length === 0
       ? `make(${S.show(t.value)})`
       : `make(${S.show(t.value)}, [${t.forest.map(show).join(', ')}])`
   }
@@ -81,9 +79,9 @@ export function getShow<A>(S: Show<A>): Show<Tree<A>> {
  * @since 2.0.0
  */
 export function getEq<A>(E: Eq<A>): Eq<Tree<A>> {
-  let SA: Eq<Array<Tree<A>>>
+  let SA: Eq<ReadonlyArray<Tree<A>>>
   const R: Eq<Tree<A>> = fromEquals((x, y) => E.equals(x.value, y.value) && SA.equals(x.forest, y.forest))
-  SA = A.getEq(R)
+  SA = RA.getEq(R)
   return R
 }
 
@@ -140,7 +138,7 @@ export function drawTree(tree: Tree<string>): string {
  *
  * @since 2.0.0
  */
-export function unfoldTree<A, B>(b: B, f: (b: B) => [A, Array<B>]): Tree<A> {
+export function unfoldTree<A, B>(b: B, f: (b: B) => readonly [A, ReadonlyArray<B>]): Tree<A> {
   const [a, bs] = f(b)
   return { value: a, forest: unfoldForest(bs, f) }
 }
@@ -150,7 +148,7 @@ export function unfoldTree<A, B>(b: B, f: (b: B) => [A, Array<B>]): Tree<A> {
  *
  * @since 2.0.0
  */
-export function unfoldForest<A, B>(bs: Array<B>, f: (b: B) => [A, Array<B>]): Forest<A> {
+export function unfoldForest<A, B>(bs: ReadonlyArray<B>, f: (b: B) => readonly [A, ReadonlyArray<B>]): Forest<A> {
   return bs.map((b) => unfoldTree(b, f))
 }
 
@@ -161,21 +159,25 @@ export function unfoldForest<A, B>(bs: Array<B>, f: (b: B) => [A, Array<B>]): Fo
  */
 export function unfoldTreeM<M extends URIS3>(
   M: Monad3<M>
-): <R, E, A, B>(b: B, f: (b: B) => Kind3<M, R, E, [A, Array<B>]>) => Kind3<M, R, E, Tree<A>>
+): <R, E, A, B>(b: B, f: (b: B) => Kind3<M, R, E, readonly [A, ReadonlyArray<B>]>) => Kind3<M, R, E, Tree<A>>
 export function unfoldTreeM<M extends URIS3, E>(
   M: Monad3C<M, E>
-): <R, A, B>(b: B, f: (b: B) => Kind3<M, R, E, [A, Array<B>]>) => Kind3<M, R, E, Tree<A>>
+): <R, A, B>(b: B, f: (b: B) => Kind3<M, R, E, readonly [A, ReadonlyArray<B>]>) => Kind3<M, R, E, Tree<A>>
 export function unfoldTreeM<M extends URIS2>(
   M: Monad2<M>
-): <E, A, B>(b: B, f: (b: B) => Kind2<M, E, [A, Array<B>]>) => Kind2<M, E, Tree<A>>
+): <E, A, B>(b: B, f: (b: B) => Kind2<M, E, readonly [A, ReadonlyArray<B>]>) => Kind2<M, E, Tree<A>>
 export function unfoldTreeM<M extends URIS2, E>(
   M: Monad2C<M, E>
-): <A, B>(b: B, f: (b: B) => Kind2<M, E, [A, Array<B>]>) => Kind2<M, E, Tree<A>>
+): <A, B>(b: B, f: (b: B) => Kind2<M, E, readonly [A, ReadonlyArray<B>]>) => Kind2<M, E, Tree<A>>
 export function unfoldTreeM<M extends URIS>(
   M: Monad1<M>
-): <A, B>(b: B, f: (b: B) => Kind<M, [A, Array<B>]>) => Kind<M, Tree<A>>
-export function unfoldTreeM<M>(M: Monad<M>): <A, B>(b: B, f: (b: B) => HKT<M, [A, Array<B>]>) => HKT<M, Tree<A>>
-export function unfoldTreeM<M>(M: Monad<M>): <A, B>(b: B, f: (b: B) => HKT<M, [A, Array<B>]>) => HKT<M, Tree<A>> {
+): <A, B>(b: B, f: (b: B) => Kind<M, readonly [A, ReadonlyArray<B>]>) => Kind<M, Tree<A>>
+export function unfoldTreeM<M>(
+  M: Monad<M>
+): <A, B>(b: B, f: (b: B) => HKT<M, readonly [A, ReadonlyArray<B>]>) => HKT<M, Tree<A>>
+export function unfoldTreeM<M>(
+  M: Monad<M>
+): <A, B>(b: B, f: (b: B) => HKT<M, readonly [A, ReadonlyArray<B>]>) => HKT<M, Tree<A>> {
   const unfoldForestMM = unfoldForestM(M)
   return (b, f) =>
     pipe(
@@ -196,26 +198,32 @@ export function unfoldTreeM<M>(M: Monad<M>): <A, B>(b: B, f: (b: B) => HKT<M, [A
  */
 export function unfoldForestM<M extends URIS3>(
   M: Monad3<M>
-): <R, E, A, B>(bs: Array<B>, f: (b: B) => Kind3<M, R, E, [A, Array<B>]>) => Kind3<M, R, E, Forest<A>>
+): <R, E, A, B>(
+  bs: ReadonlyArray<B>,
+  f: (b: B) => Kind3<M, R, E, readonly [A, ReadonlyArray<B>]>
+) => Kind3<M, R, E, Forest<A>>
 export function unfoldForestM<M extends URIS3, E>(
   M: Monad3C<M, E>
-): <R, A, B>(bs: Array<B>, f: (b: B) => Kind3<M, R, E, [A, Array<B>]>) => Kind3<M, R, E, Forest<A>>
+): <R, A, B>(
+  bs: ReadonlyArray<B>,
+  f: (b: B) => Kind3<M, R, E, readonly [A, ReadonlyArray<B>]>
+) => Kind3<M, R, E, Forest<A>>
 export function unfoldForestM<M extends URIS2>(
   M: Monad2<M>
-): <R, E, B>(bs: Array<B>, f: (b: B) => Kind2<M, R, [E, Array<B>]>) => Kind2<M, R, Forest<E>>
+): <R, E, B>(bs: ReadonlyArray<B>, f: (b: B) => Kind2<M, R, readonly [E, ReadonlyArray<B>]>) => Kind2<M, R, Forest<E>>
 export function unfoldForestM<M extends URIS2, E>(
   M: Monad2C<M, E>
-): <A, B>(bs: Array<B>, f: (b: B) => Kind2<M, E, [A, Array<B>]>) => Kind2<M, E, Forest<A>>
+): <A, B>(bs: ReadonlyArray<B>, f: (b: B) => Kind2<M, E, readonly [A, ReadonlyArray<B>]>) => Kind2<M, E, Forest<A>>
 export function unfoldForestM<M extends URIS>(
   M: Monad1<M>
-): <A, B>(bs: Array<B>, f: (b: B) => Kind<M, [A, Array<B>]>) => Kind<M, Forest<A>>
+): <A, B>(bs: ReadonlyArray<B>, f: (b: B) => Kind<M, readonly [A, ReadonlyArray<B>]>) => Kind<M, Forest<A>>
 export function unfoldForestM<M>(
   M: Monad<M>
-): <A, B>(bs: Array<B>, f: (b: B) => HKT<M, [A, Array<B>]>) => HKT<M, Forest<A>>
+): <A, B>(bs: ReadonlyArray<B>, f: (b: B) => HKT<M, readonly [A, ReadonlyArray<B>]>) => HKT<M, Forest<A>>
 export function unfoldForestM<M>(
   M: Monad<M>
-): <A, B>(bs: Array<B>, f: (b: B) => HKT<M, [A, Array<B>]>) => HKT<M, Forest<A>> {
-  const traverseM = A.traverse(M)
+): <A, B>(bs: ReadonlyArray<B>, f: (b: B) => HKT<M, readonly [A, ReadonlyArray<B>]>) => HKT<M, Forest<A>> {
+  const traverseM = RA.traverse(M)
   return (bs, f) =>
     pipe(
       bs,
@@ -248,20 +256,20 @@ export function elem<A>(E: Eq<A>): (a: A, fa: Tree<A>) => boolean {
  *
  * const t = make(1, [make(2), make(3)])
  *
- * const sum = (as: Array<number>) => as.reduce((a, acc) => a + acc, 0)
+ * const sum = (as: ReadonlyArray<number>) => as.reduce((a, acc) => a + acc, 0)
  *
  * // Sum the values in a tree:
- * assert.deepStrictEqual(fold((a: number, bs: Array<number>) => a + sum(bs))(t), 6)
+ * assert.deepStrictEqual(fold((a: number, bs: ReadonlyArray<number>) => a + sum(bs))(t), 6)
  *
  * // Find the maximum value in the tree:
- * assert.deepStrictEqual(fold((a: number, bs: Array<number>) => bs.reduce((b, acc) => Math.max(b, acc), a))(t), 3)
+ * assert.deepStrictEqual(fold((a: number, bs: ReadonlyArray<number>) => bs.reduce((b, acc) => Math.max(b, acc), a))(t), 3)
  *
  * // Count the number of leaves in the tree:
- * assert.deepStrictEqual(fold((_: number, bs: Array<number>) => (bs.length === 0 ? 1 : sum(bs)))(t), 2)
+ * assert.deepStrictEqual(fold((_: number, bs: ReadonlyArray<number>) => (bs.length === 0 ? 1 : sum(bs)))(t), 2)
  *
  * @since 2.6.0
  */
-export function fold<A, B>(f: (a: A, bs: Array<B>) => B): (tree: Tree<A>) => B {
+export function fold<A, B>(f: (a: A, bs: ReadonlyArray<B>) => B): (tree: Tree<A>) => B {
   const go = (tree: Tree<A>): B => f(tree.value, tree.forest.map(go))
   return go
 }
@@ -304,7 +312,7 @@ export const apSecond = <B>(fb: Tree<B>) => <A>(fa: Tree<A>): Tree<B> =>
  */
 export const chain = <A, B>(f: (a: A) => Tree<B>) => (ma: Tree<A>): Tree<B> => {
   const { value, forest } = f(ma.value)
-  const concat = A.getMonoid<Tree<B>>().concat
+  const concat = RA.getMonoid<Tree<B>>().concat
   return {
     value,
     forest: concat(
@@ -394,7 +402,7 @@ export const extract: <A>(wa: Tree<A>) => A = (wa) => wa.value
 export const traverse: Traversable1<URI>['traverse'] = <F>(
   F: Applicative<F>
 ): (<A, B>(f: (a: A) => HKT<F, B>) => (ta: Tree<A>) => HKT<F, Tree<B>>) => {
-  const traverseF = A.traverse(F)
+  const traverseF = RA.traverse(F)
   const r = <A, B>(f: (a: A) => HKT<F, B>) => (ta: Tree<A>): HKT<F, Tree<B>> =>
     pipe(
       f(ta.value),

@@ -41,14 +41,12 @@ declare module './HKT' {
   }
 }
 
-/* tslint:disable:readonly-array */
 /**
  * @since 2.0.0
  */
 export interface StateReaderTaskEither<S, R, E, A> {
-  (s: S): ReaderTaskEither<R, E, [A, S]>
+  (s: S): ReaderTaskEither<R, E, readonly [A, S]>
 }
-/* tslint:enable:readonly-array */
 
 /**
  * Run a computation in the `StateReaderTaskEither` monad, discarding the final state

@@ -81,7 +81,7 @@ Added in v2.0.0
 
 ```ts
 export interface StateReaderTaskEither<S, R, E, A> {
-  (s: S): ReaderTaskEither<R, E, [A, S]>
+  (s: S): ReaderTaskEither<R, E, readonly [A, S]>
 }
 ```
 

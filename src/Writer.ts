@@ -27,14 +27,12 @@ declare module './HKT' {
   }
 }
 
-// tslint:disable:readonly-array
 /**
  * @since 2.0.0
  */
 export interface Writer<W, A> {
-  (): [A, W]
+  (): readonly [A, W]
 }
-// tslint:enable:readonly-array
 
 /**
  * @since 2.0.0
@@ -59,38 +57,32 @@ export const tell: <W>(w: W) => Writer<W, void> =
   /*#__PURE__*/
   (() => MT.tell)()
 
-// tslint:disable:readonly-array
 /**
  * Modifies the result to include the changes to the accumulator
  *
  * @since 2.0.0
  */
-export const listen: <W, A>(fa: Writer<W, A>) => Writer<W, [A, W]> =
+export const listen: <W, A>(fa: Writer<W, A>) => Writer<W, readonly [A, W]> =
   /*#__PURE__*/
   (() => MT.listen)()
-// tslint:enable:readonly-array
 
-// tslint:disable:readonly-array
 /**
  * Applies the returned function to the accumulator
  *
  * @since 2.0.0
  */
-export const pass: <W, A>(fa: Writer<W, [A, (w: W) => W]>) => Writer<W, A> =
+export const pass: <W, A>(fa: Writer<W, readonly [A, (w: W) => W]>) => Writer<W, A> =
   /*#__PURE__*/
   (() => MT.pass)()
-// tslint:enable:readonly-array
 
-// tslint:disable:readonly-array
 /**
  * Projects a value from modifications made to the accumulator during an action
  *
  * @since 2.0.0
  */
-export function listens<W, B>(f: (w: W) => B): <A>(fa: Writer<W, A>) => Writer<W, [A, B]> {
+export function listens<W, B>(f: (w: W) => B): <A>(fa: Writer<W, A>) => Writer<W, readonly [A, B]> {
   return (fa) => MT.listens(fa, f)
 }
-// tslint:enable:readonly-array
 
 /**
  * Modify the final accumulator value by applying a function

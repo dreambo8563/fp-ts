@@ -125,7 +125,7 @@ Added in v3.0.0
 export declare function mapWithIndexComposition<F extends URIS, FI, G extends URIS, GI>(
   F: FunctorWithIndex1<F, FI>,
   G: FunctorWithIndex1<G, GI>
-): <A, B>(f: (i: [FI, GI], a: A) => B) => (fga: Kind<F, Kind<G, A>>) => Kind<F, Kind<G, B>>
+): <A, B>(f: (i: readonly [FI, GI], a: A) => B) => (fga: Kind<F, Kind<G, A>>) => Kind<F, Kind<G, B>>
 ```
 
 Added in v3.0.0

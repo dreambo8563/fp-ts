@@ -97,12 +97,13 @@ export const fold: <E, B, A>(
   onBoth: (e: E, a: A) => Task<B>
 ) => (fa: TaskThese<E, A>) => Task<B> = flow(TH.fold, T.chain)
 
-/* tslint:disable:readonly-array */
 /**
  * @since 3.0.0
  */
-export const toTuple: <E, A>(e: () => E, a: () => A) => (fa: TaskThese<E, A>) => Task<[E, A]> = flow(TH.toTuple, T.map)
-/* tslint:enable:readonly-array */
+export const toTuple: <E, A>(e: () => E, a: () => A) => (fa: TaskThese<E, A>) => Task<readonly [E, A]> = flow(
+  TH.toTuple,
+  T.map
+)
 
 // -------------------------------------------------------------------------------------
 // combinators

@@ -64,19 +64,17 @@ export interface FunctorWithIndex4<F extends URIS4, I> extends Functor4<F> {
   readonly mapWithIndex: <A, B>(f: (i: I, a: A) => B) => <S, R, E>(fa: Kind4<F, S, R, E, A>) => Kind4<F, S, R, E, B>
 }
 
-/* tslint:disable:readonly-array */
-
 /**
  * @since 3.0.0
  */
 export function mapWithIndexComposition<F extends URIS, FI, G extends URIS, GI>(
   F: FunctorWithIndex1<F, FI>,
   G: FunctorWithIndex1<G, GI>
-): <A, B>(f: (i: [FI, GI], a: A) => B) => (fga: Kind<F, Kind<G, A>>) => Kind<F, Kind<G, B>>
+): <A, B>(f: (i: readonly [FI, GI], a: A) => B) => (fga: Kind<F, Kind<G, A>>) => Kind<F, Kind<G, B>>
 export function mapWithIndexComposition<F, FI, G, GI>(
   F: FunctorWithIndex<F, FI>,
   G: FunctorWithIndex<G, GI>
-): <A, B>(f: (i: [FI, GI], a: A) => B) => (fga: HKT<F, HKT<G, A>>) => HKT<F, HKT<G, B>> {
+): <A, B>(f: (i: readonly [FI, GI], a: A) => B) => (fga: HKT<F, HKT<G, A>>) => HKT<F, HKT<G, B>> {
   return (f) =>
     F.mapWithIndex((fi, ga) =>
       pipe(

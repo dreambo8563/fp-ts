@@ -46,27 +46,21 @@ export interface Traced<P, A> {
 export const tracks: <P>(M: Monoid<P>) => <A>(f: (a: A) => P) => (wa: Traced<P, A>) => A = (M) => (f) => (wa) =>
   wa(f(wa(M.empty)))
 
-// tslint:disable:readonly-array
 /**
  * Get the current position
  *
  * @since 2.0.0
  */
-export const listen: <P, A>(wa: Traced<P, A>) => Traced<P, [A, P]> = (wa) => (p) => [wa(p), p]
+export const listen: <P, A>(wa: Traced<P, A>) => Traced<P, readonly [A, P]> = (wa) => (p) => [wa(p), p]
 
-// tslint:enable:readonly-array
-
-// tslint:disable:readonly-array
 /**
  * Get a value which depends on the current position
  *
  * @since 2.0.0
  */
-export const listens: <P, B>(f: (p: P) => B) => <A>(wa: Traced<P, A>) => Traced<P, [A, B]> = (f) => (wa) => (e) => [
-  wa(e),
-  f(e)
-]
-// tslint:enable:readonly-array
+export const listens: <P, B>(f: (p: P) => B) => <A>(wa: Traced<P, A>) => Traced<P, readonly [A, B]> = (f) => (wa) => (
+  e
+) => [wa(e), f(e)]
 
 /**
  * Apply a function to the current position
