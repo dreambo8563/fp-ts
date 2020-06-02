@@ -6,12 +6,19 @@
  */
 import { Alt2, Alt2C } from './Alt'
 import { Applicative2, Applicative2C } from './Applicative'
-import { Apply2, apComposition } from './Apply'
+import { apComposition, Apply2 } from './Apply'
 import { Bifunctor2 } from './Bifunctor'
+import { separateComposition } from './Compactable'
 import * as E from './Either'
 import * as EitherT from './EitherT'
-import { Filterable2C, getFilterableComposition } from './Filterable'
-import { identity, Lazy, pipe, Predicate, Refinement } from './function'
+import {
+  Filterable2C,
+  filterComposition,
+  filterMapComposition,
+  partitionComposition,
+  partitionMapComposition
+} from './Filterable'
+import { flow, identity, Lazy, pipe, Predicate, Refinement } from './function'
 import { Functor2 } from './Functor'
 import * as io from './IO'
 import { Monad2 } from './Monad'
@@ -193,12 +200,24 @@ export function getIOValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & Alt
  * @since 2.1.0
  */
 export function getFilterable<E>(M: Monoid<E>): Filterable2C<URI, E> {
-  const F = E.getWitherable(M)
-
+  const F = E.getFilterable(M)
+  const map = flow(F.map, io.map)
+  const compact = io.map(F.compact)
+  const separate = separateComposition(io.monadIO, F)
+  const filter = filterComposition(io.monadIO, F)
+  const filterMap = filterMapComposition(io.monadIO, F)
+  const partition = partitionComposition(io.monadIO, F)
+  const partitionMap = partitionMapComposition(io.monadIO, F)
   return {
     URI,
     _E: undefined as any,
-    ...getFilterableComposition(io.monadIO, F)
+    map,
+    compact,
+    separate,
+    filter,
+    filterMap,
+    partition,
+    partitionMap
   }
 }
 

@@ -42,21 +42,18 @@ Added in v2.0.0
 - [Sequence2 (interface)](#sequence2-interface)
 - [Sequence2C (interface)](#sequence2c-interface)
 - [Sequence3 (interface)](#sequence3-interface)
-- [SequenceComposition11 (interface)](#sequencecomposition11-interface)
 - [Traversable (interface)](#traversable-interface)
 - [Traversable1 (interface)](#traversable1-interface)
 - [Traversable2 (interface)](#traversable2-interface)
 - [Traversable2C (interface)](#traversable2c-interface)
 - [Traversable3 (interface)](#traversable3-interface)
-- [TraversableComposition (interface)](#traversablecomposition-interface)
-- [TraversableComposition11 (interface)](#traversablecomposition11-interface)
 - [Traverse (interface)](#traverse-interface)
 - [Traverse1 (interface)](#traverse1-interface)
 - [Traverse2 (interface)](#traverse2-interface)
 - [Traverse2C (interface)](#traverse2c-interface)
 - [Traverse3 (interface)](#traverse3-interface)
-- [TraverseComposition11 (interface)](#traversecomposition11-interface)
-- [getTraversableComposition](#gettraversablecomposition)
+- [sequenceComposition](#sequencecomposition)
+- [traverseComposition](#traversecomposition)
 
 ---
 
@@ -156,28 +153,6 @@ export interface Sequence3<T extends URIS3> {
 
 Added in v3.0.0
 
-# SequenceComposition11 (interface)
-
-**Signature**
-
-```ts
-export interface SequenceComposition11<F extends URIS, G extends URIS> {
-  <H extends URIS3>(H: Applicative3<H>): <R, E, A>(
-    fga: Kind<F, Kind<G, Kind3<H, R, E, A>>>
-  ) => Kind3<H, R, E, Kind<F, Kind<G, A>>>
-  <H extends URIS2>(H: Applicative2<H>): <E, A>(
-    fga: Kind<F, Kind<G, Kind2<H, E, A>>>
-  ) => Kind2<H, E, Kind<F, Kind<G, A>>>
-  <H extends URIS2, E>(H: Applicative2C<H, E>): <A>(
-    fga: Kind<F, Kind<G, Kind2<H, E, A>>>
-  ) => Kind2<H, E, Kind<F, Kind<G, A>>>
-  <H extends URIS>(H: Applicative1<H>): <A>(fga: Kind<F, Kind<G, Kind<H, A>>>) => Kind<H, Kind<F, Kind<G, A>>>
-  <H>(H: Applicative<H>): <A>(fga: Kind<F, Kind<G, HKT<H, A>>>) => HKT<H, Kind<F, Kind<G, A>>>
-}
-```
-
-Added in v3.0.0
-
 # Traversable (interface)
 
 **Signature**
@@ -241,36 +216,6 @@ Added in v3.0.0
 export interface Traversable3<T extends URIS3> extends Functor3<T>, Foldable3<T> {
   readonly traverse: Traverse3<T>
   readonly sequence: Sequence3<T>
-}
-```
-
-Added in v3.0.0
-
-# TraversableComposition (interface)
-
-**Signature**
-
-```ts
-export interface TraversableComposition<F, G> extends FoldableComposition<F, G>, FunctorComposition<F, G> {
-  readonly traverse: <H>(
-    H: Applicative<H>
-  ) => <A, B>(f: (a: A) => HKT<H, B>) => (fga: HKT<F, HKT<G, A>>) => HKT<H, HKT<F, HKT<G, B>>>
-  readonly sequence: <H>(H: Applicative<H>) => <A>(fga: HKT<F, HKT<G, HKT<H, A>>>) => HKT<H, HKT<F, HKT<G, A>>>
-}
-```
-
-Added in v3.0.0
-
-# TraversableComposition11 (interface)
-
-**Signature**
-
-```ts
-export interface TraversableComposition11<F extends URIS, G extends URIS>
-  extends FoldableComposition11<F, G>,
-    FunctorComposition11<F, G> {
-  readonly traverse: TraverseComposition11<F, G>
-  readonly sequence: SequenceComposition11<F, G>
 }
 ```
 
@@ -400,63 +345,28 @@ export interface Traverse3<T extends URIS3> {
 
 Added in v3.0.0
 
-# TraverseComposition11 (interface)
+# sequenceComposition
 
 **Signature**
 
 ```ts
-export interface TraverseComposition11<F extends URIS, G extends URIS> {
-  <H extends URIS3>(H: Applicative3<H>): <R, E, A, B>(
-    f: (a: A) => Kind3<H, R, E, B>
-  ) => (fga: Kind<F, Kind<G, A>>) => Kind3<H, R, E, Kind<F, Kind<G, B>>>
-  <H extends URIS2>(H: Applicative2<H>): <E, A, B>(
-    f: (a: A) => Kind2<H, E, B>
-  ) => (fga: Kind<F, Kind<G, A>>) => Kind2<H, E, Kind<F, Kind<G, B>>>
-  <H extends URIS2, E>(H: Applicative2C<H, E>): <A, B>(
-    f: (a: A) => Kind2<H, E, B>
-  ) => (fga: Kind<F, Kind<G, A>>) => Kind2<H, E, Kind<F, Kind<G, B>>>
-  <H extends URIS>(H: Applicative1<H>): <A, B>(
-    f: (a: A) => Kind<H, B>
-  ) => (fga: Kind<F, Kind<G, A>>) => Kind<H, Kind<F, Kind<G, B>>>
-  <H>(H: Applicative<H>): <A, B>(f: (a: A) => HKT<H, B>) => (fga: Kind<F, Kind<G, A>>) => HKT<H, Kind<F, Kind<G, B>>>
-}
+export declare function sequenceComposition<F, G>(
+  F: Traversable<F>,
+  G: Traversable<G>
+): <H>(H: Applicative<H>) => <A>(fga: HKT<F, HKT<G, HKT<H, A>>>) => HKT<H, HKT<F, HKT<G, A>>>
 ```
 
 Added in v3.0.0
 
-# getTraversableComposition
-
-Returns the composition of two traversables
+# traverseComposition
 
 **Signature**
 
 ```ts
-export declare function getTraversableComposition<F extends URIS, G extends URIS>(
-  F: Traversable1<F>,
-  G: Traversable1<G>
-): TraversableComposition11<F, G>
-export declare function getTraversableComposition<F, G>(
+export declare function traverseComposition<F, G>(
   F: Traversable<F>,
   G: Traversable<G>
-): TraversableComposition<F, G>
-```
-
-**Example**
-
-```ts
-import { traversableArray } from 'fp-ts/lib/Array'
-import { applicativeIO } from 'fp-ts/lib/IO'
-import { none, traversableOption, some } from 'fp-ts/lib/Option'
-import { getTraversableComposition } from 'fp-ts/lib/Traversable'
-
-const T = getTraversableComposition(traversableArray, traversableOption)
-const state: Record<string, number | undefined> = {
-  a: 1,
-  b: 2,
-}
-const read = (s: string) => () => state[s]
-const x = T.sequence(applicativeIO)([some(read('a')), none, some(read('b')), some(read('c'))])
-assert.deepStrictEqual(x(), [some(1), none, some(2), some(undefined)])
+): <H>(H: Applicative<H>) => <A, B>(f: (a: A) => HKT<H, B>) => (fga: HKT<F, HKT<G, A>>) => HKT<H, HKT<F, HKT<G, B>>>
 ```
 
 Added in v3.0.0

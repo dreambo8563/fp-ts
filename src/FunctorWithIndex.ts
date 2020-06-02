@@ -11,26 +11,9 @@
  *
  * @since 2.0.0
  */
-import { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from './HKT'
-import {
-  Functor,
-  Functor1,
-  Functor2,
-  Functor3,
-  Functor4,
-  Functor2C,
-  FunctorComposition,
-  FunctorComposition11,
-  FunctorComposition12,
-  FunctorComposition12C,
-  FunctorComposition21,
-  FunctorComposition2C1,
-  FunctorComposition22,
-  FunctorComposition22C,
-  getFunctorComposition,
-  Functor3C
-} from './Functor'
 import { pipe } from './function'
+import { Functor, Functor1, Functor2, Functor2C, Functor3, Functor3C, Functor4 } from './Functor'
+import { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from './HKT'
 
 /**
  * @since 3.0.0
@@ -86,128 +69,19 @@ export interface FunctorWithIndex4<F extends URIS4, I> extends Functor4<F> {
 /**
  * @since 3.0.0
  */
-export interface FunctorWithIndexComposition<F, FI, G, GI> extends FunctorComposition<F, G> {
-  readonly mapWithIndex: <A, B>(f: (i: [FI, GI], a: A) => B) => (fga: HKT<F, HKT<G, A>>) => HKT<F, HKT<G, B>>
-}
-
-/**
- * @since 3.0.0
- */
-export interface FunctorWithIndexComposition11<F extends URIS, G extends URIS, FI, GI>
-  extends FunctorComposition11<F, G> {
-  readonly mapWithIndex: <A, B>(f: (i: [FI, GI], a: A) => B) => (fa: Kind<F, Kind<G, A>>) => Kind<F, Kind<G, B>>
-}
-
-/**
- * @since 3.0.0
- */
-export interface FunctorWithIndexComposition12<F extends URIS, G extends URIS2, FI, GI>
-  extends FunctorComposition12<F, G> {
-  readonly mapWithIndex: <A, B>(
-    f: (i: [FI, GI], a: A) => B
-  ) => <GE>(fa: Kind<F, Kind2<G, GE, A>>) => Kind<F, Kind2<G, GE, B>>
-}
-
-/**
- * @since 3.0.0
- */
-export interface FunctorWithIndexComposition12C<F extends URIS, G extends URIS2, GE, FI, GI>
-  extends FunctorComposition12C<F, G, GE> {
-  readonly mapWithIndex: <A, B>(
-    f: (i: [FI, GI], a: A) => B
-  ) => (fa: Kind<F, Kind2<G, GE, A>>) => Kind<F, Kind2<G, GE, B>>
-}
-
-/**
- * @since 3.0.0
- */
-export interface FunctorWithIndexComposition21<F extends URIS2, G extends URIS, FI, GI>
-  extends FunctorComposition21<F, G> {
-  readonly mapWithIndex: <A, B>(
-    f: (i: [FI, GI], a: A) => B
-  ) => <FE>(fa: Kind2<F, FE, Kind<G, A>>) => Kind2<F, FE, Kind<G, B>>
-}
-
-/**
- * @since 3.0.0
- */
-export interface FunctorWithIndexComposition2C1<F extends URIS2, G extends URIS, FE, FI, GI>
-  extends FunctorComposition2C1<F, G, FE> {
-  readonly mapWithIndex: <A, B>(
-    f: (i: [FI, GI], a: A) => B
-  ) => (fa: Kind2<F, FE, Kind<G, A>>) => Kind2<F, FE, Kind<G, B>>
-}
-
-/**
- * @since 3.0.0
- */
-export interface FunctorWithIndexComposition22<F extends URIS2, G extends URIS2, FI, GI>
-  extends FunctorComposition22<F, G> {
-  readonly mapWithIndex: <A, B>(
-    f: (i: [FI, GI], a: A) => B
-  ) => <FE, GE>(fa: Kind2<F, FE, Kind2<G, GE, A>>) => Kind2<F, FE, Kind2<G, GE, B>>
-}
-
-/**
- * @since 3.0.0
- */
-export interface FunctorWithIndexComposition22C<F extends URIS2, G extends URIS2, GE, FI, GI>
-  extends FunctorComposition22C<F, G, GE> {
-  readonly mapWithIndex: <FE, A, B>(
-    f: (i: [FI, GI], a: A) => B
-  ) => (fa: Kind2<F, FE, Kind2<G, GE, A>>) => Kind2<F, FE, Kind2<G, GE, B>>
-}
-
-/* tslint:enable:readonly-array */
-
-/**
- * @since 3.0.0
- */
-export function getFunctorWithIndexComposition<F extends URIS2, FI, G extends URIS2, GE, GI>(
-  F: FunctorWithIndex2<F, FI>,
-  G: FunctorWithIndex2C<G, GI, GE>
-): FunctorWithIndexComposition22C<F, G, GE, FI, GI>
-export function getFunctorWithIndexComposition<F extends URIS2, FI, G extends URIS2, GI>(
-  F: FunctorWithIndex2<F, FI>,
-  G: FunctorWithIndex2<G, GI>
-): FunctorWithIndexComposition22<F, G, FI, GI>
-export function getFunctorWithIndexComposition<F extends URIS2, FI, FE, G extends URIS, GI>(
-  F: FunctorWithIndex2C<F, FI, FE>,
-  G: FunctorWithIndex1<G, GI>
-): FunctorWithIndexComposition2C1<F, G, FE, FI, GI>
-export function getFunctorWithIndexComposition<F extends URIS2, FI, G extends URIS, GI>(
-  F: FunctorWithIndex2<F, FI>,
-  G: FunctorWithIndex1<G, GI>
-): FunctorWithIndexComposition21<F, G, FI, GI>
-export function getFunctorWithIndexComposition<F extends URIS, FI, G extends URIS2, GI, GE>(
-  F: FunctorWithIndex1<F, FI>,
-  G: FunctorWithIndex2C<G, GI, GE>
-): FunctorWithIndexComposition12C<F, G, GE, FI, GI>
-export function getFunctorWithIndexComposition<F extends URIS, FI, G extends URIS2, GI>(
-  F: FunctorWithIndex1<F, FI>,
-  G: FunctorWithIndex2<G, GI>
-): FunctorWithIndexComposition12<F, G, FI, GI>
-export function getFunctorWithIndexComposition<F extends URIS, FI, G extends URIS, GI>(
+export function mapWithIndexComposition<F extends URIS, FI, G extends URIS, GI>(
   F: FunctorWithIndex1<F, FI>,
   G: FunctorWithIndex1<G, GI>
-): FunctorWithIndexComposition11<F, G, FI, GI>
-export function getFunctorWithIndexComposition<F, FI, G, GI>(
+): <A, B>(f: (i: [FI, GI], a: A) => B) => (fga: Kind<F, Kind<G, A>>) => Kind<F, Kind<G, B>>
+export function mapWithIndexComposition<F, FI, G, GI>(
   F: FunctorWithIndex<F, FI>,
   G: FunctorWithIndex<G, GI>
-): FunctorWithIndexComposition<F, FI, G, GI>
-export function getFunctorWithIndexComposition<F, FI, G, GI>(
-  F: FunctorWithIndex<F, FI>,
-  G: FunctorWithIndex<G, GI>
-): FunctorWithIndexComposition<F, FI, G, GI> {
-  const FC = getFunctorComposition(F, G)
-  return {
-    map: FC.map,
-    mapWithIndex: (f) =>
-      F.mapWithIndex((fi, ga) =>
-        pipe(
-          ga,
-          G.mapWithIndex((gi, a) => f([fi, gi], a))
-        )
+): <A, B>(f: (i: [FI, GI], a: A) => B) => (fga: HKT<F, HKT<G, A>>) => HKT<F, HKT<G, B>> {
+  return (f) =>
+    F.mapWithIndex((fi, ga) =>
+      pipe(
+        ga,
+        G.mapWithIndex((gi, a) => f([fi, gi], a))
       )
-  }
+    )
 }

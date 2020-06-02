@@ -6,51 +6,60 @@ import { right, left } from '../src/Either'
 import { pipe } from '../src/function'
 
 describe('Filterable', () => {
-  it('getFilterableComposition', () => {
-    const F = _.getFilterableComposition(A.functorArray, A.filterableArray)
+  it('filterComposition', () => {
+    const filter = _.filterComposition(A.functorArray, A.filterableArray)
     assert.deepStrictEqual(
       pipe(
         [
           [1, 2],
           [3, 4]
         ],
-        F.filter((a) => a > 1)
+        filter((a) => a > 1)
       ),
       [[2], [3, 4]]
     )
+  })
 
+  it('filterMapComposition', () => {
+    const filterMap = _.filterMapComposition(A.functorArray, A.filterableArray)
     assert.deepStrictEqual(
       pipe(
         [
           ['a', 'bb'],
           ['ccc', 'dddd']
         ],
-        F.filterMap((a) => (a.length > 1 ? some(a.length) : none))
+        filterMap((a) => (a.length > 1 ? some(a.length) : none))
       ),
       [[2], [3, 4]]
     )
+  })
 
+  it('partitionComposition', () => {
+    const partition = _.partitionComposition(A.functorArray, A.filterableArray)
     assert.deepStrictEqual(
       pipe(
         [
           ['a', 'bb'],
           ['ccc', 'dddd']
         ],
-        F.partition((a) => a.length % 2 === 0)
+        partition((a) => a.length % 2 === 0)
       ),
       {
         left: [['a'], ['ccc']],
         right: [['bb'], ['dddd']]
       }
     )
+  })
 
+  it('partitionMapComposition', () => {
+    const partitionMap = _.partitionMapComposition(A.functorArray, A.filterableArray)
     assert.deepStrictEqual(
       pipe(
         [
           ['a', 'bb'],
           ['ccc', 'dddd']
         ],
-        F.partitionMap((a) => (a.length % 2 === 0 ? right(a.length) : left(a)))
+        partitionMap((a) => (a.length % 2 === 0 ? right(a.length) : left(a)))
       ),
       {
         left: [['a'], ['ccc']],

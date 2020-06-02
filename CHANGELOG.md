@@ -23,6 +23,12 @@ high state of flux, you're at risk of it changing without notice.
   - remove `Choice` module (@gcanti)
   - remove `Strong` module (@gcanti)
   - (**b**) remove the mega instances in favour of splitted instances (@gcanti)
+  - `Applicative`
+    - (**b**) remove `getApplicativeComposition` in favour of
+      - `Apply.apComposition` (@gcanti)
+  - `Compactable`
+    - (**b**) remove `getCompactableComposition` in favour of
+      - `separateComposition` (@gcanti)
   - `Date`
     - (**b**) rename `eqDate` to `eqGetDate` (@gcanti)
     - (**b**) rename `eqMonth` to `eqGetMonth` (@gcanti)
@@ -34,9 +40,20 @@ high state of flux, you're at risk of it changing without notice.
     - (**b**) remove `getEitherM` in favour of splitted functions (@gcanti)
   - `Eq`
     - move `eqDate` to `Date` module (@gcanti)
+  - `Filterable`
+    - (**b**) remove `getFilterableComposition` in favour of
+      - `filterComposition` (@gcanti)
+      - `filterMapComposition` (@gcanti)
+      - `partitionComposition` (@gcanti)
+      - `partitionMapComposition` (@gcanti)
   - `Foldable`
     - remove `traverse_` (@gcanti)
     - (**b**) rename `foldM` to `reduceM` (@gcanti)
+  - `Functor`
+    - remove `getFunctorComposition` (@gcanti)
+  - `FunctorWithIndex`
+    - (**b**) remove `getFunctorWithIndexComposition` in favour of
+      - `mapWithIndexComposition` (@gcanti)
   - `IOEither`
     - `getIOValidation` now returns an instance of `Applicative2C & Alt2C` (@gcanti)
   - `Ord`
@@ -69,6 +86,10 @@ high state of flux, you're at risk of it changing without notice.
     - make `rightOrBoth` lazy (@gcanti)
   - `TheseT`
     - make `toTuple` lazy (@gcanti)
+  - `Traversable`
+    - remove `getTraversableComposition` in favour of
+      - `traverseComposition` (@gcanti)
+      - `sequenceComposition` (@gcanti)
   - `Tuple`
     - remove `getChainRec` function (@gcanti)
 

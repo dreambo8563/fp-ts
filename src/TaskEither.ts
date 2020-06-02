@@ -6,12 +6,19 @@
  */
 import { Alt2, Alt2C } from './Alt'
 import { Applicative2, Applicative2C } from './Applicative'
-import { Apply2, apComposition } from './Apply'
+import { apComposition, Apply2 } from './Apply'
 import { Bifunctor2 } from './Bifunctor'
+import { separateComposition } from './Compactable'
 import * as E from './Either'
 import * as EitherT from './EitherT'
-import { Filterable2C, getFilterableComposition } from './Filterable'
-import { identity, Lazy, pipe, Predicate, Refinement } from './function'
+import {
+  Filterable2C,
+  filterComposition,
+  filterMapComposition,
+  partitionComposition,
+  partitionMapComposition
+} from './Filterable'
+import { flow, identity, Lazy, pipe, Predicate, Refinement } from './function'
 import { Functor2 } from './Functor'
 import { IO } from './IO'
 import { IOEither } from './IOEither'
@@ -289,17 +296,24 @@ export function getTaskValidation<E>(S: Semigroup<E>): Applicative2C<URI, E> & A
  * @since 2.1.0
  */
 export function getFilterable<E>(M: Monoid<E>): Filterable2C<URI, E> {
-  const F = getFilterableComposition(T.monadTask, E.getWitherable(M))
+  const F = E.getFilterable(M)
+  const map = flow(F.map, T.map)
+  const compact = T.map(F.compact)
+  const separate = separateComposition(T.monadTask, F)
+  const filter = filterComposition(T.monadTask, F)
+  const filterMap = filterMapComposition(T.monadTask, F)
+  const partition = partitionComposition(T.monadTask, F)
+  const partitionMap = partitionMapComposition(T.monadTask, F)
   return {
     URI,
     _E: undefined as any,
-    map: F.map,
-    compact: F.compact,
-    separate: F.separate,
-    filter: F.filter,
-    filterMap: F.filterMap,
-    partition: F.partition,
-    partitionMap: F.partitionMap
+    map,
+    compact,
+    separate,
+    filter,
+    filterMap,
+    partition,
+    partitionMap
   }
 }
 
