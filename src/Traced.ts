@@ -4,6 +4,12 @@
 import { Comonad2C } from './Comonad'
 import { Functor2 } from './Functor'
 import { Monoid } from './Monoid'
+import { Extend2C } from './Extend'
+import { Semigroup } from './Semigroup'
+
+// -------------------------------------------------------------------------------------
+// model
+// -------------------------------------------------------------------------------------
 
 /**
  * @since 2.0.0
@@ -28,14 +34,17 @@ export interface Traced<P, A> {
   (p: P): A
 }
 
+// -------------------------------------------------------------------------------------
+// combinators
+// -------------------------------------------------------------------------------------
+
 /**
  * Extracts a value at a relative position which depends on the current value.
  *
  * @since 2.0.0
  */
-export function tracks<P, A>(M: Monoid<P>, f: (a: A) => P): (wa: Traced<P, A>) => A {
-  return (wa) => wa(f(wa(M.empty)))
-}
+export const tracks: <P>(M: Monoid<P>) => <A>(f: (a: A) => P) => (wa: Traced<P, A>) => A = (M) => (f) => (wa) =>
+  wa(f(wa(M.empty)))
 
 // tslint:disable:readonly-array
 /**
@@ -43,9 +52,8 @@ export function tracks<P, A>(M: Monoid<P>, f: (a: A) => P): (wa: Traced<P, A>) =
  *
  * @since 2.0.0
  */
-export function listen<P, A>(wa: Traced<P, A>): Traced<P, [A, P]> {
-  return (e) => [wa(e), e]
-}
+export const listen: <P, A>(wa: Traced<P, A>) => Traced<P, [A, P]> = (wa) => (p) => [wa(p), p]
+
 // tslint:enable:readonly-array
 
 // tslint:disable:readonly-array
@@ -54,9 +62,10 @@ export function listen<P, A>(wa: Traced<P, A>): Traced<P, [A, P]> {
  *
  * @since 2.0.0
  */
-export function listens<P, B>(f: (p: P) => B): <A>(wa: Traced<P, A>) => Traced<P, [A, B]> {
-  return (wa) => (e) => [wa(e), f(e)]
-}
+export const listens: <P, B>(f: (p: P) => B) => <A>(wa: Traced<P, A>) => Traced<P, [A, B]> = (f) => (wa) => (e) => [
+  wa(e),
+  f(e)
+]
 // tslint:enable:readonly-array
 
 /**
@@ -64,9 +73,7 @@ export function listens<P, B>(f: (p: P) => B): <A>(wa: Traced<P, A>) => Traced<P
  *
  * @since 2.0.0
  */
-export function censor<P>(f: (p: P) => P): <A>(wa: Traced<P, A>) => Traced<P, A> {
-  return (wa) => (e) => wa(f(e))
-}
+export const censor: <P>(f: (p: P) => P) => <A>(wa: Traced<P, A>) => Traced<P, A> = (f) => (wa) => (e) => wa(f(e))
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -88,12 +95,25 @@ export const functorTraced: Functor2<URI> = {
 /**
  * @since 2.0.0
  */
-export function getComonad<P>(M: Monoid<P>): Comonad2C<URI, P> {
+export function getExtend<P>(S: Semigroup<P>): Extend2C<URI, P> {
   return {
     URI,
     _E: undefined as any,
     map,
-    extend: (f) => (wa) => (p1) => f((p2) => wa(M.concat(p1, p2))),
+    extend: (f) => (wa) => (p1) => f((p2) => wa(S.concat(p1, p2)))
+  }
+}
+
+/**
+ * @since 2.0.0
+ */
+export function getComonad<P>(M: Monoid<P>): Comonad2C<URI, P> {
+  const E = getExtend(M)
+  return {
+    URI,
+    _E: undefined as any,
+    map,
+    extend: E.extend,
     extract: (wa) => wa(M.empty)
   }
 }

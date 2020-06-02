@@ -18,6 +18,7 @@ Added in v2.0.0
 - [censor](#censor)
 - [functorTraced](#functortraced)
 - [getComonad](#getcomonad)
+- [getExtend](#getextend)
 - [listen](#listen)
 - [listens](#listens)
 - [map](#map)
@@ -64,7 +65,7 @@ Apply a function to the current position
 **Signature**
 
 ```ts
-export declare function censor<P>(f: (p: P) => P): <A>(wa: Traced<P, A>) => Traced<P, A>
+export declare const censor: <P>(f: (p: P) => P) => <A>(wa: Traced<P, A>) => Traced<P, A>
 ```
 
 Added in v2.0.0
@@ -89,6 +90,16 @@ export declare function getComonad<P>(M: Monoid<P>): Comonad2C<URI, P>
 
 Added in v2.0.0
 
+# getExtend
+
+**Signature**
+
+```ts
+export declare function getExtend<P>(S: Semigroup<P>): Extend2C<URI, P>
+```
+
+Added in v2.0.0
+
 # listen
 
 Get the current position
@@ -96,7 +107,7 @@ Get the current position
 **Signature**
 
 ```ts
-export declare function listen<P, A>(wa: Traced<P, A>): Traced<P, [A, P]>
+export declare const listen: <P, A>(wa: Traced<P, A>) => Traced<P, [A, P]>
 ```
 
 Added in v2.0.0
@@ -108,7 +119,7 @@ Get a value which depends on the current position
 **Signature**
 
 ```ts
-export declare function listens<P, B>(f: (p: P) => B): <A>(wa: Traced<P, A>) => Traced<P, [A, B]>
+export declare const listens: <P, B>(f: (p: P) => B) => <A>(wa: Traced<P, A>) => Traced<P, [A, B]>
 ```
 
 Added in v2.0.0
@@ -130,7 +141,7 @@ Extracts a value at a relative position which depends on the current value.
 **Signature**
 
 ```ts
-export declare function tracks<P, A>(M: Monoid<P>, f: (a: A) => P): (wa: Traced<P, A>) => A
+export declare const tracks: <P>(M: Monoid<P>) => <A>(f: (a: A) => P) => (wa: Traced<P, A>) => A
 ```
 
 Added in v2.0.0

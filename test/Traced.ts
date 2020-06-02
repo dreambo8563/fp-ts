@@ -72,7 +72,7 @@ describe('Traced', () => {
   })
 
   it('tracks', () => {
-    const travisB = _.tracks(M, (project: Project): Settings => ({ ...M.empty, settingsTravis: project.projectGitHub }))
+    const travisB = _.tracks(M)((project: Project): Settings => ({ ...M.empty, settingsTravis: project.projectGitHub }))
     assert.deepStrictEqual(C.extract(pipe(buildProject('travis'), C.extend(travisB))), {
       projectName: 'travis',
       projectHasLibrary: false,

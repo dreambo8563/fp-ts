@@ -91,6 +91,8 @@ high state of flux, you're at risk of it changing without notice.
     - remove `getTraversableComposition` in favour of
       - `traverseComposition` (@gcanti)
       - `sequenceComposition` (@gcanti)
+  - `Traced`
+    - curry `tracks` (@gcanti)
   - `Tuple`
     - remove `getChainRec` function (@gcanti)
 
