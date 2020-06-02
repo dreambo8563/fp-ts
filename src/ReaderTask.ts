@@ -42,13 +42,6 @@ export interface ReaderTask<R, A> {
 }
 
 /**
- * @since 2.4.0
- */
-export function run<R, A>(ma: ReaderTask<R, A>, r: R): Promise<A> {
-  return ma(r)()
-}
-
-/**
  * @since 2.3.0
  */
 export const fromTask: <R, A>(ma: Task<A>) => ReaderTask<R, A> =

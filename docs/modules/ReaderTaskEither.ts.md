@@ -74,7 +74,6 @@ Added in v2.0.0
 - [rightReader](#rightreader)
 - [rightReaderTask](#rightreadertask)
 - [rightTask](#righttask)
-- [run](#run)
 - [swap](#swap)
 
 ---
@@ -774,16 +773,6 @@ Added in v2.5.0
 
 ```ts
 export declare function rightTask<R, E = never, A = never>(ma: Task<A>): ReaderTaskEither<R, E, A>
-```
-
-Added in v2.0.0
-
-# run
-
-**Signature**
-
-```ts
-export declare function run<R, E, A>(ma: ReaderTaskEither<R, E, A>, r: R): Promise<Either<E, A>>
 ```
 
 Added in v2.0.0

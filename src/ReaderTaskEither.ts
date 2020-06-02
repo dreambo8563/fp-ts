@@ -55,13 +55,6 @@ export interface ReaderTaskEither<R, E, A> {
 /**
  * @since 2.0.0
  */
-export function run<R, E, A>(ma: ReaderTaskEither<R, E, A>, r: R): Promise<Either<E, A>> {
-  return ma(r)()
-}
-
-/**
- * @since 2.0.0
- */
 export function left<R, E = never, A = never>(e: E): ReaderTaskEither<R, E, A> {
   return fromTaskEither(TE.left(e))
 }

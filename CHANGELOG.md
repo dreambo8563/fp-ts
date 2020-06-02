@@ -70,8 +70,10 @@ high state of flux, you're at risk of it changing without notice.
     - remove `local`
   - `ReaderTask`
     - remove `local`
+    - remove `run`
   - `ReaderTaskEither`
     - remove `local`
+    - remove `run`
     - `getReaderTaskValidation` in favour of
       - (**b**) add `getReaderTaskValidationApplicative`
       - (**b**) add `getReaderTaskValidationAlt`
