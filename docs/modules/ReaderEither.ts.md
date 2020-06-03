@@ -227,9 +227,9 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function chainEitherK<A, E, B>(
-  f: (a: A) => Either<E, B>
-): <R>(ma: ReaderEither<R, E, A>) => ReaderEither<R, E, B>
+export declare const chainEitherK: <A, E, B>(
+  f: (a: A) => E.Either<E, B>
+) => <R>(ma: ReaderEither<R, E, A>) => ReaderEither<R, E, B>
 ```
 
 Added in v2.4.0

@@ -415,15 +415,33 @@ describe('ReaderTaskEither', () => {
     assert.deepStrictEqual(x, E.right(1))
   })
 
+  it('fromEitherK', async () => {
+    const f = _.fromEitherK((s: string) => E.right(s.length))
+    const x = await pipe(_.right('a'), _.chain(f))({})()
+    assert.deepStrictEqual(x, E.right(1))
+  })
+
   it('chainIOEitherK', async () => {
     const f = (s: string) => IE.right(s.length)
     const x = await pipe(_.right('a'), _.chainIOEitherK(f))({})()
     assert.deepStrictEqual(x, E.right(1))
   })
 
+  it('fromIOEitherK', async () => {
+    const f = _.fromIOEitherK((s: string) => IE.right(s.length))
+    const x = await pipe(_.right('a'), _.chain(f))({})()
+    assert.deepStrictEqual(x, E.right(1))
+  })
+
   it('chainTaskEitherK', async () => {
     const f = (s: string) => TE.right(s.length)
     const x = await pipe(_.right('a'), _.chainTaskEitherK(f))({})()
+    assert.deepStrictEqual(x, E.right(1))
+  })
+
+  it('fromTaskEitherK', async () => {
+    const f = _.fromTaskEitherK((s: string) => TE.right(s.length))
+    const x = await pipe(_.right('a'), _.chain(f))({})()
     assert.deepStrictEqual(x, E.right(1))
   })
 })

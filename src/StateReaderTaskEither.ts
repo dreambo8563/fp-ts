@@ -219,11 +219,10 @@ export function fromEitherK<E, A extends ReadonlyArray<unknown>, B>(
 /**
  * @since 2.4.0
  */
-export function chainEitherK<E, A, B>(
+export const chainEitherK: <E, A, B>(
   f: (a: A) => Either<E, B>
-): <S, R>(ma: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> {
-  return chain<any, any, E, A, B>(fromEitherK(f))
-}
+) => <S, R>(ma: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> = (f) =>
+  chain((a) => fromEither(f(a)))
 
 /**
  * @since 2.4.0
@@ -237,11 +236,10 @@ export function fromIOEitherK<E, A extends ReadonlyArray<unknown>, B>(
 /**
  * @since 2.4.0
  */
-export function chainIOEitherK<E, A, B>(
+export const chainIOEitherK: <E, A, B>(
   f: (a: A) => IOEither<E, B>
-): <S, R>(ma: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> {
-  return chain<any, any, E, A, B>(fromIOEitherK(f))
-}
+) => <S, R>(ma: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> = (f) =>
+  chain((a) => fromIOEither(f(a)))
 
 /**
  * @since 2.4.0
@@ -255,11 +253,10 @@ export function fromTaskEitherK<E, A extends ReadonlyArray<unknown>, B>(
 /**
  * @since 2.4.0
  */
-export function chainTaskEitherK<E, A, B>(
+export const chainTaskEitherK: <E, A, B>(
   f: (a: A) => TaskEither<E, B>
-): <S, R>(ma: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> {
-  return chain<any, any, E, A, B>(fromTaskEitherK(f))
-}
+) => <S, R>(ma: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> = (f) =>
+  chain((a) => fromTaskEither(f(a)))
 
 /**
  * @since 2.4.0
@@ -273,11 +270,10 @@ export function fromReaderTaskEitherK<R, E, A extends ReadonlyArray<unknown>, B>
 /**
  * @since 2.4.0
  */
-export function chainReaderTaskEitherK<R, E, A, B>(
+export const chainReaderTaskEitherK: <R, E, A, B>(
   f: (a: A) => ReaderTaskEither<R, E, B>
-): <S>(ma: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> {
-  return chain<any, any, E, A, B>(fromReaderTaskEitherK(f))
-}
+) => <S>(ma: StateReaderTaskEither<S, R, E, A>) => StateReaderTaskEither<S, R, E, B> = (f) =>
+  chain((a) => fromReaderTaskEither(f(a)))
 
 // -------------------------------------------------------------------------------------
 // pipeables

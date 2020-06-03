@@ -132,8 +132,8 @@ export function getDualMonoid<A>(M: Monoid<A>): Monoid<A> {
  * @since 2.0.0
  */
 export function getFunctionMonoid<M>(M: Monoid<M>): <A = never>() => Monoid<(a: A) => M> {
-  return () => ({
-    concat: getFunctionSemigroup(M)<any>().concat,
+  return <A>() => ({
+    concat: getFunctionSemigroup(M)<A>().concat,
     empty: () => M.empty
   })
 }

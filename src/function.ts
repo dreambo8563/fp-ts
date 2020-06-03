@@ -252,7 +252,7 @@ export function flow(
 /**
  * @since 2.0.0
  */
-export function tuple<T extends ReadonlyArray<any>>(...t: T): T {
+export function tuple<T extends ReadonlyArray<unknown>>(...t: T): T {
   return t
 }
 

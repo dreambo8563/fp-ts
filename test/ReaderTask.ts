@@ -148,9 +148,21 @@ describe('ReaderTask', () => {
     assert.deepStrictEqual(x, 1)
   })
 
+  it('fromIOK', async () => {
+    const f = _.fromIOK((s: string) => I.of(s.length))
+    const x = await pipe(_.of('a'), _.chain(f))({})()
+    assert.deepStrictEqual(x, 1)
+  })
+
   it('chainTaskK', async () => {
     const f = (s: string) => T.of(s.length)
     const x = await pipe(_.of('a'), _.chainTaskK(f))({})()
+    assert.deepStrictEqual(x, 1)
+  })
+
+  it('fromTaskK', async () => {
+    const f = _.fromTaskK((s: string) => T.of(s.length))
+    const x = await pipe(_.of('a'), _.chain(f))({})()
     assert.deepStrictEqual(x, 1)
   })
 })

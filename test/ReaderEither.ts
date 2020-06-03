@@ -229,4 +229,10 @@ describe('ReaderEither', () => {
     assert.deepStrictEqual(pipe(_.right('a'), _.chainEitherK(f))({}), E.right(1))
     assert.deepStrictEqual(pipe(_.right('aa'), _.chainEitherK(f))({}), E.left('b'))
   })
+
+  it('fromEitherK', () => {
+    const f = _.fromEitherK((s: string) => (s.length === 1 ? E.right(s.length) : E.left('b')))
+    assert.deepStrictEqual(pipe(_.right('a'), _.chain(f))({}), E.right(1))
+    assert.deepStrictEqual(pipe(_.right('aa'), _.chain(f))({}), E.left('b'))
+  })
 })

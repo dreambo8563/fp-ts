@@ -267,9 +267,9 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function chainEitherK<E, A, B>(
-  f: (a: A) => Either<E, B>
-): <R>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B>
+export declare const chainEitherK: <E, A, B>(
+  f: (a: A) => E.Either<E, B>
+) => <R>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B>
 ```
 
 Added in v2.4.0
@@ -303,9 +303,9 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function chainIOEitherK<E, A, B>(
+export declare const chainIOEitherK: <E, A, B>(
   f: (a: A) => IOEither<E, B>
-): <R>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B>
+) => <R>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B>
 ```
 
 Added in v2.4.0
@@ -327,9 +327,9 @@ Added in v2.6.1
 **Signature**
 
 ```ts
-export declare function chainTaskEitherK<E, A, B>(
-  f: (a: A) => TaskEither<E, B>
-): <R>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B>
+export declare const chainTaskEitherK: <E, A, B>(
+  f: (a: A) => TE.TaskEither<E, B>
+) => <R>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B>
 ```
 
 Added in v2.4.0

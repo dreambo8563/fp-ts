@@ -101,9 +101,8 @@ export function fromIOK<A extends ReadonlyArray<unknown>, B>(f: (...a: A) => IO<
 /**
  * @since 2.4.0
  */
-export function chainIOK<A, B>(f: (a: A) => IO<B>): <R>(ma: ReaderTask<R, A>) => ReaderTask<R, B> {
-  return chain<A, any, B>(fromIOK(f))
-}
+export const chainIOK: <A, B>(f: (a: A) => IO<B>) => <R>(ma: ReaderTask<R, A>) => ReaderTask<R, B> = (f) =>
+  chain((a) => fromIO(f(a)))
 
 /**
  * @since 2.4.0
@@ -117,9 +116,8 @@ export function fromTaskK<A extends ReadonlyArray<unknown>, B>(
 /**
  * @since 2.4.0
  */
-export function chainTaskK<A, B>(f: (a: A) => Task<B>): <R>(ma: ReaderTask<R, A>) => ReaderTask<R, B> {
-  return chain<A, any, B>(fromTaskK(f))
-}
+export const chainTaskK: <A, B>(f: (a: A) => Task<B>) => <R>(ma: ReaderTask<R, A>) => ReaderTask<R, B> = (f) =>
+  chain((a) => fromTask(f(a)))
 
 // -------------------------------------------------------------------------------------
 // pipeables

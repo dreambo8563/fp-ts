@@ -171,7 +171,7 @@ Added in v2.3.0
 **Signature**
 
 ```ts
-export declare function chainIOK<A, B>(f: (a: A) => IO<B>): <R>(ma: ReaderTask<R, A>) => ReaderTask<R, B>
+export declare const chainIOK: <A, B>(f: (a: A) => IO<B>) => <R>(ma: ReaderTask<R, A>) => ReaderTask<R, B>
 ```
 
 Added in v2.4.0
@@ -181,7 +181,7 @@ Added in v2.4.0
 **Signature**
 
 ```ts
-export declare function chainTaskK<A, B>(f: (a: A) => Task<B>): <R>(ma: ReaderTask<R, A>) => ReaderTask<R, B>
+export declare const chainTaskK: <A, B>(f: (a: A) => T.Task<B>) => <R>(ma: ReaderTask<R, A>) => ReaderTask<R, B>
 ```
 
 Added in v2.4.0

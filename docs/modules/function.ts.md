@@ -415,7 +415,7 @@ Added in v3.0.0
 **Signature**
 
 ```ts
-export declare function tuple<T extends ReadonlyArray<any>>(...t: T): T
+export declare function tuple<T extends ReadonlyArray<unknown>>(...t: T): T
 ```
 
 Added in v2.0.0

@@ -288,11 +288,9 @@ export function fromEitherK<E, A extends ReadonlyArray<unknown>, B>(
 /**
  * @since 2.4.0
  */
-export function chainEitherK<E, A, B>(
+export const chainEitherK: <E, A, B>(
   f: (a: A) => Either<E, B>
-): <R>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> {
-  return chain<any, E, A, B>(fromEitherK(f))
-}
+) => <R>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> = (f) => chain((a) => fromEither(f(a)))
 
 /**
  * @since 2.4.0
@@ -306,11 +304,9 @@ export function fromIOEitherK<E, A extends ReadonlyArray<unknown>, B>(
 /**
  * @since 2.4.0
  */
-export function chainIOEitherK<E, A, B>(
+export const chainIOEitherK: <E, A, B>(
   f: (a: A) => IOEither<E, B>
-): <R>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> {
-  return chain<any, E, A, B>(fromIOEitherK(f))
-}
+) => <R>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> = (f) => chain((a) => fromIOEither(f(a)))
 
 /**
  * @since 2.4.0
@@ -324,11 +320,9 @@ export function fromTaskEitherK<E, A extends ReadonlyArray<unknown>, B>(
 /**
  * @since 2.4.0
  */
-export function chainTaskEitherK<E, A, B>(
+export const chainTaskEitherK: <E, A, B>(
   f: (a: A) => TaskEither<E, B>
-): <R>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> {
-  return chain<any, E, A, B>(fromTaskEitherK(f))
-}
+) => <R>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> = (f) => chain((a) => fromTaskEither(f(a)))
 
 // -------------------------------------------------------------------------------------
 // pipeables
