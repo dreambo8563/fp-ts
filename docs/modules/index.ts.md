@@ -84,7 +84,6 @@ Added in v2.0.0
 - [show](#show)
 - [state](#state)
 - [stateReaderTaskEither](#statereadertaskeither)
-- [stateT](#statet)
 - [store](#store)
 - [task](#task)
 - [taskEither](#taskeither)
@@ -818,16 +817,6 @@ Added in v2.0.0
 
 ```ts
 export declare const stateReaderTaskEither: typeof stateReaderTaskEither
-```
-
-Added in v2.0.0
-
-# stateT
-
-**Signature**
-
-```ts
-export declare const stateT: typeof stateT
 ```
 
 Added in v2.0.0

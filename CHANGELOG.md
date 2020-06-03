@@ -23,6 +23,7 @@ high state of flux, you're at risk of it changing without notice.
   - remove `ChainRec` module
   - remove `Choice` module
   - remove `EitherT` module
+  - remove `StateT` module
   - remove `Strong` module
   - remove `ReaderT` module
   - remove the mega instances in favour of (**b**) splitted instances
