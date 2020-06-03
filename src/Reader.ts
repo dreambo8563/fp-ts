@@ -6,7 +6,6 @@ import { Apply2 } from './Apply'
 import { Category2 } from './Category'
 import * as F from './function'
 import { Functor2 } from './Functor'
-import * as I from './Identity'
 import { Monad2 } from './Monad'
 import { Monoid } from './Monoid'
 import { Profunctor2 } from './Profunctor'
@@ -41,14 +40,14 @@ export interface Reader<R, A> {
  *
  * @since 2.0.0
  */
-export const ask: <R>() => Reader<R, R> = () => I.of
+export const ask: <R>() => Reader<R, R> = () => F.identity
 
 /**
  * Projects a value from the global context in a Reader
  *
  * @since 2.0.0
  */
-export const asks: <R, A>(f: (r: R) => A) => Reader<R, A> = (f) => (r) => F.pipe(I.of(r), I.map(f))
+export const asks: <R, A>(f: (r: R) => A) => Reader<R, A> = (f) => (r) => f(r)
 
 /**
  * Changes the value of the local context during the execution of the action `ma` (similar to `Contravariant`'s
@@ -89,7 +88,7 @@ export const of: <R, A>(a: A) => Reader<R, A> = (a) => () => a
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <R>(fa: Reader<R, A>) => Reader<R, B> = (f) => (fa) => F.flow(fa, I.map(f))
+export const map: <A, B>(f: (a: A) => B) => <R>(fa: Reader<R, A>) => Reader<R, B> = (f) => (fa) => (r) => f(fa(r))
 
 /**
  * @since 3.0.0
@@ -103,7 +102,7 @@ export const functorReader: Functor2<URI> = {
  * @since 2.0.0
  */
 export const ap: <R, A>(fa: Reader<R, A>) => <B>(fab: Reader<R, (a: A) => B>) => Reader<R, B> = (fa) => (fab) => (r) =>
-  F.pipe(fab(r), I.ap(fa(r)))
+  fab(r)(fa(r))
 
 /**
  * @since 3.0.0
@@ -148,10 +147,7 @@ export const applicativeReader: Applicative2<URI> = {
  * @since 2.0.0
  */
 export const chain: <A, R, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) => Reader<R, B> = (f) => (fa) => (r) =>
-  F.pipe(
-    fa(r),
-    I.chain((a) => f(a)(r))
-  )
+  f(fa(r))(r)
 
 /**
  * @since 3.0.0
