@@ -30,6 +30,7 @@ Added in v2.0.0
 - [Apply3 (interface)](#apply3-interface)
 - [Apply3C (interface)](#apply3c-interface)
 - [Apply4 (interface)](#apply4-interface)
+- [apComposition](#apcomposition)
 - [sequenceS](#sequences)
 - [sequenceT](#sequencet)
 
@@ -117,6 +118,43 @@ export interface Apply4<F extends URIS4> extends Functor4<F> {
     fa: Kind4<F, S, R, E, A>
   ) => <B>(fab: Kind4<F, S, R, E, (a: A) => B>) => Kind4<F, S, R, E, B>
 }
+```
+
+Added in v3.0.0
+
+# apComposition
+
+**Signature**
+
+```ts
+export declare function apComposition<F extends URIS2, G extends URIS2>(
+  F: Apply2<F>,
+  G: Apply2<G>
+): <EF, EG, A>(
+  fga: Kind2<F, EF, Kind2<G, EG, A>>
+) => <B>(fgab: Kind2<F, EF, Kind2<G, EG, (a: A) => B>>) => Kind2<F, EF, Kind2<G, EG, B>>
+export declare function apComposition<F extends URIS2, G extends URIS2, EG>(
+  F: Apply2<F>,
+  G: Apply2C<G, EG>
+): <EF, A>(
+  fga: Kind2<F, EF, Kind2<G, EG, A>>
+) => <B>(fgab: Kind2<F, EF, Kind2<G, EG, (a: A) => B>>) => Kind2<F, EF, Kind2<G, EG, B>>
+export declare function apComposition<F extends URIS, G extends URIS2>(
+  F: Apply1<F>,
+  G: Apply2<G>
+): <E, A>(fga: Kind<F, Kind2<G, E, A>>) => <B>(fgab: Kind<F, Kind2<G, E, (a: A) => B>>) => Kind<F, Kind2<G, E, B>>
+export declare function apComposition<F extends URIS, G extends URIS2, E>(
+  F: Apply1<F>,
+  G: Apply2C<G, E>
+): <A>(fga: Kind<F, Kind2<G, E, A>>) => <B>(fgab: Kind<F, Kind2<G, E, (a: A) => B>>) => Kind<F, Kind2<G, E, B>>
+export declare function apComposition<F extends URIS, G extends URIS>(
+  F: Apply1<F>,
+  G: Apply1<G>
+): <A>(fga: Kind<F, Kind<G, A>>) => <B>(fgab: Kind<F, Kind<G, (a: A) => B>>) => Kind<F, Kind<G, B>>
+export declare function apComposition<F, G>(
+  F: Apply<F>,
+  G: Apply<G>
+): <A>(fga: HKT<F, HKT<G, A>>) => <B>(fgab: HKT<F, HKT<G, (a: A) => B>>) => HKT<F, HKT<G, B>>
 ```
 
 Added in v3.0.0

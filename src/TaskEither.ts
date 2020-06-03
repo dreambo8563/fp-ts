@@ -6,11 +6,10 @@
  */
 import { Alt2, Alt2C } from './Alt'
 import { Applicative2, Applicative2C } from './Applicative'
-import { Apply2 } from './Apply'
+import { apComposition, Apply2 } from './Apply'
 import { Bifunctor2 } from './Bifunctor'
 import { separateComposition } from './Compactable'
 import * as E from './Either'
-import * as EitherT from './EitherT'
 import {
   Filterable2C,
   filterComposition,
@@ -59,16 +58,12 @@ export interface TaskEither<E, A> extends Task<Either<E, A>> {}
 /**
  * @since 2.0.0
  */
-export const left: <E = never, A = never>(e: E) => TaskEither<E, A> =
-  /*#__PURE__*/
-  EitherT.left(T.monadTask)
+export const left: <E = never, A = never>(e: E) => TaskEither<E, A> = flow(E.left, T.of)
 
 /**
  * @since 2.0.0
  */
-export const right: <E = never, A = never>(a: A) => TaskEither<E, A> =
-  /*#__PURE__*/
-  EitherT.right(T.monadTask)
+export const right: <E = never, A = never>(a: A) => TaskEither<E, A> = flow(E.right, T.of)
 
 /**
  * @since 2.0.0
@@ -111,16 +106,13 @@ export const fromIOEither: <E, A>(fa: IOEither<E, A>) => TaskEither<E, A> =
 export const fold: <E, A, B>(
   onLeft: (e: E) => Task<B>,
   onRight: (a: A) => Task<B>
-) => (ma: TaskEither<E, A>) => Task<B> =
-  /*#__PURE__*/
-  EitherT.fold(T.monadTask)
+) => (ma: TaskEither<E, A>) => Task<B> = flow(E.fold, T.chain)
 
 /**
  * @since 2.0.0
  */
-export const getOrElse: <E, A>(onLeft: (e: E) => Task<A>) => (ma: TaskEither<E, A>) => Task<A> =
-  /*#__PURE__*/
-  EitherT.getOrElse(T.monadTask)
+export const getOrElse: <E, A>(onLeft: (e: E) => Task<A>) => (ma: TaskEither<E, A>) => Task<A> = (onLeft) =>
+  T.chain(E.fold(onLeft, T.of))
 
 /**
  * @since 2.6.0
@@ -132,9 +124,9 @@ export const getOrElseW: <E, B>(
 /**
  * @since 2.0.0
  */
-export const orElse: <E, A, M>(onLeft: (e: E) => TaskEither<M, A>) => (ma: TaskEither<E, A>) => TaskEither<M, A> =
-  /*#__PURE__*/
-  EitherT.orElse(T.monadTask)
+export const orElse: <E, A, M>(onLeft: (e: E) => TaskEither<M, A>) => (ma: TaskEither<E, A>) => TaskEither<M, A> = (
+  f
+) => T.chain(E.fold(f, right))
 
 /**
  * @since 2.0.0
@@ -286,7 +278,7 @@ export function getTaskValidationApplicative<E>(S: Semigroup<E>): Applicative2C<
     URI,
     _E: undefined as any,
     map,
-    ap: EitherT.ap(T.applyTask, E.getValidationApplicative(S)),
+    ap: apComposition(T.applyTask, E.getValidationApplicative(S)),
     of
   }
 }
@@ -428,10 +420,9 @@ export const functorTaskEither: Functor2<URI> = {
 /**
  * @since 2.0.0
  */
-export const ap: <E, A>(fa: TaskEither<E, A>) => <B>(fab: TaskEither<E, (a: A) => B>) => TaskEither<E, B> = EitherT.ap(
-  T.monadTask,
-  E.applyEither
-)
+export const ap: <E, A>(fa: TaskEither<E, A>) => <B>(fab: TaskEither<E, (a: A) => B>) => TaskEither<E, B> =
+  /*#__PURE__*/
+  apComposition(T.applyTask, E.applyEither)
 
 /**
  * @since 3.0.0
@@ -477,9 +468,8 @@ export const applicativeTaskEither: Applicative2<URI> = {
 /**
  * @since 2.0.0
  */
-export const chain: <E, A, B>(f: (a: A) => TaskEither<E, B>) => (ma: TaskEither<E, A>) => TaskEither<E, B> =
-  /*#__PURE__*/
-  EitherT.chain(T.monadTask)
+export const chain: <E, A, B>(f: (a: A) => TaskEither<E, B>) => (ma: TaskEither<E, A>) => TaskEither<E, B> = (f) =>
+  T.chain(E.fold(left, f))
 
 /**
  * @since 3.0.0
@@ -534,16 +524,16 @@ export const flatten: <E, A>(mma: TaskEither<E, TaskEither<E, A>>) => TaskEither
 /**
  * @since 2.0.0
  */
-export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: TaskEither<E, A>) => TaskEither<G, B> =
-  /*#__PURE__*/
-  EitherT.bimap(T.monadTask)
+export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: TaskEither<E, A>) => TaskEither<G, B> = flow(
+  E.bimap,
+  T.map
+)
 
 /**
  * @since 2.0.0
  */
-export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TaskEither<E, A>) => TaskEither<G, A> =
-  /*#__PURE__*/
-  EitherT.mapLeft(T.monadTask)
+export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TaskEither<E, A>) => TaskEither<G, A> = (f) =>
+  T.map(E.mapLeft(f))
 
 /**
  * @since 3.0.0
@@ -557,9 +547,8 @@ export const bifunctorTaskEither: Bifunctor2<URI> = {
 /**
  * @since 2.0.0
  */
-export const alt: <E, A>(that: () => TaskEither<E, A>) => (fa: TaskEither<E, A>) => TaskEither<E, A> =
-  /*#__PURE__*/
-  EitherT.alt(T.monadTask)
+export const alt: <E, A>(that: () => TaskEither<E, A>) => (fa: TaskEither<E, A>) => TaskEither<E, A> = (that) =>
+  T.chain(E.fold(that, right))
 
 /**
  * @since 3.0.0

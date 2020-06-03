@@ -22,6 +22,7 @@ high state of flux, you're at risk of it changing without notice.
   - (**b**) move `pipe` to `function.ts`
   - remove `ChainRec` module
   - remove `Choice` module
+  - remove `EitherT` module
   - remove `Strong` module
   - remove the mega instances in favour of (**b**) splitted instances
   - `Applicative`
@@ -39,8 +40,6 @@ high state of flux, you're at risk of it changing without notice.
     - remove `getValidation` in favour of
       - (**b**) add `getValidationApplicative`
       - (**b**) add `getValidationAlt`
-  - `EitherT`
-    - remove `getEitherM` in favour of (**b**) splitted functions
   - `Eq`
     - move `eqDate` to `Date` module
   - `Filterable`

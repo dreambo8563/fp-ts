@@ -6,11 +6,10 @@
  */
 import { Alt2, Alt2C } from './Alt'
 import { Applicative2, Applicative2C } from './Applicative'
-import { Apply2 } from './Apply'
+import { apComposition, Apply2 } from './Apply'
 import { Bifunctor2 } from './Bifunctor'
 import { separateComposition } from './Compactable'
 import * as E from './Either'
-import * as EitherT from './EitherT'
 import {
   Filterable2C,
   filterComposition,
@@ -56,16 +55,12 @@ export interface IOEither<E, A> extends IO<Either<E, A>> {}
 /**
  * @since 2.0.0
  */
-export const left: <E = never, A = never>(l: E) => IOEither<E, A> =
-  /*#__PURE__*/
-  EitherT.left(I.monadIO)
+export const left: <E = never, A = never>(l: E) => IOEither<E, A> = flow(E.left, I.of)
 
 /**
  * @since 2.0.0
  */
-export const right: <E = never, A = never>(a: A) => IOEither<E, A> =
-  /*#__PURE__*/
-  EitherT.right(I.monadIO)
+export const right: <E = never, A = never>(a: A) => IOEither<E, A> = flow(E.right, I.of)
 
 /**
  * @since 2.0.0
@@ -84,16 +79,16 @@ export const leftIO: <E = never, A = never>(me: IO<E>) => IOEither<E, A> =
 /**
  * @since 2.0.0
  */
-export const fold: <E, A, B>(onLeft: (e: E) => IO<B>, onRight: (a: A) => IO<B>) => (ma: IOEither<E, A>) => IO<B> =
-  /*#__PURE__*/
-  EitherT.fold(I.monadIO)
+export const fold: <E, A, B>(onLeft: (e: E) => IO<B>, onRight: (a: A) => IO<B>) => (ma: IOEither<E, A>) => IO<B> = flow(
+  E.fold,
+  I.chain
+)
 
 /**
  * @since 2.0.0
  */
-export const getOrElse: <E, A>(onLeft: (e: E) => IO<A>) => (ma: IOEither<E, A>) => IO<A> =
-  /*#__PURE__*/
-  EitherT.getOrElse(I.monadIO)
+export const getOrElse: <E, A>(onLeft: (e: E) => IO<A>) => (ma: IOEither<E, A>) => IO<A> = (onLeft) =>
+  I.chain(E.fold(onLeft, I.of))
 
 /**
  * @since 2.6.0
@@ -103,9 +98,8 @@ export const getOrElseW: <E, B>(onLeft: (e: E) => IO<B>) => <A>(ma: IOEither<E, 
 /**
  * @since 2.0.0
  */
-export const orElse: <E, A, M>(onLeft: (e: E) => IOEither<M, A>) => (ma: IOEither<E, A>) => IOEither<M, A> =
-  /*#__PURE__*/
-  EitherT.orElse(I.monadIO)
+export const orElse: <E, A, M>(onLeft: (e: E) => IOEither<M, A>) => (ma: IOEither<E, A>) => IOEither<M, A> = (f) =>
+  I.chain(E.fold(f, right))
 
 /**
  * @since 2.0.0
@@ -190,7 +184,7 @@ export function getIOValidationApplicative<E>(S: Semigroup<E>): Applicative2C<UR
     URI,
     _E: undefined as any,
     map,
-    ap: EitherT.ap(I.applyIO, E.getValidationApplicative(S)),
+    ap: apComposition(I.applyIO, E.getValidationApplicative(S)),
     of
   }
 }
@@ -306,7 +300,7 @@ export const functorIOEither: Functor2<URI> = {
  */
 export const ap: <E, A>(fa: IOEither<E, A>) => <B>(fab: IOEither<E, (a: A) => B>) => IOEither<E, B> =
   /*#__PURE__*/
-  EitherT.ap(I.monadIO, E.applyEither)
+  apComposition(I.applyIO, E.applyEither)
 
 /**
  * @since 3.0.0
@@ -352,9 +346,8 @@ export const applicativeIOEither: Applicative2<URI> = {
 /**
  * @since 2.0.0
  */
-export const chain: <E, A, B>(f: (a: A) => IOEither<E, B>) => (ma: IOEither<E, A>) => IOEither<E, B> =
-  /*#__PURE__*/
-  EitherT.chain(I.monadIO)
+export const chain: <E, A, B>(f: (a: A) => IOEither<E, B>) => (ma: IOEither<E, A>) => IOEither<E, B> = (f) =>
+  I.chain(E.fold(left, f))
 
 /**
  * @since 3.0.0
@@ -397,16 +390,15 @@ export const flatten: <E, A>(mma: IOEither<E, IOEither<E, A>>) => IOEither<E, A>
 /**
  * @since 2.0.0
  */
-export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: IOEither<E, A>) => IOEither<G, B> =
-  /*#__PURE__*/
-  EitherT.bimap(I.monadIO)
+export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: IOEither<E, A>) => IOEither<G, B> = flow(
+  E.bimap,
+  I.map
+)
 
 /**
  * @since 2.0.0
  */
-export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: IOEither<E, A>) => IOEither<G, A> =
-  /*#__PURE__*/
-  EitherT.mapLeft(I.monadIO)
+export const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: IOEither<E, A>) => IOEither<G, A> = (f) => I.map(E.mapLeft(f))
 
 /**
  * @since 3.0.0
@@ -420,9 +412,8 @@ export const bifunctorIOEither: Bifunctor2<URI> = {
 /**
  * @since 2.0.0
  */
-export const alt: <E, A>(that: () => IOEither<E, A>) => (fa: IOEither<E, A>) => IOEither<E, A> =
-  /*#__PURE__*/
-  EitherT.alt(I.monadIO)
+export const alt: <E, A>(that: () => IOEither<E, A>) => (fa: IOEither<E, A>) => IOEither<E, A> = (that) =>
+  I.chain(E.fold(that, right))
 
 /**
  * @since 3.0.0
