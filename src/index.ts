@@ -59,7 +59,6 @@ import * as profunctor from './Profunctor'
 import * as random from './Random'
 import * as reader from './Reader'
 import * as readerEither from './ReaderEither'
-import * as readerT from './ReaderT'
 import * as readerTask from './ReaderTask'
 import * as readerTaskEither from './ReaderTaskEither'
 import * as readonlyArray from './ReadonlyArray'
@@ -316,10 +315,6 @@ export {
    * @since 2.0.0
    */
   readerEither,
-  /**
-   * @since 2.0.0
-   */
-  readerT,
   /**
    * @since 2.0.0
    */

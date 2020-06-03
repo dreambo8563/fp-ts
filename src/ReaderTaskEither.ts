@@ -6,7 +6,7 @@ import { Applicative3, Applicative3C } from './Applicative'
 import { apComposition, Apply3 } from './Apply'
 import { Bifunctor3 } from './Bifunctor'
 import * as E from './Either'
-import { identity, pipe, Predicate, Refinement } from './function'
+import { flow, identity, pipe, Predicate, Refinement } from './function'
 import { Functor3 } from './Functor'
 import { IO } from './IO'
 import { IOEither } from './IOEither'
@@ -18,7 +18,6 @@ import { Monoid } from './Monoid'
 import { Option } from './Option'
 import * as R from './Reader'
 import { ReaderEither } from './ReaderEither'
-import * as ReaderT from './ReaderT'
 import * as RT from './ReaderTask'
 import { Semigroup } from './Semigroup'
 import { Task } from './Task'
@@ -63,9 +62,7 @@ export function left<R, E = never, A = never>(e: E): ReaderTaskEither<R, E, A> {
 /**
  * @since 2.0.0
  */
-export const right: <R, E = never, A = never>(a: A) => ReaderTaskEither<R, E, A> =
-  /*#__PURE__*/
-  ReaderT.of(TE.monadTaskEither)
+export const right: <R, E = never, A = never>(a: A) => ReaderTaskEither<R, E, A> = (a) => () => TE.right(a)
 
 /**
  * @since 2.0.0
@@ -91,9 +88,8 @@ export const fromTaskEither: <R, E, A>(ma: TaskEither<E, A>) => ReaderTaskEither
 /**
  * @since 2.0.0
  */
-export const rightReader: <R, E = never, A = never>(ma: Reader<R, A>) => ReaderTaskEither<R, E, A> =
-  /*#__PURE__*/
-  ReaderT.fromReader(TE.monadTaskEither)
+export const rightReader: <R, E = never, A = never>(ma: Reader<R, A>) => ReaderTaskEither<R, E, A> = (ma) => (r) =>
+  TE.right(ma(r))
 
 /**
  * @since 2.5.0
@@ -231,9 +227,8 @@ export const ask: <R, E = never>() => ReaderTaskEither<R, E, R> = () => TE.right
 /**
  * @since 2.0.0
  */
-export const asks: <R, E = never, A = never>(f: (r: R) => A) => ReaderTaskEither<R, E, A> =
-  /*#__PURE__*/
-  ReaderT.asks(TE.monadTaskEither)
+export const asks: <R, E = never, A = never>(f: (r: R) => A) => ReaderTaskEither<R, E, A> = (f) => (r) =>
+  pipe(TE.right(r), TE.map(f))
 
 /**
  * Make sure that a resource is cleaned up in the event of an exception (*). The release action is called regardless of
@@ -355,9 +350,8 @@ export const alt: <R, E, A>(
  */
 export const ap: <R, E, A>(
   fa: ReaderTaskEither<R, E, A>
-) => <B>(fab: ReaderTaskEither<R, E, (a: A) => B>) => ReaderTaskEither<R, E, B> =
-  /*#__PURE__*/
-  ReaderT.ap(TE.monadTaskEither)
+) => <B>(fab: ReaderTaskEither<R, E, (a: A) => B>) => ReaderTaskEither<R, E, B> = (fa) => (fab) => (r) =>
+  pipe(fab(r), TE.ap(fa(r)))
 
 /**
  * @since 2.0.0
@@ -398,9 +392,11 @@ export const bimap: <E, G, A, B>(
  */
 export const chain: <R, E, A, B>(
   f: (a: A) => ReaderTaskEither<R, E, B>
-) => (ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> =
-  /*#__PURE__*/
-  ReaderT.chain(TE.monadTaskEither)
+) => (ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> = (f) => (fa) => (r) =>
+  pipe(
+    fa(r),
+    TE.chain((a) => f(a)(r))
+  )
 
 /**
  * @since 2.0.0
@@ -425,9 +421,9 @@ export const flatten: <R, E, A>(
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> =
-  /*#__PURE__*/
-  ReaderT.map(TE.monadTaskEither)
+export const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, E, B> = (
+  f
+) => (fa) => flow(fa, TE.map(f))
 
 /**
  * @since 2.0.0

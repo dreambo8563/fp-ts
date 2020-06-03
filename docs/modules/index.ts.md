@@ -69,7 +69,6 @@ Added in v2.0.0
 - [random](#random)
 - [reader](#reader)
 - [readerEither](#readereither)
-- [readerT](#readert)
 - [readerTask](#readertask)
 - [readerTaskEither](#readertaskeither)
 - [readonlyArray](#readonlyarray)
@@ -670,16 +669,6 @@ Added in v2.0.0
 
 ```ts
 export declare const readerEither: typeof readerEither
-```
-
-Added in v2.0.0
-
-# readerT
-
-**Signature**
-
-```ts
-export declare const readerT: typeof readerT
 ```
 
 Added in v2.0.0

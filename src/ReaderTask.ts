@@ -1,22 +1,21 @@
 /**
  * @since 2.3.0
  */
-import { identity, pipe } from './function'
+import { Applicative2 } from './Applicative'
+import { Apply2 } from './Apply'
+import { flow, identity, pipe } from './function'
+import { Functor2 } from './Functor'
 import { IO } from './IO'
 import { Monad2 } from './Monad'
+import { MonadIO2 } from './MonadIO'
 import { MonadTask2 } from './MonadTask'
 import { Monoid } from './Monoid'
 import * as R from './Reader'
-import * as ReaderT from './ReaderT'
 import { Semigroup } from './Semigroup'
 import * as T from './Task'
 
 import Reader = R.Reader
 import Task = T.Task
-import { Functor2 } from './Functor'
-import { Apply2 } from './Apply'
-import { Applicative2 } from './Applicative'
-import { MonadIO2 } from './MonadIO'
 
 /**
  * @since 2.3.0
@@ -51,9 +50,7 @@ export const fromTask: <R, A>(ma: Task<A>) => ReaderTask<R, A> =
 /**
  * @since 2.3.0
  */
-export const fromReader: <R, A = never>(ma: Reader<R, A>) => ReaderTask<R, A> =
-  /*#__PURE__*/
-  ReaderT.fromReader(T.monadTask)
+export const fromReader: <R, A = never>(ma: Reader<R, A>) => ReaderTask<R, A> = (ma) => flow(ma, T.of)
 
 /**
  * @since 2.3.0
@@ -65,9 +62,7 @@ export function fromIO<R, A>(ma: IO<A>): ReaderTask<R, A> {
 /**
  * @since 2.3.0
  */
-export const of: <R, A>(a: A) => ReaderTask<R, A> =
-  /*#__PURE__*/
-  ReaderT.of(T.monadTask)
+export const of: <R, A>(a: A) => ReaderTask<R, A> = (a) => () => T.of(a)
 
 /**
  * @since 2.3.0
@@ -94,9 +89,7 @@ export const ask: <R>() => ReaderTask<R, R> = () => T.of
 /**
  * @since 2.3.0
  */
-export const asks: <R, A = never>(f: (r: R) => A) => ReaderTask<R, A> =
-  /*#__PURE__*/
-  ReaderT.asks(T.monadTask)
+export const asks: <R, A = never>(f: (r: R) => A) => ReaderTask<R, A> = (f) => (r) => pipe(T.of(r), T.map(f))
 
 /**
  * @since 2.4.0
@@ -135,9 +128,9 @@ export function chainTaskK<A, B>(f: (a: A) => Task<B>): <R>(ma: ReaderTask<R, A>
 /**
  * @since 2.3.0
  */
-export const ap: <R, A>(fa: ReaderTask<R, A>) => <B>(fab: ReaderTask<R, (a: A) => B>) => ReaderTask<R, B> =
-  /*#__PURE__*/
-  ReaderT.ap(T.monadTask)
+export const ap: <R, A>(fa: ReaderTask<R, A>) => <B>(fab: ReaderTask<R, (a: A) => B>) => ReaderTask<R, B> = (fa) => (
+  fab
+) => (r) => pipe(fab(r), T.ap(fa(r)))
 
 /**
  * @since 2.3.0
@@ -162,9 +155,13 @@ export const apSecond = <R, B>(fb: ReaderTask<R, B>) => <A>(fa: ReaderTask<R, A>
 /**
  * @since 2.3.0
  */
-export const chain: <A, R, B>(f: (a: A) => ReaderTask<R, B>) => (ma: ReaderTask<R, A>) => ReaderTask<R, B> =
-  /*#__PURE__*/
-  ReaderT.chain(T.monadTask)
+export const chain: <A, R, B>(f: (a: A) => ReaderTask<R, B>) => (ma: ReaderTask<R, A>) => ReaderTask<R, B> = (f) => (
+  fa
+) => (r) =>
+  pipe(
+    fa(r),
+    T.chain((a) => f(a)(r))
+  )
 
 /**
  * @since 2.3.0
@@ -185,9 +182,8 @@ export const flatten: <R, A>(mma: ReaderTask<R, ReaderTask<R, A>>) => ReaderTask
 /**
  * @since 2.3.0
  */
-export const map: <A, B>(f: (a: A) => B) => <R>(fa: ReaderTask<R, A>) => ReaderTask<R, B> =
-  /*#__PURE__*/
-  ReaderT.map(T.monadTask)
+export const map: <A, B>(f: (a: A) => B) => <R>(fa: ReaderTask<R, A>) => ReaderTask<R, B> = (f) => (fa) =>
+  flow(fa, T.map(f))
 
 // -------------------------------------------------------------------------------------
 // instances
