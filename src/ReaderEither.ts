@@ -3,7 +3,7 @@
  */
 import { Alt3, Alt3C } from './Alt'
 import { Applicative3, Applicative3C } from './Applicative'
-import { apComposition, Apply3 } from './Apply'
+import { Apply3 } from './Apply'
 import { Bifunctor3 } from './Bifunctor'
 import * as E from './Either'
 import * as EitherT from './EitherT'
@@ -161,7 +161,7 @@ export function getReaderValidationApplicative<E>(S: Semigroup<E>): Applicative3
     URI,
     _E: undefined as any,
     map,
-    ap: apComposition(R.applicativeReader, E.getValidationApplicative(S)),
+    ap: EitherT.ap(R.applyReader, E.getValidationApplicative(S)),
     of
   }
 }
@@ -214,7 +214,7 @@ export const ap: <R, E, A>(
   fa: ReaderEither<R, E, A>
 ) => <B>(fab: ReaderEither<R, E, (a: A) => B>) => ReaderEither<R, E, B> =
   /*#__PURE__*/
-  EitherT.ap(R.monadReader)
+  EitherT.ap(R.monadReader, E.applyEither)
 
 /**
  * @since 2.0.0

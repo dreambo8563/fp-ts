@@ -3,9 +3,9 @@
  */
 import { Alt3, Alt3C } from './Alt'
 import { Applicative3, Applicative3C } from './Applicative'
-import { apComposition, Apply3 } from './Apply'
+import { Apply3 } from './Apply'
 import { Bifunctor3 } from './Bifunctor'
-import { Either, getValidationApplicative } from './Either'
+import * as E from './Either'
 import { identity, pipe, Predicate, Refinement } from './function'
 import { Functor3 } from './Functor'
 import { IO } from './IO'
@@ -24,8 +24,10 @@ import { Semigroup } from './Semigroup'
 import { Task } from './Task'
 import * as TE from './TaskEither'
 import * as ValidationT from './ValidationT'
+import * as EitherT from './EitherT'
 
 import Reader = R.Reader
+import Either = E.Either
 import TaskEither = TE.TaskEither
 import ReaderTask = RT.ReaderTask
 
@@ -263,7 +265,7 @@ export function getReaderTaskValidationApplicative<E>(S: Semigroup<E>): Applicat
     URI,
     _E: undefined as any,
     map,
-    ap: apComposition(RT.applicativeReaderTask, getValidationApplicative(S)),
+    ap: EitherT.ap(RT.applyReaderTask, E.getValidationApplicative(S)),
     of
   }
 }

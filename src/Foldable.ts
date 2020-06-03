@@ -79,36 +79,6 @@ export interface Foldable4<F extends URIS4> {
 }
 
 /**
- * @since 3.0.0
- */
-export const reduceComposition: <F, G>(
-  F: Foldable<F>,
-  G: Foldable<G>
-) => <A, B>(b: B, f: (b: B, a: A) => B) => (fga: HKT<F, HKT<G, A>>) => B = (F, G) => (b, f) =>
-  F.reduce(b, (b, ga) => pipe(ga, G.reduce(b, f)))
-
-/**
- * @since 3.0.0
- */
-export const foldMapComposition: <F, G>(
-  F: Foldable<F>,
-  G: Foldable<G>
-) => <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fga: HKT<F, HKT<G, A>>) => M = (F, G) => (M) => {
-  const foldMapF = F.foldMap(M)
-  const foldMapG = G.foldMap(M)
-  return (f) => foldMapF(foldMapG(f))
-}
-
-/**
- * @since 3.0.0
- */
-export const reduceRightComposition: <F, G>(
-  F: Foldable<F>,
-  G: Foldable<G>
-) => <A, B>(b: B, f: (a: A, b: B) => B) => (fga: HKT<F, HKT<G, A>>) => B = (F, G) => (b, f) =>
-  F.reduceRight(b, (ga, b) => pipe(ga, G.reduceRight(b, f)))
-
-/**
  * Similar to 'reduce', but the result is encapsulated in a monad.
  *
  * Note: this function is not generally stack-safe, e.g., for monads which build up thunks a la `IO`.

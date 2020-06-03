@@ -16,7 +16,7 @@ import {
   Separated
 } from './Compactable'
 import { Either } from './Either'
-import { pipe, Predicate, Refinement } from './function'
+import { pipe, Predicate, Refinement, flow } from './function'
 import { Functor, Functor1, Functor2, Functor2C, Functor3, Functor3C, Functor4 } from './Functor'
 import { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from './HKT'
 import { getLeft, getRight, Option } from './Option'
@@ -252,7 +252,7 @@ export function filterComposition<F, G>(
   F: Functor<F>,
   G: Filterable<G>
 ): <A>(predicate: Predicate<A>) => (fga: HKT<F, HKT<G, A>>) => HKT<F, HKT<G, A>> {
-  return (f) => F.map(G.filter(f))
+  return (predicate) => F.map(G.filter(predicate))
 }
 
 /**
@@ -274,7 +274,7 @@ export function filterMapComposition<F, G>(
   F: Functor<F>,
   G: Filterable<G>
 ): <A, B>(f: (a: A) => Option<B>) => (fga: HKT<F, HKT<G, A>>) => HKT<F, HKT<G, B>> {
-  return (f) => F.map(G.filterMap(f))
+  return flow(G.filterMap, F.map)
 }
 
 /**
@@ -299,15 +299,13 @@ export function partitionComposition<F, G>(
   G: Filterable<G>
 ): <A>(predicate: Predicate<A>) => (fga: HKT<F, HKT<G, A>>) => Separated<HKT<F, HKT<G, A>>, HKT<F, HKT<G, A>>> {
   const filter = filterComposition(F, G)
-  return (predicate) => (fga) => {
-    return {
-      left: pipe(
-        fga,
-        filter((a) => !predicate(a))
-      ),
-      right: pipe(fga, filter(predicate))
-    }
-  }
+  return (predicate) => (fga) => ({
+    left: pipe(
+      fga,
+      filter((a) => !predicate(a))
+    ),
+    right: pipe(fga, filter(predicate))
+  })
 }
 
 /**

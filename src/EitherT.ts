@@ -2,7 +2,7 @@
  * @since 2.0.0
  */
 import { Applicative, Applicative1, Applicative2 } from './Applicative'
-import { Apply, Apply1, Apply2 } from './Apply'
+import { Apply, Apply1, Apply2, Apply2C } from './Apply'
 import { Chain, Chain1, Chain2 } from './Chain'
 import * as E from './Either'
 import { pipe } from './function'
@@ -29,21 +29,33 @@ export type EitherT2<M extends URIS2, R, E, A> = Kind2<M, R, E.Either<E, A>>
  * @since 3.0.0
  */
 export function ap<F extends URIS2>(
-  F: Apply2<F>
+  F: Apply2<F>,
+  A: Apply2<E.URI>
 ): <R, E, A>(fa: EitherT2<F, R, E, A>) => <B>(fab: EitherT2<F, R, E, (a: A) => B>) => EitherT2<F, R, E, B>
+export function ap<F extends URIS2, E>(
+  F: Apply2<F>,
+  A: Apply2C<E.URI, E>
+): <R, A>(fa: EitherT2<F, R, E, A>) => <B>(fab: EitherT2<F, R, E, (a: A) => B>) => EitherT2<F, R, E, B>
 export function ap<F extends URIS>(
-  F: Apply1<F>
+  F: Apply1<F>,
+  A: Apply2<E.URI>
 ): <E, A>(fa: EitherT1<F, E, A>) => <B>(fab: EitherT1<F, E, (a: A) => B>) => EitherT1<F, E, B>
+export function ap<F extends URIS, E>(
+  F: Apply1<F>,
+  A: Apply2C<E.URI, E>
+): <A>(fa: EitherT1<F, E, A>) => <B>(fab: EitherT1<F, E, (a: A) => B>) => EitherT1<F, E, B>
 export function ap<F>(
-  F: Apply<F>
+  F: Apply<F>,
+  A: Apply2<E.URI>
 ): <E, A>(fa: EitherT<F, E, A>) => <B>(fab: EitherT<F, E, (a: A) => B>) => EitherT<F, E, B>
 export function ap<F>(
-  F: Apply<F>
+  F: Apply<F>,
+  A: Apply2<E.URI>
 ): <E, A>(fa: EitherT<F, E, A>) => <B>(fab: EitherT<F, E, (a: A) => B>) => EitherT<F, E, B> {
   return <E, A>(fa: EitherT<F, E, A>) => <B>(fab: EitherT<F, E, (a: A) => B>) =>
     pipe(
       fab,
-      F.map((h) => (ga: E.Either<E, A>) => pipe(h, E.ap(ga))),
+      F.map((eab) => (ea: E.Either<E, A>) => pipe(eab, A.ap(ea))),
       F.ap(fa)
     )
 }
@@ -99,8 +111,7 @@ export function alt<M>(M: Monad<M>): <E, A>(that: () => EitherT<M, E, A>) => (fa
 export function alt<M>(
   M: Monad<M>
 ): <E, A>(that: () => EitherT<M, E, A>) => (fa: EitherT<M, E, A>) => EitherT<M, E, A> {
-  const ofM = right(M)
-  return (that) => M.chain((e) => (E.isLeft(e) ? that() : ofM(e.right)))
+  return (that) => M.chain((e) => (E.isLeft(e) ? that() : M.of(E.right(e.right))))
 }
 
 /**

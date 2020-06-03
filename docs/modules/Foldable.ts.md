@@ -19,11 +19,8 @@ Added in v2.0.0
 - [Foldable3 (interface)](#foldable3-interface)
 - [Foldable3C (interface)](#foldable3c-interface)
 - [Foldable4 (interface)](#foldable4-interface)
-- [foldMapComposition](#foldmapcomposition)
 - [intercalate](#intercalate)
-- [reduceComposition](#reducecomposition)
 - [reduceM](#reducem)
-- [reduceRightComposition](#reducerightcomposition)
 
 ---
 
@@ -134,19 +131,6 @@ export interface Foldable4<F extends URIS4> {
 
 Added in v3.0.0
 
-# foldMapComposition
-
-**Signature**
-
-```ts
-export declare const foldMapComposition: <F, G>(
-  F: Foldable<F>,
-  G: Foldable<G>
-) => <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fga: HKT<F, HKT<G, A>>) => M
-```
-
-Added in v3.0.0
-
 # intercalate
 
 Fold a data structure, accumulating values in some `Monoid`, combining adjacent elements using the specified separator
@@ -179,19 +163,6 @@ import { make, foldableTree } from 'fp-ts/lib/Tree'
 
 const t = make('a', [make('b', []), make('c', []), make('d', [])])
 assert.strictEqual(intercalate(monoidString, foldableTree)('|', t), 'a|b|c|d')
-```
-
-Added in v3.0.0
-
-# reduceComposition
-
-**Signature**
-
-```ts
-export declare const reduceComposition: <F, G>(
-  F: Foldable<F>,
-  G: Foldable<G>
-) => <A, B>(b: B, f: (b: B, a: A) => B) => (fga: HKT<F, HKT<G, A>>) => B
 ```
 
 Added in v3.0.0
@@ -243,19 +214,6 @@ assert.deepStrictEqual(
   reduceM(monadOption, foldableTree)(t, 0, (b, a) => (a > 2 ? some(b + a) : some(b))),
   some(7)
 )
-```
-
-Added in v3.0.0
-
-# reduceRightComposition
-
-**Signature**
-
-```ts
-export declare const reduceRightComposition: <F, G>(
-  F: Foldable<F>,
-  G: Foldable<G>
-) => <A, B>(b: B, f: (a: A, b: B) => B) => (fga: HKT<F, HKT<G, A>>) => B
 ```
 
 Added in v3.0.0

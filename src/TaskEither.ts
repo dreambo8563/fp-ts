@@ -6,7 +6,7 @@
  */
 import { Alt2, Alt2C } from './Alt'
 import { Applicative2, Applicative2C } from './Applicative'
-import { apComposition, Apply2 } from './Apply'
+import { Apply2 } from './Apply'
 import { Bifunctor2 } from './Bifunctor'
 import { separateComposition } from './Compactable'
 import * as E from './Either'
@@ -286,7 +286,7 @@ export function getTaskValidationApplicative<E>(S: Semigroup<E>): Applicative2C<
     URI,
     _E: undefined as any,
     map,
-    ap: apComposition(T.applicativeTask, E.getValidationApplicative(S)),
+    ap: EitherT.ap(T.applyTask, E.getValidationApplicative(S)),
     of
   }
 }
@@ -429,7 +429,8 @@ export const functorTaskEither: Functor2<URI> = {
  * @since 2.0.0
  */
 export const ap: <E, A>(fa: TaskEither<E, A>) => <B>(fab: TaskEither<E, (a: A) => B>) => TaskEither<E, B> = EitherT.ap(
-  T.monadTask
+  T.monadTask,
+  E.applyEither
 )
 
 /**

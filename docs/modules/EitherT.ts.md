@@ -82,13 +82,24 @@ Added in v3.0.0
 
 ```ts
 export declare function ap<F extends URIS2>(
-  F: Apply2<F>
+  F: Apply2<F>,
+  A: Apply2<E.URI>
 ): <R, E, A>(fa: EitherT2<F, R, E, A>) => <B>(fab: EitherT2<F, R, E, (a: A) => B>) => EitherT2<F, R, E, B>
+export declare function ap<F extends URIS2, E>(
+  F: Apply2<F>,
+  A: Apply2C<E.URI, E>
+): <R, A>(fa: EitherT2<F, R, E, A>) => <B>(fab: EitherT2<F, R, E, (a: A) => B>) => EitherT2<F, R, E, B>
 export declare function ap<F extends URIS>(
-  F: Apply1<F>
+  F: Apply1<F>,
+  A: Apply2<E.URI>
 ): <E, A>(fa: EitherT1<F, E, A>) => <B>(fab: EitherT1<F, E, (a: A) => B>) => EitherT1<F, E, B>
+export declare function ap<F extends URIS, E>(
+  F: Apply1<F>,
+  A: Apply2C<E.URI, E>
+): <A>(fa: EitherT1<F, E, A>) => <B>(fab: EitherT1<F, E, (a: A) => B>) => EitherT1<F, E, B>
 export declare function ap<F>(
-  F: Apply<F>
+  F: Apply<F>,
+  A: Apply2<E.URI>
 ): <E, A>(fa: EitherT<F, E, A>) => <B>(fab: EitherT<F, E, (a: A) => B>) => EitherT<F, E, B>
 ```
 

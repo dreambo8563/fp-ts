@@ -6,24 +6,6 @@ import * as O from '../src/Option'
 import { pipe } from '../src/function'
 
 describe('Apply', () => {
-  it('apComposition', () => {
-    const ap = _.apComposition(RA.applyReadonlyArray, O.applyOption)
-    const double = (n: number) => n * 2
-    const inc = (n: number) => n + 1
-    assert.deepStrictEqual(pipe([O.some(double), O.some(inc)], ap([O.some(1), O.some(2)])), [
-      O.some(2),
-      O.some(4),
-      O.some(2),
-      O.some(3)
-    ])
-    assert.deepStrictEqual(pipe([O.some(double), O.none], ap([O.some(1), O.some(2)])), [
-      O.some(2),
-      O.some(4),
-      O.none,
-      O.none
-    ])
-  })
-
   it('sequenceT', () => {
     const sequenceTOption = _.sequenceT(O.applyOption)
     assert.deepStrictEqual(sequenceTOption(O.some(1)), O.some([1]))

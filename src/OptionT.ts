@@ -51,7 +51,7 @@ export function ap<F>(F: Apply<F>): <A>(fa: OptionT<F, A>) => <B>(fab: OptionT<F
   return <A>(fa: OptionT<F, A>) => <B>(fab: OptionT<F, (a: A) => B>) =>
     pipe(
       fab,
-      F.map((h) => (ga: O.Option<A>) => pipe(h, O.ap(ga))),
+      F.map((gab) => (ga: O.Option<A>) => pipe(gab, O.ap(ga))),
       F.ap(fa)
     )
 }

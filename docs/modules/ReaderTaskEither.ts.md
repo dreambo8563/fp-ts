@@ -280,7 +280,7 @@ Added in v2.4.0
 
 ```ts
 export declare const chainEitherKW: <D, A, B>(
-  f: (a: A) => Either<D, B>
+  f: (a: A) => E.Either<D, B>
 ) => <R, E>(ma: ReaderTaskEither<R, E, A>) => ReaderTaskEither<R, D | E, B>
 ```
 
@@ -403,7 +403,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const fromEither: <R, E, A>(ma: Either<E, A>) => ReaderTaskEither<R, E, A>
+export declare const fromEither: <R, E, A>(ma: E.Either<E, A>) => ReaderTaskEither<R, E, A>
 ```
 
 Added in v2.0.0

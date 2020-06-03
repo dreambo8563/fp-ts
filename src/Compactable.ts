@@ -119,7 +119,7 @@ export function separateComposition<F, G>(
   const map = flow(G.map, F.map)
   const compact = F.map(G.compact)
   return (fge) => ({
-    left: compact(pipe(fge, map(getLeft))),
-    right: compact(pipe(fge, map(getRight)))
+    left: pipe(fge, map(getLeft), compact),
+    right: pipe(fge, map(getRight), compact)
   })
 }
