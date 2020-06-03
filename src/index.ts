@@ -52,7 +52,6 @@ import * as monadTask from './MonadTask'
 import * as monadThrow from './MonadThrow'
 import * as monoid from './Monoid'
 import * as option from './Option'
-import * as optionT from './OptionT'
 import * as ord from './Ord'
 import * as ordering from './Ordering'
 import * as profunctor from './Profunctor'
@@ -286,10 +285,6 @@ export {
    * @since 2.0.0
    */
   option,
-  /**
-   * @since 2.0.0
-   */
-  optionT,
   /**
    * @since 2.0.0
    */

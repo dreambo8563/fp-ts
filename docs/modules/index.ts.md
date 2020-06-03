@@ -62,7 +62,6 @@ Added in v2.0.0
 - [monadThrow](#monadthrow)
 - [monoid](#monoid)
 - [option](#option)
-- [optionT](#optiont)
 - [ord](#ord)
 - [ordering](#ordering)
 - [profunctor](#profunctor)
@@ -598,16 +597,6 @@ Added in v2.0.0
 
 ```ts
 export declare const option: typeof option
-```
-
-Added in v2.0.0
-
-# optionT
-
-**Signature**
-
-```ts
-export declare const optionT: typeof optionT
 ```
 
 Added in v2.0.0
