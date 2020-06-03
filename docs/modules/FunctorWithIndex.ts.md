@@ -29,7 +29,6 @@ Added in v2.0.0
 - [FunctorWithIndex3 (interface)](#functorwithindex3-interface)
 - [FunctorWithIndex3C (interface)](#functorwithindex3c-interface)
 - [FunctorWithIndex4 (interface)](#functorwithindex4-interface)
-- [mapWithIndexComposition](#mapwithindexcomposition)
 
 ---
 
@@ -113,19 +112,6 @@ Added in v2.2.0
 export interface FunctorWithIndex4<F extends URIS4, I> extends Functor4<F> {
   readonly mapWithIndex: <A, B>(f: (i: I, a: A) => B) => <S, R, E>(fa: Kind4<F, S, R, E, A>) => Kind4<F, S, R, E, B>
 }
-```
-
-Added in v3.0.0
-
-# mapWithIndexComposition
-
-**Signature**
-
-```ts
-export declare function mapWithIndexComposition<F extends URIS, FI, G extends URIS, GI>(
-  F: FunctorWithIndex1<F, FI>,
-  G: FunctorWithIndex1<G, GI>
-): <A, B>(f: (i: readonly [FI, GI], a: A) => B) => (fga: Kind<F, Kind<G, A>>) => Kind<F, Kind<G, B>>
 ```
 
 Added in v3.0.0

@@ -9,6 +9,7 @@ import { Either } from '../src/Either'
 import * as O from '../src/Option'
 
 import Option = O.Option
+import { FunctorWithIndex } from '../src/FunctorWithIndex'
 
 //
 // Functor
@@ -76,3 +77,20 @@ export const reduceRightComposition: <F, G>(
   G: Foldable<G>
 ) => <A, B>(b: B, f: (a: A, b: B) => B) => (fga: HKT<F, HKT<G, A>>) => B = (F, G) => (b, f) =>
   F.reduceRight(b, (ga, b) => pipe(ga, G.reduceRight(b, f)))
+
+//
+// FunctoWithIndex
+//
+
+export function mapWithIndexComposition<F, FI, G, GI>(
+  F: FunctorWithIndex<F, FI>,
+  G: FunctorWithIndex<G, GI>
+): <A, B>(f: (i: readonly [FI, GI], a: A) => B) => (fga: HKT<F, HKT<G, A>>) => HKT<F, HKT<G, B>> {
+  return (f) =>
+    F.mapWithIndex((fi, ga) =>
+      pipe(
+        ga,
+        G.mapWithIndex((gi, a) => f([fi, gi], a))
+      )
+    )
+}
