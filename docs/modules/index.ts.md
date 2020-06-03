@@ -99,7 +99,6 @@ Added in v2.0.0
 - [validationT](#validationt)
 - [witherable](#witherable)
 - [writer](#writer)
-- [writerT](#writert)
 
 ---
 
@@ -972,13 +971,3 @@ export declare const writer: typeof writer
 ```
 
 Added in v2.0.0
-
-# writerT
-
-**Signature**
-
-```ts
-export declare const writerT: typeof writerT
-```
-
-Added in v2.4.0

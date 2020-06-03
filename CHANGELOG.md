@@ -117,5 +117,8 @@ high state of flux, you're at risk of it changing without notice.
     - curry `tracks`
   - `Tuple`
     - remove `getChainRec` function
+  - `Writer`
+    - (**b**) rename `evalWriter` to `evaluate`
+    - (**b**) rename `execWriter` to `execute`
 
 (**b**) means "backportable"

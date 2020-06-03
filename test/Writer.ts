@@ -12,16 +12,16 @@ describe('Writer', () => {
     })
   })
 
-  it('evalWriter', () => {
+  it('evaluate', () => {
     assert.deepStrictEqual(
-      _.evalWriter(() => [1, 'a']),
+      _.evaluate(() => [1, 'a']),
       1
     )
   })
 
-  it('execWriter', () => {
+  it('execute', () => {
     assert.deepStrictEqual(
-      _.execWriter(() => [1, 'a']),
+      _.execute(() => [1, 'a']),
       'a'
     )
   })

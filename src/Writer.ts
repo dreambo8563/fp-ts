@@ -2,14 +2,8 @@
  * @since 2.0.0
  */
 import { Functor2 } from './Functor'
-import { monadIdentity } from './Identity'
 import { Monad2C } from './Monad'
 import { Monoid } from './Monoid'
-import { getWriterM } from './WriterT'
-
-const MT =
-  /*#__PURE__*/
-  getWriterM(monadIdentity)
 
 /**
  * @since 2.0.0
@@ -37,51 +31,50 @@ export interface Writer<W, A> {
 /**
  * @since 2.0.0
  */
-export const evalWriter: <W, A>(fa: Writer<W, A>) => A =
-  /*#__PURE__*/
-  (() => MT.evalWriter)()
+export const evaluate: <W, A>(fa: Writer<W, A>) => A = (fa) => fa()[0]
 
 /**
  * @since 2.0.0
  */
-export const execWriter: <W, A>(fa: Writer<W, A>) => W =
-  /*#__PURE__*/
-  (() => MT.execWriter)()
+export const execute: <W, A>(fa: Writer<W, A>) => W = (fa) => fa()[1]
 
 /**
  * Appends a value to the accumulator
  *
  * @since 2.0.0
  */
-export const tell: <W>(w: W) => Writer<W, void> =
-  /*#__PURE__*/
-  (() => MT.tell)()
+export const tell: <W>(w: W) => Writer<W, void> = (w) => () => [undefined, w]
 
 /**
  * Modifies the result to include the changes to the accumulator
  *
  * @since 2.0.0
  */
-export const listen: <W, A>(fa: Writer<W, A>) => Writer<W, readonly [A, W]> =
-  /*#__PURE__*/
-  (() => MT.listen)()
+export const listen: <W, A>(fa: Writer<W, A>) => Writer<W, readonly [A, W]> = (fa) => () => {
+  const [a, w] = fa()
+  return [[a, w], w]
+}
 
 /**
  * Applies the returned function to the accumulator
  *
  * @since 2.0.0
  */
-export const pass: <W, A>(fa: Writer<W, readonly [A, (w: W) => W]>) => Writer<W, A> =
-  /*#__PURE__*/
-  (() => MT.pass)()
+export const pass: <W, A>(fa: Writer<W, readonly [A, (w: W) => W]>) => Writer<W, A> = (fa) => () => {
+  const [[a, f], w] = fa()
+  return [a, f(w)]
+}
 
 /**
  * Projects a value from modifications made to the accumulator during an action
  *
  * @since 2.0.0
  */
-export function listens<W, B>(f: (w: W) => B): <A>(fa: Writer<W, A>) => Writer<W, readonly [A, B]> {
-  return (fa) => MT.listens(fa, f)
+export const listens: <W, B>(f: (w: W) => B) => <A>(fa: Writer<W, A>) => Writer<W, readonly [A, B]> = (f) => (
+  fa
+) => () => {
+  const [a, w] = fa()
+  return [[a, f(w)], w]
 }
 
 /**
@@ -89,8 +82,9 @@ export function listens<W, B>(f: (w: W) => B): <A>(fa: Writer<W, A>) => Writer<W
  *
  * @since 2.0.0
  */
-export function censor<W>(f: (w: W) => W): <A>(fa: Writer<W, A>) => Writer<W, A> {
-  return (fa) => MT.censor(fa, f)
+export const censor: <W>(f: (w: W) => W) => <A>(fa: Writer<W, A>) => Writer<W, A> = (f) => (fa) => () => {
+  const [a, w] = fa()
+  return [a, f(w)]
 }
 
 // -------------------------------------------------------------------------------------
@@ -100,9 +94,10 @@ export function censor<W>(f: (w: W) => W): <A>(fa: Writer<W, A>) => Writer<W, A>
 /**
  * @since 2.0.0
  */
-export const map: <A, B>(f: (a: A) => B) => <E>(fa: Writer<E, A>) => Writer<E, B> =
-  /*#__PURE__*/
-  (() => MT.map)()
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: Writer<E, A>) => Writer<E, B> = (f) => (fa) => () => {
+  const [a, w] = fa()
+  return [f(a), w]
+}
 
 /**
  * @since 3.0.0
@@ -116,13 +111,20 @@ export const functorWriter: Functor2<URI> = {
  * @since 2.0.0
  */
 export function getMonad<W>(M: Monoid<W>): Monad2C<URI, W> {
-  const _ = MT.getMonad(M)
   return {
     URI,
     _E: undefined as any,
-    map: _.map,
-    ap: _.ap,
-    of: _.of,
-    chain: _.chain
+    map,
+    ap: (fa) => (fab) => () => {
+      const [a, w1] = fa()
+      const [f, w2] = fab()
+      return [f(a), M.concat(w1, w2)]
+    },
+    of: (a) => () => [a, M.empty],
+    chain: (f) => (fa) => () => {
+      const [a, w1] = fa()
+      const [b, w2] = f(a)()
+      return [b, M.concat(w1, w2)]
+    }
   }
 }
