@@ -89,7 +89,6 @@ Added in v2.0.0
 - [taskOption](#taskoption)
 - [taskThese](#taskthese)
 - [these](#these)
-- [theseT](#theset)
 - [traced](#traced)
 - [traversable](#traversable)
 - [traversableWithIndex](#traversablewithindex)
@@ -870,16 +869,6 @@ export declare const these: typeof these
 ```
 
 Added in v2.0.0
-
-# theseT
-
-**Signature**
-
-```ts
-export declare const theseT: typeof theseT
-```
-
-Added in v2.4.0
 
 # traced
 

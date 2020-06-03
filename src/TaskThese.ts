@@ -10,7 +10,6 @@ import { Monad2C } from './Monad'
 import { Semigroup } from './Semigroup'
 import * as T from './Task'
 import * as TH from './These'
-import * as TheseT from './TheseT'
 
 // -------------------------------------------------------------------------------------
 // model
@@ -165,7 +164,21 @@ export const bifunctorTaskThese: Bifunctor2<URI> = {
  * @since 3.0.0
  */
 export function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E> {
-  const chain = TheseT.chain(T.monadTask)(S)
+  const chain: Monad2C<URI, E>['chain'] = (f) =>
+    T.chain(
+      TH.fold(left, f, (e1, a) =>
+        pipe(
+          f(a),
+          T.map(
+            TH.fold(
+              (e2) => TH.left(S.concat(e1, e2)),
+              TH.right,
+              (e2, b) => TH.both(S.concat(e1, e2), b)
+            )
+          )
+        )
+      )
+    )
   return {
     URI,
     _E: undefined as any,
