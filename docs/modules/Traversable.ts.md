@@ -52,8 +52,6 @@ Added in v2.0.0
 - [Traverse2 (interface)](#traverse2-interface)
 - [Traverse2C (interface)](#traverse2c-interface)
 - [Traverse3 (interface)](#traverse3-interface)
-- [sequenceComposition](#sequencecomposition)
-- [traverseComposition](#traversecomposition)
 
 ---
 
@@ -341,32 +339,6 @@ export interface Traverse3<T extends URIS3> {
     f: (a: A) => HKT<F, B>
   ) => <R, TE>(ta: Kind3<T, R, TE, A>) => HKT<F, Kind3<T, R, TE, B>>
 }
-```
-
-Added in v3.0.0
-
-# sequenceComposition
-
-**Signature**
-
-```ts
-export declare function sequenceComposition<F, G>(
-  F: Traversable<F>,
-  G: Traversable<G>
-): <H>(H: Applicative<H>) => <A>(fga: HKT<F, HKT<G, HKT<H, A>>>) => HKT<H, HKT<F, HKT<G, A>>>
-```
-
-Added in v3.0.0
-
-# traverseComposition
-
-**Signature**
-
-```ts
-export declare function traverseComposition<F, G>(
-  F: Traversable<F>,
-  G: Traversable<G>
-): <H>(H: Applicative<H>) => <A, B>(f: (a: A) => HKT<H, B>) => (fga: HKT<F, HKT<G, A>>) => HKT<H, HKT<F, HKT<G, B>>>
 ```
 
 Added in v3.0.0

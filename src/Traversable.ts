@@ -28,7 +28,6 @@
  */
 import { Applicative, Applicative1, Applicative2, Applicative2C, Applicative3, Applicative3C } from './Applicative'
 import { Foldable, Foldable1, Foldable2, Foldable2C, Foldable3 } from './Foldable'
-import { pipe } from './function'
 import { Functor, Functor1, Functor2, Functor2C, Functor3 } from './Functor'
 import { HKT, Kind, Kind2, Kind3, URIS, URIS2, URIS3 } from './HKT'
 
@@ -243,32 +242,4 @@ export interface Sequence3<T extends URIS3> {
   ) => Kind2<F, FE, Kind3<T, TR, TE, A>>
   <F extends URIS>(F: Applicative1<F>): <TR, TE, A>(ta: Kind3<T, TR, TE, Kind<F, A>>) => Kind<F, Kind3<T, TR, TE, A>>
   <F>(F: Applicative<F>): <TR, TE, A>(ta: Kind3<T, TR, TE, HKT<F, A>>) => HKT<F, Kind3<T, TR, TE, A>>
-}
-
-/**
- * @since 3.0.0
- */
-export function traverseComposition<F, G>(
-  F: Traversable<F>,
-  G: Traversable<G>
-): <H>(H: Applicative<H>) => <A, B>(f: (a: A) => HKT<H, B>) => (fga: HKT<F, HKT<G, A>>) => HKT<H, HKT<F, HKT<G, B>>> {
-  return (H) => {
-    const traverseF = F.traverse(H)
-    const traverseG = G.traverse(H)
-    return (f) => traverseF((ga) => pipe(ga, traverseG(f)))
-  }
-}
-
-/**
- * @since 3.0.0
- */
-export function sequenceComposition<F, G>(
-  F: Traversable<F>,
-  G: Traversable<G>
-): <H>(H: Applicative<H>) => <A>(fga: HKT<F, HKT<G, HKT<H, A>>>) => HKT<H, HKT<F, HKT<G, A>>> {
-  return (H) => {
-    const sequenceF = F.sequence(H)
-    const sequenceG = G.sequence(H)
-    return (fgha) => sequenceF(pipe(fgha, F.map(sequenceG)))
-  }
 }

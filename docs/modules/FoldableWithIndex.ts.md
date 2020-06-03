@@ -28,9 +28,6 @@ Added in v2.0.0
 - [FoldableWithIndex3 (interface)](#foldablewithindex3-interface)
 - [FoldableWithIndex3C (interface)](#foldablewithindex3c-interface)
 - [FoldableWithIndex4 (interface)](#foldablewithindex4-interface)
-- [foldMapWithIndexComposition](#foldmapwithindexcomposition)
-- [reduceRigthWithIndexComposition](#reducerigthwithindexcomposition)
-- [reduceWithIndexComposition](#reducewithindexcomposition)
 
 ---
 
@@ -128,45 +125,6 @@ export interface FoldableWithIndex4<F extends URIS4, I> extends Foldable4<F> {
   readonly foldMapWithIndex: <M>(M: Monoid<M>) => <A>(f: (i: I, a: A) => M) => <S, R, E>(fa: Kind4<F, S, R, E, A>) => M
   readonly reduceRightWithIndex: <A, B>(b: B, f: (i: I, a: A, b: B) => B) => <S, R, E>(fa: Kind4<F, S, R, E, A>) => B
 }
-```
-
-Added in v3.0.0
-
-# foldMapWithIndexComposition
-
-**Signature**
-
-```ts
-export declare const foldMapWithIndexComposition: <F, FI, G, GI>(
-  F: FoldableWithIndex<F, FI>,
-  G: FoldableWithIndex<G, GI>
-) => <M>(M: Monoid<M>) => <A>(f: (i: readonly [FI, GI], a: A) => M) => (fga: HKT<F, HKT<G, A>>) => M
-```
-
-Added in v3.0.0
-
-# reduceRigthWithIndexComposition
-
-**Signature**
-
-```ts
-export declare const reduceRigthWithIndexComposition: <F, FI, G, GI>(
-  F: FoldableWithIndex<F, FI>,
-  G: FoldableWithIndex<G, GI>
-) => <A, B>(b: B, f: (i: readonly [FI, GI], a: A, b: B) => B) => (fga: HKT<F, HKT<G, A>>) => B
-```
-
-Added in v3.0.0
-
-# reduceWithIndexComposition
-
-**Signature**
-
-```ts
-export declare const reduceWithIndexComposition: <F, FI, G, GI>(
-  F: FoldableWithIndex<F, FI>,
-  G: FoldableWithIndex<G, GI>
-) => <A, B>(b: B, f: (i: readonly [FI, GI], b: B, a: A) => B) => (fga: HKT<F, HKT<G, A>>) => B
 ```
 
 Added in v3.0.0

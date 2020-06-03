@@ -10,6 +10,9 @@ import * as O from '../src/Option'
 
 import Option = O.Option
 import { FunctorWithIndex } from '../src/FunctorWithIndex'
+import { FoldableWithIndex } from '../src/FoldableWithIndex'
+import { Traversable } from '../src/Traversable'
+import { Applicative } from '../src/Applicative'
 
 //
 // Functor
@@ -79,18 +82,98 @@ export const reduceRightComposition: <F, G>(
   F.reduceRight(b, (ga, b) => pipe(ga, G.reduceRight(b, f)))
 
 //
+// Traversable
+//
+
+/**
+ * @since 3.0.0
+ */
+export const traverseComposition: <F, G>(
+  F: Traversable<F>,
+  G: Traversable<G>
+) => <H>(
+  H: Applicative<H>
+) => <A, B>(f: (a: A) => HKT<H, B>) => (fga: HKT<F, HKT<G, A>>) => HKT<H, HKT<F, HKT<G, B>>> = (F, G) => (H) => {
+  const traverseF = F.traverse(H)
+  const traverseG = G.traverse(H)
+  return (f) => traverseF((ga) => pipe(ga, traverseG(f)))
+}
+
+/**
+ * @since 3.0.0
+ */
+export const sequenceComposition: <F, G>(
+  F: Traversable<F>,
+  G: Traversable<G>
+) => <H>(H: Applicative<H>) => <A>(fga: HKT<F, HKT<G, HKT<H, A>>>) => HKT<H, HKT<F, HKT<G, A>>> = (F, G) => (H) => {
+  const sequenceF = F.sequence(H)
+  const sequenceG = G.sequence(H)
+  return (fgha) => sequenceF(pipe(fgha, F.map(sequenceG)))
+}
+
+//
 // FunctoWithIndex
 //
 
-export function mapWithIndexComposition<F, FI, G, GI>(
+export const mapWithIndexComposition: <F, FI, G, GI>(
   F: FunctorWithIndex<F, FI>,
   G: FunctorWithIndex<G, GI>
-): <A, B>(f: (i: readonly [FI, GI], a: A) => B) => (fga: HKT<F, HKT<G, A>>) => HKT<F, HKT<G, B>> {
+) => <A, B>(f: (i: readonly [FI, GI], a: A) => B) => (fga: HKT<F, HKT<G, A>>) => HKT<F, HKT<G, B>> = (F, G) => (f) =>
+  F.mapWithIndex((fi, ga) =>
+    pipe(
+      ga,
+      G.mapWithIndex((gi, a) => f([fi, gi], a))
+    )
+  )
+
+//
+// FoldableWithIndex
+//
+
+/**
+ * @since 3.0.0
+ */
+export const reduceWithIndexComposition: <F, FI, G, GI>(
+  F: FoldableWithIndex<F, FI>,
+  G: FoldableWithIndex<G, GI>
+) => <A, B>(b: B, f: (i: readonly [FI, GI], b: B, a: A) => B) => (fga: HKT<F, HKT<G, A>>) => B = (F, G) => (b, f) =>
+  F.reduceWithIndex(b, (fi, b, ga) =>
+    pipe(
+      ga,
+      G.reduceWithIndex(b, (gi, b, a) => f([fi, gi], b, a))
+    )
+  )
+
+/**
+ * @since 3.0.0
+ */
+export const foldMapWithIndexComposition: <F, FI, G, GI>(
+  F: FoldableWithIndex<F, FI>,
+  G: FoldableWithIndex<G, GI>
+) => <M>(M: Monoid<M>) => <A>(f: (i: readonly [FI, GI], a: A) => M) => (fga: HKT<F, HKT<G, A>>) => M = (F, G) => (
+  M
+) => {
+  const foldMapWithIndexF = F.foldMapWithIndex(M)
+  const foldMapWithIndexG = G.foldMapWithIndex(M)
   return (f) =>
-    F.mapWithIndex((fi, ga) =>
+    foldMapWithIndexF((fi, ga) =>
       pipe(
         ga,
-        G.mapWithIndex((gi, a) => f([fi, gi], a))
+        foldMapWithIndexG((gi, a) => f([fi, gi], a))
       )
     )
 }
+
+/**
+ * @since 3.0.0
+ */
+export const reduceRigthWithIndexComposition: <F, FI, G, GI>(
+  F: FoldableWithIndex<F, FI>,
+  G: FoldableWithIndex<G, GI>
+) => <A, B>(b: B, f: (i: readonly [FI, GI], a: A, b: B) => B) => (fga: HKT<F, HKT<G, A>>) => B = (F, G) => (b, f) =>
+  F.reduceRightWithIndex(b, (fi, ga, b) =>
+    pipe(
+      ga,
+      G.reduceRightWithIndex(b, (gi, a, b) => f([fi, gi], a, b))
+    )
+  )
