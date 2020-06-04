@@ -10,13 +10,6 @@ parent: Modules
 type `A` and **never fails**. If you want to represent a synchronous computation that may fail, please see
 `IOEither`.
 
-`IO` actions are _thunks_ so they are terminated by calling their `()` function application that executes the
-computation and returns the result. Ideally each application should call `()` only once for a root value of type
-`Task` or `IO` that represents the entire application. However, this might vary a bit depending on how you construct
-your application. An application framework with `fp-ts` types might take care of calling `()` for you, while another
-application framework without `fp-ts` typing might force you to call `()` at multiple locations whenever the
-framework demands less strictly typed values as inputs for its method calls.
-
 Added in v2.0.0
 
 ---

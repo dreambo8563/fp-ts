@@ -1,4 +1,11 @@
 /**
+ * `Option<A>` is a container for an optional value of type `A`. If the value of type `A` is present, the `Option<A>` is
+ * an instance of `Some<A>`, containing the present value of type `A`. If the value is absent, the `Option<A>` is an
+ * instance of `None`.
+ *
+ * An option could be looked at as a collection or foldable structure with either one or zero elements.
+ * Another way to look at `Option` is: it represents the effect of a possibly failing computation.
+ *
  * @since 2.0.0
  */
 import { Alternative1 as O } from './Alternative'
