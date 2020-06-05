@@ -62,6 +62,14 @@ describe('ReadonlyNonEmptyArray', () => {
   it('map', () => {
     const double = (n: number) => n * 2
     assert.deepStrictEqual(pipe([1, 2], _.map(double)), [2, 4])
+    // inference test
+    assert.deepStrictEqual(
+      pipe(
+        [1, 2],
+        _.map((n) => n * 2)
+      ),
+      [2, 4]
+    )
   })
 
   it('mapWithIndex', () => {

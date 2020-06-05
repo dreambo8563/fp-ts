@@ -14,7 +14,7 @@ Added in v2.5.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [ReadonlyNonEmptyArray (interface)](#readonlynonemptyarray-interface)
+- [ReadonlyNonEmptyArray (type alias)](#readonlynonemptyarray-type-alias)
 - [URI (type alias)](#uri-type-alias)
 - [URI](#uri)
 - [alt](#alt)
@@ -82,12 +82,12 @@ Added in v2.5.0
 
 ---
 
-# ReadonlyNonEmptyArray (interface)
+# ReadonlyNonEmptyArray (type alias)
 
 **Signature**
 
 ```ts
-export interface ReadonlyNonEmptyArray<A> extends ReadonlyArray<A> {
+export type ReadonlyNonEmptyArray<A> = ReadonlyArray<A> & {
   readonly 0: A
 }
 ```

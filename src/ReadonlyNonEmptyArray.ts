@@ -43,7 +43,7 @@ declare module './HKT' {
 /**
  * @since 2.5.0
  */
-export interface ReadonlyNonEmptyArray<A> extends ReadonlyArray<A> {
+export type ReadonlyNonEmptyArray<A> = ReadonlyArray<A> & {
   readonly 0: A
 }
 
@@ -152,10 +152,6 @@ export function getSemigroup<A = never>(): Semigroup<ReadonlyNonEmptyArray<A>> {
  */
 export const getEq: <A>(E: Eq<A>) => Eq<ReadonlyNonEmptyArray<A>> = RA.getEq
 
-interface NonEmptyArray<A> extends Array<A> {
-  readonly 0: A
-}
-
 /**
  * Group equal, consecutive elements of an array into non empty arrays.
  *
@@ -186,7 +182,8 @@ export function group<A>(E: Eq<A>): (as: ReadonlyArray<A>) => ReadonlyArray<Read
     // tslint:disable-next-line: readonly-array
     const r: Array<ReadonlyNonEmptyArray<A>> = []
     let head: A = as[0]
-    let nea: NonEmptyArray<A> = [head]
+    // tslint:disable-next-line: readonly-array
+    let nea: [A, ...Array<A>] = [head]
     for (let i = 1; i < len; i++) {
       const x = as[i]
       if (E.equals(x, head)) {
@@ -237,7 +234,8 @@ export function groupBy<A>(
   f: (a: A) => string
 ): (as: ReadonlyArray<A>) => ReadonlyRecord<string, ReadonlyNonEmptyArray<A>> {
   return (as) => {
-    const r: Record<string, NonEmptyArray<A>> = {}
+    // tslint:disable-next-line: readonly-array
+    const r: Record<string, [A, ...Array<A>]> = {}
     for (const a of as) {
       const k = f(a)
       if (r.hasOwnProperty(k)) {
