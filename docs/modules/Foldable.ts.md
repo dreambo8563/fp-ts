@@ -4,7 +4,7 @@ nav_order: 28
 parent: Modules
 ---
 
-# Foldable overview
+## Foldable overview
 
 Added in v2.0.0
 
@@ -12,19 +12,22 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Foldable (interface)](#foldable-interface)
-- [Foldable1 (interface)](#foldable1-interface)
-- [Foldable2 (interface)](#foldable2-interface)
-- [Foldable2C (interface)](#foldable2c-interface)
-- [Foldable3 (interface)](#foldable3-interface)
-- [Foldable3C (interface)](#foldable3c-interface)
-- [Foldable4 (interface)](#foldable4-interface)
-- [intercalate](#intercalate)
-- [reduceM](#reducem)
+- [utils](#utils)
+  - [Foldable (interface)](#foldable-interface)
+  - [Foldable1 (interface)](#foldable1-interface)
+  - [Foldable2 (interface)](#foldable2-interface)
+  - [Foldable2C (interface)](#foldable2c-interface)
+  - [Foldable3 (interface)](#foldable3-interface)
+  - [Foldable3C (interface)](#foldable3c-interface)
+  - [Foldable4 (interface)](#foldable4-interface)
+  - [intercalate](#intercalate)
+  - [reduceM](#reducem)
 
 ---
 
-# Foldable (interface)
+# utils
+
+## Foldable (interface)
 
 **Signature**
 
@@ -39,7 +42,7 @@ export interface Foldable<F> {
 
 Added in v3.0.0
 
-# Foldable1 (interface)
+## Foldable1 (interface)
 
 **Signature**
 
@@ -54,7 +57,7 @@ export interface Foldable1<F extends URIS> {
 
 Added in v3.0.0
 
-# Foldable2 (interface)
+## Foldable2 (interface)
 
 **Signature**
 
@@ -69,7 +72,7 @@ export interface Foldable2<F extends URIS2> {
 
 Added in v3.0.0
 
-# Foldable2C (interface)
+## Foldable2C (interface)
 
 **Signature**
 
@@ -85,7 +88,7 @@ export interface Foldable2C<F extends URIS2, E> {
 
 Added in v3.0.0
 
-# Foldable3 (interface)
+## Foldable3 (interface)
 
 **Signature**
 
@@ -100,7 +103,7 @@ export interface Foldable3<F extends URIS3> {
 
 Added in v3.0.0
 
-# Foldable3C (interface)
+## Foldable3C (interface)
 
 **Signature**
 
@@ -116,7 +119,7 @@ export interface Foldable3C<F extends URIS3, E> {
 
 Added in v3.0.0
 
-# Foldable4 (interface)
+## Foldable4 (interface)
 
 **Signature**
 
@@ -131,7 +134,7 @@ export interface Foldable4<F extends URIS4> {
 
 Added in v3.0.0
 
-# intercalate
+## intercalate
 
 Fold a data structure, accumulating values in some `Monoid`, combining adjacent elements using the specified separator
 
@@ -167,7 +170,7 @@ assert.strictEqual(intercalate(monoidString, foldableTree)('|', t), 'a|b|c|d')
 
 Added in v3.0.0
 
-# reduceM
+## reduceM
 
 Similar to 'reduce', but the result is encapsulated in a monad.
 

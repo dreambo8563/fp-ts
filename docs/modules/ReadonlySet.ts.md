@@ -4,7 +4,7 @@ nav_order: 64
 parent: Modules
 ---
 
-# ReadonlySet overview
+## ReadonlySet overview
 
 Added in v2.5.0
 
@@ -12,39 +12,42 @@ Added in v2.5.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [chain](#chain)
-- [compact](#compact)
-- [difference](#difference)
-- [elem](#elem)
-- [empty](#empty)
-- [every](#every)
-- [filter](#filter)
-- [filterMap](#filtermap)
-- [foldMap](#foldmap)
-- [fromArray](#fromarray)
-- [fromSet](#fromset)
-- [getEq](#geteq)
-- [getIntersectionSemigroup](#getintersectionsemigroup)
-- [getShow](#getshow)
-- [getUnionMonoid](#getunionmonoid)
-- [insert](#insert)
-- [intersection](#intersection)
-- [isSubset](#issubset)
-- [map](#map)
-- [partition](#partition)
-- [partitionMap](#partitionmap)
-- [reduce](#reduce)
-- [remove](#remove)
-- [separate](#separate)
-- [singleton](#singleton)
-- [some](#some)
-- [toReadonlyArray](#toreadonlyarray)
-- [toSet](#toset)
-- [union](#union)
+- [utils](#utils)
+  - [chain](#chain)
+  - [compact](#compact)
+  - [difference](#difference)
+  - [elem](#elem)
+  - [empty](#empty)
+  - [every](#every)
+  - [filter](#filter)
+  - [filterMap](#filtermap)
+  - [foldMap](#foldmap)
+  - [fromArray](#fromarray)
+  - [fromSet](#fromset)
+  - [getEq](#geteq)
+  - [getIntersectionSemigroup](#getintersectionsemigroup)
+  - [getShow](#getshow)
+  - [getUnionMonoid](#getunionmonoid)
+  - [insert](#insert)
+  - [intersection](#intersection)
+  - [isSubset](#issubset)
+  - [map](#map)
+  - [partition](#partition)
+  - [partitionMap](#partitionmap)
+  - [reduce](#reduce)
+  - [remove](#remove)
+  - [separate](#separate)
+  - [singleton](#singleton)
+  - [some](#some)
+  - [toReadonlyArray](#toreadonlyarray)
+  - [toSet](#toset)
+  - [union](#union)
 
 ---
 
-# chain
+# utils
+
+## chain
 
 **Signature**
 
@@ -54,7 +57,7 @@ export declare function chain<B>(E: Eq<B>): <A>(f: (x: A) => ReadonlySet<B>) => 
 
 Added in v2.5.0
 
-# compact
+## compact
 
 **Signature**
 
@@ -64,7 +67,7 @@ export declare function compact<A>(E: Eq<A>): (fa: ReadonlySet<Option<A>>) => Re
 
 Added in v2.5.0
 
-# difference
+## difference
 
 Form the set difference (`x` - `y`)
 
@@ -85,7 +88,7 @@ assert.deepStrictEqual(difference(eqNumber)(new Set([1, 2]), new Set([1, 3])), n
 
 Added in v2.5.0
 
-# elem
+## elem
 
 Test if a value is a member of a set
 
@@ -97,7 +100,7 @@ export declare function elem<A>(E: Eq<A>): (a: A, set: ReadonlySet<A>) => boolea
 
 Added in v2.5.0
 
-# empty
+## empty
 
 **Signature**
 
@@ -107,7 +110,7 @@ export declare const empty: ReadonlySet<never>
 
 Added in v2.5.0
 
-# every
+## every
 
 **Signature**
 
@@ -117,7 +120,7 @@ export declare function every<A>(predicate: Predicate<A>): (set: ReadonlySet<A>)
 
 Added in v2.5.0
 
-# filter
+## filter
 
 **Signature**
 
@@ -128,7 +131,7 @@ export declare function filter<A>(predicate: Predicate<A>): (set: ReadonlySet<A>
 
 Added in v2.5.0
 
-# filterMap
+## filterMap
 
 **Signature**
 
@@ -138,7 +141,7 @@ export declare function filterMap<B>(E: Eq<B>): <A>(f: (a: A) => Option<B>) => (
 
 Added in v2.5.0
 
-# foldMap
+## foldMap
 
 **Signature**
 
@@ -148,7 +151,7 @@ export declare function foldMap<A, M>(O: Ord<A>, M: Monoid<M>): (f: (a: A) => M)
 
 Added in v2.5.0
 
-# fromArray
+## fromArray
 
 Create a set from an array
 
@@ -160,7 +163,7 @@ export declare function fromArray<A>(E: Eq<A>): (as: ReadonlyArray<A>) => Readon
 
 Added in v2.5.0
 
-# fromSet
+## fromSet
 
 **Signature**
 
@@ -170,7 +173,7 @@ export declare function fromSet<A>(s: Set<A>): ReadonlySet<A>
 
 Added in v2.5.0
 
-# getEq
+## getEq
 
 **Signature**
 
@@ -180,7 +183,7 @@ export declare function getEq<A>(E: Eq<A>): Eq<ReadonlySet<A>>
 
 Added in v2.5.0
 
-# getIntersectionSemigroup
+## getIntersectionSemigroup
 
 **Signature**
 
@@ -190,7 +193,7 @@ export declare function getIntersectionSemigroup<A>(E: Eq<A>): Semigroup<Readonl
 
 Added in v2.5.0
 
-# getShow
+## getShow
 
 **Signature**
 
@@ -200,7 +203,7 @@ export declare function getShow<A>(S: Show<A>): Show<ReadonlySet<A>>
 
 Added in v2.5.0
 
-# getUnionMonoid
+## getUnionMonoid
 
 **Signature**
 
@@ -210,7 +213,7 @@ export declare function getUnionMonoid<A>(E: Eq<A>): Monoid<ReadonlySet<A>>
 
 Added in v2.5.0
 
-# insert
+## insert
 
 Insert a value into a set
 
@@ -222,7 +225,7 @@ export declare function insert<A>(E: Eq<A>): (a: A) => (set: ReadonlySet<A>) => 
 
 Added in v2.5.0
 
-# intersection
+## intersection
 
 The set of elements which are in both the first and second set
 
@@ -234,7 +237,7 @@ export declare function intersection<A>(E: Eq<A>): (set: ReadonlySet<A>, y: Read
 
 Added in v2.5.0
 
-# isSubset
+## isSubset
 
 `true` if and only if every element in the first set is an element of the second set
 
@@ -246,7 +249,7 @@ export declare function isSubset<A>(E: Eq<A>): (x: ReadonlySet<A>, y: ReadonlySe
 
 Added in v2.5.0
 
-# map
+## map
 
 Projects a Set through a function
 
@@ -258,7 +261,7 @@ export declare function map<B>(E: Eq<B>): <A>(f: (x: A) => B) => (set: ReadonlyS
 
 Added in v2.5.0
 
-# partition
+## partition
 
 **Signature**
 
@@ -273,7 +276,7 @@ export declare function partition<A>(
 
 Added in v2.5.0
 
-# partitionMap
+## partitionMap
 
 **Signature**
 
@@ -286,7 +289,7 @@ export declare function partitionMap<B, C>(
 
 Added in v2.5.0
 
-# reduce
+## reduce
 
 **Signature**
 
@@ -296,7 +299,7 @@ export declare function reduce<A>(O: Ord<A>): <B>(b: B, f: (b: B, a: A) => B) =>
 
 Added in v2.5.0
 
-# remove
+## remove
 
 Delete a value from a set
 
@@ -308,7 +311,7 @@ export declare function remove<A>(E: Eq<A>): (a: A) => (set: ReadonlySet<A>) => 
 
 Added in v2.5.0
 
-# separate
+## separate
 
 **Signature**
 
@@ -321,7 +324,7 @@ export declare function separate<E, A>(
 
 Added in v2.5.0
 
-# singleton
+## singleton
 
 Create a set with one element
 
@@ -333,7 +336,7 @@ export declare function singleton<A>(a: A): ReadonlySet<A>
 
 Added in v2.5.0
 
-# some
+## some
 
 **Signature**
 
@@ -343,7 +346,7 @@ export declare function some<A>(predicate: Predicate<A>): (set: ReadonlySet<A>) 
 
 Added in v2.5.0
 
-# toReadonlyArray
+## toReadonlyArray
 
 **Signature**
 
@@ -353,7 +356,7 @@ export declare function toReadonlyArray<A>(O: Ord<A>): (set: ReadonlySet<A>) => 
 
 Added in v2.5.0
 
-# toSet
+## toSet
 
 **Signature**
 
@@ -363,7 +366,7 @@ export declare function toSet<A>(s: ReadonlySet<A>): Set<A>
 
 Added in v2.5.0
 
-# union
+## union
 
 Form the union of two sets
 

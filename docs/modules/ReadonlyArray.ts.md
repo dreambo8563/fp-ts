@@ -4,7 +4,7 @@ nav_order: 60
 parent: Modules
 ---
 
-# ReadonlyArray overview
+## ReadonlyArray overview
 
 Added in v2.5.0
 
@@ -12,126 +12,129 @@ Added in v2.5.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Spanned (interface)](#spanned-interface)
-- [URI (type alias)](#uri-type-alias)
-- [URI](#uri)
-- [alt](#alt)
-- [altReadonlyArray](#altreadonlyarray)
-- [alternativeReadonlyArray](#alternativereadonlyarray)
-- [ap](#ap)
-- [apFirst](#apfirst)
-- [apSecond](#apsecond)
-- [applicativeReadonlyArray](#applicativereadonlyarray)
-- [applyReadonlyArray](#applyreadonlyarray)
-- [chain](#chain)
-- [chainFirst](#chainfirst)
-- [chop](#chop)
-- [chunksOf](#chunksof)
-- [compact](#compact)
-- [compactableReadonlyArray](#compactablereadonlyarray)
-- [comprehension](#comprehension)
-- [cons](#cons)
-- [deleteAt](#deleteat)
-- [difference](#difference)
-- [dropLeft](#dropleft)
-- [dropLeftWhile](#dropleftwhile)
-- [dropRight](#dropright)
-- [duplicate](#duplicate)
-- [elem](#elem)
-- [empty](#empty)
-- [extend](#extend)
-- [extendReadonlyArray](#extendreadonlyarray)
-- [filter](#filter)
-- [filterMap](#filtermap)
-- [filterMapWithIndex](#filtermapwithindex)
-- [filterWithIndex](#filterwithindex)
-- [filterableReadonlyArray](#filterablereadonlyarray)
-- [filterableWithIndexReadonlyArray](#filterablewithindexreadonlyarray)
-- [findFirst](#findfirst)
-- [findFirstMap](#findfirstmap)
-- [findIndex](#findindex)
-- [findLast](#findlast)
-- [findLastIndex](#findlastindex)
-- [findLastMap](#findlastmap)
-- [flatten](#flatten)
-- [foldLeft](#foldleft)
-- [foldMap](#foldmap)
-- [foldMapWithIndex](#foldmapwithindex)
-- [foldRight](#foldright)
-- [foldableReadonlyArray](#foldablereadonlyarray)
-- [foldableWithIndexReadonlyArray](#foldablewithindexreadonlyarray)
-- [fromArray](#fromarray)
-- [functorReadonlyArray](#functorreadonlyarray)
-- [functorWithIndexReadonlyArray](#functorwithindexreadonlyarray)
-- [getEq](#geteq)
-- [getMonoid](#getmonoid)
-- [getOrd](#getord)
-- [getShow](#getshow)
-- [head](#head)
-- [init](#init)
-- [insertAt](#insertat)
-- [intersection](#intersection)
-- [isEmpty](#isempty)
-- [isNonEmpty](#isnonempty)
-- [isOutOfBound](#isoutofbound)
-- [last](#last)
-- [lefts](#lefts)
-- [lookup](#lookup)
-- [makeBy](#makeby)
-- [map](#map)
-- [mapWithIndex](#mapwithindex)
-- [modifyAt](#modifyat)
-- [monadReadonlyArray](#monadreadonlyarray)
-- [of](#of)
-- [partition](#partition)
-- [partitionMap](#partitionmap)
-- [partitionMapWithIndex](#partitionmapwithindex)
-- [partitionWithIndex](#partitionwithindex)
-- [range](#range)
-- [reduce](#reduce)
-- [reduceRight](#reduceright)
-- [reduceRightWithIndex](#reducerightwithindex)
-- [reduceWithIndex](#reducewithindex)
-- [replicate](#replicate)
-- [reverse](#reverse)
-- [rights](#rights)
-- [rotate](#rotate)
-- [scanLeft](#scanleft)
-- [scanRight](#scanright)
-- [separate](#separate)
-- [sequence](#sequence)
-- [snoc](#snoc)
-- [sort](#sort)
-- [sortBy](#sortby)
-- [spanLeft](#spanleft)
-- [splitAt](#splitat)
-- [tail](#tail)
-- [takeLeft](#takeleft)
-- [takeLeftWhile](#takeleftwhile)
-- [takeRight](#takeright)
-- [toArray](#toarray)
-- [traversableReadonlyArray](#traversablereadonlyarray)
-- [traversableWithIndexReadonlyArray](#traversablewithindexreadonlyarray)
-- [traverse](#traverse)
-- [traverseWithIndex](#traversewithindex)
-- [unfold](#unfold)
-- [unfoldableReadonlyArray](#unfoldablereadonlyarray)
-- [union](#union)
-- [uniq](#uniq)
-- [unsafeDeleteAt](#unsafedeleteat)
-- [unsafeInsertAt](#unsafeinsertat)
-- [unsafeUpdateAt](#unsafeupdateat)
-- [unzip](#unzip)
-- [updateAt](#updateat)
-- [wilt](#wilt)
-- [wither](#wither)
-- [witherableReadonlyArray](#witherablereadonlyarray)
-- [zip](#zip)
-- [zipWith](#zipwith)
+- [utils](#utils)
+  - [Spanned (interface)](#spanned-interface)
+  - [URI](#uri)
+  - [URI (type alias)](#uri-type-alias)
+  - [alt](#alt)
+  - [altReadonlyArray](#altreadonlyarray)
+  - [alternativeReadonlyArray](#alternativereadonlyarray)
+  - [ap](#ap)
+  - [apFirst](#apfirst)
+  - [apSecond](#apsecond)
+  - [applicativeReadonlyArray](#applicativereadonlyarray)
+  - [applyReadonlyArray](#applyreadonlyarray)
+  - [chain](#chain)
+  - [chainFirst](#chainfirst)
+  - [chop](#chop)
+  - [chunksOf](#chunksof)
+  - [compact](#compact)
+  - [compactableReadonlyArray](#compactablereadonlyarray)
+  - [comprehension](#comprehension)
+  - [cons](#cons)
+  - [deleteAt](#deleteat)
+  - [difference](#difference)
+  - [dropLeft](#dropleft)
+  - [dropLeftWhile](#dropleftwhile)
+  - [dropRight](#dropright)
+  - [duplicate](#duplicate)
+  - [elem](#elem)
+  - [empty](#empty)
+  - [extend](#extend)
+  - [extendReadonlyArray](#extendreadonlyarray)
+  - [filter](#filter)
+  - [filterMap](#filtermap)
+  - [filterMapWithIndex](#filtermapwithindex)
+  - [filterWithIndex](#filterwithindex)
+  - [filterableReadonlyArray](#filterablereadonlyarray)
+  - [filterableWithIndexReadonlyArray](#filterablewithindexreadonlyarray)
+  - [findFirst](#findfirst)
+  - [findFirstMap](#findfirstmap)
+  - [findIndex](#findindex)
+  - [findLast](#findlast)
+  - [findLastIndex](#findlastindex)
+  - [findLastMap](#findlastmap)
+  - [flatten](#flatten)
+  - [foldLeft](#foldleft)
+  - [foldMap](#foldmap)
+  - [foldMapWithIndex](#foldmapwithindex)
+  - [foldRight](#foldright)
+  - [foldableReadonlyArray](#foldablereadonlyarray)
+  - [foldableWithIndexReadonlyArray](#foldablewithindexreadonlyarray)
+  - [fromArray](#fromarray)
+  - [functorReadonlyArray](#functorreadonlyarray)
+  - [functorWithIndexReadonlyArray](#functorwithindexreadonlyarray)
+  - [getEq](#geteq)
+  - [getMonoid](#getmonoid)
+  - [getOrd](#getord)
+  - [getShow](#getshow)
+  - [head](#head)
+  - [init](#init)
+  - [insertAt](#insertat)
+  - [intersection](#intersection)
+  - [isEmpty](#isempty)
+  - [isNonEmpty](#isnonempty)
+  - [isOutOfBound](#isoutofbound)
+  - [last](#last)
+  - [lefts](#lefts)
+  - [lookup](#lookup)
+  - [makeBy](#makeby)
+  - [map](#map)
+  - [mapWithIndex](#mapwithindex)
+  - [modifyAt](#modifyat)
+  - [monadReadonlyArray](#monadreadonlyarray)
+  - [of](#of)
+  - [partition](#partition)
+  - [partitionMap](#partitionmap)
+  - [partitionMapWithIndex](#partitionmapwithindex)
+  - [partitionWithIndex](#partitionwithindex)
+  - [range](#range)
+  - [reduce](#reduce)
+  - [reduceRight](#reduceright)
+  - [reduceRightWithIndex](#reducerightwithindex)
+  - [reduceWithIndex](#reducewithindex)
+  - [replicate](#replicate)
+  - [reverse](#reverse)
+  - [rights](#rights)
+  - [rotate](#rotate)
+  - [scanLeft](#scanleft)
+  - [scanRight](#scanright)
+  - [separate](#separate)
+  - [sequence](#sequence)
+  - [snoc](#snoc)
+  - [sort](#sort)
+  - [sortBy](#sortby)
+  - [spanLeft](#spanleft)
+  - [splitAt](#splitat)
+  - [tail](#tail)
+  - [takeLeft](#takeleft)
+  - [takeLeftWhile](#takeleftwhile)
+  - [takeRight](#takeright)
+  - [toArray](#toarray)
+  - [traversableReadonlyArray](#traversablereadonlyarray)
+  - [traversableWithIndexReadonlyArray](#traversablewithindexreadonlyarray)
+  - [traverse](#traverse)
+  - [traverseWithIndex](#traversewithindex)
+  - [unfold](#unfold)
+  - [unfoldableReadonlyArray](#unfoldablereadonlyarray)
+  - [union](#union)
+  - [uniq](#uniq)
+  - [unsafeDeleteAt](#unsafedeleteat)
+  - [unsafeInsertAt](#unsafeinsertat)
+  - [unsafeUpdateAt](#unsafeupdateat)
+  - [unzip](#unzip)
+  - [updateAt](#updateat)
+  - [wilt](#wilt)
+  - [wither](#wither)
+  - [witherableReadonlyArray](#witherablereadonlyarray)
+  - [zip](#zip)
+  - [zipWith](#zipwith)
 
 ---
 
-# Spanned (interface)
+# utils
+
+## Spanned (interface)
 
 **Signature**
 
@@ -144,17 +147,7 @@ export interface Spanned<I, R> {
 
 Added in v2.5.0
 
-# URI (type alias)
-
-**Signature**
-
-```ts
-export type URI = typeof URI
-```
-
-Added in v2.5.0
-
-# URI
+## URI
 
 **Signature**
 
@@ -164,7 +157,17 @@ export declare const URI: 'ReadonlyArray'
 
 Added in v2.5.0
 
-# alt
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
+```
+
+Added in v2.5.0
+
+## alt
 
 **Signature**
 
@@ -174,7 +177,7 @@ export declare const alt: <A>(that: () => readonly A[]) => (fa: readonly A[]) =>
 
 Added in v2.5.0
 
-# altReadonlyArray
+## altReadonlyArray
 
 **Signature**
 
@@ -184,7 +187,7 @@ export declare const altReadonlyArray: Alt1<'ReadonlyArray'>
 
 Added in v3.0.0
 
-# alternativeReadonlyArray
+## alternativeReadonlyArray
 
 **Signature**
 
@@ -194,7 +197,7 @@ export declare const alternativeReadonlyArray: RA<'ReadonlyArray'>
 
 Added in v3.0.0
 
-# ap
+## ap
 
 **Signature**
 
@@ -204,7 +207,7 @@ export declare const ap: <A>(fa: readonly A[]) => <B>(fab: readonly ((a: A) => B
 
 Added in v2.5.0
 
-# apFirst
+## apFirst
 
 **Signature**
 
@@ -214,7 +217,7 @@ export declare const apFirst: <B>(fb: readonly B[]) => <A>(fa: readonly A[]) => 
 
 Added in v2.5.0
 
-# apSecond
+## apSecond
 
 **Signature**
 
@@ -224,7 +227,7 @@ export declare const apSecond: <B>(fb: readonly B[]) => <A>(fa: readonly A[]) =>
 
 Added in v2.5.0
 
-# applicativeReadonlyArray
+## applicativeReadonlyArray
 
 **Signature**
 
@@ -234,7 +237,7 @@ export declare const applicativeReadonlyArray: Applicative1<'ReadonlyArray'>
 
 Added in v3.0.0
 
-# applyReadonlyArray
+## applyReadonlyArray
 
 **Signature**
 
@@ -244,7 +247,7 @@ export declare const applyReadonlyArray: Apply1<'ReadonlyArray'>
 
 Added in v3.0.0
 
-# chain
+## chain
 
 **Signature**
 
@@ -254,7 +257,7 @@ export declare const chain: <A, B>(f: (a: A) => readonly B[]) => (ma: readonly A
 
 Added in v2.5.0
 
-# chainFirst
+## chainFirst
 
 **Signature**
 
@@ -264,7 +267,7 @@ export declare const chainFirst: <A, B>(f: (a: A) => readonly B[]) => (ma: reado
 
 Added in v2.5.0
 
-# chop
+## chop
 
 A useful recursion pattern for processing an array to produce a new array, often used for "chopping" up the input
 array. Typically chop is called with some function that will consume an initial prefix of the array and produce a
@@ -295,7 +298,7 @@ assert.deepStrictEqual(group(eqNumber)([1, 1, 2, 3, 3, 4]), [[1, 1], [2], [3, 3]
 
 Added in v2.5.0
 
-# chunksOf
+## chunksOf
 
 Splits an array into length-`n` pieces. The last piece will be shorter if `n` does not evenly divide the length of
 the array. Note that `chunksOf(n)([])` is `[]`, not `[[]]`. This is intentional, and is consistent with a recursive
@@ -323,7 +326,7 @@ assert.deepStrictEqual(chunksOf(2)([1, 2, 3, 4, 5]), [[1, 2], [3, 4], [5]])
 
 Added in v2.5.0
 
-# compact
+## compact
 
 **Signature**
 
@@ -333,7 +336,7 @@ export declare const compact: <A>(fa: readonly Option<A>[]) => readonly A[]
 
 Added in v2.5.0
 
-# compactableReadonlyArray
+## compactableReadonlyArray
 
 **Signature**
 
@@ -343,7 +346,7 @@ export declare const compactableReadonlyArray: Compactable1<'ReadonlyArray'>
 
 Added in v3.0.0
 
-# comprehension
+## comprehension
 
 Array comprehension
 
@@ -407,7 +410,7 @@ assert.deepStrictEqual(
 
 Added in v2.5.0
 
-# cons
+## cons
 
 Attaches an element to the front of an array, creating a new non empty array
 
@@ -427,7 +430,7 @@ assert.deepStrictEqual(cons(0, [1, 2, 3]), [0, 1, 2, 3])
 
 Added in v2.5.0
 
-# deleteAt
+## deleteAt
 
 Delete the element at the specified index, creating a new array, or returning `None` if the index is out of bounds
 
@@ -449,7 +452,7 @@ assert.deepStrictEqual(deleteAt(1)([]), none)
 
 Added in v2.5.0
 
-# difference
+## difference
 
 Creates an array of array values not included in the other given array using a `Eq` for equality
 comparisons. The order and references of result values are determined by the first array.
@@ -471,7 +474,7 @@ assert.deepStrictEqual(difference(eqNumber)([1, 2], [2, 3]), [1])
 
 Added in v2.5.0
 
-# dropLeft
+## dropLeft
 
 Drop a number of elements from the start of an array, creating a new array
 
@@ -491,7 +494,7 @@ assert.deepStrictEqual(dropLeft(2)([1, 2, 3]), [3])
 
 Added in v2.5.0
 
-# dropLeftWhile
+## dropLeftWhile
 
 Remove the longest initial subarray for which all element satisfy the specified predicate, creating a new array
 
@@ -511,7 +514,7 @@ assert.deepStrictEqual(dropLeftWhile((n: number) => n % 2 === 1)([1, 3, 2, 4, 5]
 
 Added in v2.5.0
 
-# dropRight
+## dropRight
 
 Drop a number of elements from the end of an array, creating a new array
 
@@ -531,7 +534,7 @@ assert.deepStrictEqual(dropRight(2)([1, 2, 3, 4, 5]), [1, 2, 3])
 
 Added in v2.5.0
 
-# duplicate
+## duplicate
 
 **Signature**
 
@@ -541,7 +544,7 @@ export declare const duplicate: <A>(wa: readonly A[]) => readonly (readonly A[])
 
 Added in v2.5.0
 
-# elem
+## elem
 
 Test if a value is a member of an array. Takes a `Eq<A>` as a single
 argument which returns the function to use to search for a value of type `A` in
@@ -565,7 +568,7 @@ assert.strictEqual(elem(eqNumber)(4, [1, 2, 3]), false)
 
 Added in v2.5.0
 
-# empty
+## empty
 
 An empty array
 
@@ -577,7 +580,7 @@ export declare const empty: readonly never[]
 
 Added in v2.5.0
 
-# extend
+## extend
 
 **Signature**
 
@@ -587,7 +590,7 @@ export declare const extend: <A, B>(f: (fa: readonly A[]) => B) => (wa: readonly
 
 Added in v2.5.0
 
-# extendReadonlyArray
+## extendReadonlyArray
 
 **Signature**
 
@@ -597,7 +600,7 @@ export declare const extendReadonlyArray: Extend1<'ReadonlyArray'>
 
 Added in v3.0.0
 
-# filter
+## filter
 
 **Signature**
 
@@ -607,7 +610,7 @@ export declare const filter: Filter1<'ReadonlyArray'>
 
 Added in v2.5.0
 
-# filterMap
+## filterMap
 
 **Signature**
 
@@ -617,7 +620,7 @@ export declare const filterMap: <A, B>(f: (a: A) => Option<B>) => (fa: readonly 
 
 Added in v2.5.0
 
-# filterMapWithIndex
+## filterMapWithIndex
 
 **Signature**
 
@@ -627,7 +630,7 @@ export declare const filterMapWithIndex: <A, B>(f: (i: number, a: A) => Option<B
 
 Added in v2.5.0
 
-# filterWithIndex
+## filterWithIndex
 
 **Signature**
 
@@ -640,7 +643,7 @@ export declare const filterWithIndex: {
 
 Added in v2.5.0
 
-# filterableReadonlyArray
+## filterableReadonlyArray
 
 **Signature**
 
@@ -650,7 +653,7 @@ export declare const filterableReadonlyArray: Filterable1<'ReadonlyArray'>
 
 Added in v3.0.0
 
-# filterableWithIndexReadonlyArray
+## filterableWithIndexReadonlyArray
 
 **Signature**
 
@@ -660,7 +663,7 @@ export declare const filterableWithIndexReadonlyArray: FilterableWithIndex1<'Rea
 
 Added in v3.0.0
 
-# findFirst
+## findFirst
 
 Find the first element which satisfies a predicate (or a refinement) function
 
@@ -688,7 +691,7 @@ assert.deepStrictEqual(
 
 Added in v2.5.0
 
-# findFirstMap
+## findFirstMap
 
 Find the first element returned by an option based selector function
 
@@ -717,7 +720,7 @@ assert.deepStrictEqual(findFirstMap((p: Person) => (p.age === undefined ? none :
 
 Added in v2.5.0
 
-# findIndex
+## findIndex
 
 Find the first index for which a predicate holds
 
@@ -739,7 +742,7 @@ assert.deepStrictEqual(findIndex((n: number) => n === 2)([]), none)
 
 Added in v2.5.0
 
-# findLast
+## findLast
 
 Find the last element which satisfies a predicate function
 
@@ -767,7 +770,7 @@ assert.deepStrictEqual(
 
 Added in v2.5.0
 
-# findLastIndex
+## findLastIndex
 
 Returns the index of the last element of the list which matches the predicate
 
@@ -797,7 +800,7 @@ assert.deepStrictEqual(findLastIndex((x: { a: number }) => x.a === 4)(xs), none)
 
 Added in v2.5.0
 
-# findLastMap
+## findLastMap
 
 Find the last element returned by an option based selector function
 
@@ -826,7 +829,7 @@ assert.deepStrictEqual(findLastMap((p: Person) => (p.age === undefined ? none : 
 
 Added in v2.5.0
 
-# flatten
+## flatten
 
 Removes one level of nesting
 
@@ -846,7 +849,7 @@ assert.deepStrictEqual(flatten([[1], [2], [3]]), [1, 2, 3])
 
 Added in v2.5.0
 
-# foldLeft
+## foldLeft
 
 Break an array into its first element and remaining elements
 
@@ -873,7 +876,7 @@ assert.strictEqual(len([1, 2, 3]), 3)
 
 Added in v2.5.0
 
-# foldMap
+## foldMap
 
 **Signature**
 
@@ -883,7 +886,7 @@ export declare const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: r
 
 Added in v2.5.0
 
-# foldMapWithIndex
+## foldMapWithIndex
 
 **Signature**
 
@@ -893,7 +896,7 @@ export declare const foldMapWithIndex: <M>(M: Monoid<M>) => <A>(f: (i: number, a
 
 Added in v2.5.0
 
-# foldRight
+## foldRight
 
 Break an array into its initial elements and the last element
 
@@ -908,7 +911,7 @@ export declare function foldRight<A, B>(
 
 Added in v2.5.0
 
-# foldableReadonlyArray
+## foldableReadonlyArray
 
 **Signature**
 
@@ -918,7 +921,7 @@ export declare const foldableReadonlyArray: Foldable1<'ReadonlyArray'>
 
 Added in v3.0.0
 
-# foldableWithIndexReadonlyArray
+## foldableWithIndexReadonlyArray
 
 **Signature**
 
@@ -928,7 +931,7 @@ export declare const foldableWithIndexReadonlyArray: FoldableWithIndex1<'Readonl
 
 Added in v3.0.0
 
-# fromArray
+## fromArray
 
 **Signature**
 
@@ -938,7 +941,7 @@ export declare function fromArray<A>(as: Array<A>): ReadonlyArray<A>
 
 Added in v2.5.0
 
-# functorReadonlyArray
+## functorReadonlyArray
 
 **Signature**
 
@@ -948,7 +951,7 @@ export declare const functorReadonlyArray: Functor1<'ReadonlyArray'>
 
 Added in v3.0.0
 
-# functorWithIndexReadonlyArray
+## functorWithIndexReadonlyArray
 
 **Signature**
 
@@ -958,7 +961,7 @@ export declare const functorWithIndexReadonlyArray: FunctorWithIndex1<'ReadonlyA
 
 Added in v3.0.0
 
-# getEq
+## getEq
 
 Derives an `Eq` over the `ReadonlyArray` of a given element type from the `Eq` of that type. The derived `Eq` defines two
 arrays as equal if all elements of both arrays are compared equal pairwise with the given `E`. In case of arrays of
@@ -983,7 +986,7 @@ assert.strictEqual(E.equals(['a'], []), false)
 
 Added in v2.5.0
 
-# getMonoid
+## getMonoid
 
 Returns a `Monoid` for `ReadonlyArray<A>`
 
@@ -1004,7 +1007,7 @@ assert.deepStrictEqual(M.concat([1, 2], [3, 4]), [1, 2, 3, 4])
 
 Added in v2.5.0
 
-# getOrd
+## getOrd
 
 Derives an `Ord` over the `ReadonlyArray` of a given element type from the `Ord` of that type. The ordering between two such
 arrays is equal to: the first non equal comparison of each arrays elements taken pairwise in increasing order, in
@@ -1031,7 +1034,7 @@ assert.strictEqual(O.compare(['a'], ['b']), -1)
 
 Added in v2.5.0
 
-# getShow
+## getShow
 
 **Signature**
 
@@ -1041,7 +1044,7 @@ export declare function getShow<A>(S: Show<A>): Show<ReadonlyArray<A>>
 
 Added in v2.5.0
 
-# head
+## head
 
 Get the first element in an array, or `None` if the array is empty
 
@@ -1063,7 +1066,7 @@ assert.deepStrictEqual(head([]), none)
 
 Added in v2.5.0
 
-# init
+## init
 
 Get all but the last element of an array, creating a new array, or `None` if the array is empty
 
@@ -1085,7 +1088,7 @@ assert.deepStrictEqual(init([]), none)
 
 Added in v2.5.0
 
-# insertAt
+## insertAt
 
 Insert an element at the specified index, creating a new array, or returning `None` if the index is out of bounds
 
@@ -1106,7 +1109,7 @@ assert.deepStrictEqual(insertAt(2, 5)([1, 2, 3, 4]), some([1, 2, 5, 3, 4]))
 
 Added in v2.5.0
 
-# intersection
+## intersection
 
 Creates an array of unique values that are included in all given arrays using a `Eq` for equality
 comparisons. The order and references of result values are determined by the first array.
@@ -1128,7 +1131,7 @@ assert.deepStrictEqual(intersection(eqNumber)([1, 2], [2, 3]), [2])
 
 Added in v2.5.0
 
-# isEmpty
+## isEmpty
 
 Test whether an array is empty
 
@@ -1148,7 +1151,7 @@ assert.strictEqual(isEmpty([]), true)
 
 Added in v2.5.0
 
-# isNonEmpty
+## isNonEmpty
 
 Test whether an array is non empty narrowing down the type to `NonEmptyReadonlyArray<A>`
 
@@ -1160,7 +1163,7 @@ export declare function isNonEmpty<A>(as: ReadonlyArray<A>): as is ReadonlyNonEm
 
 Added in v2.5.0
 
-# isOutOfBound
+## isOutOfBound
 
 Test whether an array contains a particular index
 
@@ -1172,7 +1175,7 @@ export declare function isOutOfBound<A>(i: number, as: ReadonlyArray<A>): boolea
 
 Added in v2.5.0
 
-# last
+## last
 
 Get the last element in an array, or `None` if the array is empty
 
@@ -1194,7 +1197,7 @@ assert.deepStrictEqual(last([]), none)
 
 Added in v2.5.0
 
-# lefts
+## lefts
 
 Extracts from an array of `Either` all the `Left` elements. All the `Left` elements are extracted in order
 
@@ -1215,7 +1218,7 @@ assert.deepStrictEqual(lefts([right(1), left('foo'), right(2)]), ['foo'])
 
 Added in v2.5.0
 
-# lookup
+## lookup
 
 This function provides a safe way to read a value at a particular index from an array
 
@@ -1237,7 +1240,7 @@ assert.deepStrictEqual(lookup(3, [1, 2, 3]), none)
 
 Added in v2.5.0
 
-# makeBy
+## makeBy
 
 Return a list of length `n` with element `i` initialized with `f(i)`
 
@@ -1258,7 +1261,7 @@ assert.deepStrictEqual(makeBy(5, double), [0, 2, 4, 6, 8])
 
 Added in v2.5.0
 
-# map
+## map
 
 **Signature**
 
@@ -1268,7 +1271,7 @@ export declare const map: <A, B>(f: (a: A) => B) => (fa: readonly A[]) => readon
 
 Added in v2.5.0
 
-# mapWithIndex
+## mapWithIndex
 
 **Signature**
 
@@ -1278,7 +1281,7 @@ export declare const mapWithIndex: <A, B>(f: (i: number, a: A) => B) => (fa: rea
 
 Added in v2.5.0
 
-# modifyAt
+## modifyAt
 
 Apply a function to the element at the specified index, creating a new array, or returning `None` if the index is out
 of bounds
@@ -1302,7 +1305,7 @@ assert.deepStrictEqual(modifyAt(1, double)([]), none)
 
 Added in v2.5.0
 
-# monadReadonlyArray
+## monadReadonlyArray
 
 **Signature**
 
@@ -1312,7 +1315,7 @@ export declare const monadReadonlyArray: Monad1<'ReadonlyArray'>
 
 Added in v3.0.0
 
-# of
+## of
 
 **Signature**
 
@@ -1322,7 +1325,7 @@ export declare const of: <A>(a: A) => readonly A[]
 
 Added in v2.5.0
 
-# partition
+## partition
 
 **Signature**
 
@@ -1332,7 +1335,7 @@ export declare const partition: Partition1<'ReadonlyArray'>
 
 Added in v2.5.0
 
-# partitionMap
+## partitionMap
 
 **Signature**
 
@@ -1344,7 +1347,7 @@ export declare const partitionMap: <A, B, C>(
 
 Added in v2.5.0
 
-# partitionMapWithIndex
+## partitionMapWithIndex
 
 **Signature**
 
@@ -1356,7 +1359,7 @@ export declare const partitionMapWithIndex: <A, B, C>(
 
 Added in v2.5.0
 
-# partitionWithIndex
+## partitionWithIndex
 
 **Signature**
 
@@ -1371,7 +1374,7 @@ export declare const partitionWithIndex: {
 
 Added in v2.5.0
 
-# range
+## range
 
 Create an array containing a range of integers, including both endpoints
 
@@ -1391,7 +1394,7 @@ assert.deepStrictEqual(range(1, 5), [1, 2, 3, 4, 5])
 
 Added in v2.5.0
 
-# reduce
+## reduce
 
 **Signature**
 
@@ -1401,7 +1404,7 @@ export declare const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: readonly
 
 Added in v2.5.0
 
-# reduceRight
+## reduceRight
 
 **Signature**
 
@@ -1411,7 +1414,7 @@ export declare const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: rea
 
 Added in v2.5.0
 
-# reduceRightWithIndex
+## reduceRightWithIndex
 
 **Signature**
 
@@ -1421,7 +1424,7 @@ export declare const reduceRightWithIndex: <A, B>(b: B, f: (i: number, a: A, b: 
 
 Added in v2.5.0
 
-# reduceWithIndex
+## reduceWithIndex
 
 **Signature**
 
@@ -1431,7 +1434,7 @@ export declare const reduceWithIndex: <A, B>(b: B, f: (i: number, b: B, a: A) =>
 
 Added in v2.5.0
 
-# replicate
+## replicate
 
 Create an array containing a value repeated the specified number of times
 
@@ -1451,7 +1454,7 @@ assert.deepStrictEqual(replicate(3, 'a'), ['a', 'a', 'a'])
 
 Added in v2.5.0
 
-# reverse
+## reverse
 
 Reverse an array, creating a new array
 
@@ -1471,7 +1474,7 @@ assert.deepStrictEqual(reverse([1, 2, 3]), [3, 2, 1])
 
 Added in v2.5.0
 
-# rights
+## rights
 
 Extracts from an array of `Either` all the `Right` elements. All the `Right` elements are extracted in order
 
@@ -1492,7 +1495,7 @@ assert.deepStrictEqual(rights([right(1), left('foo'), right(2)]), [1, 2])
 
 Added in v2.5.0
 
-# rotate
+## rotate
 
 Rotate an array to the right by `n` steps
 
@@ -1512,7 +1515,7 @@ assert.deepStrictEqual(rotate(2)([1, 2, 3, 4, 5]), [4, 5, 1, 2, 3])
 
 Added in v2.5.0
 
-# scanLeft
+## scanLeft
 
 Same as `reduce` but it carries over the intermediate steps
 
@@ -1530,7 +1533,7 @@ export declare function scanLeft<A, B>(b: B, f: (b: B, a: A) => B): (as: Readonl
 
 Added in v2.5.0
 
-# scanRight
+## scanRight
 
 Fold an array from the right, keeping all intermediate results instead of only the final result
 
@@ -1550,7 +1553,7 @@ assert.deepStrictEqual(scanRight(10, (a: number, b) => b - a)([1, 2, 3]), [4, 5,
 
 Added in v2.5.0
 
-# separate
+## separate
 
 **Signature**
 
@@ -1560,7 +1563,7 @@ export declare const separate: <A, B>(fa: readonly Either<A, B>[]) => Separated<
 
 Added in v2.5.0
 
-# sequence
+## sequence
 
 **Signature**
 
@@ -1570,7 +1573,7 @@ export declare const sequence: Sequence1<'ReadonlyArray'>
 
 Added in v3.0.0
 
-# snoc
+## snoc
 
 Append an element to the end of an array, creating a new non empty array
 
@@ -1590,7 +1593,7 @@ assert.deepStrictEqual(snoc([1, 2, 3], 4), [1, 2, 3, 4])
 
 Added in v2.5.0
 
-# sort
+## sort
 
 Sort the elements of an array in increasing order, creating a new array
 
@@ -1611,7 +1614,7 @@ assert.deepStrictEqual(sort(ordNumber)([3, 2, 1]), [1, 2, 3])
 
 Added in v2.5.0
 
-# sortBy
+## sortBy
 
 Sort the elements of an array in increasing order, where elements are compared using first `ords[0]`, then `ords[1]`,
 etc...
@@ -1660,7 +1663,7 @@ assert.deepStrictEqual(sortByNameByAge(persons), [
 
 Added in v2.5.0
 
-# spanLeft
+## spanLeft
 
 Split an array into two parts:
 
@@ -1684,7 +1687,7 @@ assert.deepStrictEqual(spanLeft((n: number) => n % 2 === 1)([1, 3, 2, 4, 5]), { 
 
 Added in v2.5.0
 
-# splitAt
+## splitAt
 
 Splits an array into two pieces, the first piece has `n` elements.
 
@@ -1707,7 +1710,7 @@ assert.deepStrictEqual(splitAt(2)([1, 2, 3, 4, 5]), [
 
 Added in v2.5.0
 
-# tail
+## tail
 
 Get all but the first element of an array, creating a new array, or `None` if the array is empty
 
@@ -1729,7 +1732,7 @@ assert.deepStrictEqual(tail([]), none)
 
 Added in v2.5.0
 
-# takeLeft
+## takeLeft
 
 Keep only a number of elements from the start of an array, creating a new array.
 `n` must be a natural number
@@ -1750,7 +1753,7 @@ assert.deepStrictEqual(takeLeft(2)([1, 2, 3]), [1, 2])
 
 Added in v2.5.0
 
-# takeLeftWhile
+## takeLeftWhile
 
 Calculate the longest initial subarray for which all element satisfy the specified predicate, creating a new array
 
@@ -1773,7 +1776,7 @@ assert.deepStrictEqual(takeLeftWhile((n: number) => n % 2 === 0)([2, 4, 3, 6]), 
 
 Added in v2.5.0
 
-# takeRight
+## takeRight
 
 Keep only a number of elements from the end of an array, creating a new array.
 `n` must be a natural number
@@ -1794,7 +1797,7 @@ assert.deepStrictEqual(takeRight(2)([1, 2, 3, 4, 5]), [4, 5])
 
 Added in v2.5.0
 
-# toArray
+## toArray
 
 **Signature**
 
@@ -1804,7 +1807,7 @@ export declare function toArray<A>(ras: ReadonlyArray<A>): Array<A>
 
 Added in v2.5.0
 
-# traversableReadonlyArray
+## traversableReadonlyArray
 
 **Signature**
 
@@ -1814,7 +1817,7 @@ export declare const traversableReadonlyArray: Traversable1<'ReadonlyArray'>
 
 Added in v3.0.0
 
-# traversableWithIndexReadonlyArray
+## traversableWithIndexReadonlyArray
 
 **Signature**
 
@@ -1824,7 +1827,7 @@ export declare const traversableWithIndexReadonlyArray: TraversableWithIndex1<'R
 
 Added in v3.0.0
 
-# traverse
+## traverse
 
 **Signature**
 
@@ -1834,7 +1837,7 @@ export declare const traverse: Traverse1<'ReadonlyArray'>
 
 Added in v3.0.0
 
-# traverseWithIndex
+## traverseWithIndex
 
 **Signature**
 
@@ -1844,7 +1847,7 @@ export declare const traverseWithIndex: TraverseWithIndex1<'ReadonlyArray', numb
 
 Added in v3.0.0
 
-# unfold
+## unfold
 
 **Signature**
 
@@ -1854,7 +1857,7 @@ export declare const unfold: <A, B>(b: B, f: (b: B) => Option<readonly [A, B]>) 
 
 Added in v3.0.0
 
-# unfoldableReadonlyArray
+## unfoldableReadonlyArray
 
 **Signature**
 
@@ -1864,7 +1867,7 @@ export declare const unfoldableReadonlyArray: Unfoldable1<'ReadonlyArray'>
 
 Added in v3.0.0
 
-# union
+## union
 
 Creates an array of unique values, in order, from all given arrays using a `Eq` for equality comparisons
 
@@ -1885,7 +1888,7 @@ assert.deepStrictEqual(union(eqNumber)([1, 2], [2, 3]), [1, 2, 3])
 
 Added in v2.5.0
 
-# uniq
+## uniq
 
 Remove duplicates from an array, keeping the first occurrence of an element.
 
@@ -1906,7 +1909,7 @@ assert.deepStrictEqual(uniq(eqNumber)([1, 2, 1]), [1, 2])
 
 Added in v2.5.0
 
-# unsafeDeleteAt
+## unsafeDeleteAt
 
 **Signature**
 
@@ -1916,7 +1919,7 @@ export declare function unsafeDeleteAt<A>(i: number, as: ReadonlyArray<A>): Read
 
 Added in v2.5.0
 
-# unsafeInsertAt
+## unsafeInsertAt
 
 **Signature**
 
@@ -1926,7 +1929,7 @@ export declare function unsafeInsertAt<A>(i: number, a: A, as: ReadonlyArray<A>)
 
 Added in v2.5.0
 
-# unsafeUpdateAt
+## unsafeUpdateAt
 
 **Signature**
 
@@ -1936,7 +1939,7 @@ export declare function unsafeUpdateAt<A>(i: number, a: A, as: ReadonlyArray<A>)
 
 Added in v2.5.0
 
-# unzip
+## unzip
 
 The function is reverse of `zip`. Takes an array of pairs and return two corresponding arrays
 
@@ -1966,7 +1969,7 @@ assert.deepStrictEqual(
 
 Added in v2.5.0
 
-# updateAt
+## updateAt
 
 Change the element at the specified index, creating a new array, or returning `None` if the index is out of bounds
 
@@ -1988,7 +1991,7 @@ assert.deepStrictEqual(updateAt(1, 1)([]), none)
 
 Added in v2.5.0
 
-# wilt
+## wilt
 
 **Signature**
 
@@ -1998,7 +2001,7 @@ export declare const wilt: Wilt1<'ReadonlyArray'>
 
 Added in v3.0.0
 
-# wither
+## wither
 
 **Signature**
 
@@ -2008,7 +2011,7 @@ export declare const wither: Wither1<'ReadonlyArray'>
 
 Added in v3.0.0
 
-# witherableReadonlyArray
+## witherableReadonlyArray
 
 **Signature**
 
@@ -2018,7 +2021,7 @@ export declare const witherableReadonlyArray: Witherable1<'ReadonlyArray'>
 
 Added in v3.0.0
 
-# zip
+## zip
 
 Takes two arrays and returns an array of corresponding pairs. If one input array is short, excess elements of the
 longer array are discarded
@@ -2043,7 +2046,7 @@ assert.deepStrictEqual(zip([1, 2, 3], ['a', 'b', 'c', 'd']), [
 
 Added in v2.5.0
 
-# zipWith
+## zipWith
 
 Apply a function to pairs of elements at the same index in two arrays, collecting the results in a new array. If one
 input array is short, excess elements of the longer array are discarded.

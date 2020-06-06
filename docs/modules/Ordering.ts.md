@@ -4,7 +4,7 @@ nav_order: 53
 parent: Modules
 ---
 
-# Ordering overview
+## Ordering overview
 
 Added in v2.0.0
 
@@ -12,15 +12,18 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Ordering (type alias)](#ordering-type-alias)
-- [eqOrdering](#eqordering)
-- [invert](#invert)
-- [monoidOrdering](#monoidordering)
-- [sign](#sign)
+- [utils](#utils)
+  - [Ordering (type alias)](#ordering-type-alias)
+  - [eqOrdering](#eqordering)
+  - [invert](#invert)
+  - [monoidOrdering](#monoidordering)
+  - [sign](#sign)
 
 ---
 
-# Ordering (type alias)
+# utils
+
+## Ordering (type alias)
 
 **Signature**
 
@@ -30,7 +33,7 @@ export type Ordering = -1 | 0 | 1
 
 Added in v2.0.0
 
-# eqOrdering
+## eqOrdering
 
 **Signature**
 
@@ -40,7 +43,7 @@ export declare const eqOrdering: Eq<Ordering>
 
 Added in v2.0.0
 
-# invert
+## invert
 
 **Signature**
 
@@ -50,7 +53,7 @@ export declare function invert(O: Ordering): Ordering
 
 Added in v2.0.0
 
-# monoidOrdering
+## monoidOrdering
 
 **Signature**
 
@@ -60,7 +63,7 @@ export declare const monoidOrdering: Monoid<Ordering>
 
 Added in v2.4.0
 
-# sign
+## sign
 
 **Signature**
 

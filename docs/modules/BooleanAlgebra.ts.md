@@ -4,7 +4,7 @@ nav_order: 7
 parent: Modules
 ---
 
-# BooleanAlgebra overview
+## BooleanAlgebra overview
 
 Boolean algebras are Heyting algebras with the additional constraint that the law of the excluded middle is true
 (equivalently, double-negation is true).
@@ -21,15 +21,18 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [BooleanAlgebra (interface)](#booleanalgebra-interface)
-- [booleanAlgebraBoolean](#booleanalgebraboolean)
-- [booleanAlgebraVoid](#booleanalgebravoid)
-- [getDualBooleanAlgebra](#getdualbooleanalgebra)
-- [getFunctionBooleanAlgebra](#getfunctionbooleanalgebra)
+- [utils](#utils)
+  - [BooleanAlgebra (interface)](#booleanalgebra-interface)
+  - [booleanAlgebraBoolean](#booleanalgebraboolean)
+  - [booleanAlgebraVoid](#booleanalgebravoid)
+  - [getDualBooleanAlgebra](#getdualbooleanalgebra)
+  - [getFunctionBooleanAlgebra](#getfunctionbooleanalgebra)
 
 ---
 
-# BooleanAlgebra (interface)
+# utils
+
+## BooleanAlgebra (interface)
 
 **Signature**
 
@@ -39,7 +42,7 @@ export interface BooleanAlgebra<A> extends HeytingAlgebra<A> {}
 
 Added in v2.0.0
 
-# booleanAlgebraBoolean
+## booleanAlgebraBoolean
 
 **Signature**
 
@@ -49,7 +52,7 @@ export declare const booleanAlgebraBoolean: BooleanAlgebra<boolean>
 
 Added in v2.0.0
 
-# booleanAlgebraVoid
+## booleanAlgebraVoid
 
 **Signature**
 
@@ -59,7 +62,7 @@ export declare const booleanAlgebraVoid: BooleanAlgebra<void>
 
 Added in v2.0.0
 
-# getDualBooleanAlgebra
+## getDualBooleanAlgebra
 
 Every boolean algebras has a dual algebra, which involves reversing one/zero as well as join/meet.
 
@@ -71,7 +74,7 @@ export declare function getDualBooleanAlgebra<A>(B: BooleanAlgebra<A>): BooleanA
 
 Added in v2.0.0
 
-# getFunctionBooleanAlgebra
+## getFunctionBooleanAlgebra
 
 **Signature**
 

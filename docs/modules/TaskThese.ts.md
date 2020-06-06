@@ -4,7 +4,7 @@ nav_order: 77
 parent: Modules
 ---
 
-# TaskThese overview
+## TaskThese overview
 
 Added in v2.4.0
 
@@ -12,31 +12,34 @@ Added in v2.4.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [TaskThese (interface)](#taskthese-interface)
-- [URI (type alias)](#uri-type-alias)
-- [URI](#uri)
-- [bifunctorTaskThese](#bifunctortaskthese)
-- [bimap](#bimap)
-- [both](#both)
-- [fold](#fold)
-- [fromIOEither](#fromioeither)
-- [functorTaskThese](#functortaskthese)
-- [getMonad](#getmonad)
-- [getSemigroup](#getsemigroup)
-- [left](#left)
-- [leftIO](#leftio)
-- [leftTask](#lefttask)
-- [map](#map)
-- [mapLeft](#mapleft)
-- [right](#right)
-- [rightIO](#rightio)
-- [rightTask](#righttask)
-- [swap](#swap)
-- [toTuple](#totuple)
+- [utils](#utils)
+  - [TaskThese (interface)](#taskthese-interface)
+  - [URI](#uri)
+  - [URI (type alias)](#uri-type-alias)
+  - [bifunctorTaskThese](#bifunctortaskthese)
+  - [bimap](#bimap)
+  - [both](#both)
+  - [fold](#fold)
+  - [fromIOEither](#fromioeither)
+  - [functorTaskThese](#functortaskthese)
+  - [getMonad](#getmonad)
+  - [getSemigroup](#getsemigroup)
+  - [left](#left)
+  - [leftIO](#leftio)
+  - [leftTask](#lefttask)
+  - [map](#map)
+  - [mapLeft](#mapleft)
+  - [right](#right)
+  - [rightIO](#rightio)
+  - [rightTask](#righttask)
+  - [swap](#swap)
+  - [toTuple](#totuple)
 
 ---
 
-# TaskThese (interface)
+# utils
+
+## TaskThese (interface)
 
 **Signature**
 
@@ -46,17 +49,7 @@ export interface TaskThese<E, A> extends Task<These<E, A>> {}
 
 Added in v2.4.0
 
-# URI (type alias)
-
-**Signature**
-
-```ts
-export type URI = typeof URI
-```
-
-Added in v2.4.0
-
-# URI
+## URI
 
 **Signature**
 
@@ -66,7 +59,17 @@ export declare const URI: 'TaskThese'
 
 Added in v2.4.0
 
-# bifunctorTaskThese
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
+```
+
+Added in v2.4.0
+
+## bifunctorTaskThese
 
 **Signature**
 
@@ -76,7 +79,7 @@ export declare const bifunctorTaskThese: Bifunctor2<'TaskThese'>
 
 Added in v3.0.0
 
-# bimap
+## bimap
 
 **Signature**
 
@@ -86,7 +89,7 @@ export declare const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa:
 
 Added in v2.4.0
 
-# both
+## both
 
 **Signature**
 
@@ -96,7 +99,7 @@ export declare const both: <E, A>(e: E, a: A) => TaskThese<E, A>
 
 Added in v2.4.0
 
-# fold
+## fold
 
 **Signature**
 
@@ -110,7 +113,7 @@ export declare const fold: <E, B, A>(
 
 Added in v2.4.0
 
-# fromIOEither
+## fromIOEither
 
 **Signature**
 
@@ -120,7 +123,7 @@ export declare const fromIOEither: <E, A>(fa: IOEither<E, A>) => TaskThese<E, A>
 
 Added in v2.4.0
 
-# functorTaskThese
+## functorTaskThese
 
 **Signature**
 
@@ -130,7 +133,7 @@ export declare const functorTaskThese: Functor2<'TaskThese'>
 
 Added in v3.0.0
 
-# getMonad
+## getMonad
 
 **Signature**
 
@@ -140,7 +143,7 @@ export declare function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E>
 
 Added in v3.0.0
 
-# getSemigroup
+## getSemigroup
 
 **Signature**
 
@@ -150,7 +153,7 @@ export declare function getSemigroup<E, A>(SE: Semigroup<E>, SA: Semigroup<A>): 
 
 Added in v2.4.0
 
-# left
+## left
 
 **Signature**
 
@@ -160,7 +163,7 @@ export declare const left: <E = never, A = never>(e: E) => TaskThese<E, A>
 
 Added in v2.4.0
 
-# leftIO
+## leftIO
 
 **Signature**
 
@@ -170,7 +173,7 @@ export declare const leftIO: <E = never, A = never>(me: IO<E>) => TaskThese<E, A
 
 Added in v2.4.0
 
-# leftTask
+## leftTask
 
 **Signature**
 
@@ -180,7 +183,7 @@ export declare const leftTask: <E = never, A = never>(me: T.Task<E>) => TaskThes
 
 Added in v2.4.0
 
-# map
+## map
 
 **Signature**
 
@@ -190,7 +193,7 @@ export declare const map: <A, B>(f: (a: A) => B) => <E>(fa: TaskThese<E, A>) => 
 
 Added in v2.4.0
 
-# mapLeft
+## mapLeft
 
 **Signature**
 
@@ -200,7 +203,7 @@ export declare const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TaskThese<E, A>)
 
 Added in v2.4.0
 
-# right
+## right
 
 **Signature**
 
@@ -210,7 +213,7 @@ export declare const right: <E = never, A = never>(a: A) => TaskThese<E, A>
 
 Added in v2.4.0
 
-# rightIO
+## rightIO
 
 **Signature**
 
@@ -220,7 +223,7 @@ export declare const rightIO: <E = never, A = never>(ma: IO<A>) => TaskThese<E, 
 
 Added in v2.4.0
 
-# rightTask
+## rightTask
 
 **Signature**
 
@@ -230,7 +233,7 @@ export declare const rightTask: <E = never, A = never>(ma: T.Task<A>) => TaskThe
 
 Added in v2.4.0
 
-# swap
+## swap
 
 **Signature**
 
@@ -240,7 +243,7 @@ export declare const swap: <E, A>(fa: TaskThese<E, A>) => TaskThese<A, E>
 
 Added in v2.4.0
 
-# toTuple
+## toTuple
 
 **Signature**
 

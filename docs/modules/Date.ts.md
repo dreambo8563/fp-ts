@@ -4,7 +4,7 @@ nav_order: 20
 parent: Modules
 ---
 
-# Date overview
+## Date overview
 
 Added in v2.0.0
 
@@ -12,17 +12,20 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [create](#create)
-- [eqDate](#eqdate)
-- [eqGetDate](#eqgetdate)
-- [eqGetFullYear](#eqgetfullyear)
-- [eqGetMonth](#eqgetmonth)
-- [now](#now)
-- [ordDate](#orddate)
+- [utils](#utils)
+  - [create](#create)
+  - [eqDate](#eqdate)
+  - [eqGetDate](#eqgetdate)
+  - [eqGetFullYear](#eqgetfullyear)
+  - [eqGetMonth](#eqgetmonth)
+  - [now](#now)
+  - [ordDate](#orddate)
 
 ---
 
-# create
+# utils
+
+## create
 
 Returns the current `Date`
 
@@ -34,7 +37,7 @@ export declare const create: IO<Date>
 
 Added in v2.0.0
 
-# eqDate
+## eqDate
 
 **Signature**
 
@@ -44,7 +47,7 @@ export declare const eqDate: Eq<Date>
 
 Added in v3.0.0
 
-# eqGetDate
+## eqGetDate
 
 **Signature**
 
@@ -54,7 +57,7 @@ export declare const eqGetDate: Eq<Date>
 
 Added in v3.0.0
 
-# eqGetFullYear
+## eqGetFullYear
 
 **Signature**
 
@@ -64,7 +67,7 @@ export declare const eqGetFullYear: Eq<Date>
 
 Added in v3.0.0
 
-# eqGetMonth
+## eqGetMonth
 
 **Signature**
 
@@ -74,7 +77,7 @@ export declare const eqGetMonth: Eq<Date>
 
 Added in v3.0.0
 
-# now
+## now
 
 Returns the number of milliseconds elapsed since January 1, 1970, 00:00:00 UTC
 
@@ -86,7 +89,7 @@ export declare const now: IO<number>
 
 Added in v2.0.0
 
-# ordDate
+## ordDate
 
 **Signature**
 

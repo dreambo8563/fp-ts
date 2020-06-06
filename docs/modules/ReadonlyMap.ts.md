@@ -4,7 +4,7 @@ nav_order: 61
 parent: Modules
 ---
 
-# ReadonlyMap overview
+## ReadonlyMap overview
 
 Added in v2.5.0
 
@@ -12,62 +12,55 @@ Added in v2.5.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [URI (type alias)](#uri-type-alias)
-- [URI](#uri)
-- [collect](#collect)
-- [compact](#compact)
-- [compactableReadonlyMap](#compactablereadonlymap)
-- [deleteAt](#deleteat)
-- [elem](#elem)
-- [empty](#empty)
-- [filter](#filter)
-- [filterMap](#filtermap)
-- [filterableReadonlyMap](#filterablereadonlymap)
-- [fromFoldable](#fromfoldable)
-- [fromMap](#frommap)
-- [functorReadonlyMap](#functorreadonlymap)
-- [getEq](#geteq)
-- [getFilterableWithIndex](#getfilterablewithindex)
-- [getFoldableWithIndex](#getfoldablewithindex)
-- [getFunctorWithIndex](#getfunctorwithindex)
-- [getMonoid](#getmonoid)
-- [getShow](#getshow)
-- [getWitherable](#getwitherable)
-- [insertAt](#insertat)
-- [isEmpty](#isempty)
-- [isSubmap](#issubmap)
-- [keys](#keys)
-- [lookup](#lookup)
-- [lookupWithKey](#lookupwithkey)
-- [map](#map)
-- [mapWithIndex](#mapwithindex)
-- [member](#member)
-- [modifyAt](#modifyat)
-- [partition](#partition)
-- [partitionMap](#partitionmap)
-- [pop](#pop)
-- [separate](#separate)
-- [singleton](#singleton)
-- [size](#size)
-- [toMap](#tomap)
-- [toReadonlyArray](#toreadonlyarray)
-- [toUnfoldable](#tounfoldable)
-- [updateAt](#updateat)
-- [values](#values)
+- [utils](#utils)
+  - [URI](#uri)
+  - [URI (type alias)](#uri-type-alias)
+  - [collect](#collect)
+  - [compact](#compact)
+  - [compactableReadonlyMap](#compactablereadonlymap)
+  - [deleteAt](#deleteat)
+  - [elem](#elem)
+  - [empty](#empty)
+  - [filter](#filter)
+  - [filterMap](#filtermap)
+  - [filterableReadonlyMap](#filterablereadonlymap)
+  - [fromFoldable](#fromfoldable)
+  - [fromMap](#frommap)
+  - [functorReadonlyMap](#functorreadonlymap)
+  - [getEq](#geteq)
+  - [getFilterableWithIndex](#getfilterablewithindex)
+  - [getFoldableWithIndex](#getfoldablewithindex)
+  - [getFunctorWithIndex](#getfunctorwithindex)
+  - [getMonoid](#getmonoid)
+  - [getShow](#getshow)
+  - [getWitherable](#getwitherable)
+  - [insertAt](#insertat)
+  - [isEmpty](#isempty)
+  - [isSubmap](#issubmap)
+  - [keys](#keys)
+  - [lookup](#lookup)
+  - [lookupWithKey](#lookupwithkey)
+  - [map](#map)
+  - [mapWithIndex](#mapwithindex)
+  - [member](#member)
+  - [modifyAt](#modifyat)
+  - [partition](#partition)
+  - [partitionMap](#partitionmap)
+  - [pop](#pop)
+  - [separate](#separate)
+  - [singleton](#singleton)
+  - [size](#size)
+  - [toMap](#tomap)
+  - [toReadonlyArray](#toreadonlyarray)
+  - [toUnfoldable](#tounfoldable)
+  - [updateAt](#updateat)
+  - [values](#values)
 
 ---
 
-# URI (type alias)
+# utils
 
-**Signature**
-
-```ts
-export type URI = typeof URI
-```
-
-Added in v2.5.0
-
-# URI
+## URI
 
 **Signature**
 
@@ -77,7 +70,17 @@ export declare const URI: 'ReadonlyMap'
 
 Added in v2.5.0
 
-# collect
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
+```
+
+Added in v2.5.0
+
+## collect
 
 **Signature**
 
@@ -89,7 +92,7 @@ export declare function collect<K>(
 
 Added in v2.5.0
 
-# compact
+## compact
 
 **Signature**
 
@@ -99,7 +102,7 @@ export declare const compact: <E, A>(fa: ReadonlyMap<E, O.Option<A>>) => Readonl
 
 Added in v2.5.0
 
-# compactableReadonlyMap
+## compactableReadonlyMap
 
 **Signature**
 
@@ -109,7 +112,7 @@ export declare const compactableReadonlyMap: Compactable2<'ReadonlyMap'>
 
 Added in v3.0.0
 
-# deleteAt
+## deleteAt
 
 Delete a key and value from a map
 
@@ -121,7 +124,7 @@ export declare function deleteAt<K>(E: Eq<K>): (k: K) => <A>(m: ReadonlyMap<K, A
 
 Added in v2.5.0
 
-# elem
+## elem
 
 Test whether or not a value is a member of a map
 
@@ -133,7 +136,7 @@ export declare function elem<A>(E: Eq<A>): <K>(a: A, m: ReadonlyMap<K, A>) => bo
 
 Added in v2.5.0
 
-# empty
+## empty
 
 **Signature**
 
@@ -143,7 +146,7 @@ export declare const empty: ReadonlyMap<never, never>
 
 Added in v2.5.0
 
-# filter
+## filter
 
 **Signature**
 
@@ -153,7 +156,7 @@ export declare const filter: Filter2<'ReadonlyMap'>
 
 Added in v2.5.0
 
-# filterMap
+## filterMap
 
 **Signature**
 
@@ -163,7 +166,7 @@ export declare const filterMap: <A, B>(f: (a: A) => O.Option<B>) => <E>(fa: Read
 
 Added in v2.5.0
 
-# filterableReadonlyMap
+## filterableReadonlyMap
 
 **Signature**
 
@@ -173,7 +176,7 @@ export declare const filterableReadonlyMap: Filterable2<'ReadonlyMap'>
 
 Added in v2.5.0
 
-# fromFoldable
+## fromFoldable
 
 Create a map from a foldable collection of key/value pairs, using the
 specified `Magma` to combine values for duplicate keys.
@@ -205,7 +208,7 @@ export declare function fromFoldable<F, K, A>(
 
 Added in v2.5.0
 
-# fromMap
+## fromMap
 
 **Signature**
 
@@ -215,7 +218,7 @@ export declare function fromMap<K, A>(m: Map<K, A>): ReadonlyMap<K, A>
 
 Added in v2.5.0
 
-# functorReadonlyMap
+## functorReadonlyMap
 
 **Signature**
 
@@ -225,7 +228,7 @@ export declare const functorReadonlyMap: Functor2<'ReadonlyMap'>
 
 Added in v3.0.0
 
-# getEq
+## getEq
 
 **Signature**
 
@@ -235,7 +238,7 @@ export declare function getEq<K, A>(SK: Eq<K>, SA: Eq<A>): Eq<ReadonlyMap<K, A>>
 
 Added in v2.5.0
 
-# getFilterableWithIndex
+## getFilterableWithIndex
 
 **Signature**
 
@@ -245,7 +248,7 @@ export declare function getFilterableWithIndex<K = never>(): FilterableWithIndex
 
 Added in v2.5.0
 
-# getFoldableWithIndex
+## getFoldableWithIndex
 
 **Signature**
 
@@ -255,7 +258,7 @@ export declare function getFoldableWithIndex<K>(O: Ord<K>): FoldableWithIndex2C<
 
 Added in v3.0.0
 
-# getFunctorWithIndex
+## getFunctorWithIndex
 
 **Signature**
 
@@ -265,7 +268,7 @@ export declare function getFunctorWithIndex<K = never>(): FunctorWithIndex2C<URI
 
 Added in v3.0.0
 
-# getMonoid
+## getMonoid
 
 Gets `Monoid` instance for Maps given `Semigroup` instance for their values
 
@@ -277,7 +280,7 @@ export declare function getMonoid<K, A>(SK: Eq<K>, SA: Semigroup<A>): Monoid<Rea
 
 Added in v2.5.0
 
-# getShow
+## getShow
 
 **Signature**
 
@@ -287,7 +290,7 @@ export declare function getShow<K, A>(SK: Show<K>, SA: Show<A>): Show<ReadonlyMa
 
 Added in v2.5.0
 
-# getWitherable
+## getWitherable
 
 **Signature**
 
@@ -297,7 +300,7 @@ export declare function getWitherable<K>(O: Ord<K>): Witherable2C<URI, K> & Trav
 
 Added in v2.5.0
 
-# insertAt
+## insertAt
 
 Insert or replace a key/value pair in a map
 
@@ -309,7 +312,7 @@ export declare function insertAt<K>(E: Eq<K>): <A>(k: K, a: A) => (m: ReadonlyMa
 
 Added in v2.5.0
 
-# isEmpty
+## isEmpty
 
 Test whether or not a map is empty
 
@@ -321,7 +324,7 @@ export declare function isEmpty<K, A>(d: ReadonlyMap<K, A>): boolean
 
 Added in v2.5.0
 
-# isSubmap
+## isSubmap
 
 Test whether or not one Map contains all of the keys and values contained in another Map
 
@@ -333,7 +336,7 @@ export declare function isSubmap<K, A>(SK: Eq<K>, SA: Eq<A>): (d1: ReadonlyMap<K
 
 Added in v2.5.0
 
-# keys
+## keys
 
 Get a sorted array of the keys contained in a map
 
@@ -345,7 +348,7 @@ export declare function keys<K>(O: Ord<K>): <A>(m: ReadonlyMap<K, A>) => Readonl
 
 Added in v2.5.0
 
-# lookup
+## lookup
 
 Lookup the value for a key in a `Map`.
 
@@ -357,7 +360,7 @@ export declare function lookup<K>(E: Eq<K>): <A>(k: K, m: ReadonlyMap<K, A>) => 
 
 Added in v2.5.0
 
-# lookupWithKey
+## lookupWithKey
 
 Lookup the value for a key in a `Map`.
 If the result is a `Some`, the existing key is also returned.
@@ -370,7 +373,7 @@ export declare function lookupWithKey<K>(E: Eq<K>): <A>(k: K, m: ReadonlyMap<K, 
 
 Added in v2.5.0
 
-# map
+## map
 
 **Signature**
 
@@ -380,7 +383,7 @@ export declare const map: <A, B>(f: (a: A) => B) => <E>(fa: ReadonlyMap<E, A>) =
 
 Added in v2.5.0
 
-# mapWithIndex
+## mapWithIndex
 
 **Signature**
 
@@ -390,7 +393,7 @@ export declare const mapWithIndex: <K, A, B>(f: (k: K, a: A) => B) => (fa: Reado
 
 Added in v3.0.0
 
-# member
+## member
 
 Test whether or not a key exists in a map
 
@@ -402,7 +405,7 @@ export declare function member<K>(E: Eq<K>): <A>(k: K, m: ReadonlyMap<K, A>) => 
 
 Added in v2.5.0
 
-# modifyAt
+## modifyAt
 
 **Signature**
 
@@ -414,7 +417,7 @@ export declare function modifyAt<K>(
 
 Added in v2.5.0
 
-# partition
+## partition
 
 **Signature**
 
@@ -424,7 +427,7 @@ export declare const partition: Partition2<'ReadonlyMap'>
 
 Added in v2.5.0
 
-# partitionMap
+## partitionMap
 
 **Signature**
 
@@ -436,7 +439,7 @@ export declare const partitionMap: <A, B, C>(
 
 Added in v2.5.0
 
-# pop
+## pop
 
 Delete a key and value from a map, returning the value as well as the subsequent map
 
@@ -450,7 +453,7 @@ export declare function pop<K>(
 
 Added in v2.5.0
 
-# separate
+## separate
 
 **Signature**
 
@@ -462,7 +465,7 @@ export declare const separate: <E, A, B>(
 
 Added in v2.5.0
 
-# singleton
+## singleton
 
 Create a map with one key/value pair
 
@@ -474,7 +477,7 @@ export declare function singleton<K, A>(k: K, a: A): ReadonlyMap<K, A>
 
 Added in v2.5.0
 
-# size
+## size
 
 Calculate the number of key/value pairs in a map
 
@@ -486,7 +489,7 @@ export declare function size<K, A>(d: ReadonlyMap<K, A>): number
 
 Added in v2.5.0
 
-# toMap
+## toMap
 
 **Signature**
 
@@ -496,7 +499,7 @@ export declare function toMap<K, A>(m: ReadonlyMap<K, A>): Map<K, A>
 
 Added in v2.5.0
 
-# toReadonlyArray
+## toReadonlyArray
 
 Get a sorted of the key/value pairs contained in a map
 
@@ -508,7 +511,7 @@ export declare function toReadonlyArray<K>(O: Ord<K>): <A>(m: ReadonlyMap<K, A>)
 
 Added in v2.5.0
 
-# toUnfoldable
+## toUnfoldable
 
 Unfolds a map into a list of key/value pairs
 
@@ -527,7 +530,7 @@ export declare function toUnfoldable<K, F>(
 
 Added in v2.5.0
 
-# updateAt
+## updateAt
 
 **Signature**
 
@@ -537,7 +540,7 @@ export declare function updateAt<K>(E: Eq<K>): <A>(k: K, a: A) => (m: ReadonlyMa
 
 Added in v2.5.0
 
-# values
+## values
 
 Get a sorted array of the values contained in a map
 

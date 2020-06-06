@@ -4,7 +4,7 @@ nav_order: 26
 parent: Modules
 ---
 
-# Filterable overview
+## Filterable overview
 
 `Filterable` represents data structures which can be _partitioned_/_filtered_.
 
@@ -16,35 +16,38 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Filter (interface)](#filter-interface)
-- [Filter1 (interface)](#filter1-interface)
-- [Filter2 (interface)](#filter2-interface)
-- [Filter2C (interface)](#filter2c-interface)
-- [Filter3 (interface)](#filter3-interface)
-- [Filter3C (interface)](#filter3c-interface)
-- [Filter4 (interface)](#filter4-interface)
-- [Filterable (interface)](#filterable-interface)
-- [Filterable1 (interface)](#filterable1-interface)
-- [Filterable2 (interface)](#filterable2-interface)
-- [Filterable2C (interface)](#filterable2c-interface)
-- [Filterable3 (interface)](#filterable3-interface)
-- [Filterable3C (interface)](#filterable3c-interface)
-- [Filterable4 (interface)](#filterable4-interface)
-- [Partition (interface)](#partition-interface)
-- [Partition1 (interface)](#partition1-interface)
-- [Partition2 (interface)](#partition2-interface)
-- [Partition2C (interface)](#partition2c-interface)
-- [Partition3 (interface)](#partition3-interface)
-- [Partition3C (interface)](#partition3c-interface)
-- [Partition4 (interface)](#partition4-interface)
-- [filterComposition](#filtercomposition)
-- [filterMapComposition](#filtermapcomposition)
-- [partitionComposition](#partitioncomposition)
-- [partitionMapComposition](#partitionmapcomposition)
+- [utils](#utils)
+  - [Filter (interface)](#filter-interface)
+  - [Filter1 (interface)](#filter1-interface)
+  - [Filter2 (interface)](#filter2-interface)
+  - [Filter2C (interface)](#filter2c-interface)
+  - [Filter3 (interface)](#filter3-interface)
+  - [Filter3C (interface)](#filter3c-interface)
+  - [Filter4 (interface)](#filter4-interface)
+  - [Filterable (interface)](#filterable-interface)
+  - [Filterable1 (interface)](#filterable1-interface)
+  - [Filterable2 (interface)](#filterable2-interface)
+  - [Filterable2C (interface)](#filterable2c-interface)
+  - [Filterable3 (interface)](#filterable3-interface)
+  - [Filterable3C (interface)](#filterable3c-interface)
+  - [Filterable4 (interface)](#filterable4-interface)
+  - [Partition (interface)](#partition-interface)
+  - [Partition1 (interface)](#partition1-interface)
+  - [Partition2 (interface)](#partition2-interface)
+  - [Partition2C (interface)](#partition2c-interface)
+  - [Partition3 (interface)](#partition3-interface)
+  - [Partition3C (interface)](#partition3c-interface)
+  - [Partition4 (interface)](#partition4-interface)
+  - [filterComposition](#filtercomposition)
+  - [filterMapComposition](#filtermapcomposition)
+  - [partitionComposition](#partitioncomposition)
+  - [partitionMapComposition](#partitionmapcomposition)
 
 ---
 
-# Filter (interface)
+# utils
+
+## Filter (interface)
 
 **Signature**
 
@@ -57,7 +60,7 @@ export interface Filter<F> {
 
 Added in v3.0.0
 
-# Filter1 (interface)
+## Filter1 (interface)
 
 **Signature**
 
@@ -70,7 +73,7 @@ export interface Filter1<F extends URIS> {
 
 Added in v3.0.0
 
-# Filter2 (interface)
+## Filter2 (interface)
 
 **Signature**
 
@@ -83,7 +86,7 @@ export interface Filter2<F extends URIS2> {
 
 Added in v3.0.0
 
-# Filter2C (interface)
+## Filter2C (interface)
 
 **Signature**
 
@@ -96,7 +99,7 @@ export interface Filter2C<F extends URIS2, E> {
 
 Added in v3.0.0
 
-# Filter3 (interface)
+## Filter3 (interface)
 
 **Signature**
 
@@ -109,7 +112,7 @@ export interface Filter3<F extends URIS3> {
 
 Added in v3.0.0
 
-# Filter3C (interface)
+## Filter3C (interface)
 
 **Signature**
 
@@ -122,7 +125,7 @@ export interface Filter3C<F extends URIS3, E> {
 
 Added in v3.0.0
 
-# Filter4 (interface)
+## Filter4 (interface)
 
 **Signature**
 
@@ -135,7 +138,7 @@ export interface Filter4<F extends URIS4> {
 
 Added in v3.0.0
 
-# Filterable (interface)
+## Filterable (interface)
 
 **Signature**
 
@@ -162,7 +165,7 @@ export interface Filterable<F> extends Functor<F>, Compactable<F> {
 
 Added in v3.0.0
 
-# Filterable1 (interface)
+## Filterable1 (interface)
 
 **Signature**
 
@@ -177,7 +180,7 @@ export interface Filterable1<F extends URIS> extends Functor1<F>, Compactable1<F
 
 Added in v3.0.0
 
-# Filterable2 (interface)
+## Filterable2 (interface)
 
 **Signature**
 
@@ -194,7 +197,7 @@ export interface Filterable2<F extends URIS2> extends Functor2<F>, Compactable2<
 
 Added in v3.0.0
 
-# Filterable2C (interface)
+## Filterable2C (interface)
 
 **Signature**
 
@@ -211,7 +214,7 @@ export interface Filterable2C<F extends URIS2, E> extends Functor2C<F, E>, Compa
 
 Added in v3.0.0
 
-# Filterable3 (interface)
+## Filterable3 (interface)
 
 **Signature**
 
@@ -228,7 +231,7 @@ export interface Filterable3<F extends URIS3> extends Functor3<F>, Compactable3<
 
 Added in v3.0.0
 
-# Filterable3C (interface)
+## Filterable3C (interface)
 
 **Signature**
 
@@ -245,7 +248,7 @@ export interface Filterable3C<F extends URIS3, E> extends Functor3C<F, E>, Compa
 
 Added in v3.0.0
 
-# Filterable4 (interface)
+## Filterable4 (interface)
 
 **Signature**
 
@@ -262,7 +265,7 @@ export interface Filterable4<F extends URIS4> extends Functor4<F>, Compactable4<
 
 Added in v3.0.0
 
-# Partition (interface)
+## Partition (interface)
 
 **Signature**
 
@@ -275,7 +278,7 @@ export interface Partition<F> {
 
 Added in v3.0.0
 
-# Partition1 (interface)
+## Partition1 (interface)
 
 **Signature**
 
@@ -288,7 +291,7 @@ export interface Partition1<F extends URIS> {
 
 Added in v3.0.0
 
-# Partition2 (interface)
+## Partition2 (interface)
 
 **Signature**
 
@@ -301,7 +304,7 @@ export interface Partition2<F extends URIS2> {
 
 Added in v3.0.0
 
-# Partition2C (interface)
+## Partition2C (interface)
 
 **Signature**
 
@@ -314,7 +317,7 @@ export interface Partition2C<F extends URIS2, E> {
 
 Added in v3.0.0
 
-# Partition3 (interface)
+## Partition3 (interface)
 
 **Signature**
 
@@ -329,7 +332,7 @@ export interface Partition3<F extends URIS3> {
 
 Added in v3.0.0
 
-# Partition3C (interface)
+## Partition3C (interface)
 
 **Signature**
 
@@ -344,7 +347,7 @@ export interface Partition3C<F extends URIS3, E> {
 
 Added in v3.0.0
 
-# Partition4 (interface)
+## Partition4 (interface)
 
 **Signature**
 
@@ -361,7 +364,7 @@ export interface Partition4<F extends URIS4> {
 
 Added in v3.0.0
 
-# filterComposition
+## filterComposition
 
 **Signature**
 
@@ -382,7 +385,7 @@ export declare function filterComposition<F, G>(
 
 Added in v3.0.0
 
-# filterMapComposition
+## filterMapComposition
 
 **Signature**
 
@@ -403,7 +406,7 @@ export declare function filterMapComposition<F, G>(
 
 Added in v3.0.0
 
-# partitionComposition
+## partitionComposition
 
 **Signature**
 
@@ -426,7 +429,7 @@ export declare function partitionComposition<F, G>(
 
 Added in v3.0.0
 
-# partitionMapComposition
+## partitionMapComposition
 
 **Signature**
 

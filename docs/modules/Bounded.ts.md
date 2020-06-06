@@ -4,7 +4,7 @@ nav_order: 8
 parent: Modules
 ---
 
-# Bounded overview
+## Bounded overview
 
 The `Bounded` type class represents totally ordered types that have an upper and lower boundary.
 
@@ -18,12 +18,15 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Bounded (interface)](#bounded-interface)
-- [boundedNumber](#boundednumber)
+- [utils](#utils)
+  - [Bounded (interface)](#bounded-interface)
+  - [boundedNumber](#boundednumber)
 
 ---
 
-# Bounded (interface)
+# utils
+
+## Bounded (interface)
 
 **Signature**
 
@@ -36,7 +39,7 @@ export interface Bounded<A> extends Ord<A> {
 
 Added in v2.0.0
 
-# boundedNumber
+## boundedNumber
 
 **Signature**
 

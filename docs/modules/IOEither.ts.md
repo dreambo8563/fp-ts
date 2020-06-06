@@ -4,7 +4,7 @@ nav_order: 40
 parent: Modules
 ---
 
-# IOEither overview
+## IOEither overview
 
 `IOEither<E, A>` represents a synchronous computation that either yields a value of type `A` or fails yielding an
 error of type `E`. If you want to represent a synchronous computation that never fails, please see `IO`.
@@ -15,57 +15,60 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [IOEither (interface)](#ioeither-interface)
-- [URI (type alias)](#uri-type-alias)
-- [URI](#uri)
-- [alt](#alt)
-- [altIOEither](#altioeither)
-- [ap](#ap)
-- [apFirst](#apfirst)
-- [apSecond](#apsecond)
-- [applicativeIOEither](#applicativeioeither)
-- [applyIOEither](#applyioeither)
-- [bifunctorIOEither](#bifunctorioeither)
-- [bimap](#bimap)
-- [bracket](#bracket)
-- [chain](#chain)
-- [chainEitherK](#chaineitherk)
-- [chainEitherKW](#chaineitherkw)
-- [chainFirst](#chainfirst)
-- [chainW](#chainw)
-- [filterOrElse](#filterorelse)
-- [flatten](#flatten)
-- [fold](#fold)
-- [fromEither](#fromeither)
-- [fromEitherK](#fromeitherk)
-- [fromOption](#fromoption)
-- [fromPredicate](#frompredicate)
-- [functorIOEither](#functorioeither)
-- [getApplyMonoid](#getapplymonoid)
-- [getApplySemigroup](#getapplysemigroup)
-- [getFilterable](#getfilterable)
-- [getIOValidationAlt](#getiovalidationalt)
-- [getIOValidationApplicative](#getiovalidationapplicative)
-- [getOrElse](#getorelse)
-- [getOrElseW](#getorelsew)
-- [getSemigroup](#getsemigroup)
-- [left](#left)
-- [leftIO](#leftio)
-- [map](#map)
-- [mapLeft](#mapleft)
-- [monadIOEither](#monadioeither)
-- [monadIOIOEither](#monadioioeither)
-- [monadThrowIOEither](#monadthrowioeither)
-- [of](#of)
-- [orElse](#orelse)
-- [right](#right)
-- [rightIO](#rightio)
-- [swap](#swap)
-- [tryCatch](#trycatch)
+- [utils](#utils)
+  - [IOEither (interface)](#ioeither-interface)
+  - [URI](#uri)
+  - [URI (type alias)](#uri-type-alias)
+  - [alt](#alt)
+  - [altIOEither](#altioeither)
+  - [ap](#ap)
+  - [apFirst](#apfirst)
+  - [apSecond](#apsecond)
+  - [applicativeIOEither](#applicativeioeither)
+  - [applyIOEither](#applyioeither)
+  - [bifunctorIOEither](#bifunctorioeither)
+  - [bimap](#bimap)
+  - [bracket](#bracket)
+  - [chain](#chain)
+  - [chainEitherK](#chaineitherk)
+  - [chainEitherKW](#chaineitherkw)
+  - [chainFirst](#chainfirst)
+  - [chainW](#chainw)
+  - [filterOrElse](#filterorelse)
+  - [flatten](#flatten)
+  - [fold](#fold)
+  - [fromEither](#fromeither)
+  - [fromEitherK](#fromeitherk)
+  - [fromOption](#fromoption)
+  - [fromPredicate](#frompredicate)
+  - [functorIOEither](#functorioeither)
+  - [getApplyMonoid](#getapplymonoid)
+  - [getApplySemigroup](#getapplysemigroup)
+  - [getFilterable](#getfilterable)
+  - [getIOValidationAlt](#getiovalidationalt)
+  - [getIOValidationApplicative](#getiovalidationapplicative)
+  - [getOrElse](#getorelse)
+  - [getOrElseW](#getorelsew)
+  - [getSemigroup](#getsemigroup)
+  - [left](#left)
+  - [leftIO](#leftio)
+  - [map](#map)
+  - [mapLeft](#mapleft)
+  - [monadIOEither](#monadioeither)
+  - [monadIOIOEither](#monadioioeither)
+  - [monadThrowIOEither](#monadthrowioeither)
+  - [of](#of)
+  - [orElse](#orelse)
+  - [right](#right)
+  - [rightIO](#rightio)
+  - [swap](#swap)
+  - [tryCatch](#trycatch)
 
 ---
 
-# IOEither (interface)
+# utils
+
+## IOEither (interface)
 
 **Signature**
 
@@ -75,17 +78,7 @@ export interface IOEither<E, A> extends IO<Either<E, A>> {}
 
 Added in v2.0.0
 
-# URI (type alias)
-
-**Signature**
-
-```ts
-export type URI = typeof URI
-```
-
-Added in v2.0.0
-
-# URI
+## URI
 
 **Signature**
 
@@ -95,7 +88,17 @@ export declare const URI: 'IOEither'
 
 Added in v2.0.0
 
-# alt
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
+```
+
+Added in v2.0.0
+
+## alt
 
 **Signature**
 
@@ -105,7 +108,7 @@ export declare const alt: <E, A>(that: () => IOEither<E, A>) => (fa: IOEither<E,
 
 Added in v2.0.0
 
-# altIOEither
+## altIOEither
 
 **Signature**
 
@@ -115,7 +118,7 @@ export declare const altIOEither: Alt2<'IOEither'>
 
 Added in v3.0.0
 
-# ap
+## ap
 
 **Signature**
 
@@ -125,7 +128,7 @@ export declare const ap: <E, A>(fa: IOEither<E, A>) => <B>(fab: IOEither<E, (a: 
 
 Added in v2.0.0
 
-# apFirst
+## apFirst
 
 **Signature**
 
@@ -135,7 +138,7 @@ export declare const apFirst: <E, B>(fb: IOEither<E, B>) => <A>(fa: IOEither<E, 
 
 Added in v2.0.0
 
-# apSecond
+## apSecond
 
 **Signature**
 
@@ -145,7 +148,7 @@ export declare const apSecond: <E, B>(fb: IOEither<E, B>) => <A>(fa: IOEither<E,
 
 Added in v2.0.0
 
-# applicativeIOEither
+## applicativeIOEither
 
 **Signature**
 
@@ -155,7 +158,7 @@ export declare const applicativeIOEither: Applicative2<'IOEither'>
 
 Added in v3.0.0
 
-# applyIOEither
+## applyIOEither
 
 **Signature**
 
@@ -165,7 +168,7 @@ export declare const applyIOEither: Apply2<'IOEither'>
 
 Added in v3.0.0
 
-# bifunctorIOEither
+## bifunctorIOEither
 
 **Signature**
 
@@ -175,7 +178,7 @@ export declare const bifunctorIOEither: Bifunctor2<'IOEither'>
 
 Added in v3.0.0
 
-# bimap
+## bimap
 
 **Signature**
 
@@ -185,7 +188,7 @@ export declare const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa:
 
 Added in v2.0.0
 
-# bracket
+## bracket
 
 Make sure that a resource is cleaned up in the event of an exception (_). The release action is called regardless of
 whether the body action throws (_) or returns.
@@ -204,7 +207,7 @@ export declare function bracket<E, A, B>(
 
 Added in v2.0.0
 
-# chain
+## chain
 
 **Signature**
 
@@ -214,7 +217,7 @@ export declare const chain: <E, A, B>(f: (a: A) => IOEither<E, B>) => (ma: IOEit
 
 Added in v2.0.0
 
-# chainEitherK
+## chainEitherK
 
 **Signature**
 
@@ -224,7 +227,7 @@ export declare function chainEitherK<E, A, B>(f: (a: A) => Either<E, B>): (ma: I
 
 Added in v2.4.0
 
-# chainEitherKW
+## chainEitherKW
 
 **Signature**
 
@@ -236,7 +239,7 @@ export declare const chainEitherKW: <D, A, B>(
 
 Added in v2.6.1
 
-# chainFirst
+## chainFirst
 
 **Signature**
 
@@ -246,7 +249,7 @@ export declare const chainFirst: <E, A, B>(f: (a: A) => IOEither<E, B>) => (ma: 
 
 Added in v2.0.0
 
-# chainW
+## chainW
 
 **Signature**
 
@@ -256,7 +259,7 @@ export declare const chainW: <D, A, B>(f: (a: A) => IOEither<D, B>) => <E>(ma: I
 
 Added in v2.6.0
 
-# filterOrElse
+## filterOrElse
 
 **Signature**
 
@@ -269,7 +272,7 @@ export declare const filterOrElse: {
 
 Added in v2.0.0
 
-# flatten
+## flatten
 
 **Signature**
 
@@ -279,7 +282,7 @@ export declare const flatten: <E, A>(mma: IOEither<E, IOEither<E, A>>) => IOEith
 
 Added in v2.0.0
 
-# fold
+## fold
 
 **Signature**
 
@@ -292,7 +295,7 @@ export declare const fold: <E, A, B>(
 
 Added in v2.0.0
 
-# fromEither
+## fromEither
 
 **Signature**
 
@@ -302,7 +305,7 @@ export declare const fromEither: <E, A>(ma: E.Either<E, A>) => IOEither<E, A>
 
 Added in v2.0.0
 
-# fromEitherK
+## fromEitherK
 
 **Signature**
 
@@ -314,7 +317,7 @@ export declare function fromEitherK<E, A extends ReadonlyArray<unknown>, B>(
 
 Added in v2.4.0
 
-# fromOption
+## fromOption
 
 **Signature**
 
@@ -324,7 +327,7 @@ export declare const fromOption: <E>(onNone: () => E) => <A>(ma: Option<A>) => I
 
 Added in v2.0.0
 
-# fromPredicate
+## fromPredicate
 
 **Signature**
 
@@ -337,7 +340,7 @@ export declare const fromPredicate: {
 
 Added in v2.0.0
 
-# functorIOEither
+## functorIOEither
 
 **Signature**
 
@@ -347,7 +350,7 @@ export declare const functorIOEither: Functor2<'IOEither'>
 
 Added in v3.0.0
 
-# getApplyMonoid
+## getApplyMonoid
 
 **Signature**
 
@@ -357,7 +360,7 @@ export declare function getApplyMonoid<E, A>(M: Monoid<A>): Monoid<IOEither<E, A
 
 Added in v2.0.0
 
-# getApplySemigroup
+## getApplySemigroup
 
 Semigroup returning the left-most `Left` value. If both operands are `Right`s then the inner values
 are appended using the provided `Semigroup`
@@ -370,7 +373,7 @@ export declare function getApplySemigroup<E, A>(S: Semigroup<A>): Semigroup<IOEi
 
 Added in v2.0.0
 
-# getFilterable
+## getFilterable
 
 **Signature**
 
@@ -380,7 +383,7 @@ export declare function getFilterable<E>(M: Monoid<E>): Filterable2C<URI, E>
 
 Added in v2.1.0
 
-# getIOValidationAlt
+## getIOValidationAlt
 
 **Signature**
 
@@ -390,7 +393,7 @@ export declare function getIOValidationAlt<E>(S: Semigroup<E>): Alt2C<URI, E>
 
 Added in v3.0.0
 
-# getIOValidationApplicative
+## getIOValidationApplicative
 
 **Signature**
 
@@ -400,7 +403,7 @@ export declare function getIOValidationApplicative<E>(S: Semigroup<E>): Applicat
 
 Added in v3.0.0
 
-# getOrElse
+## getOrElse
 
 **Signature**
 
@@ -410,7 +413,7 @@ export declare const getOrElse: <E, A>(onLeft: (e: E) => I.IO<A>) => (ma: IOEith
 
 Added in v2.0.0
 
-# getOrElseW
+## getOrElseW
 
 **Signature**
 
@@ -420,7 +423,7 @@ export declare const getOrElseW: <E, B>(onLeft: (e: E) => I.IO<B>) => <A>(ma: IO
 
 Added in v2.6.0
 
-# getSemigroup
+## getSemigroup
 
 Semigroup returning the left-most non-`Left` value. If both operands are `Right`s then the inner values are
 appended using the provided `Semigroup`
@@ -433,7 +436,7 @@ export declare function getSemigroup<E, A>(S: Semigroup<A>): Semigroup<IOEither<
 
 Added in v2.0.0
 
-# left
+## left
 
 **Signature**
 
@@ -443,7 +446,7 @@ export declare const left: <E = never, A = never>(l: E) => IOEither<E, A>
 
 Added in v2.0.0
 
-# leftIO
+## leftIO
 
 **Signature**
 
@@ -453,7 +456,7 @@ export declare const leftIO: <E = never, A = never>(me: I.IO<E>) => IOEither<E, 
 
 Added in v2.0.0
 
-# map
+## map
 
 **Signature**
 
@@ -463,7 +466,7 @@ export declare const map: <A, B>(f: (a: A) => B) => <E>(fa: IOEither<E, A>) => I
 
 Added in v2.0.0
 
-# mapLeft
+## mapLeft
 
 **Signature**
 
@@ -473,7 +476,7 @@ export declare const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: IOEither<E, A>) 
 
 Added in v2.0.0
 
-# monadIOEither
+## monadIOEither
 
 **Signature**
 
@@ -483,7 +486,7 @@ export declare const monadIOEither: Monad2<'IOEither'>
 
 Added in v3.0.0
 
-# monadIOIOEither
+## monadIOIOEither
 
 **Signature**
 
@@ -493,7 +496,7 @@ export declare const monadIOIOEither: MonadIO2<'IOEither'>
 
 Added in v3.0.0
 
-# monadThrowIOEither
+## monadThrowIOEither
 
 **Signature**
 
@@ -503,7 +506,7 @@ export declare const monadThrowIOEither: MonadThrow2<'IOEither'>
 
 Added in v3.0.0
 
-# of
+## of
 
 **Signature**
 
@@ -513,7 +516,7 @@ export declare const of: <E = never, A = never>(a: A) => IOEither<E, A>
 
 Added in v3.0.0
 
-# orElse
+## orElse
 
 **Signature**
 
@@ -523,7 +526,7 @@ export declare const orElse: <E, A, M>(onLeft: (e: E) => IOEither<M, A>) => (ma:
 
 Added in v2.0.0
 
-# right
+## right
 
 **Signature**
 
@@ -533,7 +536,7 @@ export declare const right: <E = never, A = never>(a: A) => IOEither<E, A>
 
 Added in v2.0.0
 
-# rightIO
+## rightIO
 
 **Signature**
 
@@ -543,7 +546,7 @@ export declare const rightIO: <E = never, A = never>(ma: I.IO<A>) => IOEither<E,
 
 Added in v2.0.0
 
-# swap
+## swap
 
 **Signature**
 
@@ -553,7 +556,7 @@ export declare const swap: <E, A>(ma: IOEither<E, A>) => IOEither<A, E>
 
 Added in v2.0.0
 
-# tryCatch
+## tryCatch
 
 Constructs a new `IOEither` from a function that performs a side effect and might throw
 

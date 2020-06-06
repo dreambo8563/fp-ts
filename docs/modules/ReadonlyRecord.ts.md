@@ -4,7 +4,7 @@ nav_order: 63
 parent: Modules
 ---
 
-# ReadonlyRecord overview
+## ReadonlyRecord overview
 
 Added in v2.5.0
 
@@ -12,61 +12,64 @@ Added in v2.5.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [ReadonlyRecord (type alias)](#readonlyrecord-type-alias)
-- [URI (type alias)](#uri-type-alias)
-- [URI](#uri)
-- [collect](#collect)
-- [compact](#compact)
-- [deleteAt](#deleteat)
-- [elem](#elem)
-- [empty](#empty)
-- [every](#every)
-- [filter](#filter)
-- [filterMap](#filtermap)
-- [filterMapWithIndex](#filtermapwithindex)
-- [filterWithIndex](#filterwithindex)
-- [foldMap](#foldmap)
-- [foldMapWithIndex](#foldmapwithindex)
-- [fromFoldable](#fromfoldable)
-- [fromFoldableMap](#fromfoldablemap)
-- [fromRecord](#fromrecord)
-- [getEq](#geteq)
-- [getMonoid](#getmonoid)
-- [getShow](#getshow)
-- [hasOwnProperty (function)](#hasownproperty-function)
-- [insertAt](#insertat)
-- [isEmpty](#isempty)
-- [isSubrecord](#issubrecord)
-- [keys](#keys)
-- [lookup](#lookup)
-- [map](#map)
-- [mapWithIndex](#mapwithindex)
-- [modifyAt](#modifyat)
-- [partition](#partition)
-- [partitionMap](#partitionmap)
-- [partitionMapWithIndex](#partitionmapwithindex)
-- [partitionWithIndex](#partitionwithindex)
-- [pop](#pop)
-- [readonlyRecord](#readonlyrecord)
-- [reduce](#reduce)
-- [reduceRight](#reduceright)
-- [reduceRightWithIndex](#reducerightwithindex)
-- [reduceWithIndex](#reducewithindex)
-- [separate](#separate)
-- [sequence](#sequence)
-- [singleton](#singleton)
-- [size](#size)
-- [some](#some)
-- [toReadonlyArray](#toreadonlyarray)
-- [toRecord](#torecord)
-- [toUnfoldable](#tounfoldable)
-- [traverse](#traverse)
-- [traverseWithIndex](#traversewithindex)
-- [updateAt](#updateat)
+- [utils](#utils)
+  - [ReadonlyRecord (type alias)](#readonlyrecord-type-alias)
+  - [URI](#uri)
+  - [URI (type alias)](#uri-type-alias)
+  - [collect](#collect)
+  - [compact](#compact)
+  - [deleteAt](#deleteat)
+  - [elem](#elem)
+  - [empty](#empty)
+  - [every](#every)
+  - [filter](#filter)
+  - [filterMap](#filtermap)
+  - [filterMapWithIndex](#filtermapwithindex)
+  - [filterWithIndex](#filterwithindex)
+  - [foldMap](#foldmap)
+  - [foldMapWithIndex](#foldmapwithindex)
+  - [fromFoldable](#fromfoldable)
+  - [fromFoldableMap](#fromfoldablemap)
+  - [fromRecord](#fromrecord)
+  - [getEq](#geteq)
+  - [getMonoid](#getmonoid)
+  - [getShow](#getshow)
+  - [hasOwnProperty (function)](#hasownproperty-function)
+  - [insertAt](#insertat)
+  - [isEmpty](#isempty)
+  - [isSubrecord](#issubrecord)
+  - [keys](#keys)
+  - [lookup](#lookup)
+  - [map](#map)
+  - [mapWithIndex](#mapwithindex)
+  - [modifyAt](#modifyat)
+  - [partition](#partition)
+  - [partitionMap](#partitionmap)
+  - [partitionMapWithIndex](#partitionmapwithindex)
+  - [partitionWithIndex](#partitionwithindex)
+  - [pop](#pop)
+  - [readonlyRecord](#readonlyrecord)
+  - [reduce](#reduce)
+  - [reduceRight](#reduceright)
+  - [reduceRightWithIndex](#reducerightwithindex)
+  - [reduceWithIndex](#reducewithindex)
+  - [separate](#separate)
+  - [sequence](#sequence)
+  - [singleton](#singleton)
+  - [size](#size)
+  - [some](#some)
+  - [toReadonlyArray](#toreadonlyarray)
+  - [toRecord](#torecord)
+  - [toUnfoldable](#tounfoldable)
+  - [traverse](#traverse)
+  - [traverseWithIndex](#traversewithindex)
+  - [updateAt](#updateat)
 
 ---
 
-# ReadonlyRecord (type alias)
+# utils
+
+## ReadonlyRecord (type alias)
 
 **Signature**
 
@@ -76,17 +79,7 @@ export type ReadonlyRecord<K extends string, T> = Readonly<Record<K, T>>
 
 Added in v2.5.0
 
-# URI (type alias)
-
-**Signature**
-
-```ts
-export type URI = typeof URI
-```
-
-Added in v2.5.0
-
-# URI
+## URI
 
 **Signature**
 
@@ -96,7 +89,17 @@ export declare const URI: 'ReadonlyRecord'
 
 Added in v2.5.0
 
-# collect
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
+```
+
+Added in v2.5.0
+
+## collect
 
 Map a record into an array
 
@@ -122,7 +125,7 @@ assert.deepStrictEqual(collect((key, val) => ({ key: key, value: val }))(x), [
 
 Added in v2.5.0
 
-# compact
+## compact
 
 **Signature**
 
@@ -132,7 +135,7 @@ export declare const compact: <A>(fa: Readonly<Record<string, Option<A>>>) => Re
 
 Added in v2.5.0
 
-# deleteAt
+## deleteAt
 
 Delete a key and value from a map
 
@@ -146,7 +149,7 @@ export declare function deleteAt<K extends string>(
 
 Added in v2.5.0
 
-# elem
+## elem
 
 **Signature**
 
@@ -156,7 +159,7 @@ export declare function elem<A>(E: Eq<A>): (a: A, fa: ReadonlyRecord<string, A>)
 
 Added in v2.5.0
 
-# empty
+## empty
 
 **Signature**
 
@@ -166,7 +169,7 @@ export declare const empty: Readonly<Record<string, never>>
 
 Added in v2.5.0
 
-# every
+## every
 
 **Signature**
 
@@ -176,7 +179,7 @@ export declare function every<A>(predicate: Predicate<A>): (r: ReadonlyRecord<st
 
 Added in v2.5.0
 
-# filter
+## filter
 
 **Signature**
 
@@ -186,7 +189,7 @@ export declare const filter: Filter1<'ReadonlyRecord'>
 
 Added in v2.5.0
 
-# filterMap
+## filterMap
 
 **Signature**
 
@@ -198,7 +201,7 @@ export declare const filterMap: <A, B>(
 
 Added in v2.5.0
 
-# filterMapWithIndex
+## filterMapWithIndex
 
 **Signature**
 
@@ -210,7 +213,7 @@ export declare function filterMapWithIndex<K extends string, A, B>(
 
 Added in v2.5.0
 
-# filterWithIndex
+## filterWithIndex
 
 **Signature**
 
@@ -225,7 +228,7 @@ export declare function filterWithIndex<K extends string, A>(
 
 Added in v2.5.0
 
-# foldMap
+## foldMap
 
 **Signature**
 
@@ -235,7 +238,7 @@ export declare const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: R
 
 Added in v2.5.0
 
-# foldMapWithIndex
+## foldMapWithIndex
 
 **Signature**
 
@@ -247,7 +250,7 @@ export declare function foldMapWithIndex<M>(
 
 Added in v2.5.0
 
-# fromFoldable
+## fromFoldable
 
 Create a record from a foldable collection of key/value pairs, using the
 specified `Magma` to combine values for duplicate keys.
@@ -275,7 +278,7 @@ export declare function fromFoldable<F, A>(
 
 Added in v2.5.0
 
-# fromFoldableMap
+## fromFoldableMap
 
 Create a record from a foldable collection using the specified functions to
 
@@ -342,7 +345,7 @@ assert.deepStrictEqual(
 
 Added in v2.5.0
 
-# fromRecord
+## fromRecord
 
 **Signature**
 
@@ -352,7 +355,7 @@ export declare function fromRecord<K extends string, A>(r: Record<K, A>): Readon
 
 Added in v2.5.0
 
-# getEq
+## getEq
 
 **Signature**
 
@@ -362,7 +365,7 @@ export declare function getEq<K extends string, A>(E: Eq<A>): Eq<ReadonlyRecord<
 
 Added in v2.5.0
 
-# getMonoid
+## getMonoid
 
 Returns a `Semigroup` instance for records given a `Semigroup` instance for their values
 
@@ -384,7 +387,7 @@ assert.deepStrictEqual(M.concat({ foo: 123 }, { foo: 456 }), { foo: 579 })
 
 Added in v2.5.0
 
-# getShow
+## getShow
 
 **Signature**
 
@@ -394,7 +397,7 @@ export declare function getShow<A>(S: Show<A>): Show<ReadonlyRecord<string, A>>
 
 Added in v2.5.0
 
-# hasOwnProperty (function)
+## hasOwnProperty (function)
 
 **Signature**
 
@@ -404,7 +407,7 @@ export declare function hasOwnProperty<K extends string>(k: string, r: ReadonlyR
 
 Added in v2.5.0
 
-# insertAt
+## insertAt
 
 Insert or replace a key/value pair in a record
 
@@ -419,7 +422,7 @@ export declare function insertAt<K extends string, A>(
 
 Added in v2.5.0
 
-# isEmpty
+## isEmpty
 
 Test whether a record is empty
 
@@ -431,7 +434,7 @@ export declare function isEmpty(r: ReadonlyRecord<string, unknown>): boolean
 
 Added in v2.5.0
 
-# isSubrecord
+## isSubrecord
 
 Test whether one record contains all of the keys and values contained in another record
 
@@ -445,7 +448,7 @@ export declare function isSubrecord<A>(
 
 Added in v2.5.0
 
-# keys
+## keys
 
 **Signature**
 
@@ -455,7 +458,7 @@ export declare function keys<K extends string>(r: ReadonlyRecord<K, unknown>): R
 
 Added in v2.5.0
 
-# lookup
+## lookup
 
 Lookup the value for a key in a record
 
@@ -467,7 +470,7 @@ export declare function lookup<A>(k: string, r: ReadonlyRecord<string, A>): Opti
 
 Added in v2.5.0
 
-# map
+## map
 
 Map a record passing the values to the iterating function
 
@@ -479,7 +482,7 @@ export declare function map<A, B>(f: (a: A) => B): <K extends string>(fa: Readon
 
 Added in v2.5.0
 
-# mapWithIndex
+## mapWithIndex
 
 Map a record passing the keys to the iterating function
 
@@ -493,7 +496,7 @@ export declare function mapWithIndex<K extends string, A, B>(
 
 Added in v2.5.0
 
-# modifyAt
+## modifyAt
 
 **Signature**
 
@@ -506,7 +509,7 @@ export declare function modifyAt<A>(
 
 Added in v2.5.0
 
-# partition
+## partition
 
 **Signature**
 
@@ -516,7 +519,7 @@ export declare const partition: Partition1<'ReadonlyRecord'>
 
 Added in v2.5.0
 
-# partitionMap
+## partitionMap
 
 **Signature**
 
@@ -528,7 +531,7 @@ export declare const partitionMap: <A, B, C>(
 
 Added in v2.5.0
 
-# partitionMapWithIndex
+## partitionMapWithIndex
 
 **Signature**
 
@@ -540,7 +543,7 @@ export declare function partitionMapWithIndex<K extends string, A, B, C>(
 
 Added in v2.5.0
 
-# partitionWithIndex
+## partitionWithIndex
 
 **Signature**
 
@@ -555,7 +558,7 @@ export declare function partitionWithIndex<K extends string, A>(
 
 Added in v2.5.0
 
-# pop
+## pop
 
 Delete a key and value from a map, returning the value as well as the subsequent map
 
@@ -571,7 +574,7 @@ export declare function pop<K extends string>(
 
 Added in v2.5.0
 
-# readonlyRecord
+## readonlyRecord
 
 **Signature**
 
@@ -587,7 +590,7 @@ export declare const readonlyRecord: FunctorWithIndex1<'ReadonlyRecord', string>
 
 Added in v2.5.0
 
-# reduce
+## reduce
 
 **Signature**
 
@@ -597,7 +600,7 @@ export declare const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: Readonly
 
 Added in v2.5.0
 
-# reduceRight
+## reduceRight
 
 **Signature**
 
@@ -607,7 +610,7 @@ export declare const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: Rea
 
 Added in v2.5.0
 
-# reduceRightWithIndex
+## reduceRightWithIndex
 
 **Signature**
 
@@ -620,7 +623,7 @@ export declare function reduceRightWithIndex<K extends string, A, B>(
 
 Added in v2.5.0
 
-# reduceWithIndex
+## reduceWithIndex
 
 **Signature**
 
@@ -633,7 +636,7 @@ export declare function reduceWithIndex<K extends string, A, B>(
 
 Added in v2.5.0
 
-# separate
+## separate
 
 **Signature**
 
@@ -645,7 +648,7 @@ export declare const separate: <A, B>(
 
 Added in v2.5.0
 
-# sequence
+## sequence
 
 **Signature**
 
@@ -672,7 +675,7 @@ export declare function sequence<F>(
 
 Added in v2.5.0
 
-# singleton
+## singleton
 
 Create a record with one key/value pair
 
@@ -684,7 +687,7 @@ export declare function singleton<K extends string, A>(k: K, a: A): ReadonlyReco
 
 Added in v2.5.0
 
-# size
+## size
 
 Calculate the number of key/value pairs in a record
 
@@ -696,7 +699,7 @@ export declare function size(r: ReadonlyRecord<string, unknown>): number
 
 Added in v2.5.0
 
-# some
+## some
 
 **Signature**
 
@@ -706,7 +709,7 @@ export declare function some<A>(predicate: (a: A) => boolean): (r: ReadonlyRecor
 
 Added in v2.5.0
 
-# toReadonlyArray
+## toReadonlyArray
 
 **Signature**
 
@@ -716,7 +719,7 @@ export declare const toReadonlyArray: <K extends string, A>(r: Readonly<Record<K
 
 Added in v2.5.0
 
-# toRecord
+## toRecord
 
 **Signature**
 
@@ -726,7 +729,7 @@ export declare function toRecord<K extends string, A>(r: ReadonlyRecord<K, A>): 
 
 Added in v2.5.0
 
-# toUnfoldable
+## toUnfoldable
 
 Unfolds a record into a list of key/value pairs
 
@@ -743,7 +746,7 @@ export declare function toUnfoldable<F>(
 
 Added in v2.5.0
 
-# traverse
+## traverse
 
 **Signature**
 
@@ -778,7 +781,7 @@ export declare function traverse<F>(
 
 Added in v2.5.0
 
-# traverseWithIndex
+## traverseWithIndex
 
 **Signature**
 
@@ -815,7 +818,7 @@ export declare function traverseWithIndex<F>(
 
 Added in v2.5.0
 
-# updateAt
+## updateAt
 
 **Signature**
 

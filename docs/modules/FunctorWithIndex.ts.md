@@ -4,7 +4,7 @@ nav_order: 32
 parent: Modules
 ---
 
-# FunctorWithIndex overview
+## FunctorWithIndex overview
 
 A `FunctorWithIndex` is a type constructor which supports a mapping operation `mapWithIndex`.
 
@@ -22,17 +22,20 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [FunctorWithIndex (interface)](#functorwithindex-interface)
-- [FunctorWithIndex1 (interface)](#functorwithindex1-interface)
-- [FunctorWithIndex2 (interface)](#functorwithindex2-interface)
-- [FunctorWithIndex2C (interface)](#functorwithindex2c-interface)
-- [FunctorWithIndex3 (interface)](#functorwithindex3-interface)
-- [FunctorWithIndex3C (interface)](#functorwithindex3c-interface)
-- [FunctorWithIndex4 (interface)](#functorwithindex4-interface)
+- [utils](#utils)
+  - [FunctorWithIndex (interface)](#functorwithindex-interface)
+  - [FunctorWithIndex1 (interface)](#functorwithindex1-interface)
+  - [FunctorWithIndex2 (interface)](#functorwithindex2-interface)
+  - [FunctorWithIndex2C (interface)](#functorwithindex2c-interface)
+  - [FunctorWithIndex3 (interface)](#functorwithindex3-interface)
+  - [FunctorWithIndex3C (interface)](#functorwithindex3c-interface)
+  - [FunctorWithIndex4 (interface)](#functorwithindex4-interface)
 
 ---
 
-# FunctorWithIndex (interface)
+# utils
+
+## FunctorWithIndex (interface)
 
 **Signature**
 
@@ -44,7 +47,7 @@ export interface FunctorWithIndex<F, I> extends Functor<F> {
 
 Added in v3.0.0
 
-# FunctorWithIndex1 (interface)
+## FunctorWithIndex1 (interface)
 
 **Signature**
 
@@ -56,7 +59,7 @@ export interface FunctorWithIndex1<F extends URIS, I> extends Functor1<F> {
 
 Added in v3.0.0
 
-# FunctorWithIndex2 (interface)
+## FunctorWithIndex2 (interface)
 
 **Signature**
 
@@ -68,7 +71,7 @@ export interface FunctorWithIndex2<F extends URIS2, I> extends Functor2<F> {
 
 Added in v3.0.0
 
-# FunctorWithIndex2C (interface)
+## FunctorWithIndex2C (interface)
 
 **Signature**
 
@@ -80,7 +83,7 @@ export interface FunctorWithIndex2C<F extends URIS2, I, E> extends Functor2C<F, 
 
 Added in v3.0.0
 
-# FunctorWithIndex3 (interface)
+## FunctorWithIndex3 (interface)
 
 **Signature**
 
@@ -92,7 +95,7 @@ export interface FunctorWithIndex3<F extends URIS3, I> extends Functor3<F> {
 
 Added in v3.0.0
 
-# FunctorWithIndex3C (interface)
+## FunctorWithIndex3C (interface)
 
 **Signature**
 
@@ -104,7 +107,7 @@ export interface FunctorWithIndex3C<F extends URIS3, I, E> extends Functor3C<F, 
 
 Added in v2.2.0
 
-# FunctorWithIndex4 (interface)
+## FunctorWithIndex4 (interface)
 
 **Signature**
 

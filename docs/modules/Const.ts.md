@@ -4,7 +4,7 @@ nav_order: 18
 parent: Modules
 ---
 
-# Const overview
+## Const overview
 
 The `Const` type constructor, which wraps its first type argument and ignores its second.
 That is, `Const<E, A>` is isomorphic to `E` for any `A`.
@@ -18,33 +18,36 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Const (type alias)](#const-type-alias)
-- [URI (type alias)](#uri-type-alias)
-- [URI](#uri)
-- [bifunctorConst](#bifunctorconst)
-- [bimap](#bimap)
-- [contramap](#contramap)
-- [contravariantConst](#contravariantconst)
-- [functorConst](#functorconst)
-- [getApplicative](#getapplicative)
-- [getApply](#getapply)
-- [getBooleanAlgebra](#getbooleanalgebra)
-- [getBounded](#getbounded)
-- [getEq](#geteq)
-- [getHeytingAlgebra](#getheytingalgebra)
-- [getMonoid](#getmonoid)
-- [getOrd](#getord)
-- [getRing](#getring)
-- [getSemigroup](#getsemigroup)
-- [getSemiring](#getsemiring)
-- [getShow](#getshow)
-- [make](#make)
-- [map](#map)
-- [mapLeft](#mapleft)
+- [utils](#utils)
+  - [Const (type alias)](#const-type-alias)
+  - [URI](#uri)
+  - [URI (type alias)](#uri-type-alias)
+  - [bifunctorConst](#bifunctorconst)
+  - [bimap](#bimap)
+  - [contramap](#contramap)
+  - [contravariantConst](#contravariantconst)
+  - [functorConst](#functorconst)
+  - [getApplicative](#getapplicative)
+  - [getApply](#getapply)
+  - [getBooleanAlgebra](#getbooleanalgebra)
+  - [getBounded](#getbounded)
+  - [getEq](#geteq)
+  - [getHeytingAlgebra](#getheytingalgebra)
+  - [getMonoid](#getmonoid)
+  - [getOrd](#getord)
+  - [getRing](#getring)
+  - [getSemigroup](#getsemigroup)
+  - [getSemiring](#getsemiring)
+  - [getShow](#getshow)
+  - [make](#make)
+  - [map](#map)
+  - [mapLeft](#mapleft)
 
 ---
 
-# Const (type alias)
+# utils
+
+## Const (type alias)
 
 **Signature**
 
@@ -54,17 +57,7 @@ export type Const<E, A> = E & { readonly _A: A }
 
 Added in v2.0.0
 
-# URI (type alias)
-
-**Signature**
-
-```ts
-export type URI = typeof URI
-```
-
-Added in v2.0.0
-
-# URI
+## URI
 
 **Signature**
 
@@ -74,7 +67,17 @@ export declare const URI: 'Const'
 
 Added in v2.0.0
 
-# bifunctorConst
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
+```
+
+Added in v2.0.0
+
+## bifunctorConst
 
 **Signature**
 
@@ -84,7 +87,7 @@ export declare const bifunctorConst: Bifunctor2<'Const'>
 
 Added in v3.0.0
 
-# bimap
+## bimap
 
 **Signature**
 
@@ -94,7 +97,7 @@ export declare const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa:
 
 Added in v2.6.2
 
-# contramap
+## contramap
 
 **Signature**
 
@@ -104,7 +107,7 @@ export declare const contramap: <A, B>(f: (b: B) => A) => <E>(fa: Const<E, A>) =
 
 Added in v2.0.0
 
-# contravariantConst
+## contravariantConst
 
 **Signature**
 
@@ -114,7 +117,7 @@ export declare const contravariantConst: Contravariant2<'Const'>
 
 Added in v3.0.0
 
-# functorConst
+## functorConst
 
 **Signature**
 
@@ -124,7 +127,7 @@ export declare const functorConst: Functor2<'Const'>
 
 Added in v3.0.0
 
-# getApplicative
+## getApplicative
 
 **Signature**
 
@@ -134,7 +137,7 @@ export declare function getApplicative<E>(M: Monoid<E>): Applicative2C<URI, E>
 
 Added in v2.0.0
 
-# getApply
+## getApply
 
 **Signature**
 
@@ -144,7 +147,7 @@ export declare function getApply<E>(S: Semigroup<E>): Apply2C<URI, E>
 
 Added in v2.0.0
 
-# getBooleanAlgebra
+## getBooleanAlgebra
 
 **Signature**
 
@@ -154,7 +157,7 @@ export declare const getBooleanAlgebra: <E, A>(H: BooleanAlgebra<E>) => BooleanA
 
 Added in v2.6.0
 
-# getBounded
+## getBounded
 
 **Signature**
 
@@ -164,7 +167,7 @@ export declare const getBounded: <E, A>(B: Bounded<E>) => Bounded<Const<E, A>>
 
 Added in v2.6.0
 
-# getEq
+## getEq
 
 **Signature**
 
@@ -174,7 +177,7 @@ export declare const getEq: <E, A>(E: Eq<E>) => Eq<Const<E, A>>
 
 Added in v2.0.0
 
-# getHeytingAlgebra
+## getHeytingAlgebra
 
 **Signature**
 
@@ -184,7 +187,7 @@ export declare const getHeytingAlgebra: <E, A>(H: HeytingAlgebra<E>) => HeytingA
 
 Added in v2.6.0
 
-# getMonoid
+## getMonoid
 
 **Signature**
 
@@ -194,7 +197,7 @@ export declare const getMonoid: <E, A>(M: Monoid<E>) => Monoid<Const<E, A>>
 
 Added in v2.6.0
 
-# getOrd
+## getOrd
 
 **Signature**
 
@@ -204,7 +207,7 @@ export declare const getOrd: <E, A>(O: Ord<E>) => Ord<Const<E, A>>
 
 Added in v2.6.0
 
-# getRing
+## getRing
 
 **Signature**
 
@@ -214,7 +217,7 @@ export declare const getRing: <E, A>(S: Ring<E>) => Ring<Const<E, A>>
 
 Added in v2.6.0
 
-# getSemigroup
+## getSemigroup
 
 **Signature**
 
@@ -224,7 +227,7 @@ export declare const getSemigroup: <E, A>(S: Semigroup<E>) => Semigroup<Const<E,
 
 Added in v2.6.0
 
-# getSemiring
+## getSemiring
 
 **Signature**
 
@@ -234,7 +237,7 @@ export declare const getSemiring: <E, A>(S: Semiring<E>) => Semiring<Const<E, A>
 
 Added in v2.6.0
 
-# getShow
+## getShow
 
 **Signature**
 
@@ -244,7 +247,7 @@ export declare function getShow<E, A>(S: Show<E>): Show<Const<E, A>>
 
 Added in v2.0.0
 
-# make
+## make
 
 **Signature**
 
@@ -254,7 +257,7 @@ export declare const make: <E, A = never>(e: E) => Const<E, A>
 
 Added in v2.0.0
 
-# map
+## map
 
 **Signature**
 
@@ -264,7 +267,7 @@ export declare const map: <A, B>(f: (a: A) => B) => <E>(fa: Const<E, A>) => Cons
 
 Added in v2.0.0
 
-# mapLeft
+## mapLeft
 
 **Signature**
 

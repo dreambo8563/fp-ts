@@ -4,7 +4,7 @@ nav_order: 3
 parent: Modules
 ---
 
-# Applicative overview
+## Applicative overview
 
 The `Applicative` type class extends the `Apply` type class with a `of` function, which can be used to create values
 of type `f a` from values of type `a`.
@@ -28,17 +28,20 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Applicative (interface)](#applicative-interface)
-- [Applicative1 (interface)](#applicative1-interface)
-- [Applicative2 (interface)](#applicative2-interface)
-- [Applicative2C (interface)](#applicative2c-interface)
-- [Applicative3 (interface)](#applicative3-interface)
-- [Applicative3C (interface)](#applicative3c-interface)
-- [Applicative4 (interface)](#applicative4-interface)
+- [utils](#utils)
+  - [Applicative (interface)](#applicative-interface)
+  - [Applicative1 (interface)](#applicative1-interface)
+  - [Applicative2 (interface)](#applicative2-interface)
+  - [Applicative2C (interface)](#applicative2c-interface)
+  - [Applicative3 (interface)](#applicative3-interface)
+  - [Applicative3C (interface)](#applicative3c-interface)
+  - [Applicative4 (interface)](#applicative4-interface)
 
 ---
 
-# Applicative (interface)
+# utils
+
+## Applicative (interface)
 
 **Signature**
 
@@ -50,7 +53,7 @@ export interface Applicative<F> extends Apply<F> {
 
 Added in v2.0.0
 
-# Applicative1 (interface)
+## Applicative1 (interface)
 
 **Signature**
 
@@ -62,7 +65,7 @@ export interface Applicative1<F extends URIS> extends Apply1<F> {
 
 Added in v2.0.0
 
-# Applicative2 (interface)
+## Applicative2 (interface)
 
 **Signature**
 
@@ -74,7 +77,7 @@ export interface Applicative2<F extends URIS2> extends Apply2<F> {
 
 Added in v2.0.0
 
-# Applicative2C (interface)
+## Applicative2C (interface)
 
 **Signature**
 
@@ -86,7 +89,7 @@ export interface Applicative2C<F extends URIS2, E> extends Apply2C<F, E> {
 
 Added in v2.0.0
 
-# Applicative3 (interface)
+## Applicative3 (interface)
 
 **Signature**
 
@@ -98,7 +101,7 @@ export interface Applicative3<F extends URIS3> extends Apply3<F> {
 
 Added in v2.0.0
 
-# Applicative3C (interface)
+## Applicative3C (interface)
 
 **Signature**
 
@@ -110,7 +113,7 @@ export interface Applicative3C<F extends URIS3, E> extends Apply3C<F, E> {
 
 Added in v2.2.0
 
-# Applicative4 (interface)
+## Applicative4 (interface)
 
 **Signature**
 

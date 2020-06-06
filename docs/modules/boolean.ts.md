@@ -4,7 +4,7 @@ nav_order: 6
 parent: Modules
 ---
 
-# boolean overview
+## boolean overview
 
 Added in v2.2.0
 
@@ -12,11 +12,14 @@ Added in v2.2.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [fold](#fold)
+- [utils](#utils)
+  - [fold](#fold)
 
 ---
 
-# fold
+# utils
+
+## fold
 
 Defines the fold over a boolean value.
 Takes two thunks `onTrue`, `onFalse` and a `boolean` value.

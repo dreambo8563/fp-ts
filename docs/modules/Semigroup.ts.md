@@ -4,7 +4,7 @@ nav_order: 67
 parent: Modules
 ---
 
-# Semigroup overview
+## Semigroup overview
 
 Added in v2.0.0
 
@@ -12,28 +12,31 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Semigroup (interface)](#semigroup-interface)
-- [fold](#fold)
-- [getDualSemigroup](#getdualsemigroup)
-- [getFirstSemigroup](#getfirstsemigroup)
-- [getFunctionSemigroup](#getfunctionsemigroup)
-- [getIntercalateSemigroup](#getintercalatesemigroup)
-- [getJoinSemigroup](#getjoinsemigroup)
-- [getLastSemigroup](#getlastsemigroup)
-- [getMeetSemigroup](#getmeetsemigroup)
-- [getObjectSemigroup](#getobjectsemigroup)
-- [getStructSemigroup](#getstructsemigroup)
-- [getTupleSemigroup](#gettuplesemigroup)
-- [semigroupAll](#semigroupall)
-- [semigroupAny](#semigroupany)
-- [semigroupProduct](#semigroupproduct)
-- [semigroupString](#semigroupstring)
-- [semigroupSum](#semigroupsum)
-- [semigroupVoid](#semigroupvoid)
+- [utils](#utils)
+  - [Semigroup (interface)](#semigroup-interface)
+  - [fold](#fold)
+  - [getDualSemigroup](#getdualsemigroup)
+  - [getFirstSemigroup](#getfirstsemigroup)
+  - [getFunctionSemigroup](#getfunctionsemigroup)
+  - [getIntercalateSemigroup](#getintercalatesemigroup)
+  - [getJoinSemigroup](#getjoinsemigroup)
+  - [getLastSemigroup](#getlastsemigroup)
+  - [getMeetSemigroup](#getmeetsemigroup)
+  - [getObjectSemigroup](#getobjectsemigroup)
+  - [getStructSemigroup](#getstructsemigroup)
+  - [getTupleSemigroup](#gettuplesemigroup)
+  - [semigroupAll](#semigroupall)
+  - [semigroupAny](#semigroupany)
+  - [semigroupProduct](#semigroupproduct)
+  - [semigroupString](#semigroupstring)
+  - [semigroupSum](#semigroupsum)
+  - [semigroupVoid](#semigroupvoid)
 
 ---
 
-# Semigroup (interface)
+# utils
+
+## Semigroup (interface)
 
 A `Semigroup` is a `Magma` where `concat` is associative, that is:
 
@@ -47,7 +50,7 @@ export interface Semigroup<A> extends Magma<A> {}
 
 Added in v2.0.0
 
-# fold
+## fold
 
 **Signature**
 
@@ -57,7 +60,7 @@ export declare function fold<A>(S: Semigroup<A>): (a: A, as: ReadonlyArray<A>) =
 
 Added in v2.0.0
 
-# getDualSemigroup
+## getDualSemigroup
 
 The dual of a `Semigroup`, obtained by swapping the arguments of `concat`.
 
@@ -77,7 +80,7 @@ assert.deepStrictEqual(getDualSemigroup(semigroupString).concat('a', 'b'), 'ba')
 
 Added in v2.0.0
 
-# getFirstSemigroup
+## getFirstSemigroup
 
 **Signature**
 
@@ -87,7 +90,7 @@ export declare function getFirstSemigroup<A = never>(): Semigroup<A>
 
 Added in v2.0.0
 
-# getFunctionSemigroup
+## getFunctionSemigroup
 
 **Signature**
 
@@ -97,7 +100,7 @@ export declare function getFunctionSemigroup<S>(S: Semigroup<S>): <A = never>() 
 
 Added in v2.0.0
 
-# getIntercalateSemigroup
+## getIntercalateSemigroup
 
 You can glue items between and stay associative
 
@@ -119,7 +122,7 @@ assert.strictEqual(S.concat('a', 'b'), 'a&b')
 
 Added in v2.5.0
 
-# getJoinSemigroup
+## getJoinSemigroup
 
 **Signature**
 
@@ -129,7 +132,7 @@ export declare function getJoinSemigroup<A>(O: Ord<A>): Semigroup<A>
 
 Added in v2.0.0
 
-# getLastSemigroup
+## getLastSemigroup
 
 **Signature**
 
@@ -139,7 +142,7 @@ export declare function getLastSemigroup<A = never>(): Semigroup<A>
 
 Added in v2.0.0
 
-# getMeetSemigroup
+## getMeetSemigroup
 
 **Signature**
 
@@ -149,7 +152,7 @@ export declare function getMeetSemigroup<A>(O: Ord<A>): Semigroup<A>
 
 Added in v2.0.0
 
-# getObjectSemigroup
+## getObjectSemigroup
 
 Returns a `Semigroup` which acts like `Object.assign`
 
@@ -175,7 +178,7 @@ assert.deepStrictEqual(S.concat({ name: 'name', age: 23 }, { name: 'name', age: 
 
 Added in v2.0.0
 
-# getStructSemigroup
+## getStructSemigroup
 
 **Signature**
 
@@ -187,7 +190,7 @@ export declare function getStructSemigroup<O extends ReadonlyRecord<string, any>
 
 Added in v2.0.0
 
-# getTupleSemigroup
+## getTupleSemigroup
 
 Given a tuple of semigroups returns a semigroup for the tuple
 
@@ -213,7 +216,7 @@ assert.deepStrictEqual(S2.concat(['a', 1, true], ['b', 2, false]), ['ab', 3, fal
 
 Added in v2.0.0
 
-# semigroupAll
+## semigroupAll
 
 Boolean semigroup under conjunction
 
@@ -225,7 +228,7 @@ export declare const semigroupAll: Semigroup<boolean>
 
 Added in v2.0.0
 
-# semigroupAny
+## semigroupAny
 
 Boolean semigroup under disjunction
 
@@ -237,7 +240,7 @@ export declare const semigroupAny: Semigroup<boolean>
 
 Added in v2.0.0
 
-# semigroupProduct
+## semigroupProduct
 
 Number `Semigroup` under multiplication
 
@@ -249,7 +252,7 @@ export declare const semigroupProduct: Semigroup<number>
 
 Added in v2.0.0
 
-# semigroupString
+## semigroupString
 
 **Signature**
 
@@ -259,7 +262,7 @@ export declare const semigroupString: Semigroup<string>
 
 Added in v2.0.0
 
-# semigroupSum
+## semigroupSum
 
 Number `Semigroup` under addition
 
@@ -271,7 +274,7 @@ export declare const semigroupSum: Semigroup<number>
 
 Added in v2.0.0
 
-# semigroupVoid
+## semigroupVoid
 
 **Signature**
 

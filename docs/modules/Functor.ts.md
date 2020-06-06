@@ -4,7 +4,7 @@ nav_order: 31
 parent: Modules
 ---
 
-# Functor overview
+## Functor overview
 
 A `Functor` is a type constructor which supports a mapping operation `map`.
 
@@ -22,17 +22,20 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Functor (interface)](#functor-interface)
-- [Functor1 (interface)](#functor1-interface)
-- [Functor2 (interface)](#functor2-interface)
-- [Functor2C (interface)](#functor2c-interface)
-- [Functor3 (interface)](#functor3-interface)
-- [Functor3C (interface)](#functor3c-interface)
-- [Functor4 (interface)](#functor4-interface)
+- [utils](#utils)
+  - [Functor (interface)](#functor-interface)
+  - [Functor1 (interface)](#functor1-interface)
+  - [Functor2 (interface)](#functor2-interface)
+  - [Functor2C (interface)](#functor2c-interface)
+  - [Functor3 (interface)](#functor3-interface)
+  - [Functor3C (interface)](#functor3c-interface)
+  - [Functor4 (interface)](#functor4-interface)
 
 ---
 
-# Functor (interface)
+# utils
+
+## Functor (interface)
 
 **Signature**
 
@@ -45,7 +48,7 @@ export interface Functor<F> {
 
 Added in v3.0.0
 
-# Functor1 (interface)
+## Functor1 (interface)
 
 **Signature**
 
@@ -58,7 +61,7 @@ export interface Functor1<F extends URIS> {
 
 Added in v3.0.0
 
-# Functor2 (interface)
+## Functor2 (interface)
 
 **Signature**
 
@@ -71,7 +74,7 @@ export interface Functor2<F extends URIS2> {
 
 Added in v3.0.0
 
-# Functor2C (interface)
+## Functor2C (interface)
 
 **Signature**
 
@@ -85,7 +88,7 @@ export interface Functor2C<F extends URIS2, E> {
 
 Added in v3.0.0
 
-# Functor3 (interface)
+## Functor3 (interface)
 
 **Signature**
 
@@ -98,7 +101,7 @@ export interface Functor3<F extends URIS3> {
 
 Added in v3.0.0
 
-# Functor3C (interface)
+## Functor3C (interface)
 
 **Signature**
 
@@ -112,7 +115,7 @@ export interface Functor3C<F extends URIS3, E> {
 
 Added in v3.0.0
 
-# Functor4 (interface)
+## Functor4 (interface)
 
 **Signature**
 

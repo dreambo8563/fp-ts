@@ -4,7 +4,7 @@ nav_order: 29
 parent: Modules
 ---
 
-# FoldableWithIndex overview
+## FoldableWithIndex overview
 
 A `Foldable` with an additional index.
 A `FoldableWithIndex` instance must be compatible with its `Foldable` instance
@@ -21,17 +21,20 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [FoldableWithIndex (interface)](#foldablewithindex-interface)
-- [FoldableWithIndex1 (interface)](#foldablewithindex1-interface)
-- [FoldableWithIndex2 (interface)](#foldablewithindex2-interface)
-- [FoldableWithIndex2C (interface)](#foldablewithindex2c-interface)
-- [FoldableWithIndex3 (interface)](#foldablewithindex3-interface)
-- [FoldableWithIndex3C (interface)](#foldablewithindex3c-interface)
-- [FoldableWithIndex4 (interface)](#foldablewithindex4-interface)
+- [utils](#utils)
+  - [FoldableWithIndex (interface)](#foldablewithindex-interface)
+  - [FoldableWithIndex1 (interface)](#foldablewithindex1-interface)
+  - [FoldableWithIndex2 (interface)](#foldablewithindex2-interface)
+  - [FoldableWithIndex2C (interface)](#foldablewithindex2c-interface)
+  - [FoldableWithIndex3 (interface)](#foldablewithindex3-interface)
+  - [FoldableWithIndex3C (interface)](#foldablewithindex3c-interface)
+  - [FoldableWithIndex4 (interface)](#foldablewithindex4-interface)
 
 ---
 
-# FoldableWithIndex (interface)
+# utils
+
+## FoldableWithIndex (interface)
 
 **Signature**
 
@@ -45,7 +48,7 @@ export interface FoldableWithIndex<F, I> extends Foldable<F> {
 
 Added in v3.0.0
 
-# FoldableWithIndex1 (interface)
+## FoldableWithIndex1 (interface)
 
 **Signature**
 
@@ -59,7 +62,7 @@ export interface FoldableWithIndex1<F extends URIS, I> extends Foldable1<F> {
 
 Added in v3.0.0
 
-# FoldableWithIndex2 (interface)
+## FoldableWithIndex2 (interface)
 
 **Signature**
 
@@ -73,7 +76,7 @@ export interface FoldableWithIndex2<F extends URIS2, I> extends Foldable2<F> {
 
 Added in v3.0.0
 
-# FoldableWithIndex2C (interface)
+## FoldableWithIndex2C (interface)
 
 **Signature**
 
@@ -87,7 +90,7 @@ export interface FoldableWithIndex2C<F extends URIS2, I, E> extends Foldable2C<F
 
 Added in v3.0.0
 
-# FoldableWithIndex3 (interface)
+## FoldableWithIndex3 (interface)
 
 **Signature**
 
@@ -101,7 +104,7 @@ export interface FoldableWithIndex3<F extends URIS3, I> extends Foldable3<F> {
 
 Added in v3.0.0
 
-# FoldableWithIndex3C (interface)
+## FoldableWithIndex3C (interface)
 
 **Signature**
 
@@ -115,7 +118,7 @@ export interface FoldableWithIndex3C<F extends URIS3, I, E> extends Foldable3C<F
 
 Added in v2.2.0
 
-# FoldableWithIndex4 (interface)
+## FoldableWithIndex4 (interface)
 
 **Signature**
 

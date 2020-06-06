@@ -4,7 +4,7 @@ nav_order: 16
 parent: Modules
 ---
 
-# Compactable overview
+## Compactable overview
 
 `Compactable` represents data structures which can be _compacted_/_filtered_. This is a generalization of
 `catOptions` as a new function `compact`. `compact` has relations with `Functor`, `Applicative`,
@@ -20,19 +20,22 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Compactable (interface)](#compactable-interface)
-- [Compactable1 (interface)](#compactable1-interface)
-- [Compactable2 (interface)](#compactable2-interface)
-- [Compactable2C (interface)](#compactable2c-interface)
-- [Compactable3 (interface)](#compactable3-interface)
-- [Compactable3C (interface)](#compactable3c-interface)
-- [Compactable4 (interface)](#compactable4-interface)
-- [Separated (interface)](#separated-interface)
-- [separateComposition](#separatecomposition)
+- [utils](#utils)
+  - [Compactable (interface)](#compactable-interface)
+  - [Compactable1 (interface)](#compactable1-interface)
+  - [Compactable2 (interface)](#compactable2-interface)
+  - [Compactable2C (interface)](#compactable2c-interface)
+  - [Compactable3 (interface)](#compactable3-interface)
+  - [Compactable3C (interface)](#compactable3c-interface)
+  - [Compactable4 (interface)](#compactable4-interface)
+  - [Separated (interface)](#separated-interface)
+  - [separateComposition](#separatecomposition)
 
 ---
 
-# Compactable (interface)
+# utils
+
+## Compactable (interface)
 
 **Signature**
 
@@ -52,7 +55,7 @@ export interface Compactable<F> {
 
 Added in v2.0.0
 
-# Compactable1 (interface)
+## Compactable1 (interface)
 
 **Signature**
 
@@ -66,7 +69,7 @@ export interface Compactable1<F extends URIS> {
 
 Added in v2.0.0
 
-# Compactable2 (interface)
+## Compactable2 (interface)
 
 **Signature**
 
@@ -80,7 +83,7 @@ export interface Compactable2<F extends URIS2> {
 
 Added in v2.0.0
 
-# Compactable2C (interface)
+## Compactable2C (interface)
 
 **Signature**
 
@@ -95,7 +98,7 @@ export interface Compactable2C<F extends URIS2, E> {
 
 Added in v2.0.0
 
-# Compactable3 (interface)
+## Compactable3 (interface)
 
 **Signature**
 
@@ -109,7 +112,7 @@ export interface Compactable3<F extends URIS3> {
 
 Added in v2.0.0
 
-# Compactable3C (interface)
+## Compactable3C (interface)
 
 **Signature**
 
@@ -123,7 +126,7 @@ export interface Compactable3C<F extends URIS3, E> {
 
 Added in v2.2.0
 
-# Compactable4 (interface)
+## Compactable4 (interface)
 
 **Signature**
 
@@ -139,7 +142,7 @@ export interface Compactable4<F extends URIS4> {
 
 Added in v2.0.0
 
-# Separated (interface)
+## Separated (interface)
 
 A `Separated` type which holds `left` and `right` parts.
 
@@ -154,7 +157,7 @@ export interface Separated<A, B> {
 
 Added in v2.0.0
 
-# separateComposition
+## separateComposition
 
 **Signature**
 

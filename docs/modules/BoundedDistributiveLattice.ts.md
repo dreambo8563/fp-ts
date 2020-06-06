@@ -4,7 +4,7 @@ nav_order: 9
 parent: Modules
 ---
 
-# BoundedDistributiveLattice overview
+## BoundedDistributiveLattice overview
 
 A `BoundedDistributiveLattice` is a lattice that is both bounded and distributive
 
@@ -14,12 +14,15 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [BoundedDistributiveLattice (interface)](#boundeddistributivelattice-interface)
-- [getMinMaxBoundedDistributiveLattice](#getminmaxboundeddistributivelattice)
+- [utils](#utils)
+  - [BoundedDistributiveLattice (interface)](#boundeddistributivelattice-interface)
+  - [getMinMaxBoundedDistributiveLattice](#getminmaxboundeddistributivelattice)
 
 ---
 
-# BoundedDistributiveLattice (interface)
+# utils
+
+## BoundedDistributiveLattice (interface)
 
 **Signature**
 
@@ -29,7 +32,7 @@ export interface BoundedDistributiveLattice<A> extends BoundedLattice<A>, Distri
 
 Added in v2.0.0
 
-# getMinMaxBoundedDistributiveLattice
+## getMinMaxBoundedDistributiveLattice
 
 **Signature**
 

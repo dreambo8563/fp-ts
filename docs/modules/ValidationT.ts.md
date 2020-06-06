@@ -4,7 +4,7 @@ nav_order: 84
 parent: Modules
 ---
 
-# ValidationT overview
+## ValidationT overview
 
 Added in v2.0.0
 
@@ -12,15 +12,18 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [ValidationM (interface)](#validationm-interface)
-- [ValidationT (interface)](#validationt-interface)
-- [ValidationT1 (type alias)](#validationt1-type-alias)
-- [ValidationT2 (type alias)](#validationt2-type-alias)
-- [alt](#alt)
+- [utils](#utils)
+  - [ValidationM (interface)](#validationm-interface)
+  - [ValidationT (interface)](#validationt-interface)
+  - [ValidationT1 (type alias)](#validationt1-type-alias)
+  - [ValidationT2 (type alias)](#validationt2-type-alias)
+  - [alt](#alt)
 
 ---
 
-# ValidationM (interface)
+# utils
+
+## ValidationM (interface)
 
 **Signature**
 
@@ -32,7 +35,7 @@ export interface ValidationM<M, E> {
 
 Added in v3.0.0
 
-# ValidationT (interface)
+## ValidationT (interface)
 
 **Signature**
 
@@ -42,7 +45,7 @@ export interface ValidationT<M, E, A> extends HKT<M, Either<E, A>> {}
 
 Added in v2.0.0
 
-# ValidationT1 (type alias)
+## ValidationT1 (type alias)
 
 **Signature**
 
@@ -52,7 +55,7 @@ export type ValidationT1<M extends URIS, E, A> = Kind<M, Either<E, A>>
 
 Added in v2.0.0
 
-# ValidationT2 (type alias)
+## ValidationT2 (type alias)
 
 **Signature**
 
@@ -62,7 +65,7 @@ export type ValidationT2<M extends URIS2, R, E, A> = Kind2<M, R, Either<E, A>>
 
 Added in v2.0.0
 
-# alt
+## alt
 
 **Signature**
 

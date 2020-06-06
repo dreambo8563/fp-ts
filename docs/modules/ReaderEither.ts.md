@@ -4,7 +4,7 @@ nav_order: 57
 parent: Modules
 ---
 
-# ReaderEither overview
+## ReaderEither overview
 
 Added in v2.0.0
 
@@ -12,54 +12,57 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [ReaderEither (interface)](#readereither-interface)
-- [URI (type alias)](#uri-type-alias)
-- [URI](#uri)
-- [alt](#alt)
-- [altReaderTask](#altreadertask)
-- [ap](#ap)
-- [apFirst](#apfirst)
-- [apSecond](#apsecond)
-- [applicativeReaderTask](#applicativereadertask)
-- [applyReaderTask](#applyreadertask)
-- [ask](#ask)
-- [asks](#asks)
-- [bifunctorReaderTask](#bifunctorreadertask)
-- [bimap](#bimap)
-- [chain](#chain)
-- [chainEitherK](#chaineitherk)
-- [chainEitherKW](#chaineitherkw)
-- [chainFirst](#chainfirst)
-- [chainW](#chainw)
-- [filterOrElse](#filterorelse)
-- [flatten](#flatten)
-- [fold](#fold)
-- [fromEither](#fromeither)
-- [fromEitherK](#fromeitherk)
-- [fromOption](#fromoption)
-- [fromPredicate](#frompredicate)
-- [functorReaderTask](#functorreadertask)
-- [getApplyMonoid](#getapplymonoid)
-- [getApplySemigroup](#getapplysemigroup)
-- [getOrElse](#getorelse)
-- [getOrElseW](#getorelsew)
-- [getReaderValidationAlt](#getreadervalidationalt)
-- [getReaderValidationApplicative](#getreadervalidationapplicative)
-- [getSemigroup](#getsemigroup)
-- [left](#left)
-- [leftReader](#leftreader)
-- [map](#map)
-- [mapLeft](#mapleft)
-- [monadReaderTask](#monadreadertask)
-- [monadThrowReaderTask](#monadthrowreadertask)
-- [orElse](#orelse)
-- [right](#right)
-- [rightReader](#rightreader)
-- [swap](#swap)
+- [utils](#utils)
+  - [ReaderEither (interface)](#readereither-interface)
+  - [URI](#uri)
+  - [URI (type alias)](#uri-type-alias)
+  - [alt](#alt)
+  - [altReaderTask](#altreadertask)
+  - [ap](#ap)
+  - [apFirst](#apfirst)
+  - [apSecond](#apsecond)
+  - [applicativeReaderTask](#applicativereadertask)
+  - [applyReaderTask](#applyreadertask)
+  - [ask](#ask)
+  - [asks](#asks)
+  - [bifunctorReaderTask](#bifunctorreadertask)
+  - [bimap](#bimap)
+  - [chain](#chain)
+  - [chainEitherK](#chaineitherk)
+  - [chainEitherKW](#chaineitherkw)
+  - [chainFirst](#chainfirst)
+  - [chainW](#chainw)
+  - [filterOrElse](#filterorelse)
+  - [flatten](#flatten)
+  - [fold](#fold)
+  - [fromEither](#fromeither)
+  - [fromEitherK](#fromeitherk)
+  - [fromOption](#fromoption)
+  - [fromPredicate](#frompredicate)
+  - [functorReaderTask](#functorreadertask)
+  - [getApplyMonoid](#getapplymonoid)
+  - [getApplySemigroup](#getapplysemigroup)
+  - [getOrElse](#getorelse)
+  - [getOrElseW](#getorelsew)
+  - [getReaderValidationAlt](#getreadervalidationalt)
+  - [getReaderValidationApplicative](#getreadervalidationapplicative)
+  - [getSemigroup](#getsemigroup)
+  - [left](#left)
+  - [leftReader](#leftreader)
+  - [map](#map)
+  - [mapLeft](#mapleft)
+  - [monadReaderTask](#monadreadertask)
+  - [monadThrowReaderTask](#monadthrowreadertask)
+  - [orElse](#orelse)
+  - [right](#right)
+  - [rightReader](#rightreader)
+  - [swap](#swap)
 
 ---
 
-# ReaderEither (interface)
+# utils
+
+## ReaderEither (interface)
 
 **Signature**
 
@@ -69,17 +72,7 @@ export interface ReaderEither<R, E, A> extends Reader<R, Either<E, A>> {}
 
 Added in v2.0.0
 
-# URI (type alias)
-
-**Signature**
-
-```ts
-export type URI = typeof URI
-```
-
-Added in v2.0.0
-
-# URI
+## URI
 
 **Signature**
 
@@ -89,7 +82,17 @@ export declare const URI: 'ReaderEither'
 
 Added in v2.0.0
 
-# alt
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
+```
+
+Added in v2.0.0
+
+## alt
 
 **Signature**
 
@@ -101,7 +104,7 @@ export declare const alt: <R, E, A>(
 
 Added in v2.0.0
 
-# altReaderTask
+## altReaderTask
 
 **Signature**
 
@@ -111,7 +114,7 @@ export declare const altReaderTask: Alt3<'ReaderEither'>
 
 Added in v3.0.0
 
-# ap
+## ap
 
 **Signature**
 
@@ -123,7 +126,7 @@ export declare const ap: <R, E, A>(
 
 Added in v2.0.0
 
-# apFirst
+## apFirst
 
 **Signature**
 
@@ -135,7 +138,7 @@ export declare const apFirst: <R, E, B>(
 
 Added in v2.0.0
 
-# apSecond
+## apSecond
 
 **Signature**
 
@@ -147,7 +150,7 @@ export declare const apSecond: <R, E, B>(
 
 Added in v2.0.0
 
-# applicativeReaderTask
+## applicativeReaderTask
 
 **Signature**
 
@@ -157,7 +160,7 @@ export declare const applicativeReaderTask: Applicative3<'ReaderEither'>
 
 Added in v3.0.0
 
-# applyReaderTask
+## applyReaderTask
 
 **Signature**
 
@@ -167,7 +170,7 @@ export declare const applyReaderTask: Apply3<'ReaderEither'>
 
 Added in v3.0.0
 
-# ask
+## ask
 
 **Signature**
 
@@ -177,7 +180,7 @@ export declare function ask<R, E = never>(): ReaderEither<R, E, R>
 
 Added in v2.0.0
 
-# asks
+## asks
 
 **Signature**
 
@@ -187,7 +190,7 @@ export declare function asks<R, E = never, A = never>(f: (r: R) => A): ReaderEit
 
 Added in v2.0.0
 
-# bifunctorReaderTask
+## bifunctorReaderTask
 
 **Signature**
 
@@ -197,7 +200,7 @@ export declare const bifunctorReaderTask: Bifunctor3<'ReaderEither'>
 
 Added in v3.0.0
 
-# bimap
+## bimap
 
 **Signature**
 
@@ -210,7 +213,7 @@ export declare const bimap: <E, G, A, B>(
 
 Added in v2.0.0
 
-# chain
+## chain
 
 **Signature**
 
@@ -222,7 +225,7 @@ export declare const chain: <A, R, E, B>(
 
 Added in v2.0.0
 
-# chainEitherK
+## chainEitherK
 
 **Signature**
 
@@ -234,7 +237,7 @@ export declare const chainEitherK: <A, E, B>(
 
 Added in v2.4.0
 
-# chainEitherKW
+## chainEitherKW
 
 **Signature**
 
@@ -246,7 +249,7 @@ export declare const chainEitherKW: <D, A, B>(
 
 Added in v2.6.1
 
-# chainFirst
+## chainFirst
 
 **Signature**
 
@@ -258,7 +261,7 @@ export declare const chainFirst: <R, E, A, B>(
 
 Added in v2.0.0
 
-# chainW
+## chainW
 
 **Signature**
 
@@ -270,7 +273,7 @@ export declare const chainW: <Q, D, A, B>(
 
 Added in v2.6.0
 
-# filterOrElse
+## filterOrElse
 
 **Signature**
 
@@ -285,7 +288,7 @@ export declare const filterOrElse: {
 
 Added in v2.0.0
 
-# flatten
+## flatten
 
 **Signature**
 
@@ -295,7 +298,7 @@ export declare const flatten: <R, E, A>(mma: ReaderEither<R, E, ReaderEither<R, 
 
 Added in v2.0.0
 
-# fold
+## fold
 
 **Signature**
 
@@ -308,7 +311,7 @@ export declare const fold: <R, E, A, B>(
 
 Added in v2.0.0
 
-# fromEither
+## fromEither
 
 **Signature**
 
@@ -318,7 +321,7 @@ export declare const fromEither: <R, E, A>(ma: E.Either<E, A>) => ReaderEither<R
 
 Added in v2.0.0
 
-# fromEitherK
+## fromEitherK
 
 **Signature**
 
@@ -330,7 +333,7 @@ export declare function fromEitherK<A extends ReadonlyArray<unknown>, E, B>(
 
 Added in v2.4.0
 
-# fromOption
+## fromOption
 
 **Signature**
 
@@ -340,7 +343,7 @@ export declare const fromOption: <E>(onNone: () => E) => <R, A>(ma: Option<A>) =
 
 Added in v2.0.0
 
-# fromPredicate
+## fromPredicate
 
 **Signature**
 
@@ -353,7 +356,7 @@ export declare const fromPredicate: {
 
 Added in v2.0.0
 
-# functorReaderTask
+## functorReaderTask
 
 **Signature**
 
@@ -363,7 +366,7 @@ export declare const functorReaderTask: Functor3<'ReaderEither'>
 
 Added in v3.0.0
 
-# getApplyMonoid
+## getApplyMonoid
 
 **Signature**
 
@@ -373,7 +376,7 @@ export declare function getApplyMonoid<R, E, A>(M: Monoid<A>): Monoid<ReaderEith
 
 Added in v2.0.0
 
-# getApplySemigroup
+## getApplySemigroup
 
 Semigroup returning the left-most `Left` value. If both operands are `Right`s then the inner values
 are appended using the provided `Semigroup`
@@ -386,7 +389,7 @@ export declare function getApplySemigroup<R, E, A>(S: Semigroup<A>): Semigroup<R
 
 Added in v2.0.0
 
-# getOrElse
+## getOrElse
 
 **Signature**
 
@@ -398,7 +401,7 @@ export declare const getOrElse: <E, R, A>(
 
 Added in v2.0.0
 
-# getOrElseW
+## getOrElseW
 
 **Signature**
 
@@ -410,7 +413,7 @@ export declare const getOrElseW: <E, Q, B>(
 
 Added in v2.6.0
 
-# getReaderValidationAlt
+## getReaderValidationAlt
 
 **Signature**
 
@@ -420,7 +423,7 @@ export declare function getReaderValidationAlt<E>(S: Semigroup<E>): Alt3C<URI, E
 
 Added in v3.0.0
 
-# getReaderValidationApplicative
+## getReaderValidationApplicative
 
 **Signature**
 
@@ -430,7 +433,7 @@ export declare function getReaderValidationApplicative<E>(S: Semigroup<E>): Appl
 
 Added in v3.0.0
 
-# getSemigroup
+## getSemigroup
 
 Semigroup returning the left-most non-`Left` value. If both operands are `Right`s then the inner values are
 appended using the provided `Semigroup`
@@ -443,7 +446,7 @@ export declare function getSemigroup<R, E, A>(S: Semigroup<A>): Semigroup<Reader
 
 Added in v2.0.0
 
-# left
+## left
 
 **Signature**
 
@@ -453,7 +456,7 @@ export declare const left: <R, E = never, A = never>(e: E) => ReaderEither<R, E,
 
 Added in v2.0.0
 
-# leftReader
+## leftReader
 
 **Signature**
 
@@ -463,7 +466,7 @@ export declare const leftReader: <R, E = never, A = never>(me: R.Reader<R, E>) =
 
 Added in v2.0.0
 
-# map
+## map
 
 **Signature**
 
@@ -473,7 +476,7 @@ export declare const map: <A, B>(f: (a: A) => B) => <R, E>(fa: ReaderEither<R, E
 
 Added in v2.0.0
 
-# mapLeft
+## mapLeft
 
 **Signature**
 
@@ -483,7 +486,7 @@ export declare const mapLeft: <E, G>(f: (e: E) => G) => <R, A>(fa: ReaderEither<
 
 Added in v2.0.0
 
-# monadReaderTask
+## monadReaderTask
 
 **Signature**
 
@@ -493,7 +496,7 @@ export declare const monadReaderTask: Monad3<'ReaderEither'>
 
 Added in v3.0.0
 
-# monadThrowReaderTask
+## monadThrowReaderTask
 
 **Signature**
 
@@ -503,7 +506,7 @@ export declare const monadThrowReaderTask: MonadThrow3<'ReaderEither'>
 
 Added in v3.0.0
 
-# orElse
+## orElse
 
 **Signature**
 
@@ -515,7 +518,7 @@ export declare const orElse: <E, R, M, A>(
 
 Added in v2.0.0
 
-# right
+## right
 
 **Signature**
 
@@ -525,7 +528,7 @@ export declare const right: <R, E = never, A = never>(a: A) => ReaderEither<R, E
 
 Added in v2.0.0
 
-# rightReader
+## rightReader
 
 **Signature**
 
@@ -535,7 +538,7 @@ export declare const rightReader: <R, E = never, A = never>(ma: R.Reader<R, A>) 
 
 Added in v2.0.0
 
-# swap
+## swap
 
 **Signature**
 

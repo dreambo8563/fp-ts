@@ -4,7 +4,7 @@ nav_order: 30
 parent: Modules
 ---
 
-# function overview
+## function overview
 
 Added in v2.0.0
 
@@ -12,33 +12,36 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Endomorphism (interface)](#endomorphism-interface)
-- [FunctionN (interface)](#functionn-interface)
-- [Lazy (interface)](#lazy-interface)
-- [Predicate (interface)](#predicate-interface)
-- [Refinement (interface)](#refinement-interface)
-- [absurd](#absurd)
-- [constFalse](#constfalse)
-- [constNull](#constnull)
-- [constTrue](#consttrue)
-- [constUndefined](#constundefined)
-- [constVoid](#constvoid)
-- [constant](#constant)
-- [decrement](#decrement)
-- [flip](#flip)
-- [flow](#flow)
-- [identity](#identity)
-- [increment](#increment)
-- [not](#not)
-- [pipe](#pipe)
-- [tuple](#tuple)
-- [tupled](#tupled)
-- [unsafeCoerce](#unsafecoerce)
-- [untupled](#untupled)
+- [utils](#utils)
+  - [Endomorphism (interface)](#endomorphism-interface)
+  - [FunctionN (interface)](#functionn-interface)
+  - [Lazy (interface)](#lazy-interface)
+  - [Predicate (interface)](#predicate-interface)
+  - [Refinement (interface)](#refinement-interface)
+  - [absurd](#absurd)
+  - [constFalse](#constfalse)
+  - [constNull](#constnull)
+  - [constTrue](#consttrue)
+  - [constUndefined](#constundefined)
+  - [constVoid](#constvoid)
+  - [constant](#constant)
+  - [decrement](#decrement)
+  - [flip](#flip)
+  - [flow](#flow)
+  - [identity](#identity)
+  - [increment](#increment)
+  - [not](#not)
+  - [pipe](#pipe)
+  - [tuple](#tuple)
+  - [tupled](#tupled)
+  - [unsafeCoerce](#unsafecoerce)
+  - [untupled](#untupled)
 
 ---
 
-# Endomorphism (interface)
+# utils
+
+## Endomorphism (interface)
 
 **Signature**
 
@@ -50,7 +53,7 @@ export interface Endomorphism<A> {
 
 Added in v2.0.0
 
-# FunctionN (interface)
+## FunctionN (interface)
 
 **Signature**
 
@@ -70,7 +73,7 @@ export const sum: FunctionN<[number, number], number> = (a, b) => a + b
 
 Added in v2.0.0
 
-# Lazy (interface)
+## Lazy (interface)
 
 A _thunk_
 
@@ -84,7 +87,7 @@ export interface Lazy<A> {
 
 Added in v2.0.0
 
-# Predicate (interface)
+## Predicate (interface)
 
 **Signature**
 
@@ -96,7 +99,7 @@ export interface Predicate<A> {
 
 Added in v2.0.0
 
-# Refinement (interface)
+## Refinement (interface)
 
 **Signature**
 
@@ -108,7 +111,7 @@ export interface Refinement<A, B extends A> {
 
 Added in v2.0.0
 
-# absurd
+## absurd
 
 **Signature**
 
@@ -118,7 +121,7 @@ export declare function absurd<A>(_: never): A
 
 Added in v2.0.0
 
-# constFalse
+## constFalse
 
 A thunk that returns always `false`
 
@@ -130,7 +133,7 @@ export declare const constFalse: () => boolean
 
 Added in v2.0.0
 
-# constNull
+## constNull
 
 A thunk that returns always `null`
 
@@ -142,7 +145,7 @@ export declare const constNull: () => null
 
 Added in v2.0.0
 
-# constTrue
+## constTrue
 
 A thunk that returns always `true`
 
@@ -154,7 +157,7 @@ export declare const constTrue: () => boolean
 
 Added in v2.0.0
 
-# constUndefined
+## constUndefined
 
 A thunk that returns always `undefined`
 
@@ -166,7 +169,7 @@ export declare const constUndefined: () => undefined
 
 Added in v2.0.0
 
-# constVoid
+## constVoid
 
 A thunk that returns always `void`
 
@@ -178,7 +181,7 @@ export declare const constVoid: () => void
 
 Added in v2.0.0
 
-# constant
+## constant
 
 **Signature**
 
@@ -188,7 +191,7 @@ export declare function constant<A>(a: A): Lazy<A>
 
 Added in v2.0.0
 
-# decrement
+## decrement
 
 **Signature**
 
@@ -198,7 +201,7 @@ export declare function decrement(n: number): number
 
 Added in v2.0.0
 
-# flip
+## flip
 
 Flips the order of the arguments of a function of two arguments.
 
@@ -210,7 +213,7 @@ export declare function flip<A, B, C>(f: (a: A, b: B) => C): (b: B, a: A) => C
 
 Added in v2.0.0
 
-# flow
+## flow
 
 Performs left-to-right function composition. The first argument may have any arity, the remaining arguments must be unary.
 
@@ -297,7 +300,7 @@ assert.strictEqual(f('aaa'), 6)
 
 Added in v2.0.0
 
-# identity
+## identity
 
 **Signature**
 
@@ -307,7 +310,7 @@ export declare function identity<A>(a: A): A
 
 Added in v2.0.0
 
-# increment
+## increment
 
 **Signature**
 
@@ -317,7 +320,7 @@ export declare function increment(n: number): number
 
 Added in v2.0.0
 
-# not
+## not
 
 **Signature**
 
@@ -327,7 +330,7 @@ export declare function not<A>(predicate: Predicate<A>): Predicate<A>
 
 Added in v2.0.0
 
-# pipe
+## pipe
 
 Pipes the value of an expression into a pipeline of functions.
 
@@ -410,7 +413,7 @@ assert.strictEqual(pipe('aaa', len, double), 6)
 
 Added in v3.0.0
 
-# tuple
+## tuple
 
 **Signature**
 
@@ -420,7 +423,7 @@ export declare function tuple<T extends ReadonlyArray<unknown>>(...t: T): T
 
 Added in v2.0.0
 
-# tupled
+## tupled
 
 Creates a tupled version of this function: instead of `n` arguments, it accepts a single tuple argument.
 
@@ -442,7 +445,7 @@ assert.strictEqual(add([1, 2]), 3)
 
 Added in v2.4.0
 
-# unsafeCoerce
+## unsafeCoerce
 
 **Signature**
 
@@ -452,7 +455,7 @@ export declare const unsafeCoerce: <A, B>(a: A) => B
 
 Added in v2.0.0
 
-# untupled
+## untupled
 
 Inverse function of `tupled`
 

@@ -4,7 +4,7 @@ nav_order: 62
 parent: Modules
 ---
 
-# ReadonlyNonEmptyArray overview
+## ReadonlyNonEmptyArray overview
 
 Data structure which represents non-empty arrays
 
@@ -14,75 +14,78 @@ Added in v2.5.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [ReadonlyNonEmptyArray (type alias)](#readonlynonemptyarray-type-alias)
-- [URI (type alias)](#uri-type-alias)
-- [URI](#uri)
-- [alt](#alt)
-- [altReadonlyNonEmptyArray](#altreadonlynonemptyarray)
-- [ap](#ap)
-- [apFirst](#apfirst)
-- [apSecond](#apsecond)
-- [applicativeReadonlyNonEmptyArray](#applicativereadonlynonemptyarray)
-- [applyReadonlyNonEmptyArray](#applyreadonlynonemptyarray)
-- [chain](#chain)
-- [chainFirst](#chainfirst)
-- [comonadReadonlyNonEmptyArray](#comonadreadonlynonemptyarray)
-- [concat](#concat)
-- [cons](#cons)
-- [duplicate](#duplicate)
-- [extend](#extend)
-- [extendReadonlyNonEmptyArray](#extendreadonlynonemptyarray)
-- [extract](#extract)
-- [filter](#filter)
-- [filterWithIndex](#filterwithindex)
-- [flatten](#flatten)
-- [fold](#fold)
-- [foldMap](#foldmap)
-- [foldMapWithIndex](#foldmapwithindex)
-- [foldableReadonlyNonEmptyArray](#foldablereadonlynonemptyarray)
-- [foldableWithIndexReadonlyNonEmptyArray](#foldablewithindexreadonlynonemptyarray)
-- [fromArray](#fromarray)
-- [fromReadonlyArray](#fromreadonlyarray)
-- [functorReadonlyNonEmptyArray](#functorreadonlynonemptyarray)
-- [functorWithIndexReadonlyNonEmptyArray](#functorwithindexreadonlynonemptyarray)
-- [getEq](#geteq)
-- [getSemigroup](#getsemigroup)
-- [getShow](#getshow)
-- [group](#group)
-- [groupBy](#groupby)
-- [groupSort](#groupsort)
-- [head](#head)
-- [init](#init)
-- [insertAt](#insertat)
-- [last](#last)
-- [map](#map)
-- [mapWithIndex](#mapwithindex)
-- [max](#max)
-- [min](#min)
-- [modifyAt](#modifyat)
-- [monadReadonlyNonEmptyArray](#monadreadonlynonemptyarray)
-- [of](#of)
-- [reduce](#reduce)
-- [reduceRight](#reduceright)
-- [reduceRightWithIndex](#reducerightwithindex)
-- [reduceWithIndex](#reducewithindex)
-- [reverse](#reverse)
-- [sequence](#sequence)
-- [snoc](#snoc)
-- [sort](#sort)
-- [tail](#tail)
-- [traversableReadonlyNonEmptyArray](#traversablereadonlynonemptyarray)
-- [traversableWithIndexReadonlyNonEmptyArray](#traversablewithindexreadonlynonemptyarray)
-- [traverse](#traverse)
-- [traverseWithIndex](#traversewithindex)
-- [unzip](#unzip)
-- [updateAt](#updateat)
-- [zip](#zip)
-- [zipWith](#zipwith)
+- [utils](#utils)
+  - [ReadonlyNonEmptyArray (type alias)](#readonlynonemptyarray-type-alias)
+  - [URI](#uri)
+  - [URI (type alias)](#uri-type-alias)
+  - [alt](#alt)
+  - [altReadonlyNonEmptyArray](#altreadonlynonemptyarray)
+  - [ap](#ap)
+  - [apFirst](#apfirst)
+  - [apSecond](#apsecond)
+  - [applicativeReadonlyNonEmptyArray](#applicativereadonlynonemptyarray)
+  - [applyReadonlyNonEmptyArray](#applyreadonlynonemptyarray)
+  - [chain](#chain)
+  - [chainFirst](#chainfirst)
+  - [comonadReadonlyNonEmptyArray](#comonadreadonlynonemptyarray)
+  - [concat](#concat)
+  - [cons](#cons)
+  - [duplicate](#duplicate)
+  - [extend](#extend)
+  - [extendReadonlyNonEmptyArray](#extendreadonlynonemptyarray)
+  - [extract](#extract)
+  - [filter](#filter)
+  - [filterWithIndex](#filterwithindex)
+  - [flatten](#flatten)
+  - [fold](#fold)
+  - [foldMap](#foldmap)
+  - [foldMapWithIndex](#foldmapwithindex)
+  - [foldableReadonlyNonEmptyArray](#foldablereadonlynonemptyarray)
+  - [foldableWithIndexReadonlyNonEmptyArray](#foldablewithindexreadonlynonemptyarray)
+  - [fromArray](#fromarray)
+  - [fromReadonlyArray](#fromreadonlyarray)
+  - [functorReadonlyNonEmptyArray](#functorreadonlynonemptyarray)
+  - [functorWithIndexReadonlyNonEmptyArray](#functorwithindexreadonlynonemptyarray)
+  - [getEq](#geteq)
+  - [getSemigroup](#getsemigroup)
+  - [getShow](#getshow)
+  - [group](#group)
+  - [groupBy](#groupby)
+  - [groupSort](#groupsort)
+  - [head](#head)
+  - [init](#init)
+  - [insertAt](#insertat)
+  - [last](#last)
+  - [map](#map)
+  - [mapWithIndex](#mapwithindex)
+  - [max](#max)
+  - [min](#min)
+  - [modifyAt](#modifyat)
+  - [monadReadonlyNonEmptyArray](#monadreadonlynonemptyarray)
+  - [of](#of)
+  - [reduce](#reduce)
+  - [reduceRight](#reduceright)
+  - [reduceRightWithIndex](#reducerightwithindex)
+  - [reduceWithIndex](#reducewithindex)
+  - [reverse](#reverse)
+  - [sequence](#sequence)
+  - [snoc](#snoc)
+  - [sort](#sort)
+  - [tail](#tail)
+  - [traversableReadonlyNonEmptyArray](#traversablereadonlynonemptyarray)
+  - [traversableWithIndexReadonlyNonEmptyArray](#traversablewithindexreadonlynonemptyarray)
+  - [traverse](#traverse)
+  - [traverseWithIndex](#traversewithindex)
+  - [unzip](#unzip)
+  - [updateAt](#updateat)
+  - [zip](#zip)
+  - [zipWith](#zipwith)
 
 ---
 
-# ReadonlyNonEmptyArray (type alias)
+# utils
+
+## ReadonlyNonEmptyArray (type alias)
 
 **Signature**
 
@@ -94,17 +97,7 @@ export type ReadonlyNonEmptyArray<A> = ReadonlyArray<A> & {
 
 Added in v2.5.0
 
-# URI (type alias)
-
-**Signature**
-
-```ts
-export type URI = typeof URI
-```
-
-Added in v2.5.0
-
-# URI
+## URI
 
 **Signature**
 
@@ -114,7 +107,17 @@ export declare const URI: 'ReadonlyNonEmptyArray'
 
 Added in v2.5.0
 
-# alt
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
+```
+
+Added in v2.5.0
+
+## alt
 
 **Signature**
 
@@ -126,7 +129,7 @@ export declare const alt: <A>(
 
 Added in v2.6.2
 
-# altReadonlyNonEmptyArray
+## altReadonlyNonEmptyArray
 
 **Signature**
 
@@ -136,7 +139,7 @@ export declare const altReadonlyNonEmptyArray: Alt1<'ReadonlyNonEmptyArray'>
 
 Added in v3.0.0
 
-# ap
+## ap
 
 **Signature**
 
@@ -148,7 +151,7 @@ export declare const ap: <A>(
 
 Added in v2.5.0
 
-# apFirst
+## apFirst
 
 **Signature**
 
@@ -160,7 +163,7 @@ export declare const apFirst: <B>(
 
 Added in v2.5.0
 
-# apSecond
+## apSecond
 
 **Signature**
 
@@ -172,7 +175,7 @@ export declare const apSecond: <B>(
 
 Added in v2.5.0
 
-# applicativeReadonlyNonEmptyArray
+## applicativeReadonlyNonEmptyArray
 
 **Signature**
 
@@ -182,7 +185,7 @@ export declare const applicativeReadonlyNonEmptyArray: Applicative1<'ReadonlyNon
 
 Added in v3.0.0
 
-# applyReadonlyNonEmptyArray
+## applyReadonlyNonEmptyArray
 
 **Signature**
 
@@ -192,7 +195,7 @@ export declare const applyReadonlyNonEmptyArray: Apply1<'ReadonlyNonEmptyArray'>
 
 Added in v3.0.0
 
-# chain
+## chain
 
 **Signature**
 
@@ -204,7 +207,7 @@ export declare const chain: <A, B>(
 
 Added in v2.5.0
 
-# chainFirst
+## chainFirst
 
 **Signature**
 
@@ -216,7 +219,7 @@ export declare const chainFirst: <A, B>(
 
 Added in v2.5.0
 
-# comonadReadonlyNonEmptyArray
+## comonadReadonlyNonEmptyArray
 
 **Signature**
 
@@ -226,7 +229,7 @@ export declare const comonadReadonlyNonEmptyArray: Comonad1<'ReadonlyNonEmptyArr
 
 Added in v3.0.0
 
-# concat
+## concat
 
 **Signature**
 
@@ -237,7 +240,7 @@ export declare function concat<A>(fx: ReadonlyNonEmptyArray<A>, fy: ReadonlyArra
 
 Added in v2.5.0
 
-# cons
+## cons
 
 Append an element to the front of an array, creating a new non empty array
 
@@ -257,7 +260,7 @@ assert.deepStrictEqual(cons(1, [2, 3, 4]), [1, 2, 3, 4])
 
 Added in v2.5.0
 
-# duplicate
+## duplicate
 
 **Signature**
 
@@ -267,7 +270,7 @@ export declare const duplicate: <A>(ma: ReadonlyNonEmptyArray<A>) => ReadonlyNon
 
 Added in v2.5.0
 
-# extend
+## extend
 
 **Signature**
 
@@ -279,7 +282,7 @@ export declare const extend: <A, B>(
 
 Added in v2.5.0
 
-# extendReadonlyNonEmptyArray
+## extendReadonlyNonEmptyArray
 
 **Signature**
 
@@ -289,7 +292,7 @@ export declare const extendReadonlyNonEmptyArray: Extend1<'ReadonlyNonEmptyArray
 
 Added in v3.0.0
 
-# extract
+## extract
 
 **Signature**
 
@@ -299,7 +302,7 @@ export declare const extract: <A>(wa: ReadonlyNonEmptyArray<A>) => A
 
 Added in v3.0.0
 
-# filter
+## filter
 
 **Signature**
 
@@ -314,7 +317,7 @@ export declare function filter<A>(
 
 Added in v2.5.0
 
-# filterWithIndex
+## filterWithIndex
 
 **Signature**
 
@@ -326,7 +329,7 @@ export declare function filterWithIndex<A>(
 
 Added in v2.5.0
 
-# flatten
+## flatten
 
 **Signature**
 
@@ -336,7 +339,7 @@ export declare const flatten: <A>(mma: ReadonlyNonEmptyArray<ReadonlyNonEmptyArr
 
 Added in v2.5.0
 
-# fold
+## fold
 
 **Signature**
 
@@ -346,7 +349,7 @@ export declare function fold<A>(S: Semigroup<A>): (fa: ReadonlyNonEmptyArray<A>)
 
 Added in v2.5.0
 
-# foldMap
+## foldMap
 
 **Signature**
 
@@ -356,7 +359,7 @@ export declare const foldMap: <S>(S: Semigroup<S>) => <A>(f: (a: A) => S) => (fa
 
 Added in v2.5.0
 
-# foldMapWithIndex
+## foldMapWithIndex
 
 **Signature**
 
@@ -368,7 +371,7 @@ export declare const foldMapWithIndex: <S>(
 
 Added in v2.5.0
 
-# foldableReadonlyNonEmptyArray
+## foldableReadonlyNonEmptyArray
 
 **Signature**
 
@@ -378,7 +381,7 @@ export declare const foldableReadonlyNonEmptyArray: Foldable1<'ReadonlyNonEmptyA
 
 Added in v3.0.0
 
-# foldableWithIndexReadonlyNonEmptyArray
+## foldableWithIndexReadonlyNonEmptyArray
 
 **Signature**
 
@@ -388,7 +391,7 @@ export declare const foldableWithIndexReadonlyNonEmptyArray: FoldableWithIndex1<
 
 Added in v3.0.0
 
-# fromArray
+## fromArray
 
 **Signature**
 
@@ -398,7 +401,7 @@ export declare function fromArray<A>(as: Array<A>): Option<ReadonlyNonEmptyArray
 
 Added in v2.5.0
 
-# fromReadonlyArray
+## fromReadonlyArray
 
 Builds a `ReadonlyNonEmptyArray` from an array returning `none` if `as` is an empty array
 
@@ -410,7 +413,7 @@ export declare function fromReadonlyArray<A>(as: ReadonlyArray<A>): Option<Reado
 
 Added in v2.5.0
 
-# functorReadonlyNonEmptyArray
+## functorReadonlyNonEmptyArray
 
 **Signature**
 
@@ -420,7 +423,7 @@ export declare const functorReadonlyNonEmptyArray: Functor1<'ReadonlyNonEmptyArr
 
 Added in v3.0.0
 
-# functorWithIndexReadonlyNonEmptyArray
+## functorWithIndexReadonlyNonEmptyArray
 
 **Signature**
 
@@ -430,7 +433,7 @@ export declare const functorWithIndexReadonlyNonEmptyArray: FunctorWithIndex1<'R
 
 Added in v3.0.0
 
-# getEq
+## getEq
 
 **Signature**
 
@@ -451,7 +454,7 @@ assert.strictEqual(E.equals(cons(1, [2]), [1, 3]), false)
 
 Added in v2.5.0
 
-# getSemigroup
+## getSemigroup
 
 Builds a `Semigroup` instance for `ReadonlyNonEmptyArray`
 
@@ -463,7 +466,7 @@ export declare function getSemigroup<A = never>(): Semigroup<ReadonlyNonEmptyArr
 
 Added in v2.5.0
 
-# getShow
+## getShow
 
 **Signature**
 
@@ -473,7 +476,7 @@ export declare const getShow: <A>(S: Show<A>) => Show<ReadonlyNonEmptyArray<A>>
 
 Added in v2.5.0
 
-# group
+## group
 
 Group equal, consecutive elements of an array into non empty arrays.
 
@@ -499,7 +502,7 @@ assert.deepStrictEqual(group(ordNumber)([1, 2, 1, 1]), [cons(1, []), cons(2, [])
 
 Added in v2.5.0
 
-# groupBy
+## groupBy
 
 Splits an array into sub-non-empty-arrays stored in an object, based on the result of calling a `string`-returning
 function on each element, and grouping the results according to values returned
@@ -525,7 +528,7 @@ assert.deepStrictEqual(groupBy((s: string) => String(s.length))(['foo', 'bar', '
 
 Added in v2.5.0
 
-# groupSort
+## groupSort
 
 Sort and then group the elements of an array into non empty arrays.
 
@@ -546,7 +549,7 @@ assert.deepStrictEqual(groupSort(ordNumber)([1, 2, 1, 1]), [cons(1, [1, 1]), con
 
 Added in v2.5.0
 
-# head
+## head
 
 **Signature**
 
@@ -556,7 +559,7 @@ export declare function head<A>(nea: ReadonlyNonEmptyArray<A>): A
 
 Added in v2.5.0
 
-# init
+## init
 
 Get all but the last element of a non empty array, creating a new array.
 
@@ -577,7 +580,7 @@ assert.deepStrictEqual(init([1]), [])
 
 Added in v2.5.0
 
-# insertAt
+## insertAt
 
 **Signature**
 
@@ -590,7 +593,7 @@ export declare function insertAt<A>(
 
 Added in v2.5.0
 
-# last
+## last
 
 **Signature**
 
@@ -600,7 +603,7 @@ export declare function last<A>(nea: ReadonlyNonEmptyArray<A>): A
 
 Added in v2.5.0
 
-# map
+## map
 
 **Signature**
 
@@ -610,7 +613,7 @@ export declare const map: <A, B>(f: (a: A) => B) => (fa: ReadonlyNonEmptyArray<A
 
 Added in v2.5.0
 
-# mapWithIndex
+## mapWithIndex
 
 **Signature**
 
@@ -622,7 +625,7 @@ export declare const mapWithIndex: <A, B>(
 
 Added in v2.5.0
 
-# max
+## max
 
 **Signature**
 
@@ -632,7 +635,7 @@ export declare function max<A>(ord: Ord<A>): (nea: ReadonlyNonEmptyArray<A>) => 
 
 Added in v2.5.0
 
-# min
+## min
 
 **Signature**
 
@@ -642,7 +645,7 @@ export declare function min<A>(ord: Ord<A>): (nea: ReadonlyNonEmptyArray<A>) => 
 
 Added in v2.5.0
 
-# modifyAt
+## modifyAt
 
 **Signature**
 
@@ -655,7 +658,7 @@ export declare function modifyAt<A>(
 
 Added in v2.5.0
 
-# monadReadonlyNonEmptyArray
+## monadReadonlyNonEmptyArray
 
 **Signature**
 
@@ -665,7 +668,7 @@ export declare const monadReadonlyNonEmptyArray: Monad1<'ReadonlyNonEmptyArray'>
 
 Added in v3.0.0
 
-# of
+## of
 
 **Signature**
 
@@ -675,7 +678,7 @@ export declare const of: <A>(a: A) => ReadonlyNonEmptyArray<A>
 
 Added in v2.5.0
 
-# reduce
+## reduce
 
 **Signature**
 
@@ -685,7 +688,7 @@ export declare const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: Readonly
 
 Added in v2.5.0
 
-# reduceRight
+## reduceRight
 
 **Signature**
 
@@ -695,7 +698,7 @@ export declare const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: Rea
 
 Added in v2.5.0
 
-# reduceRightWithIndex
+## reduceRightWithIndex
 
 **Signature**
 
@@ -708,7 +711,7 @@ export declare const reduceRightWithIndex: <A, B>(
 
 Added in v2.5.0
 
-# reduceWithIndex
+## reduceWithIndex
 
 **Signature**
 
@@ -721,7 +724,7 @@ export declare const reduceWithIndex: <A, B>(
 
 Added in v2.5.0
 
-# reverse
+## reverse
 
 **Signature**
 
@@ -731,7 +734,7 @@ export declare const reverse: <A>(nea: ReadonlyNonEmptyArray<A>) => ReadonlyNonE
 
 Added in v2.5.0
 
-# sequence
+## sequence
 
 **Signature**
 
@@ -741,7 +744,7 @@ export declare const sequence: Sequence1<'ReadonlyNonEmptyArray'>
 
 Added in v3.0.0
 
-# snoc
+## snoc
 
 Append an element to the end of an array, creating a new non empty array
 
@@ -761,7 +764,7 @@ assert.deepStrictEqual(snoc([1, 2, 3], 4), [1, 2, 3, 4])
 
 Added in v2.5.0
 
-# sort
+## sort
 
 **Signature**
 
@@ -771,7 +774,7 @@ export declare function sort<A>(O: Ord<A>): (nea: ReadonlyNonEmptyArray<A>) => R
 
 Added in v2.5.0
 
-# tail
+## tail
 
 **Signature**
 
@@ -781,7 +784,7 @@ export declare function tail<A>(nea: ReadonlyNonEmptyArray<A>): ReadonlyArray<A>
 
 Added in v2.5.0
 
-# traversableReadonlyNonEmptyArray
+## traversableReadonlyNonEmptyArray
 
 **Signature**
 
@@ -791,7 +794,7 @@ export declare const traversableReadonlyNonEmptyArray: Traversable1<'ReadonlyNon
 
 Added in v3.0.0
 
-# traversableWithIndexReadonlyNonEmptyArray
+## traversableWithIndexReadonlyNonEmptyArray
 
 **Signature**
 
@@ -801,7 +804,7 @@ export declare const traversableWithIndexReadonlyNonEmptyArray: TraversableWithI
 
 Added in v3.0.0
 
-# traverse
+## traverse
 
 **Signature**
 
@@ -811,7 +814,7 @@ export declare const traverse: Traverse1<'ReadonlyNonEmptyArray'>
 
 Added in v3.0.0
 
-# traverseWithIndex
+## traverseWithIndex
 
 **Signature**
 
@@ -821,7 +824,7 @@ export declare const traverseWithIndex: TraverseWithIndex1<'ReadonlyNonEmptyArra
 
 Added in v3.0.0
 
-# unzip
+## unzip
 
 **Signature**
 
@@ -833,7 +836,7 @@ export declare const unzip: <A, B>(
 
 Added in v2.5.1
 
-# updateAt
+## updateAt
 
 **Signature**
 
@@ -846,7 +849,7 @@ export declare function updateAt<A>(
 
 Added in v2.5.0
 
-# zip
+## zip
 
 **Signature**
 
@@ -859,7 +862,7 @@ export declare const zip: <A, B>(
 
 Added in v2.5.1
 
-# zipWith
+## zipWith
 
 **Signature**
 

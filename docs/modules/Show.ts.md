@@ -4,7 +4,7 @@ nav_order: 70
 parent: Modules
 ---
 
-# Show overview
+## Show overview
 
 Added in v2.0.0
 
@@ -12,16 +12,19 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Show (interface)](#show-interface)
-- [getStructShow](#getstructshow)
-- [getTupleShow](#gettupleshow)
-- [showBoolean](#showboolean)
-- [showNumber](#shownumber)
-- [showString](#showstring)
+- [utils](#utils)
+  - [Show (interface)](#show-interface)
+  - [getStructShow](#getstructshow)
+  - [getTupleShow](#gettupleshow)
+  - [showBoolean](#showboolean)
+  - [showNumber](#shownumber)
+  - [showString](#showstring)
 
 ---
 
-# Show (interface)
+# utils
+
+## Show (interface)
 
 The `Show` type class represents those types which can be converted into
 a human-readable `string` representation.
@@ -40,7 +43,7 @@ export interface Show<A> {
 
 Added in v2.0.0
 
-# getStructShow
+## getStructShow
 
 **Signature**
 
@@ -52,7 +55,7 @@ export declare function getStructShow<O extends ReadonlyRecord<string, any>>(
 
 Added in v2.0.0
 
-# getTupleShow
+## getTupleShow
 
 **Signature**
 
@@ -64,7 +67,7 @@ export declare function getTupleShow<T extends ReadonlyArray<Show<any>>>(
 
 Added in v2.0.0
 
-# showBoolean
+## showBoolean
 
 **Signature**
 
@@ -74,7 +77,7 @@ export declare const showBoolean: Show<boolean>
 
 Added in v2.0.0
 
-# showNumber
+## showNumber
 
 **Signature**
 
@@ -84,7 +87,7 @@ export declare const showNumber: Show<number>
 
 Added in v2.0.0
 
-# showString
+## showString
 
 **Signature**
 

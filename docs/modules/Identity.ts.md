@@ -4,7 +4,7 @@ nav_order: 36
 parent: Modules
 ---
 
-# Identity overview
+## Identity overview
 
 Added in v2.0.0
 
@@ -12,41 +12,44 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Identity (type alias)](#identity-type-alias)
-- [URI (type alias)](#uri-type-alias)
-- [URI](#uri)
-- [alt](#alt)
-- [altIdentity](#altidentity)
-- [ap](#ap)
-- [apFirst](#apfirst)
-- [apSecond](#apsecond)
-- [applicativeIdentity](#applicativeidentity)
-- [applyIdentity](#applyidentity)
-- [chain](#chain)
-- [chainFirst](#chainfirst)
-- [comonadIdentity](#comonadidentity)
-- [duplicate](#duplicate)
-- [extend](#extend)
-- [extendIdentity](#extendidentity)
-- [extract](#extract)
-- [flatten](#flatten)
-- [foldMap](#foldmap)
-- [foldableIdentity](#foldableidentity)
-- [functorIdentity](#functoridentity)
-- [getEq](#geteq)
-- [getShow](#getshow)
-- [map](#map)
-- [monadIdentity](#monadidentity)
-- [of](#of)
-- [reduce](#reduce)
-- [reduceRight](#reduceright)
-- [sequence](#sequence)
-- [traversableIdentity](#traversableidentity)
-- [traverse](#traverse)
+- [utils](#utils)
+  - [Identity (type alias)](#identity-type-alias)
+  - [URI](#uri)
+  - [URI (type alias)](#uri-type-alias)
+  - [alt](#alt)
+  - [altIdentity](#altidentity)
+  - [ap](#ap)
+  - [apFirst](#apfirst)
+  - [apSecond](#apsecond)
+  - [applicativeIdentity](#applicativeidentity)
+  - [applyIdentity](#applyidentity)
+  - [chain](#chain)
+  - [chainFirst](#chainfirst)
+  - [comonadIdentity](#comonadidentity)
+  - [duplicate](#duplicate)
+  - [extend](#extend)
+  - [extendIdentity](#extendidentity)
+  - [extract](#extract)
+  - [flatten](#flatten)
+  - [foldMap](#foldmap)
+  - [foldableIdentity](#foldableidentity)
+  - [functorIdentity](#functoridentity)
+  - [getEq](#geteq)
+  - [getShow](#getshow)
+  - [map](#map)
+  - [monadIdentity](#monadidentity)
+  - [of](#of)
+  - [reduce](#reduce)
+  - [reduceRight](#reduceright)
+  - [sequence](#sequence)
+  - [traversableIdentity](#traversableidentity)
+  - [traverse](#traverse)
 
 ---
 
-# Identity (type alias)
+# utils
+
+## Identity (type alias)
 
 **Signature**
 
@@ -56,17 +59,7 @@ export type Identity<A> = A
 
 Added in v2.0.0
 
-# URI (type alias)
-
-**Signature**
-
-```ts
-export type URI = typeof URI
-```
-
-Added in v2.0.0
-
-# URI
+## URI
 
 **Signature**
 
@@ -76,7 +69,17 @@ export declare const URI: 'Identity'
 
 Added in v2.0.0
 
-# alt
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
+```
+
+Added in v2.0.0
+
+## alt
 
 **Signature**
 
@@ -86,7 +89,7 @@ export declare const alt: <A>(that: () => A) => (fa: A) => A
 
 Added in v2.0.0
 
-# altIdentity
+## altIdentity
 
 **Signature**
 
@@ -96,7 +99,7 @@ export declare const altIdentity: Alt1<'Identity'>
 
 Added in v3.0.0
 
-# ap
+## ap
 
 **Signature**
 
@@ -106,7 +109,7 @@ export declare const ap: <A>(fa: A) => <B>(fab: (a: A) => B) => B
 
 Added in v2.0.0
 
-# apFirst
+## apFirst
 
 **Signature**
 
@@ -116,7 +119,7 @@ export declare const apFirst: <B>(fb: B) => <A>(fa: A) => A
 
 Added in v2.0.0
 
-# apSecond
+## apSecond
 
 **Signature**
 
@@ -126,7 +129,7 @@ export declare const apSecond: <B>(fb: B) => <A>(fa: A) => B
 
 Added in v2.0.0
 
-# applicativeIdentity
+## applicativeIdentity
 
 **Signature**
 
@@ -136,7 +139,7 @@ export declare const applicativeIdentity: Applicative1<'Identity'>
 
 Added in v3.0.0
 
-# applyIdentity
+## applyIdentity
 
 **Signature**
 
@@ -146,7 +149,7 @@ export declare const applyIdentity: Apply1<'Identity'>
 
 Added in v3.0.0
 
-# chain
+## chain
 
 **Signature**
 
@@ -156,7 +159,7 @@ export declare const chain: <A, B>(f: (a: A) => B) => (ma: A) => B
 
 Added in v2.0.0
 
-# chainFirst
+## chainFirst
 
 **Signature**
 
@@ -166,7 +169,7 @@ export declare const chainFirst: <A, B>(f: (a: A) => B) => (ma: A) => A
 
 Added in v2.0.0
 
-# comonadIdentity
+## comonadIdentity
 
 **Signature**
 
@@ -176,7 +179,7 @@ export declare const comonadIdentity: Comonad1<'Identity'>
 
 Added in v3.0.0
 
-# duplicate
+## duplicate
 
 **Signature**
 
@@ -186,7 +189,7 @@ export declare const duplicate: <A>(ma: A) => A
 
 Added in v2.0.0
 
-# extend
+## extend
 
 **Signature**
 
@@ -196,7 +199,7 @@ export declare const extend: <A, B>(f: (wa: A) => B) => (wa: A) => B
 
 Added in v2.0.0
 
-# extendIdentity
+## extendIdentity
 
 **Signature**
 
@@ -206,7 +209,7 @@ export declare const extendIdentity: Extend1<'Identity'>
 
 Added in v3.0.0
 
-# extract
+## extract
 
 **Signature**
 
@@ -216,7 +219,7 @@ export declare const extract: <A>(wa: A) => A
 
 Added in v2.6.2
 
-# flatten
+## flatten
 
 **Signature**
 
@@ -226,7 +229,7 @@ export declare const flatten: <A>(mma: A) => A
 
 Added in v2.0.0
 
-# foldMap
+## foldMap
 
 **Signature**
 
@@ -236,7 +239,7 @@ export declare const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: A
 
 Added in v2.0.0
 
-# foldableIdentity
+## foldableIdentity
 
 **Signature**
 
@@ -246,7 +249,7 @@ export declare const foldableIdentity: Foldable1<'Identity'>
 
 Added in v3.0.0
 
-# functorIdentity
+## functorIdentity
 
 **Signature**
 
@@ -256,7 +259,7 @@ export declare const functorIdentity: Functor1<'Identity'>
 
 Added in v3.0.0
 
-# getEq
+## getEq
 
 **Signature**
 
@@ -266,7 +269,7 @@ export declare const getEq: <A>(E: Eq<A>) => Eq<A>
 
 Added in v2.0.0
 
-# getShow
+## getShow
 
 **Signature**
 
@@ -276,7 +279,7 @@ export declare const getShow: <A>(S: Show<A>) => Show<A>
 
 Added in v2.0.0
 
-# map
+## map
 
 **Signature**
 
@@ -286,7 +289,7 @@ export declare const map: <A, B>(f: (a: A) => B) => (fa: A) => B
 
 Added in v2.0.0
 
-# monadIdentity
+## monadIdentity
 
 **Signature**
 
@@ -296,7 +299,7 @@ export declare const monadIdentity: Monad1<'Identity'>
 
 Added in v3.0.0
 
-# of
+## of
 
 **Signature**
 
@@ -306,7 +309,7 @@ export declare const of: <A>(a: A) => A
 
 Added in v3.0.0
 
-# reduce
+## reduce
 
 **Signature**
 
@@ -316,7 +319,7 @@ export declare const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: A) => B
 
 Added in v2.0.0
 
-# reduceRight
+## reduceRight
 
 **Signature**
 
@@ -326,7 +329,7 @@ export declare const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: A) 
 
 Added in v2.0.0
 
-# sequence
+## sequence
 
 **Signature**
 
@@ -336,7 +339,7 @@ export declare const sequence: Sequence1<'Identity'>
 
 Added in v3.0.0
 
-# traversableIdentity
+## traversableIdentity
 
 **Signature**
 
@@ -346,7 +349,7 @@ export declare const traversableIdentity: Traversable1<'Identity'>
 
 Added in v3.0.0
 
-# traverse
+## traverse
 
 **Signature**
 

@@ -4,7 +4,7 @@ nav_order: 52
 parent: Modules
 ---
 
-# Ord overview
+## Ord overview
 
 The `Ord` type class represents types which support comparisons with a _total order_.
 
@@ -20,30 +20,33 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Ord (interface)](#ord-interface)
-- [URI (type alias)](#uri-type-alias)
-- [URI](#uri)
-- [between](#between)
-- [clamp](#clamp)
-- [contramap](#contramap)
-- [contravariantOrd](#contravariantord)
-- [fromCompare](#fromcompare)
-- [geq](#geq)
-- [getDualOrd](#getdualord)
-- [getMonoid](#getmonoid)
-- [getTupleOrd](#gettupleord)
-- [gt](#gt)
-- [leq](#leq)
-- [lt](#lt)
-- [max](#max)
-- [min](#min)
-- [ordBoolean](#ordboolean)
-- [ordNumber](#ordnumber)
-- [ordString](#ordstring)
+- [utils](#utils)
+  - [Ord (interface)](#ord-interface)
+  - [URI](#uri)
+  - [URI (type alias)](#uri-type-alias)
+  - [between](#between)
+  - [clamp](#clamp)
+  - [contramap](#contramap)
+  - [contravariantOrd](#contravariantord)
+  - [fromCompare](#fromcompare)
+  - [geq](#geq)
+  - [getDualOrd](#getdualord)
+  - [getMonoid](#getmonoid)
+  - [getTupleOrd](#gettupleord)
+  - [gt](#gt)
+  - [leq](#leq)
+  - [lt](#lt)
+  - [max](#max)
+  - [min](#min)
+  - [ordBoolean](#ordboolean)
+  - [ordNumber](#ordnumber)
+  - [ordString](#ordstring)
 
 ---
 
-# Ord (interface)
+# utils
+
+## Ord (interface)
 
 **Signature**
 
@@ -55,17 +58,7 @@ export interface Ord<A> extends Eq<A> {
 
 Added in v2.0.0
 
-# URI (type alias)
-
-**Signature**
-
-```ts
-export type URI = typeof URI
-```
-
-Added in v2.0.0
-
-# URI
+## URI
 
 **Signature**
 
@@ -75,7 +68,17 @@ export declare const URI: 'Ord'
 
 Added in v2.0.0
 
-# between
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
+```
+
+Added in v2.0.0
+
+## between
 
 Test whether a value is between a minimum and a maximum (inclusive)
 
@@ -87,7 +90,7 @@ export declare function between<A>(O: Ord<A>): (low: A, hi: A) => (x: A) => bool
 
 Added in v2.0.0
 
-# clamp
+## clamp
 
 Clamp a value between a minimum and a maximum
 
@@ -99,7 +102,7 @@ export declare function clamp<A>(O: Ord<A>): (low: A, hi: A) => (x: A) => A
 
 Added in v2.0.0
 
-# contramap
+## contramap
 
 **Signature**
 
@@ -109,7 +112,7 @@ export declare const contramap: <A, B>(f: (b: B) => A) => (fa: Ord<A>) => Ord<B>
 
 Added in v2.0.0
 
-# contravariantOrd
+## contravariantOrd
 
 **Signature**
 
@@ -119,7 +122,7 @@ export declare const contravariantOrd: Contravariant1<'Ord'>
 
 Added in v2.0.0
 
-# fromCompare
+## fromCompare
 
 **Signature**
 
@@ -129,7 +132,7 @@ export declare function fromCompare<A>(compare: (x: A, y: A) => Ordering): Ord<A
 
 Added in v2.0.0
 
-# geq
+## geq
 
 Test whether one value is _non-strictly greater than_ another
 
@@ -141,7 +144,7 @@ export declare function geq<A>(O: Ord<A>): (x: A, y: A) => boolean
 
 Added in v2.0.0
 
-# getDualOrd
+## getDualOrd
 
 **Signature**
 
@@ -151,7 +154,7 @@ export declare function getDualOrd<A>(O: Ord<A>): Ord<A>
 
 Added in v2.0.0
 
-# getMonoid
+## getMonoid
 
 Returns a `Monoid` such that:
 
@@ -224,7 +227,7 @@ assert.deepStrictEqual(sort(O2)(users), [
 
 Added in v2.4.0
 
-# getTupleOrd
+## getTupleOrd
 
 Given a tuple of `Ord`s returns an `Ord` for the tuple
 
@@ -249,7 +252,7 @@ assert.strictEqual(O.compare(['a', 1, true], ['a', 1, false]), 1)
 
 Added in v2.0.0
 
-# gt
+## gt
 
 Test whether one value is _strictly greater than_ another
 
@@ -261,7 +264,7 @@ export declare function gt<A>(O: Ord<A>): (x: A, y: A) => boolean
 
 Added in v2.0.0
 
-# leq
+## leq
 
 Test whether one value is _non-strictly less than_ another
 
@@ -273,7 +276,7 @@ export declare function leq<A>(O: Ord<A>): (x: A, y: A) => boolean
 
 Added in v2.0.0
 
-# lt
+## lt
 
 Test whether one value is _strictly less than_ another
 
@@ -285,7 +288,7 @@ export declare function lt<A>(O: Ord<A>): (x: A, y: A) => boolean
 
 Added in v2.0.0
 
-# max
+## max
 
 Take the maximum of two values. If they are considered equal, the first argument is chosen
 
@@ -297,7 +300,7 @@ export declare function max<A>(O: Ord<A>): (x: A, y: A) => A
 
 Added in v2.0.0
 
-# min
+## min
 
 Take the minimum of two values. If they are considered equal, the first argument is chosen
 
@@ -309,7 +312,7 @@ export declare function min<A>(O: Ord<A>): (x: A, y: A) => A
 
 Added in v2.0.0
 
-# ordBoolean
+## ordBoolean
 
 **Signature**
 
@@ -319,7 +322,7 @@ export declare const ordBoolean: Ord<boolean>
 
 Added in v2.0.0
 
-# ordNumber
+## ordNumber
 
 **Signature**
 
@@ -329,7 +332,7 @@ export declare const ordNumber: Ord<number>
 
 Added in v2.0.0
 
-# ordString
+## ordString
 
 **Signature**
 

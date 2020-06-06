@@ -4,7 +4,7 @@ nav_order: 69
 parent: Modules
 ---
 
-# Semiring overview
+## Semiring overview
 
 The `Semiring` class is for types that support an addition and multiplication operation.
 
@@ -32,12 +32,15 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Semiring (interface)](#semiring-interface)
-- [getFunctionSemiring](#getfunctionsemiring)
+- [utils](#utils)
+  - [Semiring (interface)](#semiring-interface)
+  - [getFunctionSemiring](#getfunctionsemiring)
 
 ---
 
-# Semiring (interface)
+# utils
+
+## Semiring (interface)
 
 **Signature**
 
@@ -52,7 +55,7 @@ export interface Semiring<A> {
 
 Added in v2.0.0
 
-# getFunctionSemiring
+## getFunctionSemiring
 
 **Signature**
 

@@ -4,7 +4,7 @@ nav_order: 80
 parent: Modules
 ---
 
-# Traversable overview
+## Traversable overview
 
 `Traversable` represents data structures which can be _traversed_ accumulating results and effects in some
 `Applicative` functor.
@@ -37,25 +37,28 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Sequence (interface)](#sequence-interface)
-- [Sequence1 (interface)](#sequence1-interface)
-- [Sequence2 (interface)](#sequence2-interface)
-- [Sequence2C (interface)](#sequence2c-interface)
-- [Sequence3 (interface)](#sequence3-interface)
-- [Traversable (interface)](#traversable-interface)
-- [Traversable1 (interface)](#traversable1-interface)
-- [Traversable2 (interface)](#traversable2-interface)
-- [Traversable2C (interface)](#traversable2c-interface)
-- [Traversable3 (interface)](#traversable3-interface)
-- [Traverse (interface)](#traverse-interface)
-- [Traverse1 (interface)](#traverse1-interface)
-- [Traverse2 (interface)](#traverse2-interface)
-- [Traverse2C (interface)](#traverse2c-interface)
-- [Traverse3 (interface)](#traverse3-interface)
+- [utils](#utils)
+  - [Sequence (interface)](#sequence-interface)
+  - [Sequence1 (interface)](#sequence1-interface)
+  - [Sequence2 (interface)](#sequence2-interface)
+  - [Sequence2C (interface)](#sequence2c-interface)
+  - [Sequence3 (interface)](#sequence3-interface)
+  - [Traversable (interface)](#traversable-interface)
+  - [Traversable1 (interface)](#traversable1-interface)
+  - [Traversable2 (interface)](#traversable2-interface)
+  - [Traversable2C (interface)](#traversable2c-interface)
+  - [Traversable3 (interface)](#traversable3-interface)
+  - [Traverse (interface)](#traverse-interface)
+  - [Traverse1 (interface)](#traverse1-interface)
+  - [Traverse2 (interface)](#traverse2-interface)
+  - [Traverse2C (interface)](#traverse2c-interface)
+  - [Traverse3 (interface)](#traverse3-interface)
 
 ---
 
-# Sequence (interface)
+# utils
+
+## Sequence (interface)
 
 **Signature**
 
@@ -72,7 +75,7 @@ export interface Sequence<T> {
 
 Added in v3.0.0
 
-# Sequence1 (interface)
+## Sequence1 (interface)
 
 **Signature**
 
@@ -89,7 +92,7 @@ export interface Sequence1<T extends URIS> {
 
 Added in v3.0.0
 
-# Sequence2 (interface)
+## Sequence2 (interface)
 
 **Signature**
 
@@ -109,7 +112,7 @@ export interface Sequence2<T extends URIS2> {
 
 Added in v3.0.0
 
-# Sequence2C (interface)
+## Sequence2C (interface)
 
 **Signature**
 
@@ -129,7 +132,7 @@ export interface Sequence2C<T extends URIS2, TE> {
 
 Added in v3.0.0
 
-# Sequence3 (interface)
+## Sequence3 (interface)
 
 **Signature**
 
@@ -151,7 +154,7 @@ export interface Sequence3<T extends URIS3> {
 
 Added in v3.0.0
 
-# Traversable (interface)
+## Traversable (interface)
 
 **Signature**
 
@@ -167,7 +170,7 @@ export interface Traversable<T> extends Functor<T>, Foldable<T> {
 
 Added in v3.0.0
 
-# Traversable1 (interface)
+## Traversable1 (interface)
 
 **Signature**
 
@@ -180,7 +183,7 @@ export interface Traversable1<T extends URIS> extends Functor1<T>, Foldable1<T> 
 
 Added in v3.0.0
 
-# Traversable2 (interface)
+## Traversable2 (interface)
 
 **Signature**
 
@@ -193,7 +196,7 @@ export interface Traversable2<T extends URIS2> extends Functor2<T>, Foldable2<T>
 
 Added in v3.0.0
 
-# Traversable2C (interface)
+## Traversable2C (interface)
 
 **Signature**
 
@@ -206,7 +209,7 @@ export interface Traversable2C<T extends URIS2, TL> extends Functor2C<T, TL>, Fo
 
 Added in v3.0.0
 
-# Traversable3 (interface)
+## Traversable3 (interface)
 
 **Signature**
 
@@ -219,7 +222,7 @@ export interface Traversable3<T extends URIS3> extends Functor3<T>, Foldable3<T>
 
 Added in v3.0.0
 
-# Traverse (interface)
+## Traverse (interface)
 
 **Signature**
 
@@ -244,7 +247,7 @@ export interface Traverse<T> {
 
 Added in v3.0.0
 
-# Traverse1 (interface)
+## Traverse1 (interface)
 
 **Signature**
 
@@ -269,7 +272,7 @@ export interface Traverse1<T extends URIS> {
 
 Added in v3.0.0
 
-# Traverse2 (interface)
+## Traverse2 (interface)
 
 **Signature**
 
@@ -293,7 +296,7 @@ export interface Traverse2<T extends URIS2> {
 
 Added in v3.0.0
 
-# Traverse2C (interface)
+## Traverse2C (interface)
 
 **Signature**
 
@@ -317,7 +320,7 @@ export interface Traverse2C<T extends URIS2, TE> {
 
 Added in v3.0.0
 
-# Traverse3 (interface)
+## Traverse3 (interface)
 
 **Signature**
 

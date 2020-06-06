@@ -4,7 +4,7 @@ nav_order: 82
 parent: Modules
 ---
 
-# Tree overview
+## Tree overview
 
 Multi-way trees (aka rose trees) and forests, where a forest is
 
@@ -18,48 +18,61 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Tree (interface)](#tree-interface)
-- [Forest (type alias)](#forest-type-alias)
-- [URI (type alias)](#uri-type-alias)
-- [URI](#uri)
-- [ap](#ap)
-- [apFirst](#apfirst)
-- [apSecond](#apsecond)
-- [applicativeTree](#applicativetree)
-- [applyTree](#applytree)
-- [chain](#chain)
-- [chainFirst](#chainfirst)
-- [comonadTree](#comonadtree)
-- [drawForest](#drawforest)
-- [drawTree](#drawtree)
-- [duplicate](#duplicate)
-- [elem](#elem)
-- [extend](#extend)
-- [extendTree](#extendtree)
-- [extract](#extract)
-- [flatten](#flatten)
-- [fold](#fold)
-- [foldMap](#foldmap)
-- [foldableTree](#foldabletree)
-- [functorTree](#functortree)
-- [getEq](#geteq)
-- [getShow](#getshow)
-- [make](#make)
-- [map](#map)
-- [monadTree](#monadtree)
-- [reduce](#reduce)
-- [reduceRight](#reduceright)
-- [sequence](#sequence)
-- [traversableTree](#traversabletree)
-- [traverse](#traverse)
-- [unfoldForest](#unfoldforest)
-- [unfoldForestM](#unfoldforestm)
-- [unfoldTree](#unfoldtree)
-- [unfoldTreeM](#unfoldtreem)
+- [utils](#utils)
+  - [Forest (type alias)](#forest-type-alias)
+  - [Tree (interface)](#tree-interface)
+  - [URI](#uri)
+  - [URI (type alias)](#uri-type-alias)
+  - [ap](#ap)
+  - [apFirst](#apfirst)
+  - [apSecond](#apsecond)
+  - [applicativeTree](#applicativetree)
+  - [applyTree](#applytree)
+  - [chain](#chain)
+  - [chainFirst](#chainfirst)
+  - [comonadTree](#comonadtree)
+  - [drawForest](#drawforest)
+  - [drawTree](#drawtree)
+  - [duplicate](#duplicate)
+  - [elem](#elem)
+  - [extend](#extend)
+  - [extendTree](#extendtree)
+  - [extract](#extract)
+  - [flatten](#flatten)
+  - [fold](#fold)
+  - [foldMap](#foldmap)
+  - [foldableTree](#foldabletree)
+  - [functorTree](#functortree)
+  - [getEq](#geteq)
+  - [getShow](#getshow)
+  - [make](#make)
+  - [map](#map)
+  - [monadTree](#monadtree)
+  - [reduce](#reduce)
+  - [reduceRight](#reduceright)
+  - [sequence](#sequence)
+  - [traversableTree](#traversabletree)
+  - [traverse](#traverse)
+  - [unfoldForest](#unfoldforest)
+  - [unfoldForestM](#unfoldforestm)
+  - [unfoldTree](#unfoldtree)
+  - [unfoldTreeM](#unfoldtreem)
 
 ---
 
-# Tree (interface)
+# utils
+
+## Forest (type alias)
+
+**Signature**
+
+```ts
+export type Forest<A> = ReadonlyArray<Tree<A>>
+```
+
+Added in v2.0.0
+
+## Tree (interface)
 
 **Signature**
 
@@ -72,27 +85,7 @@ export interface Tree<A> {
 
 Added in v2.0.0
 
-# Forest (type alias)
-
-**Signature**
-
-```ts
-export type Forest<A> = ReadonlyArray<Tree<A>>
-```
-
-Added in v2.0.0
-
-# URI (type alias)
-
-**Signature**
-
-```ts
-export type URI = typeof URI
-```
-
-Added in v2.0.0
-
-# URI
+## URI
 
 **Signature**
 
@@ -102,7 +95,17 @@ export declare const URI: 'Tree'
 
 Added in v2.0.0
 
-# ap
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
+```
+
+Added in v2.0.0
+
+## ap
 
 **Signature**
 
@@ -112,7 +115,7 @@ export declare const ap: <A>(fa: Tree<A>) => <B>(fab: Tree<(a: A) => B>) => Tree
 
 Added in v2.0.0
 
-# apFirst
+## apFirst
 
 **Signature**
 
@@ -122,7 +125,7 @@ export declare const apFirst: <B>(fb: Tree<B>) => <A>(fa: Tree<A>) => Tree<A>
 
 Added in v2.0.0
 
-# apSecond
+## apSecond
 
 **Signature**
 
@@ -132,7 +135,7 @@ export declare const apSecond: <B>(fb: Tree<B>) => <A>(fa: Tree<A>) => Tree<B>
 
 Added in v2.0.0
 
-# applicativeTree
+## applicativeTree
 
 **Signature**
 
@@ -142,7 +145,7 @@ export declare const applicativeTree: Applicative1<'Tree'>
 
 Added in v3.0.0
 
-# applyTree
+## applyTree
 
 **Signature**
 
@@ -152,7 +155,7 @@ export declare const applyTree: Apply1<'Tree'>
 
 Added in v3.0.0
 
-# chain
+## chain
 
 **Signature**
 
@@ -162,7 +165,7 @@ export declare const chain: <A, B>(f: (a: A) => Tree<B>) => (ma: Tree<A>) => Tre
 
 Added in v2.0.0
 
-# chainFirst
+## chainFirst
 
 **Signature**
 
@@ -172,7 +175,7 @@ export declare const chainFirst: <A, B>(f: (a: A) => Tree<B>) => (ma: Tree<A>) =
 
 Added in v2.0.0
 
-# comonadTree
+## comonadTree
 
 **Signature**
 
@@ -182,7 +185,7 @@ export declare const comonadTree: Comonad1<'Tree'>
 
 Added in v3.0.0
 
-# drawForest
+## drawForest
 
 Neat 2-dimensional drawing of a forest
 
@@ -194,7 +197,7 @@ export declare function drawForest(forest: Forest<string>): string
 
 Added in v2.0.0
 
-# drawTree
+## drawTree
 
 Neat 2-dimensional drawing of a tree
 
@@ -224,7 +227,7 @@ assert.strictEqual(
 
 Added in v2.0.0
 
-# duplicate
+## duplicate
 
 **Signature**
 
@@ -234,7 +237,7 @@ export declare const duplicate: <A>(wa: Tree<A>) => Tree<Tree<A>>
 
 Added in v2.0.0
 
-# elem
+## elem
 
 **Signature**
 
@@ -244,7 +247,7 @@ export declare function elem<A>(E: Eq<A>): (a: A, fa: Tree<A>) => boolean
 
 Added in v2.0.0
 
-# extend
+## extend
 
 **Signature**
 
@@ -254,7 +257,7 @@ export declare const extend: <A, B>(f: (wa: Tree<A>) => B) => (wa: Tree<A>) => T
 
 Added in v2.0.0
 
-# extendTree
+## extendTree
 
 **Signature**
 
@@ -264,7 +267,7 @@ export declare const extendTree: Extend1<'Tree'>
 
 Added in v3.0.0
 
-# extract
+## extract
 
 **Signature**
 
@@ -274,7 +277,7 @@ export declare const extract: <A>(wa: Tree<A>) => A
 
 Added in v2.6.2
 
-# flatten
+## flatten
 
 **Signature**
 
@@ -284,7 +287,7 @@ export declare const flatten: <A>(mma: Tree<Tree<A>>) => Tree<A>
 
 Added in v2.0.0
 
-# fold
+## fold
 
 Fold a tree into a "summary" value in depth-first order.
 
@@ -319,7 +322,7 @@ assert.deepStrictEqual(fold((_: number, bs: ReadonlyArray<number>) => (bs.length
 
 Added in v2.6.0
 
-# foldMap
+## foldMap
 
 **Signature**
 
@@ -329,7 +332,7 @@ export declare const foldMap: <M>(M: Monoid<M>) => <A>(f: (a: A) => M) => (fa: T
 
 Added in v2.0.0
 
-# foldableTree
+## foldableTree
 
 **Signature**
 
@@ -339,7 +342,7 @@ export declare const foldableTree: Foldable1<'Tree'>
 
 Added in v3.0.0
 
-# functorTree
+## functorTree
 
 **Signature**
 
@@ -349,7 +352,7 @@ export declare const functorTree: Functor1<'Tree'>
 
 Added in v3.0.0
 
-# getEq
+## getEq
 
 **Signature**
 
@@ -359,7 +362,7 @@ export declare function getEq<A>(E: Eq<A>): Eq<Tree<A>>
 
 Added in v2.0.0
 
-# getShow
+## getShow
 
 **Signature**
 
@@ -369,7 +372,7 @@ export declare function getShow<A>(S: Show<A>): Show<Tree<A>>
 
 Added in v2.0.0
 
-# make
+## make
 
 **Signature**
 
@@ -379,7 +382,7 @@ export declare function make<A>(value: A, forest: Forest<A> = RA.empty): Tree<A>
 
 Added in v2.0.0
 
-# map
+## map
 
 **Signature**
 
@@ -389,7 +392,7 @@ export declare const map: <A, B>(f: (a: A) => B) => (fa: Tree<A>) => Tree<B>
 
 Added in v2.0.0
 
-# monadTree
+## monadTree
 
 **Signature**
 
@@ -399,7 +402,7 @@ export declare const monadTree: Monad1<'Tree'>
 
 Added in v3.0.0
 
-# reduce
+## reduce
 
 **Signature**
 
@@ -409,7 +412,7 @@ export declare const reduce: <A, B>(b: B, f: (b: B, a: A) => B) => (fa: Tree<A>)
 
 Added in v2.0.0
 
-# reduceRight
+## reduceRight
 
 **Signature**
 
@@ -419,7 +422,7 @@ export declare const reduceRight: <A, B>(b: B, f: (a: A, b: B) => B) => (fa: Tre
 
 Added in v2.0.0
 
-# sequence
+## sequence
 
 **Signature**
 
@@ -429,7 +432,7 @@ export declare const sequence: Sequence1<'Tree'>
 
 Added in v3.0.0
 
-# traversableTree
+## traversableTree
 
 **Signature**
 
@@ -439,7 +442,7 @@ export declare const traversableTree: Traversable1<'Tree'>
 
 Added in v3.0.0
 
-# traverse
+## traverse
 
 **Signature**
 
@@ -449,7 +452,7 @@ export declare const traverse: Traverse1<'Tree'>
 
 Added in v3.0.0
 
-# unfoldForest
+## unfoldForest
 
 Build a tree from a seed value
 
@@ -461,7 +464,7 @@ export declare function unfoldForest<A, B>(bs: ReadonlyArray<B>, f: (b: B) => re
 
 Added in v2.0.0
 
-# unfoldForestM
+## unfoldForestM
 
 Monadic forest builder, in depth-first order
 
@@ -496,7 +499,7 @@ export declare function unfoldForestM<M>(
 
 Added in v2.0.0
 
-# unfoldTree
+## unfoldTree
 
 Build a tree from a seed value
 
@@ -508,7 +511,7 @@ export declare function unfoldTree<A, B>(b: B, f: (b: B) => readonly [A, Readonl
 
 Added in v2.0.0
 
-# unfoldTreeM
+## unfoldTreeM
 
 Monadic tree builder, in depth-first order
 

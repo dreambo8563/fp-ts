@@ -4,7 +4,7 @@ nav_order: 56
 parent: Modules
 ---
 
-# Reader overview
+## Reader overview
 
 Added in v2.0.0
 
@@ -12,36 +12,39 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Reader (interface)](#reader-interface)
-- [URI (type alias)](#uri-type-alias)
-- [URI](#uri)
-- [ap](#ap)
-- [apFirst](#apfirst)
-- [apSecond](#apsecond)
-- [applicativeReader](#applicativereader)
-- [applyReader](#applyreader)
-- [ask](#ask)
-- [asks](#asks)
-- [categoryReader](#categoryreader)
-- [chain](#chain)
-- [chainFirst](#chainfirst)
-- [chainW](#chainw)
-- [flatten](#flatten)
-- [functorReader](#functorreader)
-- [getMonoid](#getmonoid)
-- [getSemigroup](#getsemigroup)
-- [local](#local)
-- [map](#map)
-- [monadReader](#monadreader)
-- [of](#of)
-- [pipe](#pipe)
-- [profunctorReader](#profunctorreader)
-- [promap](#promap)
-- [semigroupoidReader](#semigroupoidreader)
+- [utils](#utils)
+  - [Reader (interface)](#reader-interface)
+  - [URI](#uri)
+  - [URI (type alias)](#uri-type-alias)
+  - [ap](#ap)
+  - [apFirst](#apfirst)
+  - [apSecond](#apsecond)
+  - [applicativeReader](#applicativereader)
+  - [applyReader](#applyreader)
+  - [ask](#ask)
+  - [asks](#asks)
+  - [categoryReader](#categoryreader)
+  - [chain](#chain)
+  - [chainFirst](#chainfirst)
+  - [chainW](#chainw)
+  - [flatten](#flatten)
+  - [functorReader](#functorreader)
+  - [getMonoid](#getmonoid)
+  - [getSemigroup](#getsemigroup)
+  - [local](#local)
+  - [map](#map)
+  - [monadReader](#monadreader)
+  - [of](#of)
+  - [pipe](#pipe)
+  - [profunctorReader](#profunctorreader)
+  - [promap](#promap)
+  - [semigroupoidReader](#semigroupoidreader)
 
 ---
 
-# Reader (interface)
+# utils
+
+## Reader (interface)
 
 **Signature**
 
@@ -53,17 +56,7 @@ export interface Reader<R, A> {
 
 Added in v2.0.0
 
-# URI (type alias)
-
-**Signature**
-
-```ts
-export type URI = typeof URI
-```
-
-Added in v2.0.0
-
-# URI
+## URI
 
 **Signature**
 
@@ -73,7 +66,17 @@ export declare const URI: 'Reader'
 
 Added in v2.0.0
 
-# ap
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
+```
+
+Added in v2.0.0
+
+## ap
 
 **Signature**
 
@@ -83,7 +86,7 @@ export declare const ap: <R, A>(fa: Reader<R, A>) => <B>(fab: Reader<R, (a: A) =
 
 Added in v2.0.0
 
-# apFirst
+## apFirst
 
 **Signature**
 
@@ -93,7 +96,7 @@ export declare const apFirst: <R, B>(fb: Reader<R, B>) => <A>(fa: Reader<R, A>) 
 
 Added in v2.0.0
 
-# apSecond
+## apSecond
 
 **Signature**
 
@@ -103,7 +106,7 @@ export declare const apSecond: <R, B>(fb: Reader<R, B>) => <A>(fa: Reader<R, A>)
 
 Added in v2.0.0
 
-# applicativeReader
+## applicativeReader
 
 **Signature**
 
@@ -113,7 +116,7 @@ export declare const applicativeReader: Applicative2<'Reader'>
 
 Added in v3.0.0
 
-# applyReader
+## applyReader
 
 **Signature**
 
@@ -123,7 +126,7 @@ export declare const applyReader: Apply2<'Reader'>
 
 Added in v3.0.0
 
-# ask
+## ask
 
 Reads the current context
 
@@ -135,7 +138,7 @@ export declare const ask: <R>() => Reader<R, R>
 
 Added in v2.0.0
 
-# asks
+## asks
 
 Projects a value from the global context in a Reader
 
@@ -147,7 +150,7 @@ export declare const asks: <R, A>(f: (r: R) => A) => Reader<R, A>
 
 Added in v2.0.0
 
-# categoryReader
+## categoryReader
 
 **Signature**
 
@@ -157,7 +160,7 @@ export declare const categoryReader: Category2<'Reader'>
 
 Added in v3.0.0
 
-# chain
+## chain
 
 **Signature**
 
@@ -167,7 +170,7 @@ export declare const chain: <A, R, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<
 
 Added in v2.0.0
 
-# chainFirst
+## chainFirst
 
 **Signature**
 
@@ -177,7 +180,7 @@ export declare const chainFirst: <A, R, B>(f: (a: A) => Reader<R, B>) => (ma: Re
 
 Added in v2.0.0
 
-# chainW
+## chainW
 
 **Signature**
 
@@ -187,7 +190,7 @@ export declare const chainW: <A, Q, B>(f: (a: A) => Reader<Q, B>) => <R>(ma: Rea
 
 Added in v2.6.0
 
-# flatten
+## flatten
 
 **Signature**
 
@@ -197,7 +200,7 @@ export declare const flatten: <R, A>(mma: Reader<R, Reader<R, A>>) => Reader<R, 
 
 Added in v2.0.0
 
-# functorReader
+## functorReader
 
 **Signature**
 
@@ -207,7 +210,7 @@ export declare const functorReader: Functor2<'Reader'>
 
 Added in v3.0.0
 
-# getMonoid
+## getMonoid
 
 **Signature**
 
@@ -217,7 +220,7 @@ export declare function getMonoid<R, A>(M: Monoid<A>): Monoid<Reader<R, A>>
 
 Added in v2.0.0
 
-# getSemigroup
+## getSemigroup
 
 **Signature**
 
@@ -227,7 +230,7 @@ export declare function getSemigroup<R, A>(S: Semigroup<A>): Semigroup<Reader<R,
 
 Added in v2.0.0
 
-# local
+## local
 
 Changes the value of the local context during the execution of the action `ma` (similar to `Contravariant`'s
 `contramap`).
@@ -240,7 +243,7 @@ export declare const local: <Q, R>(f: (d: Q) => R) => <A>(ma: Reader<R, A>) => R
 
 Added in v2.0.0
 
-# map
+## map
 
 **Signature**
 
@@ -250,7 +253,7 @@ export declare const map: <A, B>(f: (a: A) => B) => <R>(fa: Reader<R, A>) => Rea
 
 Added in v2.0.0
 
-# monadReader
+## monadReader
 
 **Signature**
 
@@ -260,7 +263,7 @@ export declare const monadReader: Monad2<'Reader'>
 
 Added in v3.0.0
 
-# of
+## of
 
 **Signature**
 
@@ -270,7 +273,7 @@ export declare const of: <R, A>(a: A) => Reader<R, A>
 
 Added in v2.0.0
 
-# pipe
+## pipe
 
 **Signature**
 
@@ -280,7 +283,7 @@ export declare const pipe: <B, C>(fbc: Reader<B, C>) => <A>(fab: Reader<A, B>) =
 
 Added in v2.0.0
 
-# profunctorReader
+## profunctorReader
 
 **Signature**
 
@@ -290,7 +293,7 @@ export declare const profunctorReader: Profunctor2<'Reader'>
 
 Added in v3.0.0
 
-# promap
+## promap
 
 **Signature**
 
@@ -300,7 +303,7 @@ export declare const promap: <D, E, A, B>(f: (d: D) => E, g: (a: A) => B) => (fb
 
 Added in v2.0.0
 
-# semigroupoidReader
+## semigroupoidReader
 
 **Signature**
 

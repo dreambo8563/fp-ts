@@ -4,7 +4,7 @@ nav_order: 23
 parent: Modules
 ---
 
-# Eq overview
+## Eq overview
 
 The `Eq` type class represents types which support decidable equality.
 
@@ -20,23 +20,26 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Eq (interface)](#eq-interface)
-- [URI (type alias)](#uri-type-alias)
-- [URI](#uri)
-- [contramap](#contramap)
-- [contravariantEq](#contravarianteq)
-- [eqBoolean](#eqboolean)
-- [eqNumber](#eqnumber)
-- [eqStrict](#eqstrict)
-- [eqString](#eqstring)
-- [fromEquals](#fromequals)
-- [getMonoid](#getmonoid)
-- [getStructEq](#getstructeq)
-- [getTupleEq](#gettupleeq)
+- [utils](#utils)
+  - [Eq (interface)](#eq-interface)
+  - [URI](#uri)
+  - [URI (type alias)](#uri-type-alias)
+  - [contramap](#contramap)
+  - [contravariantEq](#contravarianteq)
+  - [eqBoolean](#eqboolean)
+  - [eqNumber](#eqnumber)
+  - [eqStrict](#eqstrict)
+  - [eqString](#eqstring)
+  - [fromEquals](#fromequals)
+  - [getMonoid](#getmonoid)
+  - [getStructEq](#getstructeq)
+  - [getTupleEq](#gettupleeq)
 
 ---
 
-# Eq (interface)
+# utils
+
+## Eq (interface)
 
 **Signature**
 
@@ -48,17 +51,7 @@ export interface Eq<A> {
 
 Added in v2.0.0
 
-# URI (type alias)
-
-**Signature**
-
-```ts
-export type URI = typeof URI
-```
-
-Added in v2.0.0
-
-# URI
+## URI
 
 **Signature**
 
@@ -68,7 +61,17 @@ export declare const URI: 'Eq'
 
 Added in v2.0.0
 
-# contramap
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
+```
+
+Added in v2.0.0
+
+## contramap
 
 **Signature**
 
@@ -78,7 +81,7 @@ export declare const contramap: <A, B>(f: (b: B) => A) => (fa: Eq<A>) => Eq<B>
 
 Added in v2.0.0
 
-# contravariantEq
+## contravariantEq
 
 **Signature**
 
@@ -88,7 +91,7 @@ export declare const contravariantEq: Contravariant1<'Eq'>
 
 Added in v3.0.0
 
-# eqBoolean
+## eqBoolean
 
 **Signature**
 
@@ -98,7 +101,7 @@ export declare const eqBoolean: Eq<boolean>
 
 Added in v2.0.0
 
-# eqNumber
+## eqNumber
 
 **Signature**
 
@@ -108,7 +111,7 @@ export declare const eqNumber: Eq<number>
 
 Added in v2.0.0
 
-# eqStrict
+## eqStrict
 
 **Signature**
 
@@ -118,7 +121,7 @@ export declare const eqStrict: Eq<unknown>
 
 Added in v2.5.0
 
-# eqString
+## eqString
 
 **Signature**
 
@@ -128,7 +131,7 @@ export declare const eqString: Eq<string>
 
 Added in v2.0.0
 
-# fromEquals
+## fromEquals
 
 **Signature**
 
@@ -138,7 +141,7 @@ export declare function fromEquals<A>(equals: (x: A, y: A) => boolean): Eq<A>
 
 Added in v2.0.0
 
-# getMonoid
+## getMonoid
 
 **Signature**
 
@@ -148,7 +151,7 @@ export declare function getMonoid<A>(): Monoid<Eq<A>>
 
 Added in v2.6.0
 
-# getStructEq
+## getStructEq
 
 **Signature**
 
@@ -158,7 +161,7 @@ export declare function getStructEq<O extends ReadonlyRecord<string, any>>(eqs: 
 
 Added in v2.0.0
 
-# getTupleEq
+## getTupleEq
 
 Given a tuple of `Eq`s returns a `Eq` for the tuple
 

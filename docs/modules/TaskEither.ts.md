@@ -4,7 +4,7 @@ nav_order: 75
 parent: Modules
 ---
 
-# TaskEither overview
+## TaskEither overview
 
 `TaskEither<E, A>` represents an asynchronous computation that either yields a value of type `A` or fails yielding an
 error of type `E`. If you want to represent an asynchronous computation that never fails, please see `Task`.
@@ -15,66 +15,69 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [TaskEither (interface)](#taskeither-interface)
-- [URI (type alias)](#uri-type-alias)
-- [URI](#uri)
-- [alt](#alt)
-- [altTaskEither](#alttaskeither)
-- [ap](#ap)
-- [apFirst](#apfirst)
-- [apSecond](#apsecond)
-- [applicativeTaskEither](#applicativetaskeither)
-- [applyTaskEither](#applytaskeither)
-- [bifunctorTaskEither](#bifunctortaskeither)
-- [bimap](#bimap)
-- [bracket](#bracket)
-- [chain](#chain)
-- [chainEitherK](#chaineitherk)
-- [chainEitherKW](#chaineitherkw)
-- [chainFirst](#chainfirst)
-- [chainIOEitherK](#chainioeitherk)
-- [chainIOEitherKW](#chainioeitherkw)
-- [chainW](#chainw)
-- [filterOrElse](#filterorelse)
-- [flatten](#flatten)
-- [fold](#fold)
-- [fromEither](#fromeither)
-- [fromEitherK](#fromeitherk)
-- [fromIOEither](#fromioeither)
-- [fromIOEitherK](#fromioeitherk)
-- [fromOption](#fromoption)
-- [fromPredicate](#frompredicate)
-- [functorTaskEither](#functortaskeither)
-- [getApplyMonoid](#getapplymonoid)
-- [getApplySemigroup](#getapplysemigroup)
-- [getFilterable](#getfilterable)
-- [getOrElse](#getorelse)
-- [getOrElseW](#getorelsew)
-- [getSemigroup](#getsemigroup)
-- [getTaskValidationAlt](#gettaskvalidationalt)
-- [getTaskValidationApplicative](#gettaskvalidationapplicative)
-- [left](#left)
-- [leftIO](#leftio)
-- [leftTask](#lefttask)
-- [map](#map)
-- [mapLeft](#mapleft)
-- [monadIOTaskEither](#monadiotaskeither)
-- [monadTaskEither](#monadtaskeither)
-- [monadTaskEitherSeq](#monadtaskeitherseq)
-- [monadTaskTaskEither](#monadtasktaskeither)
-- [monadThrowTaskEither](#monadthrowtaskeither)
-- [orElse](#orelse)
-- [right](#right)
-- [rightIO](#rightio)
-- [rightTask](#righttask)
-- [swap](#swap)
-- [taskify](#taskify)
-- [tryCatch](#trycatch)
-- [tryCatchK](#trycatchk)
+- [utils](#utils)
+  - [TaskEither (interface)](#taskeither-interface)
+  - [URI](#uri)
+  - [URI (type alias)](#uri-type-alias)
+  - [alt](#alt)
+  - [altTaskEither](#alttaskeither)
+  - [ap](#ap)
+  - [apFirst](#apfirst)
+  - [apSecond](#apsecond)
+  - [applicativeTaskEither](#applicativetaskeither)
+  - [applyTaskEither](#applytaskeither)
+  - [bifunctorTaskEither](#bifunctortaskeither)
+  - [bimap](#bimap)
+  - [bracket](#bracket)
+  - [chain](#chain)
+  - [chainEitherK](#chaineitherk)
+  - [chainEitherKW](#chaineitherkw)
+  - [chainFirst](#chainfirst)
+  - [chainIOEitherK](#chainioeitherk)
+  - [chainIOEitherKW](#chainioeitherkw)
+  - [chainW](#chainw)
+  - [filterOrElse](#filterorelse)
+  - [flatten](#flatten)
+  - [fold](#fold)
+  - [fromEither](#fromeither)
+  - [fromEitherK](#fromeitherk)
+  - [fromIOEither](#fromioeither)
+  - [fromIOEitherK](#fromioeitherk)
+  - [fromOption](#fromoption)
+  - [fromPredicate](#frompredicate)
+  - [functorTaskEither](#functortaskeither)
+  - [getApplyMonoid](#getapplymonoid)
+  - [getApplySemigroup](#getapplysemigroup)
+  - [getFilterable](#getfilterable)
+  - [getOrElse](#getorelse)
+  - [getOrElseW](#getorelsew)
+  - [getSemigroup](#getsemigroup)
+  - [getTaskValidationAlt](#gettaskvalidationalt)
+  - [getTaskValidationApplicative](#gettaskvalidationapplicative)
+  - [left](#left)
+  - [leftIO](#leftio)
+  - [leftTask](#lefttask)
+  - [map](#map)
+  - [mapLeft](#mapleft)
+  - [monadIOTaskEither](#monadiotaskeither)
+  - [monadTaskEither](#monadtaskeither)
+  - [monadTaskEitherSeq](#monadtaskeitherseq)
+  - [monadTaskTaskEither](#monadtasktaskeither)
+  - [monadThrowTaskEither](#monadthrowtaskeither)
+  - [orElse](#orelse)
+  - [right](#right)
+  - [rightIO](#rightio)
+  - [rightTask](#righttask)
+  - [swap](#swap)
+  - [taskify](#taskify)
+  - [tryCatch](#trycatch)
+  - [tryCatchK](#trycatchk)
 
 ---
 
-# TaskEither (interface)
+# utils
+
+## TaskEither (interface)
 
 **Signature**
 
@@ -84,17 +87,7 @@ export interface TaskEither<E, A> extends Task<Either<E, A>> {}
 
 Added in v2.0.0
 
-# URI (type alias)
-
-**Signature**
-
-```ts
-export type URI = typeof URI
-```
-
-Added in v2.0.0
-
-# URI
+## URI
 
 **Signature**
 
@@ -104,7 +97,17 @@ export declare const URI: 'TaskEither'
 
 Added in v2.0.0
 
-# alt
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
+```
+
+Added in v2.0.0
+
+## alt
 
 **Signature**
 
@@ -114,7 +117,7 @@ export declare const alt: <E, A>(that: () => TaskEither<E, A>) => (fa: TaskEithe
 
 Added in v2.0.0
 
-# altTaskEither
+## altTaskEither
 
 **Signature**
 
@@ -124,7 +127,7 @@ export declare const altTaskEither: Alt2<'TaskEither'>
 
 Added in v3.0.0
 
-# ap
+## ap
 
 **Signature**
 
@@ -134,7 +137,7 @@ export declare const ap: <E, A>(fa: TaskEither<E, A>) => <B>(fab: TaskEither<E, 
 
 Added in v2.0.0
 
-# apFirst
+## apFirst
 
 **Signature**
 
@@ -144,7 +147,7 @@ export declare const apFirst: <E, B>(fb: TaskEither<E, B>) => <A>(fa: TaskEither
 
 Added in v2.0.0
 
-# apSecond
+## apSecond
 
 **Signature**
 
@@ -154,7 +157,7 @@ export declare const apSecond: <E, B>(fb: TaskEither<E, B>) => <A>(fa: TaskEithe
 
 Added in v2.0.0
 
-# applicativeTaskEither
+## applicativeTaskEither
 
 **Signature**
 
@@ -164,7 +167,7 @@ export declare const applicativeTaskEither: Applicative2<'TaskEither'>
 
 Added in v3.0.0
 
-# applyTaskEither
+## applyTaskEither
 
 **Signature**
 
@@ -174,7 +177,7 @@ export declare const applyTaskEither: Apply2<'TaskEither'>
 
 Added in v3.0.0
 
-# bifunctorTaskEither
+## bifunctorTaskEither
 
 **Signature**
 
@@ -184,7 +187,7 @@ export declare const bifunctorTaskEither: Bifunctor2<'TaskEither'>
 
 Added in v3.0.0
 
-# bimap
+## bimap
 
 **Signature**
 
@@ -194,7 +197,7 @@ export declare const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa:
 
 Added in v2.0.0
 
-# bracket
+## bracket
 
 Make sure that a resource is cleaned up in the event of an exception (_). The release action is called regardless of
 whether the body action throws (_) or returns.
@@ -213,7 +216,7 @@ export declare function bracket<E, A, B>(
 
 Added in v2.0.0
 
-# chain
+## chain
 
 **Signature**
 
@@ -223,7 +226,7 @@ export declare const chain: <E, A, B>(f: (a: A) => TaskEither<E, B>) => (ma: Tas
 
 Added in v2.0.0
 
-# chainEitherK
+## chainEitherK
 
 **Signature**
 
@@ -233,7 +236,7 @@ export declare function chainEitherK<E, A, B>(f: (a: A) => Either<E, B>): (ma: T
 
 Added in v2.4.0
 
-# chainEitherKW
+## chainEitherKW
 
 **Signature**
 
@@ -245,7 +248,7 @@ export declare const chainEitherKW: <D, A, B>(
 
 Added in v2.6.1
 
-# chainFirst
+## chainFirst
 
 **Signature**
 
@@ -255,7 +258,7 @@ export declare const chainFirst: <E, A, B>(f: (a: A) => TaskEither<E, B>) => (ma
 
 Added in v2.0.0
 
-# chainIOEitherK
+## chainIOEitherK
 
 **Signature**
 
@@ -265,7 +268,7 @@ export declare function chainIOEitherK<E, A, B>(f: (a: A) => IOEither<E, B>): (m
 
 Added in v2.4.0
 
-# chainIOEitherKW
+## chainIOEitherKW
 
 **Signature**
 
@@ -277,7 +280,7 @@ export declare const chainIOEitherKW: <D, A, B>(
 
 Added in v2.6.1
 
-# chainW
+## chainW
 
 **Signature**
 
@@ -289,7 +292,7 @@ export declare const chainW: <D, A, B>(
 
 Added in v2.6.0
 
-# filterOrElse
+## filterOrElse
 
 **Signature**
 
@@ -302,7 +305,7 @@ export declare const filterOrElse: {
 
 Added in v2.0.0
 
-# flatten
+## flatten
 
 **Signature**
 
@@ -312,7 +315,7 @@ export declare const flatten: <E, A>(mma: TaskEither<E, TaskEither<E, A>>) => Ta
 
 Added in v2.0.0
 
-# fold
+## fold
 
 **Signature**
 
@@ -325,7 +328,7 @@ export declare const fold: <E, A, B>(
 
 Added in v2.0.0
 
-# fromEither
+## fromEither
 
 **Signature**
 
@@ -335,7 +338,7 @@ export declare const fromEither: <E, A>(ma: E.Either<E, A>) => TaskEither<E, A>
 
 Added in v2.0.0
 
-# fromEitherK
+## fromEitherK
 
 **Signature**
 
@@ -347,7 +350,7 @@ export declare function fromEitherK<E, A extends ReadonlyArray<unknown>, B>(
 
 Added in v2.4.0
 
-# fromIOEither
+## fromIOEither
 
 **Signature**
 
@@ -357,7 +360,7 @@ export declare const fromIOEither: <E, A>(fa: IOEither<E, A>) => TaskEither<E, A
 
 Added in v2.0.0
 
-# fromIOEitherK
+## fromIOEitherK
 
 **Signature**
 
@@ -369,7 +372,7 @@ export declare function fromIOEitherK<E, A extends ReadonlyArray<unknown>, B>(
 
 Added in v2.4.0
 
-# fromOption
+## fromOption
 
 **Signature**
 
@@ -379,7 +382,7 @@ export declare const fromOption: <E>(onNone: () => E) => <A>(ma: Option<A>) => T
 
 Added in v2.0.0
 
-# fromPredicate
+## fromPredicate
 
 **Signature**
 
@@ -392,7 +395,7 @@ export declare const fromPredicate: {
 
 Added in v2.0.0
 
-# functorTaskEither
+## functorTaskEither
 
 **Signature**
 
@@ -402,7 +405,7 @@ export declare const functorTaskEither: Functor2<'TaskEither'>
 
 Added in v3.0.0
 
-# getApplyMonoid
+## getApplyMonoid
 
 **Signature**
 
@@ -412,7 +415,7 @@ export declare function getApplyMonoid<E, A>(M: Monoid<A>): Monoid<TaskEither<E,
 
 Added in v2.0.0
 
-# getApplySemigroup
+## getApplySemigroup
 
 Semigroup returning the left-most `Left` value. If both operands are `Right`s then the inner values
 are appended using the provided `Semigroup`
@@ -425,7 +428,7 @@ export declare function getApplySemigroup<E, A>(S: Semigroup<A>): Semigroup<Task
 
 Added in v2.0.0
 
-# getFilterable
+## getFilterable
 
 **Signature**
 
@@ -435,7 +438,7 @@ export declare function getFilterable<E>(M: Monoid<E>): Filterable2C<URI, E>
 
 Added in v2.1.0
 
-# getOrElse
+## getOrElse
 
 **Signature**
 
@@ -445,7 +448,7 @@ export declare const getOrElse: <E, A>(onLeft: (e: E) => T.Task<A>) => (ma: Task
 
 Added in v2.0.0
 
-# getOrElseW
+## getOrElseW
 
 **Signature**
 
@@ -455,7 +458,7 @@ export declare const getOrElseW: <E, B>(onLeft: (e: E) => T.Task<B>) => <A>(ma: 
 
 Added in v2.6.0
 
-# getSemigroup
+## getSemigroup
 
 Semigroup returning the left-most non-`Left` value. If both operands are `Right`s then the inner values are
 appended using the provided `Semigroup`
@@ -468,7 +471,7 @@ export declare function getSemigroup<E, A>(S: Semigroup<A>): Semigroup<TaskEithe
 
 Added in v2.0.0
 
-# getTaskValidationAlt
+## getTaskValidationAlt
 
 **Signature**
 
@@ -478,7 +481,7 @@ export declare function getTaskValidationAlt<E>(S: Semigroup<E>): Alt2C<URI, E>
 
 Added in v3.0.0
 
-# getTaskValidationApplicative
+## getTaskValidationApplicative
 
 **Signature**
 
@@ -488,7 +491,7 @@ export declare function getTaskValidationApplicative<E>(S: Semigroup<E>): Applic
 
 Added in v3.0.0
 
-# left
+## left
 
 **Signature**
 
@@ -498,7 +501,7 @@ export declare const left: <E = never, A = never>(e: E) => TaskEither<E, A>
 
 Added in v2.0.0
 
-# leftIO
+## leftIO
 
 **Signature**
 
@@ -508,7 +511,7 @@ export declare function leftIO<E = never, A = never>(me: IO<E>): TaskEither<E, A
 
 Added in v2.0.0
 
-# leftTask
+## leftTask
 
 **Signature**
 
@@ -518,7 +521,7 @@ export declare const leftTask: <E = never, A = never>(me: T.Task<E>) => TaskEith
 
 Added in v2.0.0
 
-# map
+## map
 
 **Signature**
 
@@ -528,7 +531,7 @@ export declare const map: <A, B>(f: (a: A) => B) => <E>(fa: TaskEither<E, A>) =>
 
 Added in v2.0.0
 
-# mapLeft
+## mapLeft
 
 **Signature**
 
@@ -538,7 +541,7 @@ export declare const mapLeft: <E, G>(f: (e: E) => G) => <A>(fa: TaskEither<E, A>
 
 Added in v2.0.0
 
-# monadIOTaskEither
+## monadIOTaskEither
 
 **Signature**
 
@@ -548,7 +551,7 @@ export declare const monadIOTaskEither: MonadIO2<'TaskEither'>
 
 Added in v3.0.0
 
-# monadTaskEither
+## monadTaskEither
 
 **Signature**
 
@@ -558,7 +561,7 @@ export declare const monadTaskEither: Monad2<'TaskEither'>
 
 Added in v3.0.0
 
-# monadTaskEitherSeq
+## monadTaskEitherSeq
 
 TODO
 
@@ -574,7 +577,7 @@ export declare const monadTaskEitherSeq: Monad2<'TaskEither'> &
 
 Added in v2.0.0
 
-# monadTaskTaskEither
+## monadTaskTaskEither
 
 **Signature**
 
@@ -584,7 +587,7 @@ export declare const monadTaskTaskEither: MonadTask2<'TaskEither'>
 
 Added in v3.0.0
 
-# monadThrowTaskEither
+## monadThrowTaskEither
 
 **Signature**
 
@@ -594,7 +597,7 @@ export declare const monadThrowTaskEither: MonadThrow2<'TaskEither'>
 
 Added in v3.0.0
 
-# orElse
+## orElse
 
 **Signature**
 
@@ -604,7 +607,7 @@ export declare const orElse: <E, A, M>(onLeft: (e: E) => TaskEither<M, A>) => (m
 
 Added in v2.0.0
 
-# right
+## right
 
 **Signature**
 
@@ -614,7 +617,7 @@ export declare const right: <E = never, A = never>(a: A) => TaskEither<E, A>
 
 Added in v2.0.0
 
-# rightIO
+## rightIO
 
 **Signature**
 
@@ -624,7 +627,7 @@ export declare function rightIO<E = never, A = never>(ma: IO<A>): TaskEither<E, 
 
 Added in v2.0.0
 
-# rightTask
+## rightTask
 
 **Signature**
 
@@ -634,7 +637,7 @@ export declare const rightTask: <E = never, A = never>(ma: T.Task<A>) => TaskEit
 
 Added in v2.0.0
 
-# swap
+## swap
 
 **Signature**
 
@@ -644,7 +647,7 @@ export declare const swap: <E, A>(ma: TaskEither<E, A>) => TaskEither<A, E>
 
 Added in v2.0.0
 
-# taskify
+## taskify
 
 Convert a node style callback function to one returning a `TaskEither`
 
@@ -696,7 +699,7 @@ assert.strictEqual(stat.length, 0)
 
 Added in v2.0.0
 
-# tryCatch
+## tryCatch
 
 Transforms a `Promise` that may reject to a `Promise` that never rejects and returns an `Either` instead.
 
@@ -724,7 +727,7 @@ tryCatch(() => Promise.reject('error'), String)().then((result) => {
 
 Added in v2.0.0
 
-# tryCatchK
+## tryCatchK
 
 Converts a function returning a `Promise` to one returning a `TaskEither`.
 

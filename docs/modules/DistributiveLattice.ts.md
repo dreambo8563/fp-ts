@@ -4,7 +4,7 @@ nav_order: 21
 parent: Modules
 ---
 
-# DistributiveLattice overview
+## DistributiveLattice overview
 
 A `DistributiveLattice` must satisfy the following laws in addition to `Lattice` laws:
 
@@ -17,12 +17,15 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [DistributiveLattice (interface)](#distributivelattice-interface)
-- [getMinMaxDistributiveLattice](#getminmaxdistributivelattice)
+- [utils](#utils)
+  - [DistributiveLattice (interface)](#distributivelattice-interface)
+  - [getMinMaxDistributiveLattice](#getminmaxdistributivelattice)
 
 ---
 
-# DistributiveLattice (interface)
+# utils
+
+## DistributiveLattice (interface)
 
 **Signature**
 
@@ -32,7 +35,7 @@ export interface DistributiveLattice<A> extends Lattice<A> {}
 
 Added in v2.0.0
 
-# getMinMaxDistributiveLattice
+## getMinMaxDistributiveLattice
 
 **Signature**
 
