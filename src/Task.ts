@@ -169,12 +169,24 @@ export function of<A>(a: A): Task<A> {
 }
 
 /**
+ * @category instances
  * @since 3.0.0
  */
-export const applicativeTask: Applicative1<URI> = {
+export const applicativeTaskPar: Applicative1<URI> = {
   URI,
   map,
   ap,
+  of
+}
+
+/**
+ * @category instances
+ * @since 3.0.0
+ */
+export const applicativeTaskSeq: Applicative1<URI> = {
+  URI,
+  map,
+  ap: (fa) => (fab) => () => fab().then((f) => fa().then((a) => f(a))),
   of
 }
 
@@ -190,7 +202,6 @@ export const chain: <A, B>(f: (a: A) => Task<B>) => (ma: Task<A>) => Task<B> = (
 export const monadTask: Monad1<URI> = {
   URI,
   map,
-  ap,
   of,
   chain
 }
@@ -226,7 +237,6 @@ export function chainIOK<A, B>(f: (a: A) => IO<B>): (ma: Task<A>) => Task<B> {
 export const monadIOTask: MonadIO1<URI> = {
   URI,
   map,
-  ap,
   of,
   chain,
   fromIO
@@ -238,21 +248,8 @@ export const monadIOTask: MonadIO1<URI> = {
 export const monadTaskTask: MonadTask1<URI> = {
   URI,
   map,
-  ap,
   of,
   chain,
   fromIO,
   fromTask: identity
-}
-
-/**
- * TODO
- * @since 3.0.0
- */
-export const monadTaskSeq: Monad1<URI> = {
-  URI,
-  map,
-  ap: (fa) => (fab) => () => fab().then((f) => fa().then((a) => f(a))),
-  of,
-  chain
 }

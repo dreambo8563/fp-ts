@@ -17,6 +17,8 @@ import * as TH from './These'
 
 import These = TH.These
 import Task = T.Task
+import { Applicative2C } from './Applicative'
+import { apComposition } from './Apply'
 
 /**
  * @since 2.4.0
@@ -123,7 +125,7 @@ export const swap: <E, A>(fa: TaskThese<E, A>) => TaskThese<A, E> =
  * @since 2.4.0
  */
 export function getSemigroup<E, A>(SE: Semigroup<E>, SA: Semigroup<A>): Semigroup<TaskThese<E, A>> {
-  return T.getSemigroup(TH.getSemigroup<E, A>(SE, SA))
+  return T.getSemigroup(TH.getSemigroup(SE, SA))
 }
 
 /**
@@ -160,6 +162,34 @@ export const bifunctorTaskThese: Bifunctor2<URI> = {
   mapLeft
 }
 
+const of = right
+
+/**
+ * @since 3.0.0
+ */
+export function getApplicativePar<E>(S: Semigroup<E>): Applicative2C<URI, E> {
+  return {
+    URI,
+    _E: undefined as any,
+    map,
+    ap: apComposition(T.applicativeTaskPar, TH.getApplicative(S)),
+    of
+  }
+}
+
+/**
+ * @since 3.0.0
+ */
+export function getApplicativeSeq<E>(S: Semigroup<E>): Applicative2C<URI, E> {
+  return {
+    URI,
+    _E: undefined as any,
+    map,
+    ap: apComposition(T.applicativeTaskSeq, TH.getApplicative(S)),
+    of
+  }
+}
+
 /**
  * @since 3.0.0
  */
@@ -183,12 +213,7 @@ export function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E> {
     URI,
     _E: undefined as any,
     map,
-    ap: (fa) => (fab) =>
-      pipe(
-        fab,
-        chain((f) => pipe(fa, map(f)))
-      ),
-    of: right,
+    of,
     chain
   }
 }

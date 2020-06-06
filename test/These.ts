@@ -6,6 +6,7 @@ import * as O from '../src/Option'
 import { semigroupString } from '../src/Semigroup'
 import { showString } from '../src/Show'
 import * as _ from '../src/These'
+import { sequenceT } from '../src/Apply'
 
 describe('These', () => {
   describe('instances', () => {
@@ -97,8 +98,21 @@ describe('These', () => {
     })
   })
 
-  it('chain', () => {
-    const M = _.getMonad(monoidString)
+  it('getApplicative', () => {
+    const A = _.getApplicative(monoidString)
+    assert.deepStrictEqual(sequenceT(A)(_.right(1), _.right(2)), _.right([1, 2]))
+    assert.deepStrictEqual(sequenceT(A)(_.right(1), _.left('b')), _.left('b'))
+    assert.deepStrictEqual(sequenceT(A)(_.right(1), _.both('b', 2)), _.both('b', [1, 2]))
+    assert.deepStrictEqual(sequenceT(A)(_.left('a'), _.right(2)), _.left('a'))
+    assert.deepStrictEqual(sequenceT(A)(_.left('a'), _.left('b')), _.left('ab'))
+    assert.deepStrictEqual(sequenceT(A)(_.left('a'), _.both('b', 2)), _.left('ab'))
+    assert.deepStrictEqual(sequenceT(A)(_.both('a', 1), _.right(2)), _.both('a', [1, 2]))
+    assert.deepStrictEqual(sequenceT(A)(_.both('a', 1), _.left('b')), _.left('ab'))
+    assert.deepStrictEqual(sequenceT(A)(_.both('a', 1), _.both('b', 2)), _.both('ab', [1, 2]))
+  })
+
+  it('getMonadThrow', () => {
+    const M = _.getMonadThrow(monoidString)
     const f = (n: number) => (n >= 2 ? (n <= 5 ? _.right(n * 2) : _.both('bar', n)) : _.left('bar'))
     assert.deepStrictEqual(pipe(_.left('foo'), M.chain(f)), _.left('foo'))
     assert.deepStrictEqual(pipe(_.right(2), M.chain(f)), _.right(4))
@@ -137,9 +151,9 @@ describe('These', () => {
     assert.deepStrictEqual(concat(_.both('a', 3), _.both('b', 2)), _.both('ab', 5))
   })
 
-  it('getMonad', () => {
+  it('getApplicative', () => {
     const double = (n: number) => n * 2
-    const F = _.getMonad(semigroupString)
+    const F = _.getApplicative(semigroupString)
     const fab = F.of(double)
     const fa = F.of(1)
     assert.deepStrictEqual(pipe(fab, F.ap(fa)), F.of(2))

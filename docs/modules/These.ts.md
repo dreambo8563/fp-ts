@@ -43,10 +43,11 @@ Added in v2.0.0
   - [foldableThese](#foldablethese)
   - [fromOptions](#fromoptions)
   - [functorThese](#functorthese)
+  - [getApplicative](#getapplicative)
   - [getEq](#geteq)
   - [getLeft](#getleft)
   - [getLeftOnly](#getleftonly)
-  - [getMonad](#getmonad)
+  - [getMonadThrow](#getmonadthrow)
   - [getRight](#getright)
   - [getRightOnly](#getrightonly)
   - [getSemigroup](#getsemigroup)
@@ -214,6 +215,16 @@ export declare const functorThese: Functor2<'These'>
 
 Added in v3.0.0
 
+## getApplicative
+
+**Signature**
+
+```ts
+export declare function getApplicative<E>(S: Semigroup<E>): Applicative2C<URI, E>
+```
+
+Added in v2.0.0
+
 ## getEq
 
 **Signature**
@@ -270,12 +281,12 @@ assert.deepStrictEqual(getLeftOnly(both('a', 1)), none)
 
 Added in v2.0.0
 
-## getMonad
+## getMonadThrow
 
 **Signature**
 
 ```ts
-export declare function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E> & MonadThrow2C<URI, E>
+export declare function getMonadThrow<E>(S: Semigroup<E>): Monad2C<URI, E> & MonadThrow2C<URI, E>
 ```
 
 Added in v2.0.0

@@ -306,7 +306,8 @@ export const ap: <E, A>(fa: IOEither<E, A>) => <B>(fab: IOEither<E, (a: A) => B>
  * @since 3.0.0
  */
 export const applyIOEither: Apply2<URI> = {
-  ...functorIOEither,
+  URI,
+  map,
   ap
 }
 
@@ -339,7 +340,9 @@ export const of: <E = never, A = never>(a: A) => IOEither<E, A> = right
  * @since 3.0.0
  */
 export const applicativeIOEither: Applicative2<URI> = {
-  ...applyIOEither,
+  URI,
+  map,
+  ap,
   of
 }
 
@@ -353,7 +356,9 @@ export const chain: <E, A, B>(f: (a: A) => IOEither<E, B>) => (ma: IOEither<E, A
  * @since 3.0.0
  */
 export const monadIOEither: Monad2<URI> = {
-  ...applicativeIOEither,
+  URI,
+  map,
+  of,
   chain
 }
 
@@ -419,22 +424,31 @@ export const alt: <E, A>(that: () => IOEither<E, A>) => (fa: IOEither<E, A>) => 
  * @since 3.0.0
  */
 export const altIOEither: Alt2<URI> = {
-  ...functorIOEither,
+  URI,
+  map,
   alt
 }
+
+const fromIO = rightIO
 
 /**
  * @since 3.0.0
  */
 export const monadIOIOEither: MonadIO2<URI> = {
-  ...monadIOEither,
-  fromIO: rightIO
+  URI,
+  map,
+  of,
+  chain,
+  fromIO
 }
 
 /**
  * @since 3.0.0
  */
 export const monadThrowIOEither: MonadThrow2<URI> = {
-  ...monadIOEither,
+  URI,
+  map,
+  of,
+  chain,
   throwError: left
 }

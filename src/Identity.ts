@@ -124,7 +124,6 @@ export const chain: <A, B>(f: (a: A) => Identity<B>) => (ma: Identity<A>) => Ide
 export const monadIdentity: Monad1<URI> = {
   URI,
   map,
-  ap,
   of,
   chain
 }

@@ -50,14 +50,6 @@ describe('ReaderTask', () => {
     })
   })
 
-  describe('readerTaskSeq', () => {
-    it('chain ', async () => {
-      const f = (a: string) => _.of(a.length)
-      const e1 = await pipe(_.of('foo'), _.readerTaskSeq.chain(f))({})()
-      assert.deepStrictEqual(e1, 3)
-    })
-  })
-
   it('ask', async () => {
     const e = await _.ask<number>()(1)()
     return assert.deepStrictEqual(e, 1)
@@ -99,7 +91,7 @@ describe('ReaderTask', () => {
     assert.deepStrictEqual(e, 1)
   })
 
-  it('sequence parallel', async () => {
+  it('applicativeReaderTaskPar', async () => {
     // tslint:disable-next-line: readonly-array
     const log: Array<string> = []
     const append = (message: string): _.ReaderTask<{}, number> => _.fromTask(() => Promise.resolve(log.push(message)))
@@ -111,13 +103,13 @@ describe('ReaderTask', () => {
       append('start 2'),
       _.chain(() => append('end 2'))
     )
-    const sequenceParallel = RA.sequence(_.applicativeReaderTask)
+    const sequenceParallel = RA.sequence(_.applicativeReaderTaskPar)
     const ns = await sequenceParallel([t1, t2])({})()
     assert.deepStrictEqual(ns, [3, 4])
     assert.deepStrictEqual(log, ['start 1', 'start 2', 'end 1', 'end 2'])
   })
 
-  it('sequence series', async () => {
+  it('applicativeReaderTaskSeq', async () => {
     // tslint:disable-next-line: readonly-array
     const log: Array<string> = []
     const append = (message: string): _.ReaderTask<{}, number> => _.fromTask(() => Promise.resolve(log.push(message)))
@@ -129,7 +121,7 @@ describe('ReaderTask', () => {
       append('start 2'),
       _.chain(() => append('end 2'))
     )
-    const sequenceSeries = RA.sequence(_.readerTaskSeq)
+    const sequenceSeries = RA.sequence(_.applicativeReaderTaskSeq)
     const ns = await sequenceSeries([t1, t2])({})()
     assert.deepStrictEqual(ns, [2, 4])
     assert.deepStrictEqual(log, ['start 1', 'end 1', 'start 2', 'end 2'])

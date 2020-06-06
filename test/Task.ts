@@ -100,7 +100,7 @@ describe('Task', () => {
     })
   })
 
-  it('taskSeq', async () => {
+  it('applicativeTaskSeq', async () => {
     // tslint:disable-next-line: readonly-array
     const log: Array<string> = []
     const append = (message: string): _.Task<number> => () => Promise.resolve(log.push(message))
@@ -112,7 +112,7 @@ describe('Task', () => {
       append('start 2'),
       _.chain(() => append('end 2'))
     )
-    const sequenceSeries = RA.sequence(_.monadTaskSeq)
+    const sequenceSeries = RA.sequence(_.applicativeTaskSeq)
     const x = await sequenceSeries([t1, t2])()
     assert.deepStrictEqual(x, [2, 4])
     assert.deepStrictEqual(log, ['start 1', 'end 1', 'start 2', 'end 2'])

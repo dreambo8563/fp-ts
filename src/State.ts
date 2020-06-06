@@ -179,7 +179,6 @@ export const applicativeState: Applicative2<URI> = {
 export const monadState: Monad2<URI> = {
   URI,
   map,
-  ap,
   of,
   chain
 }

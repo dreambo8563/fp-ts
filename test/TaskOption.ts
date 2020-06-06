@@ -1,12 +1,47 @@
 import * as assert from 'assert'
 import * as O from 'fp-ts/lib/Option'
 import { pipe } from 'fp-ts/lib/pipeable'
-import { task } from 'fp-ts/lib/Task'
 import * as TE from 'fp-ts/lib/TaskEither'
+import * as T from 'fp-ts/lib/Task'
 import * as E from 'fp-ts/lib/Either'
 import * as _ from '../src/TaskOption'
+import { sequenceT } from '../src/Apply'
 
 describe('TaskOption', () => {
+  it('applicativeTaskOptionPar', async () => {
+    // tslint:disable-next-line: readonly-array
+    const log: Array<string> = []
+    const append = (message: string, delay: number): _.TaskOption<void> =>
+      _.fromTask(
+        T.delay(delay)(
+          T.fromIO(() => {
+            log.push(message)
+          })
+        )
+      )
+    const t1 = append('1', 10)
+    const t2 = append('2', 5)
+    await sequenceT(_.applicativeTaskOptionPar)(t1, t2)()
+    assert.deepStrictEqual(log, ['2', '1'])
+  })
+
+  it('applicativeTaskOptionSeq', async () => {
+    // tslint:disable-next-line: readonly-array
+    const log: Array<string> = []
+    const append = (message: string, delay: number): _.TaskOption<void> =>
+      _.fromTask(
+        T.delay(delay)(
+          T.fromIO(() => {
+            log.push(message)
+          })
+        )
+      )
+    const t1 = append('1', 10)
+    const t2 = append('2', 5)
+    await sequenceT(_.applicativeTaskOptionSeq)(t1, t2)()
+    assert.deepStrictEqual(log, ['1', '2'])
+  })
+
   it('separate', async () => {
     const { left, right } = pipe(_.of(E.right(1)), _.separate)
     assert.deepStrictEqual(await left(), O.none)
@@ -66,14 +101,14 @@ describe('TaskOption', () => {
   })
 
   it('fold', async () => {
-    const g = (n: number) => task.of(n > 2)
+    const g = (n: number) => T.of(n > 2)
     const te1 = pipe(
       _.some(1),
-      _.fold(() => task.of(false), g)
+      _.fold(() => T.of(false), g)
     )
     const te2 = pipe(
       _.none,
-      _.fold(() => task.of(true), g)
+      _.fold(() => T.of(true), g)
     )
     const b1 = await te1()
     const b2 = await te2()
@@ -82,7 +117,7 @@ describe('TaskOption', () => {
   })
 
   it('getOrElse', async () => {
-    const v = task.of(42)
+    const v = T.of(42)
     const te1 = pipe(
       _.some(1),
       _.getOrElse(() => v)
@@ -98,7 +133,7 @@ describe('TaskOption', () => {
   })
 
   it('fromTask', async () => {
-    const ma = _.fromTask(task.of(1))
+    const ma = _.fromTask(T.of(1))
     const n = await ma()
     assert.deepStrictEqual(n, O.some(1))
   })
@@ -143,7 +178,7 @@ describe('TaskOption', () => {
   })
 
   it('chainTaskK', async () => {
-    const f = (n: number) => task.of(n * 2)
+    const f = (n: number) => T.of(n * 2)
     const ma = pipe(_.some(42), _.chainTaskK(f))
     const n = await ma()
     assert.deepStrictEqual(n, O.some(84))

@@ -22,6 +22,8 @@ Added in v2.4.0
   - [fold](#fold)
   - [fromIOEither](#fromioeither)
   - [functorTaskThese](#functortaskthese)
+  - [getApplicativePar](#getapplicativepar)
+  - [getApplicativeSeq](#getapplicativeseq)
   - [getMonad](#getmonad)
   - [getSemigroup](#getsemigroup)
   - [left](#left)
@@ -129,6 +131,26 @@ Added in v2.4.0
 
 ```ts
 export declare const functorTaskThese: Functor2<'TaskThese'>
+```
+
+Added in v3.0.0
+
+## getApplicativePar
+
+**Signature**
+
+```ts
+export declare function getApplicativePar<E>(S: Semigroup<E>): Applicative2C<URI, E>
+```
+
+Added in v3.0.0
+
+## getApplicativeSeq
+
+**Signature**
+
+```ts
+export declare function getApplicativeSeq<E>(S: Semigroup<E>): Applicative2C<URI, E>
 ```
 
 Added in v3.0.0

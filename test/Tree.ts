@@ -170,7 +170,10 @@ describe('Tree', () => {
   })
 
   it('unfoldTreeM', () => {
-    const fa = _.unfoldTreeM(I.monadIdentity)(1, (b) => [b, b < 3 ? [b + 1, b + 2] : []])
+    const fa = _.unfoldTreeM({ ...I.monadIdentity, ...I.applicativeIdentity })(1, (b) => [
+      b,
+      b < 3 ? [b + 1, b + 2] : []
+    ])
     const expected = _.make(1, [_.make(2, [_.make(3), _.make(4)]), _.make(3)])
     assert.deepStrictEqual(fa, expected)
   })

@@ -12,6 +12,9 @@ Added in v2.3.0
 
 <h2 class="text-delta">Table of contents</h2>
 
+- [instances](#instances)
+  - [applicativeReaderTaskPar](#applicativereadertaskpar)
+  - [applicativeReaderTaskSeq](#applicativereadertaskseq)
 - [utils](#utils)
   - [ReaderTask (interface)](#readertask-interface)
   - [URI](#uri)
@@ -19,7 +22,6 @@ Added in v2.3.0
   - [ap](#ap)
   - [apFirst](#apfirst)
   - [apSecond](#apsecond)
-  - [applicativeReaderTask](#applicativereadertask)
   - [applyReaderTask](#applyreadertask)
   - [ask](#ask)
   - [asks](#asks)
@@ -41,9 +43,30 @@ Added in v2.3.0
   - [monadReaderTask](#monadreadertask)
   - [monadTaskReaderTask](#monadtaskreadertask)
   - [of](#of)
-  - [readerTaskSeq](#readertaskseq)
 
 ---
+
+# instances
+
+## applicativeReaderTaskPar
+
+**Signature**
+
+```ts
+export declare const applicativeReaderTaskPar: Applicative2<'ReaderTask'>
+```
+
+Added in v3.0.0
+
+## applicativeReaderTaskSeq
+
+**Signature**
+
+```ts
+export declare const applicativeReaderTaskSeq: Applicative2<'ReaderTask'>
+```
+
+Added in v3.0.0
 
 # utils
 
@@ -108,16 +131,6 @@ export declare const apSecond: <R, B>(fb: ReaderTask<R, B>) => <A>(fa: ReaderTas
 ```
 
 Added in v2.3.0
-
-## applicativeReaderTask
-
-**Signature**
-
-```ts
-export declare const applicativeReaderTask: Applicative2<'ReaderTask'>
-```
-
-Added in v3.0.0
 
 ## applyReaderTask
 
@@ -329,18 +342,6 @@ Added in v3.0.0
 
 ```ts
 export declare const of: <R, A>(a: A) => ReaderTask<R, A>
-```
-
-Added in v2.3.0
-
-## readerTaskSeq
-
-TODO
-
-**Signature**
-
-```ts
-export declare const readerTaskSeq: Monad2<'ReaderTask'> & MonadTask2<'ReaderTask'>
 ```
 
 Added in v2.3.0

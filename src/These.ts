@@ -19,7 +19,7 @@
  *
  * @since 2.0.0
  */
-import { Applicative } from './Applicative'
+import { Applicative, Applicative2C } from './Applicative'
 import { Bifunctor2 } from './Bifunctor'
 import { Either, Left, Right } from './Either'
 import { Eq, fromEquals } from './Eq'
@@ -163,10 +163,42 @@ export function getSemigroup<E, A>(SE: Semigroup<E>, SA: Semigroup<A>): Semigrou
   }
 }
 
+const of = right
+
 /**
  * @since 2.0.0
  */
-export function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E> & MonadThrow2C<URI, E> {
+export function getApplicative<E>(S: Semigroup<E>): Applicative2C<URI, E> {
+  return {
+    URI,
+    _E: undefined as any,
+    map,
+    of,
+    ap: (fa) => (fab) =>
+      isLeft(fab)
+        ? isLeft(fa)
+          ? left(S.concat(fab.left, fa.left))
+          : isRight(fa)
+          ? left(fab.left)
+          : left(S.concat(fab.left, fa.left))
+        : isRight(fab)
+        ? isLeft(fa)
+          ? left(fa.left)
+          : isRight(fa)
+          ? right(fab.right(fa.right))
+          : both(fa.left, fab.right(fa.right))
+        : isLeft(fa)
+        ? left(S.concat(fab.left, fa.left))
+        : isRight(fa)
+        ? both(fab.left, fab.right(fa.right))
+        : both(S.concat(fab.left, fa.left), fab.right(fa.right))
+  }
+}
+
+/**
+ * @since 2.0.0
+ */
+export function getMonadThrow<E>(S: Semigroup<E>): Monad2C<URI, E> & MonadThrow2C<URI, E> {
   const chain = <A, B>(f: (a: A) => These<E, B>) => (ma: These<E, A>): These<E, B> => {
     if (isLeft(ma)) {
       return ma
@@ -186,12 +218,7 @@ export function getMonad<E>(S: Semigroup<E>): Monad2C<URI, E> & MonadThrow2C<URI
     URI,
     _E: undefined as any,
     map,
-    of: right,
-    ap: (fa) => (fab) =>
-      pipe(
-        fab,
-        chain((f) => pipe(fa, map(f)))
-      ),
+    of,
     chain,
     throwError: left
   }

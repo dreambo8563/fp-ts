@@ -295,7 +295,7 @@ describe('TaskEither', () => {
     })
   })
 
-  it('sequence parallel', async () => {
+  it('applicativeTaskEitherPar', async () => {
     // tslint:disable-next-line: readonly-array
     const log: Array<string> = []
     const append = (message: string): _.TaskEither<void, number> =>
@@ -308,13 +308,13 @@ describe('TaskEither', () => {
       append('start 2'),
       _.chain(() => append('end 2'))
     )
-    const sequenceParallel = RA.sequence(_.applicativeTaskEither)
+    const sequenceParallel = RA.sequence(_.applicativeTaskEitherPar)
     const x = await sequenceParallel([t1, t2])()
     assert.deepStrictEqual(x, E.right([3, 4]))
     assert.deepStrictEqual(log, ['start 1', 'start 2', 'end 1', 'end 2'])
   })
 
-  it('sequence series', async () => {
+  it('applicativeTaskEitherSeq', async () => {
     // tslint:disable-next-line: readonly-array
     const log: Array<string> = []
     const append = (message: string): _.TaskEither<void, number> =>
@@ -327,7 +327,7 @@ describe('TaskEither', () => {
       append('start 2'),
       _.chain(() => append('end 2'))
     )
-    const sequenceSeries = RA.sequence(_.monadTaskEitherSeq)
+    const sequenceSeries = RA.sequence(_.applicativeTaskEitherSeq)
     const x = await sequenceSeries([t1, t2])()
     assert.deepStrictEqual(x, E.right([2, 4]))
     assert.deepStrictEqual(log, ['start 1', 'end 1', 'start 2', 'end 2'])

@@ -1782,7 +1782,6 @@ export const applicativeReadonlyArray: Applicative1<URI> = {
 export const monadReadonlyArray: Monad1<URI> = {
   URI,
   map,
-  ap,
   of,
   chain
 }

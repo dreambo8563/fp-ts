@@ -603,7 +603,6 @@ export const chain: Monad1<URI>['chain'] = (f) => (ma) => (isNone(ma) ? none : f
 export const monadOption: Monad1<URI> = {
   URI,
   map,
-  ap,
   of,
   chain
 }
@@ -635,7 +634,6 @@ export const flatten: <A>(mma: Option<Option<A>>) => Option<A> =
 export const monadThrowOption: MonadThrow1<URI> = {
   URI,
   map,
-  ap,
   of,
   chain,
   throwError: () => none

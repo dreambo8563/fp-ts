@@ -41,8 +41,9 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export interface Monad<F> extends Applicative<F> {
-  readonly chain: <A, B>(f: (a: A) => HKT<F, B>) => (fa: HKT<F, A>) => HKT<F, B>
+export interface Monad<M> extends Functor<M> {
+  readonly of: <A>(a: A) => HKT<M, A>
+  readonly chain: <A, B>(f: (a: A) => HKT<M, B>) => (fa: HKT<M, A>) => HKT<M, B>
 }
 ```
 
@@ -53,8 +54,9 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export interface Monad1<F extends URIS> extends Applicative1<F> {
-  readonly chain: <A, B>(f: (a: A) => Kind<F, B>) => (fa: Kind<F, A>) => Kind<F, B>
+export interface Monad1<M extends URIS> extends Functor1<M> {
+  readonly of: <A>(a: A) => Kind<M, A>
+  readonly chain: <A, B>(f: (a: A) => Kind<M, B>) => (fa: Kind<M, A>) => Kind<M, B>
 }
 ```
 
@@ -65,7 +67,8 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export interface Monad2<M extends URIS2> extends Applicative2<M> {
+export interface Monad2<M extends URIS2> extends Functor2<M> {
+  readonly of: <E, A>(a: A) => Kind2<M, E, A>
   readonly chain: <A, E, B>(f: (a: A) => Kind2<M, E, B>) => (fa: Kind2<M, E, A>) => Kind2<M, E, B>
 }
 ```
@@ -77,7 +80,8 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export interface Monad2C<M extends URIS2, E> extends Applicative2C<M, E> {
+export interface Monad2C<M extends URIS2, E> extends Functor2C<M, E> {
+  readonly of: <A>(a: A) => Kind2<M, E, A>
   readonly chain: <A, B>(f: (a: A) => Kind2<M, E, B>) => (fa: Kind2<M, E, A>) => Kind2<M, E, B>
 }
 ```
@@ -89,7 +93,8 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export interface Monad3<M extends URIS3> extends Applicative3<M> {
+export interface Monad3<M extends URIS3> extends Functor3<M> {
+  readonly of: <R, E, A>(a: A) => Kind3<M, R, E, A>
   readonly chain: <A, R, E, B>(f: (a: A) => Kind3<M, R, E, B>) => (fa: Kind3<M, R, E, A>) => Kind3<M, R, E, B>
 }
 ```
@@ -101,7 +106,8 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export interface Monad3C<M extends URIS3, E> extends Applicative3C<M, E> {
+export interface Monad3C<M extends URIS3, E> extends Functor3C<M, E> {
+  readonly of: <R, A>(a: A) => Kind3<M, R, E, A>
   readonly chain: <A, R, B>(f: (a: A) => Kind3<M, R, E, B>) => (fa: Kind3<M, R, E, A>) => Kind3<M, R, E, B>
 }
 ```
@@ -113,7 +119,8 @@ Added in v2.2.0
 **Signature**
 
 ```ts
-export interface Monad4<M extends URIS4> extends Applicative4<M> {
+export interface Monad4<M extends URIS4> extends Functor4<M> {
+  readonly of: <S, R, E, A>(a: A) => Kind4<M, S, R, E, A>
   readonly chain: <A, S, R, E, B>(
     f: (a: A) => Kind4<M, S, R, E, B>
   ) => (fa: Kind4<M, S, R, E, A>) => Kind4<M, S, R, E, B>

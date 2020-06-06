@@ -458,11 +458,25 @@ const of = right
 /**
  * @since 3.0.0
  */
-export const applicativeTaskEither: Applicative2<URI> = {
+export const applicativeTaskEitherPar: Applicative2<URI> = {
   URI,
   map,
   ap,
   of
+}
+
+/**
+ * @since 2.0.0
+ */
+export const applicativeTaskEitherSeq: Applicative2<URI> = {
+  URI,
+  map,
+  of,
+  ap: (fa) => (fab) =>
+    pipe(
+      fab,
+      chain((f) => pipe(fa, map(f)))
+    )
 }
 
 /**
@@ -477,7 +491,6 @@ export const chain: <E, A, B>(f: (a: A) => TaskEither<E, B>) => (ma: TaskEither<
 export const monadTaskEither: Monad2<URI> = {
   URI,
   map,
-  ap,
   of,
   chain
 }
@@ -567,7 +580,6 @@ const fromIO = rightIO
 export const monadIOTaskEither: MonadIO2<URI> = {
   URI,
   map,
-  ap,
   of,
   chain,
   fromIO
@@ -581,7 +593,6 @@ const fromTask = rightTask
 export const monadTaskTaskEither: MonadTask2<URI> = {
   URI,
   map,
-  ap,
   of,
   chain,
   fromIO,
@@ -596,30 +607,7 @@ const throwError = left
 export const monadThrowTaskEither: MonadThrow2<URI> = {
   URI,
   map,
-  ap,
   of,
   chain,
-  throwError
-}
-
-/**
- * TODO
- * @since 2.0.0
- */
-export const monadTaskEitherSeq: Monad2<URI> & Bifunctor2<URI> & Alt2<URI> & MonadTask2<URI> & MonadThrow2<URI> = {
-  URI,
-  bimap,
-  mapLeft,
-  map,
-  of,
-  ap: (fa) => (fab) =>
-    pipe(
-      fab,
-      chain((f) => pipe(fa, map(f)))
-    ),
-  chain,
-  alt,
-  fromIO,
-  fromTask,
   throwError
 }

@@ -24,7 +24,8 @@ Added in v2.0.0
   - [ap](#ap)
   - [apFirst](#apfirst)
   - [apSecond](#apsecond)
-  - [applicativeTaskEither](#applicativetaskeither)
+  - [applicativeTaskEitherPar](#applicativetaskeitherpar)
+  - [applicativeTaskEitherSeq](#applicativetaskeitherseq)
   - [applyTaskEither](#applytaskeither)
   - [bifunctorTaskEither](#bifunctortaskeither)
   - [bimap](#bimap)
@@ -61,7 +62,6 @@ Added in v2.0.0
   - [mapLeft](#mapleft)
   - [monadIOTaskEither](#monadiotaskeither)
   - [monadTaskEither](#monadtaskeither)
-  - [monadTaskEitherSeq](#monadtaskeitherseq)
   - [monadTaskTaskEither](#monadtasktaskeither)
   - [monadThrowTaskEither](#monadthrowtaskeither)
   - [orElse](#orelse)
@@ -157,15 +157,25 @@ export declare const apSecond: <E, B>(fb: TaskEither<E, B>) => <A>(fa: TaskEithe
 
 Added in v2.0.0
 
-## applicativeTaskEither
+## applicativeTaskEitherPar
 
 **Signature**
 
 ```ts
-export declare const applicativeTaskEither: Applicative2<'TaskEither'>
+export declare const applicativeTaskEitherPar: Applicative2<'TaskEither'>
 ```
 
 Added in v3.0.0
+
+## applicativeTaskEitherSeq
+
+**Signature**
+
+```ts
+export declare const applicativeTaskEitherSeq: Applicative2<'TaskEither'>
+```
+
+Added in v2.0.0
 
 ## applyTaskEither
 
@@ -560,22 +570,6 @@ export declare const monadTaskEither: Monad2<'TaskEither'>
 ```
 
 Added in v3.0.0
-
-## monadTaskEitherSeq
-
-TODO
-
-**Signature**
-
-```ts
-export declare const monadTaskEitherSeq: Monad2<'TaskEither'> &
-  Bifunctor2<'TaskEither'> &
-  Alt2<'TaskEither'> &
-  MonadTask2<'TaskEither'> &
-  MonadThrow2<'TaskEither'>
-```
-
-Added in v2.0.0
 
 ## monadTaskTaskEither
 

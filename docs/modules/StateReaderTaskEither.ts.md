@@ -12,6 +12,9 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
+- [instances](#instances)
+  - [applicativeReaderTaskEitherSeq](#applicativereadertaskeitherseq)
+  - [applicativeStateReaderTaskEitherPar](#applicativestatereadertaskeitherpar)
 - [utils](#utils)
   - [StateReaderTaskEither (interface)](#statereadertaskeither-interface)
   - [URI](#uri)
@@ -21,7 +24,6 @@ Added in v2.0.0
   - [ap](#ap)
   - [apFirst](#apfirst)
   - [apSecond](#apsecond)
-  - [applicativeStateReaderTaskEither](#applicativestatereadertaskeither)
   - [applyStateReaderTaskEither](#applystatereadertaskeither)
   - [bifunctorStateReaderTaskEither](#bifunctorstatereadertaskeither)
   - [bimap](#bimap)
@@ -63,7 +65,6 @@ Added in v2.0.0
   - [mapLeft](#mapleft)
   - [modify](#modify)
   - [monadIOStateReaderTaskEither](#monadiostatereadertaskeither)
-  - [monadReaderTaskEitherSeq](#monadreadertaskeitherseq)
   - [monadStateReaderTaskEither](#monadstatereadertaskeither)
   - [monadTaskStateReaderTaskEither](#monadtaskstatereadertaskeither)
   - [monadThrowStateReaderTaskEither](#monadthrowstatereadertaskeither)
@@ -75,6 +76,28 @@ Added in v2.0.0
   - [rightTask](#righttask)
 
 ---
+
+# instances
+
+## applicativeReaderTaskEitherSeq
+
+**Signature**
+
+```ts
+export declare const applicativeReaderTaskEitherSeq: Applicative4<'StateReaderTaskEither'>
+```
+
+Added in v3.0.0
+
+## applicativeStateReaderTaskEitherPar
+
+**Signature**
+
+```ts
+export declare const applicativeStateReaderTaskEitherPar: Applicative4<'StateReaderTaskEither'>
+```
+
+Added in v3.0.0
 
 # utils
 
@@ -167,16 +190,6 @@ export declare const apSecond: <S, R, E, B>(
 ```
 
 Added in v2.0.0
-
-## applicativeStateReaderTaskEither
-
-**Signature**
-
-```ts
-export declare const applicativeStateReaderTaskEither: Applicative4<'StateReaderTaskEither'>
-```
-
-Added in v3.0.0
 
 ## applyStateReaderTaskEither
 
@@ -651,22 +664,6 @@ Added in v2.0.0
 
 ```ts
 export declare const monadIOStateReaderTaskEither: MonadIO4<'StateReaderTaskEither'>
-```
-
-Added in v3.0.0
-
-## monadReaderTaskEitherSeq
-
-TODO
-
-**Signature**
-
-```ts
-export declare const monadReaderTaskEitherSeq: Monad4<'StateReaderTaskEither'> &
-  Bifunctor4<'StateReaderTaskEither'> &
-  Alt4<'StateReaderTaskEither'> &
-  MonadTask4<'StateReaderTaskEither'> &
-  MonadThrow4<'StateReaderTaskEither'>
 ```
 
 Added in v3.0.0

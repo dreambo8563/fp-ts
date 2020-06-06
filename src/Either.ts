@@ -504,7 +504,6 @@ export const chain: <E, A, B>(f: (a: A) => Either<E, B>) => (ma: Either<E, A>) =
 export const monadEither: Monad2<URI> = {
   URI,
   map,
-  ap,
   of,
   chain
 }
@@ -639,7 +638,6 @@ export const extendEither: Extend2<URI> = {
 export const monadThrowEither: MonadThrow2<URI> = {
   URI,
   map,
-  ap,
   of,
   chain,
   throwError: left

@@ -12,6 +12,9 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
+- [instances](#instances)
+  - [applicativeReaderTaskEitherPar](#applicativereadertaskeitherpar)
+  - [applicativeReaderTaskEitherSeq](#applicativereadertaskeitherseq)
 - [utils](#utils)
   - [ReaderTaskEither (interface)](#readertaskeither-interface)
   - [URI](#uri)
@@ -21,7 +24,6 @@ Added in v2.0.0
   - [ap](#ap)
   - [apFirst](#apfirst)
   - [apSecond](#apsecond)
-  - [applicativeReaderTaskEither](#applicativereadertaskeither)
   - [applyReaderTaskEither](#applyreadertaskeither)
   - [ask](#ask)
   - [asks](#asks)
@@ -66,7 +68,6 @@ Added in v2.0.0
   - [mapLeft](#mapleft)
   - [monadIOReaderTaskEither](#monadioreadertaskeither)
   - [monadReaderTaskEither](#monadreadertaskeither)
-  - [monadReaderTaskEitherSeq](#monadreadertaskeitherseq)
   - [monadTaskReaderTaskEither](#monadtaskreadertaskeither)
   - [monadThrowReaderTaskEither](#monadthrowreadertaskeither)
   - [orElse](#orelse)
@@ -78,6 +79,28 @@ Added in v2.0.0
   - [swap](#swap)
 
 ---
+
+# instances
+
+## applicativeReaderTaskEitherPar
+
+**Signature**
+
+```ts
+export declare const applicativeReaderTaskEitherPar: Applicative3<'ReaderTaskEither'>
+```
+
+Added in v3.0.0
+
+## applicativeReaderTaskEitherSeq
+
+**Signature**
+
+```ts
+export declare const applicativeReaderTaskEitherSeq: Applicative3<'ReaderTaskEither'>
+```
+
+Added in v2.0.0
 
 # utils
 
@@ -170,16 +193,6 @@ export declare const apSecond: <R, E, B>(
 ```
 
 Added in v2.0.0
-
-## applicativeReaderTaskEither
-
-**Signature**
-
-```ts
-export declare const applicativeReaderTaskEither: Applicative3<'ReaderTaskEither'>
-```
-
-Added in v3.0.0
 
 ## applyReaderTaskEither
 
@@ -681,22 +694,6 @@ export declare const monadReaderTaskEither: Monad3<'ReaderTaskEither'>
 ```
 
 Added in v3.0.0
-
-## monadReaderTaskEitherSeq
-
-TODO
-
-**Signature**
-
-```ts
-export declare const monadReaderTaskEitherSeq: Monad3<'ReaderTaskEither'> &
-  Bifunctor3<'ReaderTaskEither'> &
-  Alt3<'ReaderTaskEither'> &
-  MonadTask3<'ReaderTaskEither'> &
-  MonadThrow3<'ReaderTaskEither'>
-```
-
-Added in v2.0.0
 
 ## monadTaskReaderTaskEither
 

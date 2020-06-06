@@ -361,7 +361,6 @@ export const applicativeReaderTask: Applicative3<URI> = {
 export const monadReaderTask: Monad3<URI> = {
   URI,
   map,
-  ap,
   of,
   chain
 }
@@ -390,7 +389,6 @@ export const altReaderTask: Alt3<URI> = {
 export const monadThrowReaderTask: MonadThrow3<URI> = {
   URI,
   map,
-  ap,
   of,
   chain,
   throwError: left

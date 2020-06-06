@@ -4,6 +4,7 @@
 import { Functor2 } from './Functor'
 import { Monad2C } from './Monad'
 import { Monoid } from './Monoid'
+import { Applicative2C } from './Applicative'
 
 /**
  * @since 2.0.0
@@ -92,6 +93,7 @@ export const censor: <W>(f: (w: W) => W) => <A>(fa: Writer<W, A>) => Writer<W, A
 // -------------------------------------------------------------------------------------
 
 /**
+ * @category Functor
  * @since 2.0.0
  */
 export const map: <A, B>(f: (a: A) => B) => <E>(fa: Writer<E, A>) => Writer<E, B> = (f) => (fa) => () => {
@@ -100,6 +102,7 @@ export const map: <A, B>(f: (a: A) => B) => <E>(fa: Writer<E, A>) => Writer<E, B
 }
 
 /**
+ * @category instances
  * @since 3.0.0
  */
 export const functorWriter: Functor2<URI> = {
@@ -108,9 +111,10 @@ export const functorWriter: Functor2<URI> = {
 }
 
 /**
+ * @category instances
  * @since 2.0.0
  */
-export function getMonad<W>(M: Monoid<W>): Monad2C<URI, W> {
+export function getApplicative<W>(M: Monoid<W>): Applicative2C<URI, W> {
   return {
     URI,
     _E: undefined as any,
@@ -120,6 +124,19 @@ export function getMonad<W>(M: Monoid<W>): Monad2C<URI, W> {
       const [a, w2] = fa()
       return [f(a), M.concat(w1, w2)]
     },
+    of: (a) => () => [a, M.empty]
+  }
+}
+
+/**
+ * @category instances
+ * @since 2.0.0
+ */
+export function getMonad<W>(M: Monoid<W>): Monad2C<URI, W> {
+  return {
+    URI,
+    _E: undefined as any,
+    map,
     of: (a) => () => [a, M.empty],
     chain: (f) => (fa) => () => {
       const [a, w1] = fa()

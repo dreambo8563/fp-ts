@@ -133,7 +133,6 @@ export const chain: <A, B>(f: (a: A) => IO<B>) => (ma: IO<A>) => IO<B> = (f) => 
 export const monadIO: Monad1<URI> = {
   URI,
   map,
-  ap,
   of,
   chain
 }
@@ -165,7 +164,6 @@ export const fromIO: <A>(fa: IO<A>) => IO<A> = identity
 export const monadIOIO: MonadIO1<URI> = {
   URI,
   map,
-  ap,
   of,
   chain,
   fromIO

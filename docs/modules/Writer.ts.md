@@ -12,6 +12,12 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
+- [Functor](#functor)
+  - [map](#map)
+- [instances](#instances)
+  - [functorWriter](#functorwriter)
+  - [getApplicative](#getapplicative)
+  - [getMonad](#getmonad)
 - [utils](#utils)
   - [URI](#uri)
   - [URI (type alias)](#uri-type-alias)
@@ -19,15 +25,56 @@ Added in v2.0.0
   - [censor](#censor)
   - [evaluate](#evaluate)
   - [execute](#execute)
-  - [functorWriter](#functorwriter)
-  - [getMonad](#getmonad)
   - [listen](#listen)
   - [listens](#listens)
-  - [map](#map)
   - [pass](#pass)
   - [tell](#tell)
 
 ---
+
+# Functor
+
+## map
+
+**Signature**
+
+```ts
+export declare const map: <A, B>(f: (a: A) => B) => <E>(fa: Writer<E, A>) => Writer<E, B>
+```
+
+Added in v2.0.0
+
+# instances
+
+## functorWriter
+
+**Signature**
+
+```ts
+export declare const functorWriter: Functor2<'Writer'>
+```
+
+Added in v3.0.0
+
+## getApplicative
+
+**Signature**
+
+```ts
+export declare function getApplicative<W>(M: Monoid<W>): Applicative2C<URI, W>
+```
+
+Added in v2.0.0
+
+## getMonad
+
+**Signature**
+
+```ts
+export declare function getMonad<W>(M: Monoid<W>): Monad2C<URI, W>
+```
+
+Added in v2.0.0
 
 # utils
 
@@ -95,26 +142,6 @@ export declare const execute: <W, A>(fa: Writer<W, A>) => W
 
 Added in v2.0.0
 
-## functorWriter
-
-**Signature**
-
-```ts
-export declare const functorWriter: Functor2<'Writer'>
-```
-
-Added in v3.0.0
-
-## getMonad
-
-**Signature**
-
-```ts
-export declare function getMonad<W>(M: Monoid<W>): Monad2C<URI, W>
-```
-
-Added in v2.0.0
-
 ## listen
 
 Modifies the result to include the changes to the accumulator
@@ -135,16 +162,6 @@ Projects a value from modifications made to the accumulator during an action
 
 ```ts
 export declare const listens: <W, B>(f: (w: W) => B) => <A>(fa: Writer<W, A>) => Writer<W, readonly [A, B]>
-```
-
-Added in v2.0.0
-
-## map
-
-**Signature**
-
-```ts
-export declare const map: <A, B>(f: (a: A) => B) => <E>(fa: Writer<E, A>) => Writer<E, B>
 ```
 
 Added in v2.0.0

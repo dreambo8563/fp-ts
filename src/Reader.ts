@@ -155,7 +155,6 @@ export const chain: <A, R, B>(f: (a: A) => Reader<R, B>) => (ma: Reader<R, A>) =
 export const monadReader: Monad2<URI> = {
   URI,
   map,
-  ap,
   of,
   chain
 }

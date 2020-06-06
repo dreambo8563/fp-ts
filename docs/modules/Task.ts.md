@@ -15,6 +15,9 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
+- [instances](#instances)
+  - [applicativeTaskPar](#applicativetaskpar)
+  - [applicativeTaskSeq](#applicativetaskseq)
 - [utils](#utils)
   - [Task (interface)](#task-interface)
   - [URI](#uri)
@@ -22,7 +25,6 @@ Added in v2.0.0
   - [ap](#ap)
   - [apFirst](#apfirst)
   - [apSecond](#apsecond)
-  - [applicativeTask](#applicativetask)
   - [applyTask](#applytask)
   - [chain](#chain)
   - [chainFirst](#chainfirst)
@@ -38,12 +40,33 @@ Added in v2.0.0
   - [map](#map)
   - [monadIOTask](#monadiotask)
   - [monadTask](#monadtask)
-  - [monadTaskSeq](#monadtaskseq)
   - [monadTaskTask](#monadtasktask)
   - [never](#never)
   - [of](#of)
 
 ---
+
+# instances
+
+## applicativeTaskPar
+
+**Signature**
+
+```ts
+export declare const applicativeTaskPar: Applicative1<'Task'>
+```
+
+Added in v3.0.0
+
+## applicativeTaskSeq
+
+**Signature**
+
+```ts
+export declare const applicativeTaskSeq: Applicative1<'Task'>
+```
+
+Added in v3.0.0
 
 # utils
 
@@ -108,16 +131,6 @@ export declare const apSecond: <B>(fb: Task<B>) => <A>(fa: Task<A>) => Task<B>
 ```
 
 Added in v2.0.0
-
-## applicativeTask
-
-**Signature**
-
-```ts
-export declare const applicativeTask: Applicative1<'Task'>
-```
-
-Added in v3.0.0
 
 ## applyTask
 
@@ -267,18 +280,6 @@ Added in v3.0.0
 
 ```ts
 export declare const monadTask: Monad1<'Task'>
-```
-
-Added in v3.0.0
-
-## monadTaskSeq
-
-TODO
-
-**Signature**
-
-```ts
-export declare const monadTaskSeq: Monad1<'Task'>
 ```
 
 Added in v3.0.0

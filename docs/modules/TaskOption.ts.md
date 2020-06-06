@@ -22,7 +22,8 @@ Added in v3.0.0
   - [ap](#ap)
   - [apFirst](#apfirst)
   - [apSecond](#apsecond)
-  - [applicativeTaskOption](#applicativetaskoption)
+  - [applicativeTaskOptionPar](#applicativetaskoptionpar)
+  - [applicativeTaskOptionSeq](#applicativetaskoptionseq)
   - [applyTaskOption](#applytaskoption)
   - [chain](#chain)
   - [chainFirst](#chainfirst)
@@ -150,12 +151,22 @@ export declare const apSecond: <B>(fb: TaskOption<B>) => <A>(fa: TaskOption<A>) 
 
 Added in v3.0.0
 
-## applicativeTaskOption
+## applicativeTaskOptionPar
 
 **Signature**
 
 ```ts
-export declare const applicativeTaskOption: Applicative1<'TaskOption'>
+export declare const applicativeTaskOptionPar: Applicative1<'TaskOption'>
+```
+
+Added in v3.0.0
+
+## applicativeTaskOptionSeq
+
+**Signature**
+
+```ts
+export declare const applicativeTaskOptionSeq: Applicative1<'TaskOption'>
 ```
 
 Added in v3.0.0

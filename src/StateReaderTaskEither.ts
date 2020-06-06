@@ -497,13 +497,29 @@ export const applyStateReaderTaskEither: Apply4<URI> = {
 const of = right
 
 /**
+ * @category instances
  * @since 3.0.0
  */
-export const applicativeStateReaderTaskEither: Applicative4<URI> = {
+export const applicativeStateReaderTaskEitherPar: Applicative4<URI> = {
   URI,
   map,
   ap,
   of
+}
+
+/**
+ * @category instances
+ * @since 3.0.0
+ */
+export const applicativeReaderTaskEitherSeq: Applicative4<URI> = {
+  URI,
+  map,
+  of,
+  ap: (fa) => (fab) =>
+    pipe(
+      fab,
+      chain((f) => pipe(fa, map(f)))
+    )
 }
 
 /**
@@ -512,7 +528,6 @@ export const applicativeStateReaderTaskEither: Applicative4<URI> = {
 export const monadStateReaderTaskEither: Monad4<URI> = {
   URI,
   map,
-  ap,
   of,
   chain
 }
@@ -543,7 +558,6 @@ const fromIO = rightIO
 export const monadIOStateReaderTaskEither: MonadIO4<URI> = {
   URI,
   map,
-  ap,
   of,
   chain,
   fromIO
@@ -557,7 +571,6 @@ const fromTask = rightTask
 export const monadTaskStateReaderTaskEither: MonadTask4<URI> = {
   URI,
   map,
-  ap,
   of,
   chain,
   fromIO,
@@ -572,34 +585,7 @@ const throwError = left
 export const monadThrowStateReaderTaskEither: MonadThrow4<URI> = {
   URI,
   map,
-  ap,
   of,
   chain,
-  throwError
-}
-
-/**
- * TODO
- * @since 3.0.0
- */
-export const monadReaderTaskEitherSeq: Monad4<URI> &
-  Bifunctor4<URI> &
-  Alt4<URI> &
-  MonadTask4<URI> &
-  MonadThrow4<URI> = {
-  URI,
-  map,
-  of,
-  ap: (fa) => (fab) =>
-    pipe(
-      fab,
-      chain((f) => pipe(fa, map(f)))
-    ),
-  chain,
-  bimap,
-  mapLeft,
-  alt,
-  fromIO,
-  fromTask,
   throwError
 }

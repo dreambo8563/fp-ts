@@ -5,6 +5,8 @@ import { pipe } from '../src/function'
 import * as T from '../src/Task'
 import * as _ from '../src/TaskThese'
 import * as TH from '../src/These'
+import { sequenceT } from '../src/Apply'
+import { semigroupString } from '../src/Semigroup'
 
 describe('TaskThese', () => {
   describe('pipeables', () => {
@@ -27,6 +29,40 @@ describe('TaskThese', () => {
       assert.deepStrictEqual(await pipe(_.left('a'), _.mapLeft(f))(), TH.left('aa'))
       assert.deepStrictEqual(await pipe(_.both('a', 1), _.mapLeft(f))(), TH.both('aa', 1))
     })
+  })
+
+  it('getApplicativePar', async () => {
+    // tslint:disable-next-line: readonly-array
+    const log: Array<string> = []
+    const append = (message: string, delay: number): _.TaskThese<string, void> =>
+      _.rightTask(
+        T.delay(delay)(
+          T.fromIO(() => {
+            log.push(message)
+          })
+        )
+      )
+    const t1 = append('1', 10)
+    const t2 = append('2', 5)
+    await sequenceT(_.getApplicativePar(semigroupString))(t1, t2)()
+    assert.deepStrictEqual(log, ['2', '1'])
+  })
+
+  it('getApplicativeSeq', async () => {
+    // tslint:disable-next-line: readonly-array
+    const log: Array<string> = []
+    const append = (message: string, delay: number): _.TaskThese<string, void> =>
+      _.rightTask(
+        T.delay(delay)(
+          T.fromIO(() => {
+            log.push(message)
+          })
+        )
+      )
+    const t1 = append('1', 10)
+    const t2 = append('2', 5)
+    await sequenceT(_.getApplicativeSeq(semigroupString))(t1, t2)()
+    assert.deepStrictEqual(log, ['1', '2'])
   })
 
   it('right', async () => {
@@ -108,11 +144,6 @@ describe('TaskThese', () => {
       assert.deepStrictEqual(await pipe(_.right(1), M.map(f))(), TH.right(2))
       assert.deepStrictEqual(await pipe(_.left('a'), M.map(f))(), TH.left('a'))
       assert.deepStrictEqual(await pipe(_.both('a', 1), M.map(f))(), TH.both('a', 2))
-    })
-
-    it('ap', async () => {
-      const f = (n: number): number => n * 2
-      assert.deepStrictEqual(await pipe(_.right(f), M.ap(_.right(1)))(), TH.right(2))
     })
 
     it('chain', async () => {

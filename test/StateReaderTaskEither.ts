@@ -143,12 +143,12 @@ describe('StateReaderTaskEither', () => {
     assert.deepStrictEqual(await _.right('a')({})({})(), E.right(['a', {}]))
   })
 
-  it('ap (seq)', async () => {
+  it('applicativeReaderTaskEitherSeq', async () => {
     const len = (s: string): number => s.length
     const mab = _.right(len)
     const ma = _.right('a')
     assert.deepStrictEqual(
-      await pipe(mab, _.monadReaderTaskEitherSeq.ap(ma), _.evaluate(defaultState))({})(),
+      await pipe(mab, _.applicativeReaderTaskEitherSeq.ap(ma), _.evaluate(defaultState))({})(),
       E.right(1)
     )
   })

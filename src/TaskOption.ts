@@ -220,10 +220,24 @@ export const of: <A>(a: A) => TaskOption<A> =
 /**
  * @since 3.0.0
  */
-export const applicativeTaskOption: Applicative1<URI> = {
+export const applicativeTaskOptionPar: Applicative1<URI> = {
   URI,
   map,
   ap,
+  of
+}
+
+/**
+ * @since 3.0.0
+ */
+export const applicativeTaskOptionSeq: Applicative1<URI> = {
+  URI,
+  map,
+  ap: (fa) => (fab) =>
+    pipe(
+      fab,
+      chain((f) => pipe(fa, map(f)))
+    ),
   of
 }
 
@@ -239,7 +253,6 @@ export const chain: <A, B>(f: (a: A) => TaskOption<B>) => (ma: TaskOption<A>) =>
 export const monadTaskOption: Monad1<URI> = {
   URI,
   map,
-  ap,
   of,
   chain
 }
