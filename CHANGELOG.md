@@ -20,6 +20,7 @@ high state of flux, you're at risk of it changing without notice.
   - remove deprecated APIs
   - remove `pipeable` module
   - (**b**) move `pipe` to `function.ts`
+  - remove `Chain` type class
   - remove `ChainRec` module
   - remove `Choice` module
   - remove `EitherT` module

@@ -1,6 +1,6 @@
 ---
 title: ReadonlyTuple.ts
-nav_order: 65
+nav_order: 64
 parent: Modules
 ---
 
@@ -27,7 +27,6 @@ Added in v2.5.0
   - [fst](#fst)
   - [getApplicative](#getapplicative)
   - [getApply](#getapply)
-  - [getChain](#getchain)
   - [getMonad](#getmonad)
   - [map](#map)
   - [mapLeft](#mapleft)
@@ -181,16 +180,6 @@ Added in v2.5.0
 
 ```ts
 export declare function getApply<S>(S: Semigroup<S>): Apply2C<URI, S>
-```
-
-Added in v2.5.0
-
-## getChain
-
-**Signature**
-
-```ts
-export declare function getChain<S>(S: Semigroup<S>): Chain2C<URI, S>
 ```
 
 Added in v2.5.0
