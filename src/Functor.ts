@@ -19,6 +19,7 @@ import { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from './HKT
  */
 export interface Functor<F> {
   readonly URI: F
+  readonly _tag?: undefined
   readonly map: <A, B>(fa: HKT<F, A>, f: (a: A) => B) => HKT<F, B>
 }
 
@@ -209,4 +210,35 @@ export function getFunctorComposition<F, G>(F: Functor<F>, G: Functor<G>): Funct
   return {
     map: (fa, f) => F.map(fa, (ga) => G.map(ga, f))
   }
+}
+
+//
+// pipeable `Functor`
+//
+
+/**
+ * @since 2.7.0
+ */
+export interface PipeableFunctor<F> {
+  readonly URI: F
+  readonly _tag: 'data-last'
+  readonly map: <A, B>(f: (a: A) => B) => (fa: HKT<F, A>) => HKT<F, B>
+}
+
+/**
+ * @since 2.7.0
+ */
+export interface PipeableFunctor1<F extends URIS> {
+  readonly URI: F
+  readonly _tag: 'data-last'
+  readonly map: <A, B>(f: (a: A) => B) => (fa: Kind<F, A>) => Kind<F, B>
+}
+
+/**
+ * @since 2.7.0
+ */
+export interface PipeableFunctor2<F extends URIS2> {
+  readonly URI: F
+  readonly _tag: 'data-last'
+  readonly map: <A, B>(f: (a: A) => B) => <E>(fa: Kind2<F, E, A>) => Kind2<F, E, B>
 }

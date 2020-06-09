@@ -2,7 +2,7 @@
  * @since 2.0.0
  */
 import { Alt1 } from './Alt'
-import { Applicative } from './Applicative'
+import { Applicative, PipeableApplicative, toApplicative } from './Applicative'
 import { ChainRec1, tailRec } from './ChainRec'
 import { Comonad1 } from './Comonad'
 import { Eq } from './Eq'
@@ -87,10 +87,10 @@ export const traverse: PipeableTraverse1<URI> = <F>(
 /**
  * @since 2.6.3
  */
-export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F>) => <A>(
+export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F> | PipeableApplicative<F>) => <A>(
   ta: Identity<HKT<F, A>>
 ): HKT<F, Identity<A>> => {
-  return F.map(ta, id)
+  return toApplicative(F).map(ta, id)
 }
 
 /**

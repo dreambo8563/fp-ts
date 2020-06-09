@@ -17,11 +17,20 @@
  *
  * @since 2.0.0
  */
-import { Apply, Apply1, Apply2, Apply2C, Apply3, Apply4, Apply3C } from './Apply'
+import {
+  Apply,
+  Apply1,
+  Apply2,
+  Apply2C,
+  Apply3,
+  Apply3C,
+  Apply4,
+  PipeableApply,
+  PipeableApply1,
+  PipeableApply2
+} from './Apply'
 import {
   FunctorComposition,
-  FunctorCompositionHKT1,
-  FunctorCompositionHKT2,
   FunctorComposition11,
   FunctorComposition12,
   FunctorComposition12C,
@@ -29,10 +38,13 @@ import {
   FunctorComposition22,
   FunctorComposition22C,
   FunctorComposition2C1,
-  getFunctorComposition,
-  FunctorCompositionHKT2C
+  FunctorCompositionHKT1,
+  FunctorCompositionHKT2,
+  FunctorCompositionHKT2C,
+  getFunctorComposition
 } from './Functor'
 import { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from './HKT'
+import { pipe } from './function'
 
 /**
  * @category type classes
@@ -261,5 +273,64 @@ export function getApplicativeComposition<F, G>(F: Applicative<F>, G: Applicativ
         F.map(fgab, (h) => (ga: HKT<G, A>) => G.ap<A, B>(h, ga)),
         fga
       )
+  }
+}
+
+//
+// pipeable `Applicative`
+//
+/**
+ * @since 2.7.0
+ */
+export interface PipeableApplicative<F> extends PipeableApply<F> {
+  readonly of: <A>(a: A) => HKT<F, A>
+}
+
+/**
+ * @since 2.7.0
+ */
+export interface PipeableApplicative1<F extends URIS> extends PipeableApply1<F> {
+  readonly of: <A>(a: A) => Kind<F, A>
+}
+
+/**
+ * @since 2.7.0
+ */
+export interface PipeableApplicative2<F extends URIS2> extends PipeableApply2<F> {
+  readonly of: <E, A>(a: A) => Kind2<F, E, A>
+}
+
+/**
+ * @internal
+ */
+export function toPipeableApplicative<F>(F: Applicative<F> | PipeableApplicative<F>): PipeableApplicative<F> {
+  switch (F._tag) {
+    case 'data-last':
+      return F
+    case undefined:
+      return {
+        URI: F.URI,
+        _tag: 'data-last',
+        map: (f) => (fa) => F.map(fa, f),
+        ap: (fa) => (fab) => F.ap(fab, fa),
+        of: F.of
+      }
+  }
+}
+
+/**
+ * @internal
+ */
+export function toApplicative<F>(F: Applicative<F> | PipeableApplicative<F>): Applicative<F> {
+  switch (F._tag) {
+    case 'data-last':
+      return {
+        URI: F.URI,
+        map: (fa, f) => pipe(fa, F.map(f)),
+        ap: (fab, fa) => pipe(fab, F.ap(fa)),
+        of: F.of
+      }
+    case undefined:
+      return F
   }
 }

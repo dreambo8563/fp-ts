@@ -7,7 +7,7 @@
  *
  * @since 2.0.0
  */
-import { Applicative } from './Applicative'
+import { Applicative, PipeableApplicative, toApplicative } from './Applicative'
 import * as A from './Array'
 import { Comonad1 } from './Comonad'
 import { Eq, fromEquals } from './Eq'
@@ -454,9 +454,9 @@ export const traverse: PipeableTraverse1<URI> = <F>(
  * @since 2.6.3
  */
 export const sequence: Traversable1<URI>['sequence'] = <F>(
-  F: Applicative<F>
+  F: Applicative<F> | PipeableApplicative<F>
 ): (<A>(ta: Tree<HKT<F, A>>) => HKT<F, Tree<A>>) => {
-  const traverseF = traverse_(F)
+  const traverseF = traverse_(toApplicative(F))
   return (ta) => traverseF(ta, identity)
 }
 

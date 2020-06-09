@@ -35,9 +35,20 @@
  *
  * @since 2.0.0
  */
-import { Functor, Functor1, Functor2, Functor2C, Functor3, Functor4, Functor3C } from './Functor'
-import { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from './HKT'
 import { tuple } from './function'
+import {
+  Functor,
+  Functor1,
+  Functor2,
+  Functor2C,
+  Functor3,
+  Functor3C,
+  Functor4,
+  PipeableFunctor,
+  PipeableFunctor1,
+  PipeableFunctor2
+} from './Functor'
+import { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from './HKT'
 
 /**
  * @category type classes
@@ -311,4 +322,29 @@ export function apComposition<F, G>(
       F.map(fgab, (h) => (ga: HKT<G, A>) => G.ap<A, B>(h, ga)),
       fga
     )
+}
+
+//
+// pipeable `Apply`
+//
+
+/**
+ * @since 2.7.0
+ */
+export interface PipeableApply<F> extends PipeableFunctor<F> {
+  readonly ap: <A>(fa: HKT<F, A>) => <B>(fab: HKT<F, (a: A) => B>) => HKT<F, B>
+}
+
+/**
+ * @since 2.7.0
+ */
+export interface PipeableApply1<F extends URIS> extends PipeableFunctor1<F> {
+  readonly ap: <A>(fa: Kind<F, A>) => <B>(fab: Kind<F, (a: A) => B>) => Kind<F, B>
+}
+
+/**
+ * @since 2.7.0
+ */
+export interface PipeableApply2<F extends URIS2> extends PipeableFunctor2<F> {
+  readonly ap: <E, A>(fa: Kind2<F, E, A>) => <B>(fab: Kind2<F, E, (a: A) => B>) => Kind2<F, E, B>
 }

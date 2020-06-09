@@ -13,7 +13,7 @@
  * @since 2.0.0
  */
 import { Alternative1 } from './Alternative'
-import { Applicative, Applicative1 } from './Applicative'
+import { Applicative, Applicative1, toApplicative, PipeableApplicative } from './Applicative'
 import { Compactable1, Separated } from './Compactable'
 import { Either } from './Either'
 import { Eq } from './Eq'
@@ -646,10 +646,11 @@ export const traverse: PipeableTraverse1<URI> = <F>(
  * @category Traversable
  * @since 2.6.3
  */
-export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F>) => <A>(
+export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F> | PipeableApplicative<F>) => <A>(
   ta: Option<HKT<F, A>>
 ): HKT<F, Option<A>> => {
-  return isNone(ta) ? F.of(none) : F.map(ta.value, some)
+  const A = toApplicative(F)
+  return isNone(ta) ? A.of(none) : A.map(ta.value, some)
 }
 
 // -------------------------------------------------------------------------------------

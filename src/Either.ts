@@ -14,7 +14,7 @@
  * @since 2.0.0
  */
 import { Alt2, Alt2C } from './Alt'
-import { Applicative } from './Applicative'
+import { Applicative, PipeableApplicative2 } from './Applicative'
 import { Apply2 } from './Apply'
 import { Bifunctor2 } from './Bifunctor'
 import { ChainRec2, ChainRec2C, tailRec } from './ChainRec'
@@ -533,6 +533,18 @@ export const applyEither: Apply2<URI> = {
   URI,
   map: map_,
   ap: ap_
+}
+
+/**
+ * @category instances
+ * @since 2.7.0
+ */
+export const applicativeEither: PipeableApplicative2<URI> = {
+  URI,
+  _tag: 'data-last',
+  map,
+  ap,
+  of
 }
 
 /**
