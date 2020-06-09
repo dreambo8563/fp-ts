@@ -12,7 +12,7 @@ import { HKT } from './HKT'
 import { Monad1 } from './Monad'
 import { Monoid } from './Monoid'
 import { Show } from './Show'
-import { Traversable1, PipeableTraverse1 } from './Traversable'
+import { Traversable1, PipeableTraverse1, BackwardCompatibleSequence1 } from './Traversable'
 
 /**
  * @category model
@@ -87,7 +87,7 @@ export const traverse: PipeableTraverse1<URI> = <F>(
 /**
  * @since 2.6.3
  */
-export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F> | PipeableApplicative<F>) => <A>(
+export const sequence: BackwardCompatibleSequence1<URI> = <F>(F: Applicative<F> | PipeableApplicative<F>) => <A>(
   ta: Identity<HKT<F, A>>
 ): HKT<F, Identity<A>> => {
   return toApplicative(F).map(ta, id)

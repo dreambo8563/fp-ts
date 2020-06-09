@@ -17,7 +17,7 @@ import { HKT, Kind, Kind2, Kind3, URIS, URIS2, URIS3 } from './HKT'
 import { Monad, Monad1, Monad2, Monad2C, Monad3, Monad3C } from './Monad'
 import { Monoid } from './Monoid'
 import { Show } from './Show'
-import { Traversable1, PipeableTraverse1 } from './Traversable'
+import { Traversable1, PipeableTraverse1, BackwardCompatibleSequence1 } from './Traversable'
 
 // tslint:disable:readonly-array
 
@@ -453,7 +453,7 @@ export const traverse: PipeableTraverse1<URI> = <F>(
 /**
  * @since 2.6.3
  */
-export const sequence: Traversable1<URI>['sequence'] = <F>(
+export const sequence: BackwardCompatibleSequence1<URI> = <F>(
   F: Applicative<F> | PipeableApplicative<F>
 ): (<A>(ta: Tree<HKT<F, A>>) => HKT<F, Tree<A>>) => {
   const traverseF = traverse_(toApplicative(F))

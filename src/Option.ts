@@ -28,7 +28,7 @@ import { Monoid } from './Monoid'
 import { Ord } from './Ord'
 import { Semigroup } from './Semigroup'
 import { Show } from './Show'
-import { Traversable1, PipeableTraverse1 } from './Traversable'
+import { Traversable1, PipeableTraverse1, BackwardCompatibleSequence1 } from './Traversable'
 import { Witherable1 } from './Witherable'
 
 // -------------------------------------------------------------------------------------
@@ -646,7 +646,7 @@ export const traverse: PipeableTraverse1<URI> = <F>(
  * @category Traversable
  * @since 2.6.3
  */
-export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F> | PipeableApplicative<F>) => <A>(
+export const sequence: BackwardCompatibleSequence1<URI> = <F>(F: Applicative<F> | PipeableApplicative<F>) => <A>(
   ta: Option<HKT<F, A>>
 ): HKT<F, Option<A>> => {
   const A = toApplicative(F)

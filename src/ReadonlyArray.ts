@@ -24,10 +24,10 @@ import { isSome, none, Option, some } from './Option'
 import { fromCompare, getMonoid as getOrdMonoid, Ord, ordNumber } from './Ord'
 import { ReadonlyNonEmptyArray } from './ReadonlyNonEmptyArray'
 import { Show } from './Show'
-import { TraversableWithIndex1, PipeableTraverseWithIndex1 } from './TraversableWithIndex'
+import { BackwardCompatibleSequence1, PipeableTraverse1 } from './Traversable'
+import { PipeableTraverseWithIndex1, TraversableWithIndex1 } from './TraversableWithIndex'
 import { Unfoldable1 } from './Unfoldable'
 import { Witherable1 } from './Witherable'
-import { Traversable1, PipeableTraverse1 } from './Traversable'
 
 /**
  * @category model
@@ -1855,7 +1855,7 @@ export const traverse: PipeableTraverse1<URI> = <F>(
 /**
  * @since 2.6.3
  */
-export const sequence: Traversable1<URI>['sequence'] = <F>(F: Applicative<F> | PipeableApplicative<F>) => <A>(
+export const sequence: BackwardCompatibleSequence1<URI> = <F>(F: Applicative<F> | PipeableApplicative<F>) => <A>(
   ta: ReadonlyArray<HKT<F, A>>
 ): HKT<F, ReadonlyArray<A>> => {
   const A = toApplicative(F)
