@@ -3,6 +3,7 @@ import { left, right } from '../src/Either'
 import { eqNumber } from '../src/Eq'
 import { identity, pipe } from '../src/function'
 import * as I from '../src/Identity'
+import * as IO from '../src/IO'
 import { monoidString } from '../src/Monoid'
 import * as O from '../src/Option'
 import * as RA from '../src/ReadonlyArray'
@@ -43,6 +44,20 @@ describe('ReadonlyRecord', () => {
         assert.deepStrictEqual(traverse1({ k1: 1, k2: 2 }), O.none)
         const t2 = _.traverseWithIndex(O.applicativeOption)((): O.Option<number> => O.none)(_.empty)
         assert.deepStrictEqual(O.getOrElse((): _.ReadonlyRecord<string, number> => _.empty)(t2), _.empty)
+      })
+
+      it('traverseWithIndex should sort the keys', () => {
+        // tslint:disable-next-line: readonly-array
+        const log: Array<string> = []
+        const append = (message: string): IO.IO<void> => () => {
+          log.push(message)
+        }
+
+        pipe(
+          { b: append('b'), a: append('a') },
+          _.traverseWithIndex(IO.applicativeIO)((_, io) => io)
+        )()
+        assert.deepStrictEqual(log, ['a', 'b'])
       })
     })
   })

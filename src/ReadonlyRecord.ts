@@ -798,12 +798,12 @@ const filterWithIndex_ = <A>(predicateWithIndex: PredicateWithIndex<string, A>) 
 const traverseWithIndex_ = <F>(F: Applicative<F>) => <A, B>(f: (k: string, a: A) => HKT<F, B>) => (
   ta: ReadonlyRecord<string, A>
 ) => {
-  const keys = Object.keys(ta)
-  if (keys.length === 0) {
+  const ks = keys(ta)
+  if (ks.length === 0) {
     return F.of(empty)
   }
   let fr: HKT<F, Record<string, B>> = F.of({})
-  for (const key of keys) {
+  for (const key of ks) {
     fr = pipe(
       fr,
       F.map((r) => (b: B) => {
