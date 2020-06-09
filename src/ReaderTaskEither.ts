@@ -408,9 +408,9 @@ export const chainFirst: <R, E, A, B>(
 /**
  * @since 2.0.0
  */
-export const flatten: <R, E, A>(
-  mma: ReaderTaskEither<R, E, ReaderTaskEither<R, E, A>>
-) => ReaderTaskEither<R, E, A> = chain(identity)
+export const flatten: <R, E, A>(mma: ReaderTaskEither<R, E, ReaderTaskEither<R, E, A>>) => ReaderTaskEither<R, E, A> =
+  /*#__PURE__*/
+  chain(identity)
 
 /**
  * @since 2.0.0

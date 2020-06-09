@@ -109,7 +109,9 @@ export function fold<E, A, B>(
 /**
  * @since 2.4.0
  */
-export const swap: <E, A>(fa: These<E, A>) => These<A, E> = fold(right, left, (e, a) => both(a, e))
+export const swap: <E, A>(fa: These<E, A>) => These<A, E> =
+  /*#__PURE__*/
+  fold(right, left, (e, a) => both(a, e))
 
 /**
  * @since 2.0.0

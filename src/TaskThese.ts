@@ -1,6 +1,8 @@
 /**
  * @since 2.4.0
  */
+import { Applicative2C } from './Applicative'
+import { apComposition } from './Apply'
 import { Bifunctor2 } from './Bifunctor'
 import { flow, pipe } from './function'
 import { Functor2 } from './Functor'
@@ -17,8 +19,6 @@ import * as TH from './These'
 
 import These = TH.These
 import Task = T.Task
-import { Applicative2C } from './Applicative'
-import { apComposition } from './Apply'
 
 /**
  * @since 2.4.0
@@ -48,37 +48,51 @@ export interface TaskThese<E, A> extends Task<These<E, A>> {}
 /**
  * @since 2.4.0
  */
-export const left: <E = never, A = never>(e: E) => TaskThese<E, A> = flow(TH.left, T.of)
+export const left: <E = never, A = never>(e: E) => TaskThese<E, A> =
+  /*#__PURE__*/
+  flow(TH.left, T.of)
 
 /**
  * @since 2.4.0
  */
-export const right: <E = never, A = never>(a: A) => TaskThese<E, A> = flow(TH.right, T.of)
+export const right: <E = never, A = never>(a: A) => TaskThese<E, A> =
+  /*#__PURE__*/
+  flow(TH.right, T.of)
 
 /**
  * @since 2.4.0
  */
-export const both: <E, A>(e: E, a: A) => TaskThese<E, A> = flow(TH.both, T.of)
+export const both: <E, A>(e: E, a: A) => TaskThese<E, A> =
+  /*#__PURE__*/
+  flow(TH.both, T.of)
 
 /**
  * @since 2.4.0
  */
-export const rightTask: <E = never, A = never>(ma: Task<A>) => TaskThese<E, A> = T.map(TH.right)
+export const rightTask: <E = never, A = never>(ma: Task<A>) => TaskThese<E, A> =
+  /*#__PURE__*/
+  T.map(TH.right)
 
 /**
  * @since 2.4.0
  */
-export const leftTask: <E = never, A = never>(me: Task<E>) => TaskThese<E, A> = T.map(TH.left)
+export const leftTask: <E = never, A = never>(me: Task<E>) => TaskThese<E, A> =
+  /*#__PURE__*/
+  T.map(TH.left)
 
 /**
  * @since 2.4.0
  */
-export const rightIO: <E = never, A = never>(ma: IO<A>) => TaskThese<E, A> = flow(T.fromIO, rightTask)
+export const rightIO: <E = never, A = never>(ma: IO<A>) => TaskThese<E, A> =
+  /*#__PURE__*/
+  flow(T.fromIO, rightTask)
 
 /**
  * @since 2.4.0
  */
-export const leftIO: <E = never, A = never>(me: IO<E>) => TaskThese<E, A> = flow(T.fromIO, leftTask)
+export const leftIO: <E = never, A = never>(me: IO<E>) => TaskThese<E, A> =
+  /*#__PURE__*/
+  flow(T.fromIO, leftTask)
 
 /**
  * @since 2.4.0
@@ -101,10 +115,9 @@ export const fold: <E, B, A>(
 /**
  * @since 3.0.0
  */
-export const toTuple: <E, A>(e: () => E, a: () => A) => (fa: TaskThese<E, A>) => Task<readonly [E, A]> = flow(
-  TH.toTuple,
-  T.map
-)
+export const toTuple: <E, A>(e: () => E, a: () => A) => (fa: TaskThese<E, A>) => Task<readonly [E, A]> =
+  /*#__PURE__*/
+  flow(TH.toTuple, T.map)
 
 // -------------------------------------------------------------------------------------
 // combinators

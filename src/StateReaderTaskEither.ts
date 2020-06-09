@@ -410,7 +410,9 @@ export const chainIOEitherKW: <R, D, A, B>(
  */
 export const flatten: <S, R, E, A>(
   mma: StateReaderTaskEither<S, R, E, StateReaderTaskEither<S, R, E, A>>
-) => StateReaderTaskEither<S, R, E, A> = chain(identity)
+) => StateReaderTaskEither<S, R, E, A> =
+  /*#__PURE__*/
+  chain(identity)
 
 /**
  * @since 2.0.0

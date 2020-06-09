@@ -175,7 +175,7 @@ Added in v3.0.0
 **Signature**
 
 ```ts
-export declare function ask<R, E = never>(): ReaderEither<R, E, R>
+export declare const ask: <R, E = never>() => ReaderEither<R, E, R>
 ```
 
 Added in v2.0.0
@@ -185,7 +185,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function asks<R, E = never, A = never>(f: (r: R) => A): ReaderEither<R, E, A>
+export declare const asks: <R, E = never, A = never>(f: (r: R) => A) => ReaderEither<R, E, A>
 ```
 
 Added in v2.0.0

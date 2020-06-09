@@ -132,7 +132,9 @@ export const chainFirst: <E, A, B>(f: (a: A) => State<E, B>) => (ma: State<E, A>
 /**
  * @since 2.0.0
  */
-export const flatten: <E, A>(mma: State<E, State<E, A>>) => State<E, A> = chain(identity)
+export const flatten: <E, A>(mma: State<E, State<E, A>>) => State<E, A> =
+  /*#__PURE__*/
+  chain(identity)
 
 /**
  * @since 2.0.0

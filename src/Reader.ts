@@ -178,7 +178,9 @@ export const chainW: <A, Q, B>(f: (a: A) => Reader<Q, B>) => <R>(ma: Reader<R, A
 /**
  * @since 2.0.0
  */
-export const flatten: <R, A>(mma: Reader<R, Reader<R, A>>) => Reader<R, A> = chain(F.identity)
+export const flatten: <R, A>(mma: Reader<R, Reader<R, A>>) => Reader<R, A> =
+  /*#__PURE__*/
+  chain(F.identity)
 
 /**
  * @since 2.0.0

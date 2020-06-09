@@ -217,11 +217,11 @@ whether the body action throws (_) or returns.
 **Signature**
 
 ```ts
-export declare function bracket<E, A, B>(
+export declare const bracket: <E, A, B>(
   acquire: TaskEither<E, A>,
   use: (a: A) => TaskEither<E, B>,
-  release: (a: A, e: Either<E, B>) => TaskEither<E, void>
-): TaskEither<E, B>
+  release: (a: A, e: E.Either<E, B>) => TaskEither<E, void>
+) => TaskEither<E, B>
 ```
 
 Added in v2.0.0
@@ -516,7 +516,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function leftIO<E = never, A = never>(me: IO<E>): TaskEither<E, A>
+export declare const leftIO: <E = never, A = never>(me: IO<E>) => TaskEither<E, A>
 ```
 
 Added in v2.0.0
@@ -616,7 +616,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare function rightIO<E = never, A = never>(ma: IO<A>): TaskEither<E, A>
+export declare const rightIO: <E = never, A = never>(ma: IO<A>) => TaskEither<E, A>
 ```
 
 Added in v2.0.0

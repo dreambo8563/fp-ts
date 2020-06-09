@@ -198,11 +198,11 @@ whether the body action throws (_) or returns.
 **Signature**
 
 ```ts
-export declare function bracket<E, A, B>(
+export declare const bracket: <E, A, B>(
   acquire: IOEither<E, A>,
   use: (a: A) => IOEither<E, B>,
-  release: (a: A, e: Either<E, B>) => IOEither<E, void>
-): IOEither<E, B>
+  release: (a: A, e: E.Either<E, B>) => IOEither<E, void>
+) => IOEither<E, B>
 ```
 
 Added in v2.0.0

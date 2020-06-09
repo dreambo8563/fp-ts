@@ -55,9 +55,9 @@ export const fromReader: <R, A = never>(ma: Reader<R, A>) => ReaderTask<R, A> = 
 /**
  * @since 2.3.0
  */
-export function fromIO<R, A>(ma: IO<A>): ReaderTask<R, A> {
-  return fromTask(T.fromIO(ma))
-}
+export const fromIO: <R, A>(ma: IO<A>) => ReaderTask<R, A> =
+  /*#__PURE__*/
+  flow(T.fromIO, fromTask)
 
 /**
  * @since 2.3.0
@@ -175,7 +175,9 @@ export const chainFirst: <A, R, B>(f: (a: A) => ReaderTask<R, B>) => (ma: Reader
 /**
  * @since 2.3.0
  */
-export const flatten: <R, A>(mma: ReaderTask<R, ReaderTask<R, A>>) => ReaderTask<R, A> = chain(identity)
+export const flatten: <R, A>(mma: ReaderTask<R, ReaderTask<R, A>>) => ReaderTask<R, A> =
+  /*#__PURE__*/
+  chain(identity)
 
 /**
  * @since 2.3.0

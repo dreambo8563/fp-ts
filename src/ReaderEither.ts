@@ -133,16 +133,12 @@ export function getApplyMonoid<R, E, A>(M: Monoid<A>): Monoid<ReaderEither<R, E,
 /**
  * @since 2.0.0
  */
-export function ask<R, E = never>(): ReaderEither<R, E, R> {
-  return E.right
-}
+export const ask: <R, E = never>() => ReaderEither<R, E, R> = () => E.right
 
 /**
  * @since 2.0.0
  */
-export function asks<R, E = never, A = never>(f: (r: R) => A): ReaderEither<R, E, A> {
-  return (r) => E.right(f(r))
-}
+export const asks: <R, E = never, A = never>(f: (r: R) => A) => ReaderEither<R, E, A> = (f) => flow(f, E.right)
 
 /**
  * @since 3.0.0
@@ -233,7 +229,9 @@ export const apSecond = <R, E, B>(fb: ReaderEither<R, E, B>) => <A>(fa: ReaderEi
 export const bimap: <E, G, A, B>(
   f: (e: E) => G,
   g: (a: A) => B
-) => <R>(fa: ReaderEither<R, E, A>) => ReaderEither<R, G, B> = flow(E.bimap, R.map)
+) => <R>(fa: ReaderEither<R, E, A>) => ReaderEither<R, G, B> =
+  /*#__PURE__*/
+  flow(E.bimap, R.map)
 
 /**
  * @since 2.0.0
@@ -272,9 +270,9 @@ export const chainFirst: <R, E, A, B>(
 /**
  * @since 2.0.0
  */
-export const flatten: <R, E, A>(mma: ReaderEither<R, E, ReaderEither<R, E, A>>) => ReaderEither<R, E, A> = chain(
-  identity
-)
+export const flatten: <R, E, A>(mma: ReaderEither<R, E, ReaderEither<R, E, A>>) => ReaderEither<R, E, A> =
+  /*#__PURE__*/
+  chain(identity)
 
 /**
  * @since 2.0.0

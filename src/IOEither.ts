@@ -55,12 +55,16 @@ export interface IOEither<E, A> extends IO<Either<E, A>> {}
 /**
  * @since 2.0.0
  */
-export const left: <E = never, A = never>(l: E) => IOEither<E, A> = flow(E.left, I.of)
+export const left: <E = never, A = never>(l: E) => IOEither<E, A> =
+  /*#__PURE__*/
+  flow(E.left, I.of)
 
 /**
  * @since 2.0.0
  */
-export const right: <E = never, A = never>(a: A) => IOEither<E, A> = flow(E.right, I.of)
+export const right: <E = never, A = never>(a: A) => IOEither<E, A> =
+  /*#__PURE__*/
+  flow(E.right, I.of)
 
 /**
  * @since 2.0.0
@@ -79,10 +83,9 @@ export const leftIO: <E = never, A = never>(me: IO<E>) => IOEither<E, A> =
 /**
  * @since 2.0.0
  */
-export const fold: <E, A, B>(onLeft: (e: E) => IO<B>, onRight: (a: A) => IO<B>) => (ma: IOEither<E, A>) => IO<B> = flow(
-  E.fold,
-  I.chain
-)
+export const fold: <E, A, B>(onLeft: (e: E) => IO<B>, onRight: (a: A) => IO<B>) => (ma: IOEither<E, A>) => IO<B> =
+  /*#__PURE__*/
+  flow(E.fold, I.chain)
 
 /**
  * @since 2.0.0
@@ -155,16 +158,16 @@ export function tryCatch<E, A>(f: Lazy<A>, onError: (reason: unknown) => E): IOE
  *
  * @since 2.0.0
  */
-export function bracket<E, A, B>(
+export const bracket = <E, A, B>(
   acquire: IOEither<E, A>,
   use: (a: A) => IOEither<E, B>,
   release: (a: A, e: Either<E, B>) => IOEither<E, void>
-): IOEither<E, B> {
-  return pipe(
+): IOEither<E, B> =>
+  pipe(
     acquire,
     chain((a) =>
       pipe(
-        pipe(use(a), I.monadIO.map(E.right)),
+        pipe(use(a), I.map(E.right)),
         chain((e) =>
           pipe(
             release(a, e),
@@ -174,7 +177,6 @@ export function bracket<E, A, B>(
       )
     )
   )
-}
 
 /**
  * @since 3.0.0
@@ -276,7 +278,7 @@ export const filterOrElse: {
  * @since 2.0.0
  */
 export const fromEither: <E, A>(ma: E.Either<E, A>) => IOEither<E, A> = (ma) =>
-  ma._tag === 'Left' ? left(ma.left) : right(ma.right)
+  E.isLeft(ma) ? left(ma.left) : right(ma.right)
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -395,10 +397,9 @@ export const flatten: <E, A>(mma: IOEither<E, IOEither<E, A>>) => IOEither<E, A>
 /**
  * @since 2.0.0
  */
-export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: IOEither<E, A>) => IOEither<G, B> = flow(
-  E.bimap,
-  I.map
-)
+export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: IOEither<E, A>) => IOEither<G, B> =
+  /*#__PURE__*/
+  flow(E.bimap, I.map)
 
 /**
  * @since 2.0.0

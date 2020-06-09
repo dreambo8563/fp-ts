@@ -217,7 +217,7 @@ Added in v2.3.0
 **Signature**
 
 ```ts
-export declare function fromIO<R, A>(ma: IO<A>): ReaderTask<R, A>
+export declare const fromIO: <R, A>(ma: IO<A>) => ReaderTask<R, A>
 ```
 
 Added in v2.3.0

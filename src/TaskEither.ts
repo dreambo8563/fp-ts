@@ -58,26 +58,26 @@ export interface TaskEither<E, A> extends Task<Either<E, A>> {}
 /**
  * @since 2.0.0
  */
-export const left: <E = never, A = never>(e: E) => TaskEither<E, A> = flow(E.left, T.of)
+export const left: <E = never, A = never>(e: E) => TaskEither<E, A> =
+  /*#__PURE__*/
+  flow(E.left, T.of)
 
 /**
  * @since 2.0.0
  */
-export const right: <E = never, A = never>(a: A) => TaskEither<E, A> = flow(E.right, T.of)
+export const right: <E = never, A = never>(a: A) => TaskEither<E, A> =
+  /*#__PURE__*/
+  flow(E.right, T.of)
 
 /**
  * @since 2.0.0
  */
-export function rightIO<E = never, A = never>(ma: IO<A>): TaskEither<E, A> {
-  return rightTask(T.fromIO(ma))
-}
+export const rightIO = <E = never, A = never>(ma: IO<A>): TaskEither<E, A> => rightTask(T.fromIO(ma))
 
 /**
  * @since 2.0.0
  */
-export function leftIO<E = never, A = never>(me: IO<E>): TaskEither<E, A> {
-  return leftTask(T.fromIO(me))
-}
+export const leftIO = <E = never, A = never>(me: IO<E>): TaskEither<E, A> => leftTask(T.fromIO(me))
 
 /**
  * @since 2.0.0
@@ -96,9 +96,7 @@ export const leftTask: <E = never, A = never>(me: Task<E>) => TaskEither<E, A> =
 /**
  * @since 2.0.0
  */
-export const fromIOEither: <E, A>(fa: IOEither<E, A>) => TaskEither<E, A> =
-  /*#__PURE__*/
-  (() => T.fromIO)()
+export const fromIOEither: <E, A>(fa: IOEither<E, A>) => TaskEither<E, A> = T.fromIO
 
 /**
  * @since 2.0.0
@@ -106,7 +104,9 @@ export const fromIOEither: <E, A>(fa: IOEither<E, A>) => TaskEither<E, A> =
 export const fold: <E, A, B>(
   onLeft: (e: E) => Task<B>,
   onRight: (a: A) => Task<B>
-) => (ma: TaskEither<E, A>) => Task<B> = flow(E.fold, T.chain)
+) => (ma: TaskEither<E, A>) => Task<B> =
+  /*#__PURE__*/
+  flow(E.fold, T.chain)
 
 /**
  * @since 2.0.0
@@ -195,12 +195,12 @@ export function tryCatch<E, A>(f: Lazy<Promise<A>>, onRejected: (reason: unknown
  *
  * @since 2.0.0
  */
-export function bracket<E, A, B>(
+export const bracket = <E, A, B>(
   acquire: TaskEither<E, A>,
   use: (a: A) => TaskEither<E, B>,
   release: (a: A, e: Either<E, B>) => TaskEither<E, void>
-): TaskEither<E, B> {
-  return pipe(
+): TaskEither<E, B> =>
+  pipe(
     acquire,
     chain((a) =>
       pipe(
@@ -214,7 +214,6 @@ export function bracket<E, A, B>(
       )
     )
   )
-}
 
 /**
  * Convert a node style callback function to one returning a `TaskEither`
@@ -537,10 +536,9 @@ export const flatten: <E, A>(mma: TaskEither<E, TaskEither<E, A>>) => TaskEither
 /**
  * @since 2.0.0
  */
-export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: TaskEither<E, A>) => TaskEither<G, B> = flow(
-  E.bimap,
-  T.map
-)
+export const bimap: <E, G, A, B>(f: (e: E) => G, g: (a: A) => B) => (fa: TaskEither<E, A>) => TaskEither<G, B> =
+  /*#__PURE__*/
+  flow(E.bimap, T.map)
 
 /**
  * @since 2.0.0
